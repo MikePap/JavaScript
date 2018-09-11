@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Funzioni date  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(20,150,30); font-weight:bold; margin:0; padding:0;}
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(100,150,255);}
+.scuro{color:#333;}
+tt, em{color:#6a9999}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+table{
+background:rgb(250,235,230);	margin:20px;
+}
+th{
+background:#333; color:white;
+}
+td:nth-child(1){
+text-align:center; font-weight:bold;
+}
+
+</style>
+
+
+</head>
+
+<body>
+
+<h2>Funzioni Date</h2>
+
+<p class='nota'>
+All'interno del documento ci sono funzioni relative all'oggetto <b>Date</b> che restituiscono i valori di anno, mese, giorno e orario. <br />
+Nel file <b>Data_Ora.js</b> ( cartelle <b>JavaScript/allegati o JS</b> ) ci sono le stesse funzioni di questo documento. 
+</p>
+
+<p id="data_corrente"> Oggi è 
+<b><span id="giorno_corrente"></span> <span id="nm_giorno_corrente"></span> <span id="mese_corrente"></span> <span id="anno_corrente"></span></b>
+</p>
+
+
+<p> e sono le 
+<b><span id="ora"></span>:<span id="minuti"></span>:<span id="secondi"></span></b>
+</p>
+
+
+<p id="dataOggi">data di oggi</p>
+
+
+<script type="text/javascript">
+
+/*
+##########	Nel file "Data_Ora.js" (cartelle "JavaScript/allegati" o "JS" ) ci sono le stesse funzioni di questo documento. 	#####
+*/
+
+function nm_giorno_settimana(){
+// Domenica => 0 , Lunedi => 1 ecc 
+var current_date = new Date();
+var nm_giorno =  current_date.getDay();
+//var nm_giorno = nm_giorno;
+var nm_giorno = "0" + nm_giorno;
+return nm_giorno;
+} // ### nm_giorno_settimana ###
+
+
+function giorno_mese(){
+// 1, 2, 3 ecc 
+var current_date = new Date();
+var day = current_date.getUTCDate();
+if(day < 10)
+var giorni = "0"+day;
+else
+var giorni = day; 
+return giorni;
+} // ### giorno_mese ####
+
+
+function weekday(){
+
+	var current_date = new Date();
+	var weekdays = new Array(7);
+	weekdays[0] = "Domenica";		// Sunday
+	weekdays[1] = "Lunedi";			// Monday
+	weekdays[2] = "Martedi";		// Tuesday
+	weekdays[3] = "Mercoledi";		// Wednesday
+	weekdays[4] = "Giovedi";		// Thursday
+	weekdays[5] = "Venerdi";		// Friday
+	weekdays[6] = "Sabato";			// Saturday
+
+	var weekday_value = current_date.getDay();
+	var giorno = weekdays[weekday_value];
+	return giorno;
+} // #### weekday ####
+
+
+function mese(){
+
+	var current_date = new Date();
+	var months = new Array(12);
+	months[0] = "Gennaio";			// January
+	months[1] = "Febbraio";			// February
+	months[2] = "Marzo";				// March
+	months[3] = "Aprile";			// April
+	months[4] = "Maggio";			// May
+	months[5] = "Giugno";			// June
+	months[6] = "Luglio";			// July
+	months[7] = "Agosto";			// August
+	months[8] = "Settembre";		// September
+	months[9] = "Ottobre";			// October
+	months[10] = "Novembre";		// November
+	months[11] = "Dicembre";		// December
+
+	var mese_valore = current_date.getMonth();
+	var nome_mese = months[mese_valore]; 
+	return nome_mese;
+} //#### mese ####
+
+function anno(){
+	var current_date = new Date();
+	var annata = current_date.getFullYear();
+	return annata;
+} // ### anno ### 
+
+
+function ore(){
+	var current_date = new Date();
+	var hour = current_date.getHours();
+	if(hour < 10)
+		var ora = "0" +hour;
+	else
+		var ora = hour;
+	return ora;
+} // ### ore ### 
+
+
+function minuti(){
+	var current_date = new Date();
+	var minuto = current_date.getMinutes();
+	if(minuto < 10)
+	//var ora_minuti = 'ore '+ora+':0'+minuti;
+		var minuts = "0" +minuto;
+	else
+		var minuts = minuto;
+
+	return minuts;
+} // ### minuti ####
+
+function secondi(){
+	var current_date = new Date();
+	var seconds = current_date.getSeconds();
+	if(seconds < 10)
+		var secondo = "0" +seconds;
+	else
+		var secondo = seconds;
+	return secondo;
+} // ### secondi #### 
+
+function data_oggi(){
+	var giorno = weekday();
+	var nm_giorno = giorno_mese();
+	var mes = mese();
+	var ann = anno();
+	var jk = giorno+' '+nm_giorno+' '+mes+' '+ann;
+	return jk;
+} 
+
+function ora_minuti(){
+	var ora = ore(); 
+	var minuts = minuti();
+	var jk = ora+':'+minuts;
+	return jk;
+}
+
+
+</script>
+
+
+<script type="text/javascript">
+
+//var current_date = new Date();
+var giorno_corrente = document.getElementById('giorno_corrente').textContent = weekday();
+var nm_giorno_corrente = document.getElementById('nm_giorno_corrente').innerHTML = giorno_mese();
+var mese_corrente = document.getElementById('mese_corrente').innerHTML = mese();
+var anno_corrente = document.getElementById('anno_corrente').innerHTML = anno();
+var ora = document.getElementById('ora').innerHTML = ore();
+var minuti = document.getElementById('minuti').innerHTML = minuti();
+var secondi = document.getElementById('secondi').innerHTML = secondi();
+var dataOggi = document.getElementById('dataOggi').innerHTML = data_oggi();
+
+
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>Layers 03  </title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.nota{color:orange;}
+.codice{color:green;}
+.verde{color:green;}
+
+#map_canvas{ position:relative; margin:20px; width:90%; height:90%;  }
+
+</style>
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=it"></script>
+
+<script type="text/javascript">
+var roma = new google.maps.LatLng(41.8929,12.4944);
+
+function initialize() {
+var map = new google.maps.Map(document.getElementById('map_canvas'), {
+center: roma,
+zoom: 6,
+mapTypeId: google.maps.MapTypeId.ROADMAP
+});
+
+var infoWindow = new google.maps.InfoWindow();
+
+// Initialize the first layer (Olivicoltori-02: 2854024) 
+var firstLayer = new google.maps.FusionTablesLayer({
+query: {
+select: 'indirizzo_odo',
+from: 2854024
+}, 
+map: map,
+suppressInfoWindows: true		// si esclude la visualizzazione della finestrella 
+}); // 'firstLayer'
+
+// Si aggiunge un listener richiamando la funzione "windowControl"
+google.maps.event.addListener(firstLayer, 'click', function(e) {
+windowControl(e, infoWindow, map);
+});
+
+// Initialize the second layer (olivicoltori: 2853001)
+var secondLayer = new google.maps.FusionTablesLayer({
+query: {
+select: "Indirizzo",
+from: 2853001
+},
+map: map,
+suppressInfoWindows: true		// si esclude la visualizzazione della finestrella
+}); // 'secondLayer'
+
+// Si aggiunge un listener richiamando la funzione "windowControl"	
+google.maps.event.addListener(secondLayer, 'click', function(e) {
+windowControl(e, infoWindow, map);
+});
+
+} // "initialize"
+
+// Open the info window at the clicked location
+function windowControl(e, infoWindow, map) {
+infoWindow.setOptions({			
+content: e.infoWindowHtml,
+position: e.latLng,
+pixelOffset: e.pixelOffset
+});
+infoWindow.open(map);
+} // "windowControl"
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+
+</head>
+<body>
+
+<h3>Caricare più file da <q>fusionTable</q>  </h3>
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+//initialize();
+
+}); // chiude ready 
+</script>
+
+
+<div id="map_canvas"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

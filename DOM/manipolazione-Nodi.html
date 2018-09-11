@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Manipolazione Nodi </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);}
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px;  color:rgb(200,20,20);}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grassetto{ font-weight:bold; }
+.codice, pre{ color:rgb(30,120,30);}
+.grigio{color: grey;}
+.blu{color:#00f;}
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+
+#divo{
+width:500px; margin:31px; padding:10px; background:#9F0;  border:1px solid;
+}
+
+#kok{
+width:500px; margin:31px; padding:10px; background:#F90;  border:1px solid;
+}
+
+</style>
+<script type="text/javascript">
+
+function jk(name)
+{
+	this.nome = name;
+//	alert(nome);
+	var pre = "Il mio nome è ";
+	var divo = document.getElementById('divo').innerHTML = pre+nome;
+	var kok = document.getElementById('kok');
+	var nuovo = document.createElement("span");
+	var oText = document.createTextNode(nome);
+	nuovo.appendChild(oText);
+	kok.appendChild(nuovo);
+}; 
+
+</script>
+
+</head>
+<body>
+
+<h2>Creazione di un elemento</h2>
+<p>
+Il metodo <b>createElement()</b> permete di creare un elemento da inserire nell'albero del DOM 
+<pre>
+var elementNode = document.createElement('textarea');			<span class="nota">// </span>
+</pre>
+</p>
+
+<p>Per la lista degli elementi HTML: <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element">vedere qui</a> 
+oppure <a href="http://www.w3schools.com/tags/default.asp">qui</a>
+</p>
+
+<h2>Creazione e aggiunta di testo</h2>
+
+<h3>createTextNode</h3>
+<p>
+Metodo che permette di creare un nodo testo (<tt>text node</tt>). 
+<pre>
+<span class="blu">&lt;div&gt;&lt;/div&gt;  </span>
+
+var testo = document.createTextNode('Hello');
+document.querySelector('div').appendChild(testo);
+document.querySelector('div').innerText;			<span class="nota">// rstituisce: Hello </span>
+
+</pre>
+</p>
+
+
+
+<h3>innerHTML, outerHTML, textContent</h3>
+<pre>
+document.getElementById('A').innerHTML = '&lt;strong&gt;Hi&lt;/strong&gt;';
+document.getElementById('B').outerHTML = '&lt;div id="B" class="new" &gt;Whats Shaking&lt;/div&gt;';
+document.getElementById('C').textContent = 'dude';
+</pre>
+
+<h3>insertAdjacentHTML()</h3>
+
+<pre>
+<span class="blu">&lt;i id="elm" &gt;how&lt;/i&gt; </span>
+var elm = document.getElementById('elm');
+
+elm.insertAdjacentHTML('beforebegin', '&lt;span&gt;Hey-&lt;/span&gt;');
+elm.insertAdjacentHTML('afterbegin', '&lt;span&gt;Daglass-&lt;/span&gt;'); 
+elm.insertAdjacentHTML('afterbegin', '&lt;span&gt;Jhon-&lt;/span&gt;'); 
+elm.insertAdjacentHTML('beforeend', '&lt;span&gt;-fuck&lt;/span&gt;');
+elm.insertAdjacentHTML('beforeend', '&lt;span&gt;-are&lt;/span&gt;');
+elm.insertAdjacentHTML('afterend', '&lt;span&gt;-you?&lt;/span&gt;'); 
+<span class="nota">// l'elemento #elm avrà infine il seguente testo: <b>Hey-Jhon-Daglass-how-fuk-are-you?</b></span>
+</pre>
+
+<h3>Estrazione di testo</h3>
+<p>
+Utilizzando gli stessi metodi per l'aggiunta di testo si può recuperare il nodo testo di ogni elemento 
+<pre>
+document.getElementById('A').innerHTML;			<span class="nota">// restituisce il testo dell'elemento A</span>
+document.getElementById('B').outerHTML;			<span class="nota">// restituisce il testo dell'elemento B</span>
+document.getElementById('C').textContent;		<span class="nota">// restituisce il testo dell'elemento C</span>
+
+document.getElementById('D').firstChild.nodeValue;	<span class="nota">// restituisce lo stesso risultato</span>
+</pre>
+</p>
+
+
+<h2>appendChild</h2>
+<p class='nota'>
+Inserisce un nodo alla fine della lista nodi (childNodes). 
+<pre>
+p.appendChild(a);			<span class="nota">// l'elemento'a' viene inserito nell'elemento 'p' </span>
+</pre>
+</p>
+
+Inserisci il tuo nome
+<input type="text"  name="nome" size="" maxlength="" value="" onblur="jk(this.value)"  />
+<br />
+
+<div id="divo"></div> 
+
+<div id="kok">Il mio nome è: </div> 
+
+
+<h2>insertBefore</h2>
+<p class="nota">
+Inserisce un nodo in un punto specificato. 
+<dl>
+	<dt>Accetta due parametri</dt>
+	<dd>il nodo da inserire</dd>
+	<dd>un riferimento al nodo</dd>
+	
+</dl>	
+<pre>
+div.insertBefore(due, uno);			<span class="nota">// all'interno dell'elemento 'div' l'elemento 'due' va ad inserirsi al posto di 'uno' </span>
+uno.insertBefore(due, uno.lastChild);		<span class="nota">// uguale al precedente</span>
+
+</pre>
+</p>
+
+<div id="diva">
+	<p id="par1">paragrafo uno</p>
+	<p id="par2">paragrafo due</p>
+	<p id="par3">paragrafo tre</p>
+	<p id="par4">paragrafo quattro</p>
+</div>
+<script type="text/javascript">
+
+var diva =		document.getElementById('diva');
+var uno =		document.getElementById('par1');
+var due =		document.getElementById('par2');
+var tre =		document.getElementById('par3');
+var quattro =	document.getElementById('par4');
+
+//diva.insertBefore(due, uno);
+//uno.insertBefore(due, uno.lastChild);
+//tre.insertBefore(quattro, tre.lastChild);
+
+//quattro.parentNode.removeChild(quattro);
+//quattro.removeChild(quattro.firstChild);
+//diva.removeChild(quattro);
+//diva.replaceChild(uno, quattro);
+//var nuovoTesto = document.createTextNode("nuovo elemento di testo"); 
+//diva.replaceChild(nuovoTesto, uno); 
+
+</script>
+
+
+<h2>removeChild</h2>
+<p class="nota">Rimuove un nodo. Accetta un solo argomento che è il riferimento al nodo da rimuovere</p>
+<pre>
+var div = document.getElementById("div1");
+div.removeChild(div.firstChild);
+
+<span class="grigio">ancora meglio se si usa il metodo <q>parentNode</q> (vedere gli elementi in #diva)</span>
+quattro.parentNode.removeChild(quattro);			<span class="nota">// rimuove l'elemento 'quattro'</span>
+
+<span class="grigio">invece che il seguente</span>
+quattro.removeChild(quattro.firstChild);			<span class="nota">// uguale al precedente</span>
+
+<span class="grigio">oppure</span>
+diva.removeChild(quattro);					<span class="nota">// 'diva' è il genitore di 'quattro'</span>
+</pre>
+
+<h2>replaceChild</h2>
+<p class="nota">Metodo che serve a sostiuire un nodo</p>
+
+<dl>
+	<dt>Accetta due argomenti</dt>
+	<dd>il nodo da inserire</dd>
+	<dd>il nodo da rimpiazzare</dd>
+</dl>	
+<pre>
+<span class="grigio">In riferimento agli elementi che stanno alla'interno del &lt;div id="#diva"&gt;  </span>
+diva.replaceChild(uno, quattro);		<span class="nota">// l'elemento 'uno' prenderà il posto dell'elemento 'quattro' che a sua volta scomparirà </span>
+
+<span class="grigio">oppure</span>
+var nuovoTesto = document.createTextNode("nuovo elemento di testo"); 
+diva.replaceChild(nuovoTesto, uno);		<span class="nota">// il nuovo elemento creato rimpiazzerà l'elemento 'uno' che sta all'interno dell'elemento 'diva'</span> 
+</pre>
+
+<p class="blu">
+replaceChild() and removeChild() return the replaced and removed node, respectively. Basically, the node is not gone just because you replace or remove it. These actions simply take the node out of the current live document. You still have a reference to it in memory
+</p>
+
+<h2>cloneNode</h2>
+<p>
+E' un metodo che permette di clonare un nodo. Accetta un argomento boleano (true o false). Nel caso sia <tt>true</tt> il clone conterrà anche tutti gli eventuali elementi figli. 
+<pre>
+var nodo = document.getElementById('elemento');
+var clone1 = nodo.cloneNode(true);		<span class="nota">// sarà creato un elemento uguale all'elemento 'nodo' che contiene anche gli eventuali figli</span> 
+var clone2 = nodo.cloneNode(false);		<span class="nota">// sarà creato un elemento uguale, compreso degli eventuali attributi, ma vuoto (senza figli) </span> 
+</pre>
+</p>
+
+<h2>Document Fragment</h2>
+<p>
+Il <em>Document Fragment </em> è un oggetto nodo che è indipendente dall'oggetto <tt>document</tt>. E' una istanza della classe <tt>Node</tt> e può utilizzare tutti i suoi metodi e proprietà. Può essere utilizzato per creare oggetti per poi aggiungerli al documento.
+<pre>
+var df = document.createDocumentFragment();	<span class="nota">// viene creato un oggetto 'Document Fragment' </span>
+
+Object.prototypetoString.call(df);				<span class="nota">// restituisce: "[object DocumentFragment]"</span>
+Object.getPrototypeOf(df);					<span class="nota">// restiutuisce: undefined </span>
+df.nodeType;							<span class="nota">// restituisce: 11</span>
+df.parentNode;							<span class="nota">// restituisce: null</span>
+
+var li_01 = createElement('li');		<span class="nota">// si crea un elemento LI</span>
+var li_02 = createElement('li');		<span class="nota">// si crea un secondo elemento LI</span>
+df.appendChild(li_01);				<span class="nota">// si possono utilizzare i metodi della classse NODE per aggiungere gli elementi creati al 'Document Fragment' </span>
+df.appendChild(li_02);
+
+<span class="grigio">Dopo aver creato l'oggetto "Document Fragment" si può inserire tale oggetto all'interno del documento</span>
+var ul = document.getElementsByTagName('ul')[0];	<span class="nota">// si recupera un oggetto UL del documento 'document'</span>
+ul.appendChild(df);					<span class="nota">// si attacca l'oggetto 'Document Fragment' (con tutto il suo contenuto) all'oggetto UL</span>
+  
+</pre>
+</p>
+
+<h2>Normalizzare un oggetto testo -- normalize --</h2>
+<p>
+E' un metodo che normalizza il contenuto testo di un elemento (text object: oggetto testo) quando viene aggiunto del testo a quello già esistente. 
+<pre>
+<span class="grigio">Prendiamo l'esempio di un paragrafo contenente del testo</span>
+<span class="blu">&lt;p&gt;Testo esistente &lt;/p&gt;</span>
+var p = document.getElementsByTagName('p')[0];
+p.childNodes.length;			<span class="nota">// restituisce: 1</span>
+
+<span class="grigio">creiamo e aggiungiamogli del testo</span>
+var nuovoT = document.createTextNode('Testo aggiunto');
+p.appendChild(nuovoT);
+p.childNodes.length;			<span class="nota">// restituisce: 2</span>
+
+<span class="grigio">ora utilizzando il metodo normalize() riportiamo la sua 'length' al valore iniziale (che sarebbe il valore regolare appropriato)</span>
+p.normalize();
+p.childNodes.length;			<span class="nota">// restituisce: 1</span>
+</pre>
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br />
+<br />
+<br />
+
+
+
+
+
+
+
+
+</body>
+</html>

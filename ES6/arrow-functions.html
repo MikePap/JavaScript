@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Arrow functions </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); margin:10px 50px; } 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150); margin:10px 40px; }
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20); margin:10px 31px; }
+code, pre{ color:rgb(20,150,30); font-weight:bold; background:rgb(230,230,230); margin:5px 10px; padding:8px; }
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(100,150,255);}
+.scuro{color:#333;}
+tt, em{color:#6a9999}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-left:10px;}
+dd{ color:#0066FF; margin-left:10px;}
+
+</style>
+</head>
+<body>
+
+<h3>Nuovo modo di definizione dei metodi</h3>
+
+<p>
+ES6 ha introdotto un nuovo modo per definire i metodi degli oggetti
+</p>
+
+<pre>
+let obj = {
+	foo: function () {				<span class="nota">ES5 </span>
+		···
+	},
+
+	bar () {
+		...					<span class="nota">ES6 </span>
+	},
+}
+</pre>
+
+<p>
+Ciò non toglie che il vecchio uso sia ancora possibile in ES6. Da notare, anche, la virgola dopo la definizione della seconda funzione che non produce errore; del resto non dave errore neanche in ES5. 
+</p>
+<pre>
+var saluti = {
+
+	ciao: "Hello", 
+
+	amico1: function (){
+		return this.ciao+ " Jhon";
+	},
+
+	amico2 (nome) {
+		return  this.ciao+ " " +nome; 
+	},
+}
+<span class="azzurro">
+console.log(saluti.amico1());				<span class="nota">Hello Jhon </span>
+console.log(saluti.amico2("Fred"));			<span class="nota">Hello Fred </span>
+</span>
+</pre>
+
+
+<h1>Arrow functions</h1>
+
+<p>
+Come suggerisce il nome sono delle funzioni che utilizzano una nuova sintassi con la freccia (arrow) <b> '=>'</b>. <br />
+Da ricordare che 
+<dl>
+	<dt>Le arrow functions non possono essere usate da un costruttore e restituiscono errore quando sono utilizzate con <tt>new</tt>  </dt>
+	<dd>Il valore di <tt>this</tt> all'interno delle funzioni non può essere cambiato </dd>
+</dl>	
+Il motivo di queste differenze sono da ricercare nel fatto che la parola chiave <tt>this</tt> è causa di molti errori in JavaScript perchè molte volte, soprattutto in caso di funzioni innestate, se ne viene a perdere traccia. 
+</p>
+
+<h3>Sintassi</h3>
+
+<pre>
+([param] [, param]) => {
+   statements
+}
+
+param => expression
+</pre>
+
+<p>
+Vediamo degli esempi concreti
+</p>
+
+<pre>
+var reflect = value => value;
+
+<span class="grigio">è equivalente a:</span>
+var reflect = function(value) {
+	return value;
+};
+<span class="azzurro">
+console.log(reflect(3));						<span class="nota">// 3</span>	
+
+</span>	
+var sum = (num1, num2) => num1 + num2;
+<span class="grigio">oppure</span>
+var sum = (num1, num2) => { return num1 + num2; }
+
+<span class="grigio">sono equivalenti a:</span>
+var sum = function(num1, num2) {
+	return num1 + num2;
+};
+<span class="azzurro">
+console.log(sum(5,7));							<span class="nota">// 12</span>	
+</span>	
+
+var sum = () => 1 + 2;
+
+<span class="grigio">è equivalente a:</span>
+var sum = function() {
+	return 1 + 2;
+};
+<span class="azzurro">
+console.log(sum());							<span class="nota">// 3</span>	
+</span>	
+
+var getTempItem = id => ({ id: id, name: "Temp" });
+
+<span class="grigio">è equivalente a:</span>
+var getTempItem = function(id) {
+	return {
+		id: id,
+		name: "Temp"
+	};
+};
+<span class="azzurro">
+console.log(getTempItem());						<span class="nota">// Object { id: undefined, name: "Temp" } </span>	
+console.log(getTempItem(10));						<span class="nota">// Object { id: 10, name: "Temp" } </span>	
+</span>		
+</pre>
+
+<h3>Arrow  VS this</h3>
+
+<p>
+L'esempio seguente dimostra come si può evitare un errore che può essere causato invece con l'uso della parola chiave <tt>this</tt>
+</p>
+<pre>
+var PageHandler = {
+	id: "123456",
+
+	init: function() {
+		document.addEventListener("click", function(event) {
+			this.doSomething(event.type);			<span class="nota">errore</span>
+		}, false);
+	},
+
+	doSomething: function(type) {
+		console.log("Handling " + type  + " for " + this.id);
+	}
+};
+</pre>
+<p>
+L'errore causato è dovuto al fatto che <tt>this</tt> fa parte del oggetto globale e non fa riferimento a 'PageHandler' come si vorrebbe. <br />
+Questo errore lo si può evitare sia con l'utilizzo di <tt>bind</tt>
+</p>
+<pre>
+var PageHandler = {
+	id: "123456",
+	
+	init: function() {
+		document.addEventListener("click", (function(event) {
+			this.doSomething(event.type);     
+			}).bind(this), false);
+		},
+
+		doSomething: function(type) {
+			console.log("Handling " + type  + " for " + this.id);
+		}
+};
+</pre> 
+
+<p>
+che con l'utilizzo delle <tt>arrow functions</tt>
+</p>
+
+<pre>
+var PageHandler = {
+	id: "123456",
+
+	init: function() {
+		document.addEventListener("click",
+			event => this.doSomething(event.type), false);
+	},
+
+	doSomething: function(type) {
+		console.log("Handling " + type  + " for " + this.id);
+	}
+};
+</pre>
+
+
+
+
+
+
+<script type="text/javascript">
+
+/*
+var reflect = function(value) {
+	return value;
+};
+*/
+
+var reflect = value => value;
+console.log(reflect(3));
+
+/*
+var sum = function(num1, num2) {
+	return num1 + num2;
+};
+*/
+
+var sum = (num1, num2) => num1 + num2;
+//var sum = (num1, num2) => { return num1 + num2; }
+
+console.log(sum(5,7));
+
+/*
+var sum = function() {
+	return 1 + 2;
+};
+*/
+
+var sum = () => 1 + 2;
+console.log(sum());  
+
+
+
+/*
+var getTempItem = function(id) {
+	return {
+		id: id,
+		name: "Temp"
+	};
+};
+*/
+
+var getTempItem = id => ({ id: id, name: "Temp" });
+console.log(getTempItem());
+
+
+//console.log( getTempItem('iddi').id );
+
+
+/*
+var PageHandler = {
+	id: "123456",
+
+	init: function() {
+		document.addEventListener("click", function(event) {
+			this.doSomething(event.type);			
+		}, false);
+	},
+
+	doSomething: function(type) {
+		console.log("Handling " + type  + " for " + this.id);
+	}
+};
+*/
+
+/*
+var PageHandler = {
+
+    id: "123456",
+
+    init: function() {
+        document.addEventListener("click", (function(event) {
+            this.doSomething(event.type);     // error
+        }).bind(this), false);
+    },
+
+    doSomething: function(type) {
+        console.log("Handling " + type  + " for " + this.id);
+    }
+};
+*/
+
+
+var PageHandler = {
+	id: "123456",
+
+	init: function() {
+		document.addEventListener("click",
+			event => this.doSomething(event.type), false);
+	},
+
+	doSomething: function(type) {
+		console.log("Handling " + type  + " for " + this.id);
+	}
+};
+
+
+
+
+var jk = PageHandler.init();
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+</body>
+</html>

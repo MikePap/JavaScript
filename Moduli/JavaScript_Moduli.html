@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>JavaScript  Moduli   </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+<h1>Implementare un sistema di moduli </h1>
+
+<p>
+Partiamo con un l'implementazione di semplice modulo 
+</p>
+<pre>
+var names = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+function dayName(number) {
+	return names[number];
+}
+<span class="azzurro">
+console.log(dayName(1));					<span class="nota">// Monday</span>
+</span>
+</pre>
+<p>
+La funzione <em>dayName</em> è parte dell'interfaccia del modulo  ma la variabile <em>names</em> no perchè sta nel <em>global scope</em>. Pertanto facciamo un piccolo ritocco rendendo la variabile <em>locale</em> 
+</p>
+<pre>
+var dayName = function() {
+	var names = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+	return function(number) {
+		return names[number];
+};
+}();
+<span class="azzurro">
+console.log(dayName(1));					<span class="nota">// Monday</span>
+</span>
+</pre>
+
+<p>
+Ora creiamo un'altra funzione <tt>weekDay</tt> che integra la suddetta <tt>dayName</tt> chiamandola <tt>name</tt> e  aggiungendo una nuova <tt>number</tt>. Entrambe si chiamano a vicenda in un gioco di incroci  
+</p>
+<pre>
+var weekDay = function() {
+	var names = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+	return {
+		name: function(number) { return names[number]; },
+		number: function(name) { return names.indexOf(name); }
+	};
+}();
+<span class="azzurro">
+console.log(weekDay.name(weekDay.number("Sunday")));		<span class="nota">// Sunday</span>
+</span>
+</pre>
+
+<p>
+Per un migliore utilizzo creiamo un <em>namespace</em> per il nostro modulo 
+</p>
+<pre>
+(function(exports) {
+var names = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+	exports.name = function(number) {
+		return names[number];
+};
+	exports.number = function(name) {
+		return names.indexOf(name);
+	};
+})(this.weekDay = {});
+<span class="azzurro">
+console.log(weekDay.name(weekDay.number("Saturday")));		<span class="nota">// Saturday</span>
+</span>
+
+
+</pre>
+
+
+
+
+
+
+<script type="text/javascript">
+
+// var names = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+/*
+var dayName = function() {
+	var names = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+	return function(number) {
+		return names[number];
+};
+}();
+
+console.log(dayName(3));
+
+var weekDay = function() {
+	var names = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+	return {
+		name: function(number) { return names[number]; },
+		number: function(name) { return names.indexOf(name); }
+	};
+}();
+
+console.log(weekDay.name(weekDay.number("Sunday")));
+*/
+
+(function(exports) {
+var names = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+	exports.name = function(number) {
+		return names[number];
+};
+	exports.number = function(name) {
+		return names.indexOf(name);
+	};
+})(this.weekDay = {});
+
+console.log(weekDay.name(weekDay.number("Saturday")));
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+
+
+
+
+</body>
+</html>

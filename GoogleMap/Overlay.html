@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>Overlay</title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.nota{color:orange;}
+.codice{color:green;}
+
+#map_canvas{ position:relative; width:100%; height:90%;  } */
+
+</style>
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=it">
+</script>
+
+<script type="text/javascript">
+
+var overlay;		// inizializzazione variabile 
+
+USGSOverlay.prototype = new google.maps.OverlayView();	// classe che eredita dalla classe "OverlayView"  con 'prototype' 
+
+function initialize() {
+    var myLatLng = new google.maps.LatLng(62.323907, -150.109291);
+    var myOptions = {
+      zoom: 11,
+      center: myLatLng,
+      mapTypeId: google.maps.MapTypeId.SATELLITE
+}; // 'myOptions'
+
+var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);	// creazione oggetto 'map' 
+
+    var swBound = new google.maps.LatLng(62.281819, -150.287132);
+    var neBound = new google.maps.LatLng(62.400471, -150.005608);
+    var bounds = new google.maps.LatLngBounds(swBound, neBound);
+// la classe "LatLngBounds" permette di costruire un rettangolo con le coordinate passate nei parametri
+
+    // Photograph courtesy of the U.S. Geological Survey
+//    var srcImage = 'images/talkeetna.png';
+	var srcImage = "http://code.google.com/intl/it-IT/apis/maps/documentation/javascript/examples/images/talkeetna.png";
+overlay = new USGSOverlay(bounds, srcImage, map);		// creazione oggetto nuova classe "USGSOverlay" 
+
+//google.maps.event.addDomListener(overlay, 'click', overlay.onRemove());
+	
+} // "initialize" 
+
+function USGSOverlay(bounds, image, map) {
+    // Now initialize all properties.
+    this.bounds_ = bounds;
+    this.image_ = image;
+    this.map_ = map;
+
+// We define a property to hold the image's div. We'll  actually create this div upon receipt of the onAdd() method so we'll leave it null for now
+    this.div_ = null;	// questa proprietà servirà dopo al metodo "onAdd" (vedi riga 80)
+    // Explicitly call setMap on this overlay
+    this.setMap(map);	// il metodo 'setMap()' ("google.maps.OverlayView" ) aggiunge un overlay (strato) alla mappa passata come argomento
+} // "USGSOverlay" 
+
+USGSOverlay.prototype.onAdd = function() {	// aggiunta del metodo onAdd() alla classe "USGSOverlay" 
+// Note: an overlay's receipt of onAdd() indicates that the map's panes are now available for attaching the overlay to the map via the DOM.
+// Con questo metodo si dovrebbe creare un elemento (<div>) del DOM in cui si dovrebbe attaccare l'immagine. 
+
+    // Create the DIV and set some basic attributes.
+    var div = document.createElement('DIV');
+    div.style.borderStyle = "none";
+    div.style.borderWidth = "0px";
+    div.style.position = "absolute";
+
+    // Create an IMG element and attach it to the DIV.
+    var img = document.createElement("img");
+    img.src = this.image_;			// è il secondo parametro '
+    img.style.width = "100%";
+    img.style.height = "100%";
+    div.appendChild(img);
+
+    // Set the overlay's div_ property to this DIV
+    this.div_ = div;		// vedi riga 57 
+
+// We add an overlay to a map via one of the map's panes.  We'll add this overlay to the overlayImage pane.
+    var panes = this.getPanes();	// il metodo 'getPanes()' classe "OverlayView"  restituisce i riquadri (panes) nei quali l'overlay sarà reso 
+    panes.overlayImage.appendChild(div);	// l'oggetto "google.maps.MapPanes" contiene gli elementi del DOM nei quali l'overlay sarà reso. La proprietà 'overlayImage' rappresenta il 4° riquadro e contiene l'immagine di primo piano. In pratica abbiamo messo il <div> creato con dentro l'immagine nel 4° strato.
+  } // "onAdd" 
+
+USGSOverlay.prototype.draw = function() {
+// Size and position the overlay. We use a southwest and northeast position of the overlay to peg it to the correct position and size.  We need to retrieve the projection from this overlay to do this.
+// Con questo metodo dovremmo posizionare gli elementi creati. Usiamo le coordinate 'google.maps.LatLngBounds(swBound, neBound) (riga 39-40-41) che creano un rettangolo intorno al nostro centro-mappa per ottenere con il metodo 'fromLatLngToDivPixel' le proprietà per dare dimensionare e posizionare l'elemento <div> creato   
+var overlayProjection = this.getProjection();	// il metodo classe "OverlayView"  
+// Retrieve the southwest and northeast coordinates of this overlay in latlngs and convert them to pixels coordinates. We'll use these coordinates to resize the DIV.
+    var sw = overlayProjection.fromLatLngToDivPixel(this.bounds_.getSouthWest());
+    var ne = overlayProjection.fromLatLngToDivPixel(this.bounds_.getNorthEast());
+
+    // Resize the image's DIV to fit the indicated dimensions.
+    var div = this.div_;
+    div.style.left = sw.x + 'px';
+    div.style.top = ne.y + 'px';
+    div.style.width = (ne.x - sw.x) + 'px';
+    div.style.height = (sw.y - ne.y) + 'px';
+} // "draw" 
+
+/*
+// Questo metodo della classe "OverlayView" rimuove gli elementi creati dal DOM (dalla mappa)
+USGSOverlay.prototype.onRemove = function() {
+    this.div_.parentNode.removeChild(this.div_);
+    this.div_ = null;						// questa è la parte mancante rispetto alla funzione successiva
+} // "onRemove" 
+
+// QUESTA FUNZIONE C'ERA NEL PRIMO ESEMPIO CHE MANCAVA DEI PULSANTI "Toggle Visibility"  e "Toggle DOM Attachment" CHE E' STATA SOSTITUITA DALLA SUCCESSIVA'
+
+*/
+
+//### Parte riservata ai pulsanti  "Toggle Visibility"  e "Toggle DOM Attachment"  che alernano la visibilità dell'overlay della mappa  ###
+
+USGSOverlay.prototype.onRemove = function() {
+    this.div_.parentNode.removeChild(this.div_);
+  }
+
+  // Note that the visibility property must be a string enclosed in quotes
+  USGSOverlay.prototype.hide = function() {
+    if (this.div_) {
+      this.div_.style.visibility = "hidden";
+    }
+  }
+
+  USGSOverlay.prototype.show = function() {
+    if (this.div_) {
+      this.div_.style.visibility = "visible";
+    }
+  }
+
+  USGSOverlay.prototype.toggle = function() {
+    if (this.div_) {
+      if (this.div_.style.visibility == "hidden") {
+        this.show();
+      } else {
+        this.hide();
+      }
+    }
+  }
+
+  USGSOverlay.prototype.toggleDOM = function() {
+    if (this.getMap()) {
+      this.setMap(null);
+    } else {
+      this.setMap(this.map_);
+    }
+  }
+
+// immagine talkeetna.png all'interno del sito di google  
+// http://code.google.com/intl/it-IT/apis/maps/documentation/javascript/examples/index.html
+// http://code.google.com/intl/it-IT/apis/maps/documentation/javascript/examples/images/talkeetna.png
+
+</script>
+
+</head>
+<!-- <body onload=""> -->
+<body>
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+initialize();
+
+}); // chiude ready 
+</script>
+
+<div id ="toolbar" width="100%; height:20px;" style="text-align:center">
+    <input type="button" value="Toggle Visibility" onclick="overlay.toggle();"></input>
+
+    <input type="button" value="Toggle DOM Attachment" onclick="overlay.toggleDOM();"></input>
+  </div>
+
+
+<div id="map_canvas"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

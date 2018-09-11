@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>Poligono-02</title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.nota{color:orange;}
+.codice{color:green;}
+
+#map_canvas{ position:relative; margin:20px; width:80%; height:80%;  }
+
+</style>
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=it"></script>
+
+<script type="text/javascript">
+
+ var map;
+  var infoWindow;
+
+  function initialize() {
+    var myLatLng = new google.maps.LatLng(24.886436490787712, -70.2685546875);
+    var myOptions = {
+      zoom: 5,
+      center: myLatLng,
+      mapTypeId: google.maps.MapTypeId.TERRAIN
+    }; // 'myOptions'
+
+    var bermudaTriangle;
+
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+    var triangleCoords = [
+        new google.maps.LatLng(25.774252, -80.190262),	// coordinate vicino Florida  
+        new google.maps.LatLng(18.466465, -66.118292),	// coordinate vicino Puerto Rico
+        new google.maps.LatLng(32.321384, -64.75737)
+	];
+
+    bermudaTriangle = new google.maps.Polygon({
+      paths: triangleCoords,
+      strokeColor: "#FF0000",
+      strokeOpacity: 0.8,
+      strokeWeight: 3,
+      fillColor: "#FF0000",
+      fillOpacity: 0.35
+    }); // 'bermudaTriangle'
+
+    bermudaTriangle.setMap(map);
+    
+    // Add a listener for the click event
+    google.maps.event.addListener(bermudaTriangle, 'click', showArrays);
+    
+    infowindow = new google.maps.InfoWindow();
+  } // "initialize" 
+
+  function showArrays(event) {
+
+    // Since this Polygon only has one path, we can call getPath()  to return the MVCArray of LatLngs
+    var vertices = this.getPath();	// metodo della classe "google.maps.Polygon" che rende un array delle coordinate del poligono 
+// il 'this' fa riferimento all'oggetto 'bermudaTriangle' che è l'oggetto passato al listener 
+    var contentString = "<b>Bermuda Triangle Polygon</b><br >";
+    contentString += "Clicked Location: <br>" + event.latLng.lat() + "," + event.latLng.lng() + "<br>";
+
+    // Iterate over the vertices.
+    for (var i =0; i < vertices.length; i++) {
+      var xy = vertices.getAt(i);	// il metodo 'getAt()' fa parte della classe "google.maps.MVCArray" ed restituisce dell'array passato attraverso il metodo 'getPath' (riga 64) l'indice degli elementi dell'array (coordinate) che compongono il poligono ...  
+      contentString += "<br>" + "Coordinate: " + i + "<br>" + xy.lat() +"," + xy.lng();	// ... per cui con i metodi 'lat' e 'lng' della classe "google.maps.LatLng" otterremo il valore delle coordinate di ogni vertice che compone il poligono 
+    } // for 
+
+    // Replace our Info Window's content and position
+    infowindow.setContent(contentString);		// il metodo 'setContent' della classe "infoWindow" iclude il contenuto all'interno 
+    infowindow.setPosition(event.latLng);		// il metodo 'setPosition' della classe "infoWindow" lo posiziona 
+
+    infowindow.open(map);		// il metodo 'open' della classe "infoWindow" visualizza l'infowindow' nella mappa passata come parametro
+
+  } // "showArrays"   
+
+</script>
+
+</head>
+<!-- <body onload=""> -->
+<body>
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+initialize();
+
+}); // chiude ready 
+</script>
+
+<p>Cliccare all'interno del triangolo delle Bermuda</p>
+
+<div id="map_canvas"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title> Alterna Immagini con z-index </title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+<style type="text/css">
+
+#boxImg{  
+position:absolute; top:100px; left:100px;
+width:500px; height:350px; margin:0.5em 1.5em 0.5em 0.5em; padding:0;  border:1px solid; z-index:10; overflow:hidden;
+/*background:transparent;*/ background:#fff;
+}
+
+#boxImg > div {
+/*width:500px; height:350px; position:absolute; top:0; bottom:0; left:0; right:0; margin:auto; padding:0; overflow: hidden;*/
+width:500px; height:350px; position:absolute; top:0; bottom:0; left:0; right:0; margin:auto; padding:0; 
+}
+
+#boxImg > div > img{
+width:100%; height:100%; margin:0; padding:0; border: none; 
+
+}
+
+/*
+#boxImg > #intruso{
+width: 50px;
+height: 35px;
+overflow: auto;
+margin: auto; padding:0;
+position: absolute;
+top: 0; left: 0; bottom: 0; right: 0;
+background:#ff0;	
+z-index:82;
+}
+*/
+
+
+
+</style>
+
+</head>
+<body>
+
+<h1>Slide</h1>
+
+<div id="boxImg">
+	<div>
+		<img src="../../Immagini/ulivo_01.jpg" title="ulivo 1" />
+	</div>
+	<div>
+		<img src="../../Immagini/ulivo_03.jpg" title="ulivo 2" />
+	</div>	
+	<div>
+		<img src="../../Immagini/ulivo_05.jpg" title="ulivo 3" />
+	</div>
+	<div>
+		<img src="../../Immagini/ulivo_07.jpg" title="ulivo 4" />
+	</div>
+</div>
+
+
+
+<script type="module">
+"use strict";
+
+
+import nodi from '../Moduli/module/creaNodi.js';
+import loadCSS from '../Moduli/module/caricaCSS.js';
+var fileCSS = loadCSS("../allegati/animazioni-slideshow.css");				// file .css dove sono contenute regole di animazione
+
+var AlternaFoto = function(box, ritardo){
+
+	var intruso = nodi('div', {'id':'intruso'}, { 'position':'absolute', 'top':0, 'left':0, 'bottom':0, 'right':0, 'margin':'auto', 'padding':0, 'background':'transparent', 'zIndex':50, 'animation':'effettoIntruso 3s ease infinite' });
+// 'width':'50px', 'height':'35px',			// non servono 
+//	document.querySelector("#boxImg").appendChild(intruso);
+// intruso.parentNode.removeChild(intruso);		
+
+	var immagini = document.querySelectorAll(box + ' > div');			// div che contengono le immagini (500x350)
+	var nImg = immagini.length;			// 4
+	var n = 3;									// la 3 porta alla prima 
+//	var nZindex = n + nImg;					// 14
+
+//	Settaggio z-index per le immagini 
+	let indice;
+	for(let i=0, immagine; immagine = immagini[i]; i++){
+		indice = (10 + nImg) - i;										// 10 è lo z-index del genitore (box)
+		immagine.style["zIndex"] = indice;
+//console.log(indice);													// Impostazione indici z-index (14 13 12 11)
+	}
+
+//	Impostazione, per la prima immagine, di 'width' e 'height' ai valori normali
+//	immagini[0].style['width'] = "500px";							
+//	immagini[0].style['height'] = "350px";
+
+	function ritardante (n){
+		immagini[n].style.animation = "effettoScambio 3s ease-in infinite";
+	}
+
+
+	var scambio = () => {
+		if( n < (nImg -1)){
+			n++;
+			for(let i=0, immagine; immagine = immagini[i]; i++){
+				indice = (10 + nImg) - i;
+				immagine.style["zIndex"] = indice;						// reimpostazione indici z-index (14 13 12 11)
+				immagine.style['width'] = "500px";						// ho dovuto altrimenti mi rimpiccioliva l'immagine 
+				immagine.style['height'] = "350px";						// come sopra
+//				immagine.style.animation = "dissolvenza 6s ease-out infinite";
+			}
+			immagini[n].style['zIndex'] = 51;
+//			immagini[n].style.animation = "effettoScambio 6s ease-in 2s infinite, apparizione 6s ease-in infinite";
+		}else{
+			n=0;
+			for(let y=0, imagine; imagine = immagini[y]; y++){
+				indice = (10 + nImg) - y;
+				imagine.style["zIndex"] = indice;						// reimpostazione indici z-index (14 13 12 11)
+				imagine.style['width'] = "500px";						// ho dovuto altrimenti mi rimpiccioliva l'immagine 
+				imagine.style['height'] = "350px";						// come sopra
+//				immagine.style.animation = "dissolvenza 6s ease-out infinite";
+			}
+			immagini[0].style['zIndex'] = 51;
+//			immagini[0].style.animation = "effettoScambio 6s ease-in 2s infinite, apparizione ease-in 2s infinite";
+		}
+
+		setTimeout(scambio, ritardo);
+
+	} ///////
+
+
+
+	var alterna = () => {
+		if( n < (nImg -1)){
+			n++;
+			for(let e=0, immagine; immagine = immagini[e]; e++){
+				indice = (10 + nImg) - e;
+				immagine.style["zIndex"] = indice;									// reimpostazione indici z-index (14 13 12 11)
+			}
+//			document.querySelector(box).appendChild(intruso);
+			immagini[n].style['zIndex'] = 51;
+		}else{
+			n=0;
+			for(let x=0, immagine; immagine = immagini[x]; x++){
+				indice = (10 + nImg) - x;
+				immagine.style["zIndex"] = indice;									// reimpostazione indici z-index (14 13 12 11)
+			}
+//			document.querySelector(box).appendChild(intruso);
+			immagini[0].style['zIndex'] = 51;
+		}
+
+		setTimeout(alterna, ritardo);
+	}////////
+
+	return {alterna}
+//	alterna();							// funziona anche con questa chiamata anche se la console mi da errore (di traceur)
+//	return {scambio}
+
+
+}//////////////////////////////////////////
+
+var obj = new AlternaFoto('#boxImg', 4000);
+obj.alterna();
+//obj.scambio();
+
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
+

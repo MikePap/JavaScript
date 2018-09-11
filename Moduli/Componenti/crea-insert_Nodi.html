@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Creazione e inserimento nodi </title>
+<link rel="stylesheet" href="../../../baseLocali.css" type="text/css" /> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style type="text/css">
+
+#genitore{
+position:relative; margin: 31px auto;  width:80%; 
+border:1px solid #ccc;
+padding:20px;
+}
+
+#genitore2{
+position:relative; margin: 0 auto;  width:80%; 
+border:1px solid #ccc;
+padding:20px;
+}
+
+.verde {
+	color: #0f0; 
+}
+.bordato{
+padding: 10px;
+border: 3px solid blue;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Creazione e inserimento nodi </h1>
+
+<p>
+Il componente «creaInsertNode» è una semplice funzione che permette di creare dinamicamente degli elementi nodi da inserire in altri elementi come figli.<br>
+Contiene una funzione interna, «creaElementi», che permette di creare dei nodi con eventuali attributi, stili e testo ed una dichiarazione di un ciclo che inserisce tali elementi in un nodo già esistente nel documento, passato come primo argomento del componente.
+</p>
+<p>
+Il secondo argomento del componente, che contiene gli elementi da creare ed inserire all'occasione, deve essere un array i cui elementi sono  anch'essi degli array. <br>
+Esempio:
+</p>
+<pre>
+var arrNodi = [
+	[ 'div', {id:'mik', title:'sono Mik'}, {color:'red', background:'yellow'}, 'Hello merd'],
+	[ 'div', null, null, 'sono il nullo' ],
+	[ 'p', null, {color: 'red'}, 'sono il paragrafo rosso' ],
+	[ 'div', {class: 'verde'}, null, 'sono il verde' ],
+	[ 'div', {class: 'bordato'}, null ],
+	[ 'div', {id:'mak', title:'sono Mak'}, {color:'blue', background:'yellow'}, 'Fankul chien de merd' ]
+];
+</pre>
+
+
+<div id="genitore"></div> 
+
+<div id="genitore2"></div> 
+
+<script type="text/javascript">
+
+function creaInsertNode(nodoGenitore, listaNodi) {
+
+	var node, attr, child;
+	var nodo, oggettiInterni, tag, attributi, stili, testo;
+
+	var creaElementi = function(name, attributi, stili) {
+		node = document.createElement(name);
+		if(attributi) {
+			for (attr in attributi)
+				if (attributi.hasOwnProperty(attr))
+				node.setAttribute(attr, attributi[attr]);
+		}
+
+		for(var s in stili) 
+			if(stili.hasOwnProperty(s))
+				node.style[s] = stili[s];	
+
+		for (var i = 3; i < arguments.length; i++) {
+			child = arguments[i];
+			if(typeof child == "string")
+				child = document.createTextNode(child);
+			node.appendChild(child);
+		}
+		return node;
+	}//
+
+
+	for(var a=0; a < listaNodi.length; a++){
+		oggettiInterni = listaNodi[a];
+		tag = oggettiInterni[0];
+		attributi = oggettiInterni[1];
+		stili = oggettiInterni[2];
+		(oggettiInterni[3]) ? testo = oggettiInterni[3] : testo = '';
+		nodo = creaElementi(tag, attributi, stili, testo);
+		document.querySelector(nodoGenitore).appendChild(nodo);
+	} 
+
+}//*
+
+
+var arrNodi = [
+	[ 'div', {id:'mik', title:'sono Mik'}, {color:'red', background:'yellow'}, 'Hello merd'],
+	[ 'div', null, null, 'sono il nullo' ],
+	[ 'p', null, {color: 'red'}, 'sono il paragrafo rosso' ],
+	[ 'div', {class: 'verde'}, null, 'sono il verde' ],
+	[ 'div', {class: 'bordato'}, null ],
+	[ 'div', {id:'mak', title:'sono Mak'}, {color:'blue', background:'yellow'}, 'Fankul chien de merd' ]
+];
+
+
+// Nel caso di un solo nodo da inserire
+var arrNodi2 = [
+	[ 'div', null, null, 'meglio solo che male accompagnato' ],
+];
+
+
+creaInsertNode("#genitore", arrNodi);
+creaInsertNode("#genitore2", arrNodi2);
+
+/*
+// La seguente è una Variante alla precedente che permette di creare ed inserire un nodo alla volta chiamando la funzione pubblica "addNodo()"
+// "addNodo()" accetta come argomenti il nodo genitore, in cui inserire il nodo creato, ed il nodo da creare che deve essere posto in un array
+
+var creaInsertNode = (function () {
+
+//	Proprietà private
+	var listaNodi = [];				
+	var node, attr, child;
+	var nodo, oggettiInterni, tag, attributi, stili, testo;
+
+	var creaElementi = function(name, attributi, stili) {
+		node = document.createElement(name);
+		if(attributi) {
+			for (attr in attributi)
+				if (attributi.hasOwnProperty(attr))
+				node.setAttribute(attr, attributi[attr]);
+		}
+
+		for(var s in stili) 
+			if(stili.hasOwnProperty(s))
+				node.style[s] = stili[s];	
+
+		for (var i = 3; i < arguments.length; i++) {
+			child = arguments[i];
+			if(typeof child == "string")
+				child = document.createTextNode(child);
+			node.appendChild(child);
+		}
+		return node;
+	}//
+
+	var insertNodo = function (nodoGenitore, arrayNodo) {
+		tag = arrayNodo[0];
+		attributi = arrayNodo[1];
+		stili = arrayNodo[2];
+		(arrayNodo[3]) ? testo = arrayNodo[3] : testo = '';
+		nodo = creaElementi(tag, attributi, stili, testo);
+		document.querySelector(nodoGenitore).appendChild(nodo);
+	}
+
+//	Restituzione di oggetto esposto pubblicamente
+	return {
+		addNodo: function(nodoGenitore, nodo ) {
+			insertNodo(nodoGenitore, nodo);
+		}
+	} // 
+})();
+
+creaInsertNode.addNodo('#genitore', [ 'div', {id:'mik', title:'sono Mik'}, {color:'red', background:'yellow'}, 'Hello merd'] );
+creaInsertNode.addNodo('#genitore', [ 'p', null, {color: 'red'}, 'sono il paragrafo rosso' ] );
+
+*/
+
+
+</script>
+
+
+
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>dissolvenza</title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css" /> 
+<style type="text/css">
+
+#assoluto{
+position:absolute; top:250px; left:250px; margin-left:20px; width:200px; height:150px; 
+background:purple; border:8px solid; 
+opacity:0; 
+/*display:none;*/
+}
+
+</style>
+</head>
+<body>
+
+<h1>fade-in e fade-out</h1>
+<p>
+Lo script comprende due funzioni <span class="azzurro">riapparenza(nodo)</span> e <span class="azzurro">dissolvenza(nodo)</span> che permettono, rispettivamente, ad un elemento nodo di essere  di visualizzato o oscurato in modo progressivo (tipo fade-in e fade-out di jQuery). <br>
+Le due funzioni per creare questo effetto fanno uso dello stile dei CSS <span class="nota">opacity</span>; 
+pertanto è necessario definire la regola "opacity" nei CSS per quei elementi a cui si vuole applicare questo effetto. <br>
+La funzione <span class="azzurro">riapparenza(nodo)</span> controlla se l'elemento, a cui si vuole applicare l'effetto, abbia la regola dei CSS <span class="azzurro">display</span> impostata a "none"; 
+se cosi fosse la cambia impostandola a "block". <br>
+Volendo si può rallentare o aumentare l'effetto progressivo attraverrso la variabile «tempo» (del "setTimeout").  
+ </p>
+
+<br>
+<button id="riappari">Riappari</button>
+
+<button id="dissolvi">Sparisci</button>
+
+<div id="assoluto"></div> 
+
+<script type="text/javascript">
+
+//var riappari = document.querySelector('#riappari');
+riappari.addEventListener('click', function (){
+	riapparenza('#assoluto');
+	riapparenza('h1');
+}, false); 
+
+dissolvi.addEventListener('click', function(){
+	dissolvenza('#assoluto');
+	dissolvenza('h1');
+}, false);
+
+function riapparenza(nodo){
+	let opacita;
+	let tempo = 10;						// impostabile (un valore più alto rallenta l'effetto)
+	let elem = document.querySelectorAll(nodo);
+	for(let i=0; i < elem.length; i++){
+		let el = elem[i]; 	
+		opacita = window.getComputedStyle(el).opacity;
+		let visualizzazione =  window.getComputedStyle(el).display; 
+		if(visualizzazione === 'none'){
+			el.style.display = 'block';		
+		}
+		if(opacita >= 1) { return };
+		opacita = parseFloat(opacita) + 0.01;								// impostabili  0.1/2=> 0.05		
+		el.style.opacity = opacita;
+		setTimeout(function(){ riapparenza(nodo)}, tempo);		// impostabili 50/0.1=> 500 (millesecondi) 
+	}
+};  
+
+
+function dissolvenza(nodo){
+	let opacita;
+	let tempo = 2;						// impostabile (un valore più basso aumenta l'effetto)
+	let elem = document.querySelectorAll(nodo);
+	for(let i=0; i < elem.length; i++){
+		let el = elem[i]; 	
+		opacita = window.getComputedStyle(el).opacity ;
+		let visualizzazione = window.getComputedStyle(el).display; 
+		if(opacita <= 0 ) { return };
+		opacita = parseFloat(opacita) - 0.01;								// impostabili  0.1/2=> 0.05		
+		el.style.opacity = opacita;
+		setTimeout(function(){ dissolvenza(nodo)}, tempo);		// impostabili 50/0.1=> 500 (millesecondi)		
+	}
+}
+
+/*
+
+function riapparenza(nodo){
+	var opacita;
+	var tempo = 10;						// impostabile (un valore più alto rallenta l'effetto)
+	var elem = document.querySelector(nodo);
+	opacita = window.getComputedStyle(elem).opacity;
+	var visualizzazione =  window.getComputedStyle(elem).display; 
+	if(visualizzazione === 'none'){
+		elem.style.display = 'block';		
+	}
+	if(opacita >= 1) { return };
+	opacita = parseFloat(opacita) + 0.01;								// impostabili  0.1/2=> 0.05		
+	elem.style.opacity = opacita;
+	setTimeout(function(){ riapparenza(nodo)}, tempo);		// impostabili 50/0.1=> 500 (millesecondi) 
+};  
+
+function dissolvenza(nodo){
+	var opacita;
+	var tempo = 2;						// impostabile (un valore più basso aumenta l'effetto)
+	var elem = document.querySelector(nodo);
+	opacita = window.getComputedStyle(elem).opacity ;
+	var visualizzazione = window.getComputedStyle(elem).display; 
+	if(opacita <= 0 ) { return };
+	opacita = parseFloat(opacita) - 0.01;								// impostabili  0.1/2=> 0.05		
+	elem.style.opacity = opacita;
+	setTimeout(function(){ dissolvenza(nodo)}, tempo);		// impostabili 50/0.1=> 500 (millesecondi)		
+}
+
+
+*/
+
+
+</script>
+
+
+<!--
+www-data:x:33:
+
+-->	
+
+
+</body>
+</html>

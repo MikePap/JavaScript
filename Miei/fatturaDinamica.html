@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title> Fattura dinamica </title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="fatturaDinamica.css" type="text/css" charset="utf-8" />
+<style type="text/css">
+
+</style>
+<script type="text/javascript" src="../allegati/finestraModificabile.js"></script>
+</head>
+<body>
+
+
+<div id="mod_dati">
+	<div id="top_mod">
+		<div class="titolo_mod">Modifica/Elimina record</div> 	
+		<div id="x_mod_dati">&times;</div> 
+	</div><!--top_mod-->
+
+	<div class="mod_bottom">
+		<label>Indica la voce da modificare </label> 
+		<select name="record_Inseriti" id="record_Inseriti">
+			<option value="Seleziona">Seleziona</option>
+		</select>
+	</div>
+
+	<div class="elimina_record">
+		<label>Indica la voce da eliminare </label> 
+		<select name="record_Inseriti2" id="record_Inseriti2">
+			<option value="Seleziona">Seleziona</option>
+		</select>
+	</div> 	
+</div><!--mod_dati-->
+
+
+<div id="Ins_dati_fattura">
+	<div id="top_inserimenti">
+		<div class="titolo_inserimenti"><span id="nm_record"></span></div> 
+		<div id="x_inserimenti">&times;</div> 
+	</div><!--top_inserimenti-->
+
+	<table id="table_fattura" width="100%" border="0" cellspacing="0" cellpadding="3">
+		<tr>
+			<td>Descrizione Prodotto</td>
+			<td><input type="text" id='in_prodotto'  name="in_prodotto" style="width:99%" maxlength="300"/></td>
+		</tr>
+		<tr>
+			<td>Quantità</td>
+			<td><input type="text" id="in_qta" name="in_qta"  maxlength="5" /></td>
+		</tr>
+		<tr>
+			<td>Prezzo</td>
+			<td><input type="text" id="in_prezzo" name="in_prezzo"  maxlength="10" /></td>
+		</tr>
+		<tr>
+			<td>Sconto</td>
+			<td><input type="text" id="in_sconto" name="in_sconto" maxlength="10" /></td>
+		</tr>	
+		<tr>
+			<td>Imponibile</td>
+			<td><span id='in_imponibile'></span</td>
+		</tr>
+		<tr>
+			<td>IVA</td>
+			<td><span id='in_iva'>4%</span>  <span class='tot_senzaIva'></span> </td>	
+		</tr>
+		<tr>
+			<td colspan=2  class='td_insert_dati'><button id="insert_dati">Inserisci Dati </button></td>
+		</tr>
+	</table>
+	<div class="angoloms"> .: </div> 
+</div><!--Ins_dati_fattura-->
+
+
+<div id="box_fattura">
+	<div id="box-record">
+		<div>
+			<div>Descrizione Prodotti</div>
+			<div>Quantità</div>
+			<div>Prezzo</div>	
+			<div>Sconto</div>	
+			<div>Imponibile</div>
+			<div>IVA 4%</div>	
+		</div>
+	</div>	
+
+	<div id="box-totali">
+		<div>Totali Imponibile <br /><br /> <span id='tot_imponibile'>0</span></div> 
+		<div>Totale IVA  <br /><br /> <span id="tot_iva"></span>0</div> 
+		<div>Importo Totale <br /><br /><span id='totale'></span>0</div> 
+	</div> 
+
+</div><!--box_fattura-->
+
+
+
+
+
+
+<script type="text/javascript">
+
+finestraModificabile("#Ins_dati_fattura", "div.titolo_inserimenti", "#x_inserimenti", "div.angoloms");
+//finestraModificabile("div.boxfm", "div.topfm", "div.xfm", "div.angolofm", "div.latodx", "div.latobx");
+//### Trasforma l'eventuale virgola immessa (al posto del puntino) in puntino
+function novirgola(iddi){  // 
+	var elem =	document.getElementById(iddi); 
+	elem.addEventListener("keyup", function(){ 
+		var jk = this.value;
+		var da = ",", a = ".";
+		var stringa = jk.replace(da, a);
+		elem.value = stringa;
+	},false);
+}
+
+//	Crea elementi con la possibilità di impostare gli attributi e stili nonchè la stringa testo per l'elemento creato
+function creaElementi(name, attributi, stili) {
+	var node = document.createElement(name);
+	if (attributi) {
+		for (var attr in attributi)
+			if (attributi.hasOwnProperty(attr))
+			node.setAttribute(attr, attributi[attr]);
+	}
+
+	for(var s in stili) 
+		if (stili.hasOwnProperty(s))
+			node.style[s] = stili[s];	
+
+	for (var i = 3; i < arguments.length; i++) {
+		var child = arguments[i];
+		if (typeof child == "string")
+			child = document.createTextNode(child);
+		node.appendChild(child);
+	}
+	return node;
+}//
+
+
+// Variabili globali
+var boxRecord = document.getElementById("box-record"); 
+var boxInserimentoDati = document.getElementById("Ins_dati_fattura");
+var titoloInserimenti = document.querySelector("div.titolo_inserimenti");
+var xInserimenti =	document.getElementById("x_inserimenti"); 
+var boxModificaDati = document.getElementById("mod_dati"); 
+var xModificaDati = document.getElementById("x_mod_dati"); 
+var inProdotto = document.getElementById("in_prodotto"); 
+var inQta = document.getElementById("in_qta"); 
+var inPrezzo = document.getElementById("in_prezzo"); 
+var inSconto = document.getElementById("in_sconto"); 
+var inImponibile = document.getElementById("in_imponibile"); 
+var inIva = document.getElementById("in_iva"); 
+var insertDati = document.getElementById("insert_dati"); 
+var selectRecord = document.getElementById("record_Inseriti");							 
+var selectRecord2 = document.getElementById("record_Inseriti2"); 
+
+/*
+- n :	variabile di conteggio record inseriti
+- x : è l'indice del record selezionato per la modifica o la cancellazione 
+*/
+var n=0, x;							// 
+
+
+// Apertura e chiusura del box per l'inserimento dati
+document.addEventListener("keydown", function(e){ 
+//	Per evitare che alla pressione dei tasti sottoindicati scatti l'evento di default assegnatogli dal browser 
+//	e.preventDefault();					
+	var k = e.keyCode;
+//	alert(k);
+
+	switch (k){								// '120' è il tasto F9
+		case 120:
+//		e.preventDefault();					
+			document.getElementById("in_prodotto").focus(); 
+			if(boxInserimentoDati.style['display'] === 'block')
+				boxInserimentoDati.style['display'] = 'none'; 
+			else
+				boxInserimentoDati.style['display'] = 'block';
+
+			var enne = parseInt(n) + 1;
+			titoloInserimenti.innerHTML = "Inserimento record N." +enne;
+//			document.getElementById("nm_record").innerHTML = 'k'; 
+			insertDati.innerHTML = "Inserisci Voce";
+		break;
+		case 119:							// '119' è il tasto F8
+			if(boxModificaDati.style['display'] === 'block')
+				boxModificaDati.style['display'] = 'none'; 
+			else
+				boxModificaDati.style['display'] = 'block';
+		break;
+	}
+},false);
+
+// Chiusura, aggiuntiva (dalla X), del box per l'inserimento dati
+xInserimenti.addEventListener("click", function(){ 
+		boxInserimentoDati.style['display'] = 'none'; 		
+},false);
+
+// Chiusura, aggiuntiva (dalla X), del box per la modifica dei dati
+xModificaDati.addEventListener("click", function(){ 
+		boxModificaDati.style['display'] = 'none'; 		
+},false);
+
+
+
+// Imposta l'Importo (imponibile) quando c'è il 'keyup' sul campo 'in_prezzo' 
+inPrezzo.addEventListener("keyup", function(){ 
+	novirgola("in_prezzo");							// trasforma l'eventuale virgola immessa (al posto del puntino) in puntino
+	var prezzo = this.value;
+	var qta = inQta.value; 
+	var sconto = inSconto.value;
+	var valImponibile = prezzo * qta;
+	valImponibile = valImponibile.toFixed(2);
+	inImponibile.innerHTML = valImponibile;
+	var valIva = (valImponibile - sconto)* 0.04 ;
+	inIva.innerHTML = valIva.toFixed(2);
+},false);
+
+// Imposta l'Importo (imponibile) quando c'è il 'keyup' sul campo 'in_sconto'  
+inSconto.addEventListener("keyup", function(){ 
+	novirgola("in_sconto");							// trasforma l'eventuale virgola immessa (al posto del puntino) in puntino	
+	var sconto = this.value;
+	var qta = inQta.value; 
+	var prezzo = inPrezzo.value;
+	var valImponibile = (prezzo * qta) - sconto; 
+	valImponibile = valImponibile.toFixed(2);
+	inImponibile.innerHTML = valImponibile;
+	var valIva = (valImponibile)* 0.04 ;
+	inIva.innerHTML = valIva.toFixed(2);
+},false);
+
+
+//### Funzione che inserisce i dati nella fattura	#################################
+insertDati.addEventListener("click", function() { 
+
+	var descrProdotto = inProdotto.value; 
+	var qta =  inQta.value; 
+	var prezzo = inPrezzo.value;
+	prezzo = parseFloat(prezzo).toFixed(2);
+	var sconto = inSconto.value || "0";				// ho messo lo zero come stringa altrimenti la funzione "creaElementi()" da errore
+	var imponibile = inImponibile.innerHTML;
+	var iva = inIva.innerHTML; 
+
+
+	var pulsanteInvio = insertDati.innerHTML;
+	if(pulsanteInvio === "Inserisci Voce"){
+
+		n++;
+		console.log('n = ' +n);
+
+//###	Creazione di elementi per formazione record
+//		var record = creaElementi('div', {id:'rec'+n}, null);								// figlio di "boxRecord"
+		var record = creaElementi('div', null, null);								// figlio di "boxRecord"
+		var dProdotto = creaElementi('div', null, null, descrProdotto);
+		var dQta = 	creaElementi('div', null, null, qta);
+		var dPrezzo = creaElementi('div', null, null, prezzo);
+		var dSconto = creaElementi('div', null, null, sconto);
+		var dImponibile = creaElementi('div', null, null, imponibile);
+		var dIVA = creaElementi('div', null, null, iva);
+	
+//		Inserimento dei valori dei campi nel nuovo <div> 
+		var campi = [dProdotto, dQta, dPrezzo, dSconto, dImponibile, dIVA];
+		for(var r=0, campo; campo=campi[r]; r++){
+			record.appendChild(campo);
+		}
+
+		boxRecord.appendChild(record);
+
+//		var lBoxRecord = document.querySelectorAll("#box-record > div");
+//		console.log(lBoxRecord);	
+
+
+//###	Inserimento dei valori di Imponibile, IVA e Totale Fattura 
+//		Imponibile
+		var totImponibile=0;
+		var imponibili = document.querySelectorAll("#box-record > div > div:nth-child(5)");
+		for(i=1; i < imponibili.length; i++){
+			var imp = imponibili[i];
+			impParziale = imp.innerHTML;
+			totImponibile = (parseFloat(totImponibile) + parseFloat(impParziale)).toFixed(2);
+			document.getElementById("tot_imponibile").innerHTML = totImponibile;	
+//			console.log('valore Imponibile = '	, +totImponibile); 
+		}
+
+//		IVA
+		var totIva=0;
+		var ive = document.querySelectorAll("#box-record > div > div:nth-child(6)");
+		for(b=1; b < ive.length; b++){
+			var iv = ive[b];
+			ivaParziale = iv.innerHTML;
+			totIva = (parseFloat(totIva) + parseFloat(ivaParziale)).toFixed(1);
+			document.getElementById("tot_iva").innerHTML = totIva;
+		}
+
+//		Totale Fattura
+		var totale =  (parseFloat(totImponibile) + parseFloat(totIva)).toFixed(1);
+		document.getElementById("totale").innerHTML = totale;
+
+	
+		boxInserimentoDati.style['display'] = 'none'; 		
+
+//		Aggiunta di un elemento <option> nella <select id="record_Inseriti">	
+		opzione = document.createElement('option');
+		testo = document.createTextNode(n);
+		opzione.appendChild(testo);		
+		selectRecord.appendChild(opzione); 	
+
+//		Aggiunta di un elemento <option> nella <select id="record_Inseriti2">	
+		opzione2 = document.createElement('option');
+		testo2 = document.createTextNode(n);
+		opzione2.appendChild(testo2);		
+		selectRecord2.appendChild(opzione2); 	
+
+
+	}else if(pulsanteInvio === "Modifica Voce"){
+//		console.log('x = ' +x);
+		var pat = x + 1;
+
+//		Creazione di elementi per formazione record
+		var recordM = creaElementi('div', null, null);								// figlio di "boxRecord"
+		var dProdotto = creaElementi('div', null, null, descrProdotto);
+		var dQta = 	creaElementi('div', null, null, qta);
+		var dPrezzo = creaElementi('div', null, null, prezzo);
+		var dSconto = creaElementi('div', null, null, sconto);
+		var dImponibile = creaElementi('div', null, null, imponibile);
+		var dIVA = creaElementi('div', null, null, iva);
+	
+//		Inserimento dei valori dei campi nel nuovo <div> 
+		var campi = [dProdotto, dQta, dPrezzo, dSconto, dImponibile, dIVA];
+
+		for(var r=0, campo; campo=campi[r]; r++){
+			recordM.appendChild(campo);
+		}
+
+
+		var objModificare = document.querySelector("#box-record > div:nth-child("+pat+")");									
+		boxRecord.replaceChild(recordM, objModificare);
+
+		boxInserimentoDati.style['display'] = 'none'; 	
+
+//		var lBoxRecord = document.querySelectorAll("#box-record > div");
+//		console.log(lBoxRecord);	
+
+//##	Inserimento dei valori di Imponibile, IVA e Totale Fattura 
+//		Imponibile
+		var totImponibile=0;
+		var imponibili = document.querySelectorAll("#box-record > div > div:nth-child(5)");
+		for(i=1; i < imponibili.length; i++){
+			var imp = imponibili[i];
+			impParziale = imp.innerHTML;
+			totImponibile = (parseFloat(totImponibile) + parseFloat(impParziale)).toFixed(2);
+			document.getElementById("tot_imponibile").innerHTML = totImponibile;	
+//			console.log('valore Imponibile = '	, +totImponibile); 
+		}
+
+//		IVA
+		var totIva=0;
+		var ive = document.querySelectorAll("#box-record > div > div:nth-child(6)");
+		for(b=1; b < ive.length; b++){
+			var iv = ive[b];
+			ivaParziale = iv.innerHTML;
+			totIva = (parseFloat(totIva) + parseFloat(ivaParziale)).toFixed(1);
+			document.getElementById("tot_iva").innerHTML = totIva;
+		}
+
+//		Totale Fattura
+		var totale =  (parseFloat(totImponibile) + parseFloat(totIva)).toFixed(1);
+		document.getElementById("totale").innerHTML = totale;
+
+
+	}else{								// quando c'è da eliminare un record 
+
+		var pat = x + 1;
+
+//		Creazione di elementi per formazione record
+		var recordM = creaElementi('div', {id:pat}, null);								// figlio di "boxRecord"
+		var dProdotto = creaElementi('div', null, null, descrProdotto);
+		var dQta = 	creaElementi('div', null, null, qta);
+		var dPrezzo = creaElementi('div', null, null, prezzo);
+		var dSconto = creaElementi('div', null, null, sconto);
+		var dImponibile = creaElementi('div', null, null, imponibile);
+		var dIVA = creaElementi('div', null, null, iva);
+	
+//		Inserimento dei valori dei campi nel nuovo <div> 
+		var campi = [dProdotto, dQta, dPrezzo, dSconto, dImponibile, dIVA];
+		for(var r=0, campo; campo=campi[r]; r++){
+			recordM.appendChild(campo);
+		}
+
+		boxInserimentoDati.style['display'] = 'none'; 	
+
+		var voceDaEliminare = document.querySelector("#box-record > div:nth-child("+pat+")");
+		voceDaEliminare.parentNode.removeChild(voceDaEliminare);
+
+/*
+###	Aggiornamento delle due <select> 
+E' più semplice eliminare l'ultima <option> della <select>, anche se la voce eliminata non corrisponde all'ultima. In tal caso avviene che scalano di conseguenza
+*/
+		var ultimo = selectRecord.lastElementChild;
+		ultimo.parentNode.removeChild(ultimo);
+
+		var ultimo2 = selectRecord2.lastElementChild;
+		ultimo2.parentNode.removeChild(ultimo2);
+
+//		Aggiornamento dei valori di Imponibile, IVA e Totale
+//		Imponibile
+		var totImponibile=0;
+		var imponibili = document.querySelectorAll("#box-record > div > div:nth-child(5)");
+
+		for(i=1; i < imponibili.length; i++){
+			var imp = imponibili[i];
+			impParziale = imp.innerHTML;
+			totImponibile = (parseFloat(totImponibile) + parseFloat(impParziale)).toFixed(2);
+		}
+		document.getElementById("tot_imponibile").innerHTML = totImponibile;	
+
+//		IVA
+		var totIva=0;
+		var ive = document.querySelectorAll("#box-record > div > div:nth-child(6)");
+		for(b=1; b < ive.length; b++){
+			var iv = ive[b];
+			ivaParziale = iv.innerHTML;
+			totIva = (parseFloat(totIva) + parseFloat(ivaParziale)).toFixed(1);
+		}
+		document.getElementById("tot_iva").innerHTML = totIva;
+
+//		Totale Fattura
+		var totale =  (parseFloat(totImponibile) + parseFloat(totIva)).toFixed(1);
+		document.getElementById("totale").innerHTML = totale;
+
+//		Aggiornamento della variabile "n"
+		n--;
+
+
+//		var lBoxRecord = document.querySelectorAll("#box-record > div");
+//		console.log(lBoxRecord);	
+	}//else
+
+
+},false);
+
+
+//###  Selezione del record da modificare
+selectRecord.addEventListener("change", function(e){ 
+	var et = e.target;
+	var record = et.value;
+	x = parseInt(record);											// è l'indice del record selezionato per la modifica
+	record2 = parseInt(record) + 1;								// perchè il primo <div> sono i titoli dei campi
+
+
+	if(record !== "Seleziona"){
+		boxInserimentoDati.style['display'] = 'block';
+		boxModificaDati.style['display'] = 'none';
+		titoloInserimenti.innerHTML = "Modifica record N." +record;	
+
+//		Descrizione Prodotti
+		var  descrProdotto = document.querySelector("#box-record > div:nth-child("+record2+") > div:nth-child(1)").innerHTML;
+		inProdotto.value = descrProdotto;
+
+//		Quantità
+		var qta = document.querySelector("#box-record > div:nth-child("+record2+") > div:nth-child(2)").innerHTML;
+		inQta.value = qta;
+
+// 	Prezzo
+		var prezzo = document.querySelector("#box-record > div:nth-child("+record2+") > div:nth-child(3)").innerHTML;
+		inPrezzo.value = prezzo;
+
+//		Sconto
+		var sconto = document.querySelector("#box-record > div:nth-child("+record2+") > div:nth-child(4)").innerHTML;
+		inSconto.value = sconto;
+
+// 	Imponibile
+		var imponibile = document.querySelector("#box-record > div:nth-child("+record2+") > div:nth-child(5)").innerHTML;
+		inImponibile.value = imponibile;
+
+//		IVA
+		var iva = document.querySelector("#box-record > div:nth-child("+record2+") > div:nth-child(6)").innerHTML;
+		inIva.value = iva;
+
+//		Pulsante di "Inserimento/Modifica record"	 		
+		insertDati.innerHTML = "Modifica Voce";
+	}
+
+},false);
+
+
+//### Selezione del record da cancellare
+selectRecord2.addEventListener("change", function(e){ 
+	var et = e.target;
+	var record = et.value;
+	x = parseInt(record);											// è l'indice del record selezionato da eliminare
+	record2 = parseInt(record) + 1;								// perchè il primo <div> sono i titoli dei campi
+
+	if(record !== "Seleziona"){
+
+		boxInserimentoDati.style['display'] = 'block';
+		boxModificaDati.style['display'] = 'none';
+		titoloInserimenti.innerHTML = "Elimina record N." +record;
+
+//		Descrizione Prodotti
+		var  descrProdotto = document.querySelector("#box-record > div:nth-child("+record2+") > div:nth-child(1)").innerHTML;
+		inProdotto.value = descrProdotto;
+
+//		Quantità
+		var qta = document.querySelector("#box-record > div:nth-child("+record2+") > div:nth-child(2)").innerHTML;
+		inQta.value = qta;
+
+// 	Prezzo
+		var prezzo = document.querySelector("#box-record > div:nth-child("+record2+") > div:nth-child(3)").innerHTML;
+		inPrezzo.value = prezzo;
+
+//		Sconto
+		var sconto = document.querySelector("#box-record > div:nth-child("+record2+") > div:nth-child(4)").innerHTML;
+		inSconto.value = sconto;
+
+// 	Imponibile
+		var imponibile = document.querySelector("#box-record > div:nth-child("+record2+") > div:nth-child(5)").innerHTML;
+		inImponibile.value = imponibile;
+
+//		IVA
+		var iva = document.querySelector("#box-record > div:nth-child("+record2+") > div:nth-child(6)").innerHTML;
+		inIva.value = iva;
+
+//		Pulsante di "Inserimento/Modifica record"	 		
+		insertDati.innerHTML = "Elimina Voce";
+	}
+
+},false);
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

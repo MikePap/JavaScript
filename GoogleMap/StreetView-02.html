@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<title>Vista Strada 03</title>
+<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">
+
+var map;
+var berkeley = new google.maps.LatLng(37.869085,-122.254775);
+var sv = new google.maps.StreetViewService();	// creazione oggetto 
+var panorama;
+
+function initialize() {
+
+panorama = new google.maps.StreetViewPanorama(document.getElementById("pano"));	// da notare che non vengono passate le proprietà (oggetto vuoto) 
+// Set up the map
+var mapOptions = {
+center: berkeley,
+zoom: 16,
+mapTypeId: google.maps.MapTypeId.ROADMAP,
+streetViewControl: false			// questa proprietà (l'omino) viene reso invisibile
+}; // 'myOptions'
+
+map = new google.maps.Map(document.getElementById('map_canvas'),  mapOptions);	// oggetto "Map"
+
+// getPanoramaByLocation will return the nearest pano when the given radius is 50 meters or less.
+google.maps.event.addListener(map, 'click', function(event) {
+sv.getPanoramaByLocation(event.latLng, 50, processSVData);	// metodo classe "StreetViewService" che fornisce i dati di uno StreetView a date coordinate (primo parametro) e a tale raggio (secondo parametro). Come terzo parametro richiede una funzione di 'callback' 
+}); // 'listener'
+}  // "initialize"
+
+function processSVData(data, status) {
+if (status == google.maps.StreetViewStatus.OK) {
+// Visualizzazione dei marcatori sulla mappa nella posizione cliccata 
+var marker = new google.maps.Marker({
+// 'location' è una proprietà dell'oggetto "google.maps.StreetViewPanoramaData" che a sua volta ... 
+position: data.location.latLng,		// ... fornisce la proprietà 'latLng' (coordinate posizione click del mouse)
+map: map,
+title: data.location.description		// ... fornisce la proprietà 'description' che descrive la posizione: (indirizzo)
+}); // 'marker'
+
+// Impostazione delle proprietà per l'oggetto vuoto 'StreetViewPanorama' creato in riga17       
+panorama.setPano(data.location.pano);	// 
+panorama.setPov({
+heading: 270,
+pitch: 0,
+zoom: 1
+});
+
+panorama.setVisible(true);		// 
+
+// Gestore evento 'click' sul marcatore       
+google.maps.event.addListener(marker, 'click', function() {
+var markerPanoID = data.location.pano;
+// Set the Pano to use the passed panoID
+panorama.setPano(markerPanoID);
+panorama.setPov({
+heading: 270,
+pitch: 0,
+zoom: 1
+});
+
+panorama.setVisible(true);
+});
+
+} else {
+alert("Non è disponibile una vista strada per questa posizione.");
+}
+
+} // "processSVData(data, status)"
+
+</script>
+</head>
+<body onload="initialize()">
+
+<p>Cliccando in un punto sulla mappa a sinistra sarà visualizata la rispettiva strada a destra </p>
+
+<div id="map_canvas" style="width: 500px; height: 500px;float:left"></div>
+
+<div id="pano" style="width: 500px; height: 500px;float:left"></div>
+
+
+
+
+</body>
+</html>
+

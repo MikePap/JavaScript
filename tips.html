@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Funzioni utili </title>
+<link rel="stylesheet" href="../baseLocali.css" type="text/css"/>
+<style type="text/css">
+
+#boxElementiCreati{
+padding:10px; margin:10px; border: 1px solid #888;
+} 
+
+</style>
+</head>
+<body>
+
+
+<h1>Funzioni utili</h1>
+
+<section class="listaArgomenti">
+	<select name="sezioni" class="sezioni">
+		<option value="seleziona">Seleziona l'argomento</option>
+
+		<option value="s1">Cambiare il selettore</option>
+		<option value="s1a">Utilizzare il listener soltanto una volta</option>
+		
+		<optgroup label="Array">
+			<option value="s2">Ottenere un elemento casuale da un array</option>
+			<option value="s3">Generare un array con numeri da 0 a un massimo stabilito</option>
+			<option value="s4">Richiamo elementi di un array</option>
+			<option value="s4a">Funzione higher-order collegata ad un evento</option>
+			<option value="s4b">Concatenazione di array</option>
+			<option value="s4c">Filtrare Array</option>
+		</optgroup>
+		<option value="s5">Rimuovere gli spazi vuoti</option>
+		<option value="s6">Impostare un timeout in una XMLHttpRequests</option>
+		<option value="s7">Trattamento del websocket timeout</option>
+		<option value="s8">Creare elementi del DOM</option>
+		<option value="s8a">Allegare elementi nodi ad un elemento</option>
+		<option value="s8b">Eliminare nodi interni da un elemento</option>
+		<option value="s9">Applicare stili CSS a elementi nodo</option>
+		<option value="s10">Ottenere uno stile CSS </option>
+		<option value="s11">Ordinare oggetti, in base alle proprietà, con il metodo 'sort' </option>	
+		<option value="s12">Assegnazione di proprietà/valore ad un oggetto da due array</option>
+							
+	</select>
+</section>
+
+
+<section id="s1">
+<h3>Funzione per Cambiare il selettore querySelector()</h3>
+
+<p>Volendo sostituire il selettore «querySelector()» (similmente a JQuery): </p>
+<pre>
+function $ (selettore) {
+	var nodo = document.querySelector(selettore); 
+	if(nodo instanceof Object)
+		return nodo;
+}
+<span class="grigio">
+oppure con le funzioni "arrow" 
+</span>
+var $ = (selettore) => {
+	var nodo = document.querySelector(selettore); 
+	if(nodo instanceof Object)
+		return nodo;
+}
+<span class="grigio">
+Quindi, la possiamo richiamare così, per cambiare il colore del nodo che ha id='divo':
+</span>
+$('#divo').style['color'] = 'red';
+
+</pre>
+</section>
+
+<section id="s1a">
+<h3>Utilizzare il listener soltanto una volta </h3>
+<p>Un trucchetto per far eseguire il listener solo una volta è il seguente: </p>
+<pre>
+elemento.addEventListener("click", function cb (event){ 
+	var io = event.target;
+	alert(io.textContent);						<span class="nota">// esecuzione di evento</span>												
+	event.currentTarget.removeEventListener(event.type, cb);	<span class="nota">// blocco trigger evento</span>	
+},false);																					
+
+</pre>
+<p>pertanto, cliccando sull'elemento anche più volte, l'alert sarà mostrato soltanto una volta</p>
+</section>
+
+
+<section id="s2">
+<h3>Ottenere un elemento casuale da un array </h3>
+
+<pre>
+var items = [12, 548 , 'a' , 2 , 5478 , 'foo' , 8852, , 'Doe' , 2145 , 119];
+var  randomItem = items[Math.floor(Math.random() * items.length)];
+</pre>
+</section>
+
+<section id="s3">
+<h3>Generare un array con numeri da 0 a un massimo stabilito</h3>
+
+<pre>
+var numbersArray = [] , max = 10;
+
+for( var i=1; i &lt; max; i++){
+	numbersArray.push(i);
+} 
+<span class="azzurro">
+console.log( numbersArray );					<span class="nota">// [1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
+</span>
+</pre>
+
+<p>
+Come il precedente ma con la creazione di soli  pari o dispari
+</p>
+<pre>
+for( var i=1; i &lt; max; i++){
+	numbersArray.push(++i);					
+} 
+<span class="azzurro">
+console.log( numbersArray );					<span class="nota">// pari [2,4,6,8,10]</span>
+</span>
+
+for( var i=1; i &lt; max; i++){
+	numbersArray.push(i++);						
+} 
+<span class="azzurro">
+console.log( numbersArray );					<span class="nota">// dispari [1,3,5,7,9]</span>
+</span>
+</pre>
+</section>
+
+<section id="s4">
+<h3>Funzione che richiama gli elementi di un array </h3>	
+<p>Invece del <b>forEach()</b> ... abbiamo la funzione <b>ciclo()</b>
+<pre>
+function ciclo(lista, funzione){
+	var i, elemento;
+		for (i= 0; i < lista.length; i++) {
+			elemento = lista[i];
+			if(elemento)			<span class="nota">evita di restituire elementi dell'array non definiti o vuoti</span>
+			funzione(elemento);
+		}
+}
+
+var colori = ['verde', 'rosso', 'bianco' ];
+ciclo(colori, function(colore){
+	console.log(colore);				<span class="nota">// verde, rosso, bianco</span>
+})
+
+<span class="grigio">Se l'array fosse:</span>
+var colori = ['verde', 'rosso', '', 'bianco' ];
+<span class="grigio">Restituisce:</span> <span class="nota">verde, rosso, bianco</span> 
+</pre>	
+
+</section>
+
+<section id="s4a">
+	<h3>funzione higher-order collegata ad un evento</h3>
+
+<pre>
+<span class="azzurro">
+&lt;div id="colPranzoCena"&gt; 
+	&lt;button&gt; Colazione &lt;/button&gt;
+	&lt;button&gt; Pranzo &lt;/button&gt;
+	&lt;button&gt; Cena &lt;/button&gt;
+&lt;/div&gt;
+</span>
+
+function nodiFigli(nodoGenitore, evento, funzione){
+	var genitore = document.querySelector(nodoGenitore);
+	genitore.addEventListener(evento, function (e){
+		funzione(e.target);
+	},false);
+}
+
+function esecuzione(ev){
+	console.log(ev.textContent);
+}
+<span class="azzurro">
+nodiFigli("#colPranzoCena", "click", esecuzione);
+</span><span class="nota">Ora quando si clicchera su un pulsante sarà restituito il suo valore testuale ("Colazione", "Pranzo", "Cena")</span>
+
+</pre>
+
+</section>	
+
+<section id="s4b">
+<h3>Concatenazione di array</h3>
+
+<p>La funzione permette di unire (concatenare) più array in un unico array. <br>
+Gli array sono passati come argomenti alla funzione 	
+</p>
+
+<pre>
+function unioneArray(){
+	var nums = [];
+	for (var i = 0; i &lt; arguments.length; i++){
+		nums = nums.concat(arguments[i]);
+	}
+	return nums;
+}
+	
+</pre>	
+
+<p>Esempio di invocazione della funzione</p>
+
+<pre>
+var arr1 = ['1', 2, 'tre'];
+var arr2 = ['mela', 'pera', 'cocco'];
+var arr3 = ['verde', 'rosso', 'bianco'];
+
+var nuovoArray = unioneArray(arr1, arr2, arr3);
+<span class="azzurro">
+console.log(nuovoArray);		<span class="nota">// Array [ "1", 2, "tre", "mela", "pera", "cocco", "verde", "rosso", "bianco" ]</span>
+</span>
+</pre>
+
+</section>
+
+<section id="s4c">
+<h3>Filtrare array</h3>
+
+<p>
+La funzione seguente permette di filtrare un «array» per verificare se un valore, passato come secondo argomento, faccia parte dell'array. Restituisce  «true» o «false».
+</p>
+
+<pre>
+function filtra (lista, valore) {
+	var res = [], i, item;
+	if(Array.isArray(lista)) {
+		for(i=0; i &lt; lista.length; i++) {
+			item = lista[i];
+			if(item === valore) {
+				return true;
+			}
+		}
+	} 
+	return false;
+}
+<span class="azzurro">
+console.log(filtra([ 4, 6, 8, 'pera', 12, 'mela', 6, 'pera' ], 6));		<span class="nota">// true</span>	
+console.log(filtra([ 4, 6, 8, 'pera', 12, 'mela', 6, 'pera' ], 'pera'));	<span class="nota">// true</span>
+console.log(filtra([ 4, 6, 8, 'pera', 12, 'mela', 6, 'pera' ], 'fragola'));	<span class="nota">// false</span>
+</span>
+</pre>
+
+<p>
+La funzione seguente, a differenza della precedente, filtra l'array e se incontra il valore, passato come secondo argomento, lo restituisce. <br>
+
+</p>
+
+<pre>
+function filtra (lista, valore) {
+
+	var res = [], i, item;
+	if(Array.isArray(lista)) {
+		for(i=0; i &lt; lista.length; i++) {
+			item = lista[i];
+			if(item === valore) {
+				res.push(item);
+				return res.join();			<span class="nota">restituisce il primo valore uguale incontrato e si ferma</span> 
+			}
+		}
+	} 
+//	return res.join(',');		<span class="nota">** se si vuole estrarre tutti i valori uguali; quindi annullare "return res.join()"</span>
+}
+<span class="azzurro">
+console.log(filtra([ 4, 6, 8, 'pera', 12, 'mela', 6, 'pera' ], 6));		<span class="nota">// 6</span>
+console.log(filtra([ 4, 6, 8, 'pera', 12, 'mela', 6, 'pera' ], 6));		<span class="nota">// 6,6 (con la seconda opzione)</span>
+</span>
+</pre>
+
+
+</section>
+
+
+
+<section id="s5">
+<h3>Funzione per rimuovere gli spazi vuoti</h3>
+<p>
+La funzione <em>trim</em> presente in vari linguaggi come PHP in JavaScript non esiste, però ...
+<pre>
+String.prototype.trim = function(){return this.replace(/^\s+|\s+$/g, "");};  
+</pre>
+</p>
+
+<script type="text/javascript">
+
+var st = " okay baby ";
+console.log(st);							// " okay baby "
+String.prototype.trim = function(){return this.replace(/^\s+|\s+$/g, "");};		// toglie gli spazi a inizio e fine stringa   
+console.log(st.trim());					// "okay baby"
+
+</script>
+</section>
+
+<section id="s6">
+<h3>Impostare un timeout in una XMLHttpRequests</h3>
+
+<p>
+A volte una richiesta con ajax può richiedere tempo per problemi di rete, in tal caso la si può bloccare utilizzando il metodo <tt>abort</tt> impostando un  timeout 
+<pre>
+var xhr = new XMLHttpRequest (); 
+xhr.onreadystatechange = function () {  
+	if (this.readyState == 4) {  
+		clearTimeout(timeout);				<span class="nota">do something with response data </span>
+	}  
+}
+var timeout = setTimeout( function () {  
+	xhr.abort();						<span class="nota">call error callback  </span>
+}, 60*1000 );							<span class="nota">timeout after a minute  </span>
+xhr.open('GET', url, true);  
+xhr.send();
+
+</pre>
+</p>
+</section>
+
+<section id="s7">
+<h3>Trattamento del websocket timeout</h3>
+
+<p>
+Generalmente quando si stabilisce una connessione con il <tt>websocket</tt> il server può interromperla dopo 30 secondi di inattività. Può essere anche interrotta da un <tt>firewall</tt> dopo un periodo di inattività. Per gestire questo problema si può inviare al server un messaggio vuoto periodicamente dopo un certo tempo. Delle seguenti due funzioni la prima mantiene aperta la connessione e la seconda cancella la prima funzione
+<pre>
+var timerID = 0; 
+function keepAlive() { 
+	var timeout = 15000;  
+	if (webSocket.readyState == webSocket.OPEN) {  
+		webSocket.send('');  
+	}  
+	timerId = setTimeout(keepAlive, timeout);  
+}  
+
+function cancelKeepAlive() {  
+	if (timerId) {  
+		cancelTimeout(timerId);  
+	}  
+}
+</pre>
+la funzione <tt>keepAlive</tt> dovrebbe essere aggiunta alla fine del metodo <tt>onOpen</tt> della connessione al webSocket e la funzione <tt>cancelKeepAlive</tt> alla fine del metodo <tt>onClose</tt>
+</p>
+</section>
+
+<section id="s8">
+<h3>Funzione per creare elementi del DOM </h3>
+<p>
+La funzione seguente <b>creaElementi</b> permette di creare elementi dinamici. Accetta come primo argomento il nome del nodo, il secondo argomento (opzionale) è un oggetto che permette di assegnare uno o più attributi all'elemento creato; se non s'intende creare degli attributi gli si assegna il valore 'null'. Altri argomenti opzionali possono essere aggiunti. Il terzo argomento eventuale in caso fosse una stringa rappresenterebbe il testo (textNode) dell'elemento creato; oppure può essere un'altro nodo (o più nodi) da inserire all'interno dell'elemento creato 
+</p>
+<pre>
+function creaElementi(name, attributes) {
+	var node = document.createElement(name);
+	if (attributes) {
+		for (var attr in attributes)
+			if (attributes.hasOwnProperty(attr))
+			node.setAttribute(attr, attributes[attr]);
+	}
+
+	for (var i = 2; i &lt; arguments.length; i++) {
+		var child = arguments[i];
+		if (typeof child == "string")
+			child = document.createTextNode(child);
+		node.appendChild(child);
+	}
+	return node;
+}
+</pre>
+<div id="boxElementiCreati"></div> 
+
+<p>
+La seguente è una variante alla precedente funzione <tt>creaElementi</tt>. Ho aggiunto la possibilità di impostare degli stili CSS
+</p>
+<pre>
+function creaElementi2(name, attributi, stili) {
+	var node = document.createElement(name);
+	if (attributi) {
+		for (var attr in attributi)
+			if (attributi.hasOwnProperty(attr))
+				node.setAttribute(attr, attributi[attr]);
+	}
+
+	for(var s in stili) 
+		if (stili.hasOwnProperty(s))
+			node.style[s] = stili[s];	
+	
+	for (var i = 3; i &lt;  arguments.length; i++) {
+		var child = arguments[i];
+		if (typeof child == "string")
+			child = document.createTextNode(child);
+		node.appendChild(child);
+	}
+	return node;
+}
+
+</pre>
+
+<div id="boxElementiCreati2"></div> 
+
+<script type="text/javascript">
+
+
+var array1 = [12 , "foo" , {name: "Joe"} , -2458];
+var array2 = ["Doe" , 555 , 100];
+
+console.log( array1.length);
+
+var t = array1.concat(array2);
+//console.log( t);
+//console.log( array1.length);
+
+//console.log(  );
+
+var h =	Array.prototype.push.apply(array1, array2);
+
+console.log(array1.join(', '))
+
+
+//////#######	Esempi di elementi creati con la funzione "creaElementi()"	############//////////////
+
+function creaElementi(name, attributi) {
+	var node = document.createElement(name);
+	if (attributi) {
+		for (var attr in attributi)
+			if (attributi.hasOwnProperty(attr))
+			node.setAttribute(attr, attributi[attr]);
+	}
+
+	for (var i = 2; i < arguments.length; i++) {
+		var child = arguments[i];
+		if (typeof child == "string")
+			child = document.createTextNode(child);
+		node.appendChild(child);
+	}
+	return node;
+}
+
+var par = creaElementi("p", null, "Di seguito elementi creati con la funzione \"creaElementi\" (vedere interno documento) ")
+
+var link = creaElementi("a", {href: "#"}, "Sono il link a");
+var br = creaElementi("br");
+
+var tt = creaElementi("tt", {title:'sono il tag tt'}, 'eccomi sono tt');
+//var tt = creaElementi("tt", {abc:'sono il tag tt'}, 'eccomi sono tt');				// va bene anche cosi
+var span =	creaElementi("span", null, "Tool: ", tt);										// contiene il tag <tt>
+
+var input = creaElementi("input", {type: "text"});
+var form = creaElementi("form", null, "Open URL: ", input, creaElementi("button", {type: "submit"}, "load"));
+
+var box = document.getElementById('boxElementiCreati');
+box.appendChild(par);
+box.appendChild(link);
+box.appendChild(br);
+box.appendChild(span);
+box.appendChild(form);
+
+
+var t = document.querySelector('#boxElementiCreati  tt');
+console.log( t.getAttribute('title') );
+//console.log( t.getAttribute('abc') );
+
+
+
+function creaElementi2(name, attributi, stili) {
+	var node = document.createElement(name);
+	if (attributi) {
+		for (var attr in attributi)
+			if (attributi.hasOwnProperty(attr))
+			node.setAttribute(attr, attributi[attr]);
+	}
+
+	for(var s in stili) 
+		if (stili.hasOwnProperty(s))
+			node.style[s] = stili[s];	
+
+	for (var i = 3; i < arguments.length; i++) {
+		var child = arguments[i];
+		if (typeof child == "string")
+			child = document.createTextNode(child);
+		node.appendChild(child);
+	}
+	return node;
+}
+
+
+//var paragrafo = creaElementi2("p", {title:'sono un par', id:'divvvo'}, {color:'red'} );
+var paragrafo = creaElementi2("p", {title:'sono un par', id:'divvvo'}, {color:'red', background:'yellow'}, 'Paragrafo con stile' );
+
+var box2 = document.getElementById('boxElementiCreati2');
+box2.appendChild(paragrafo);
+
+
+</script>
+</section>
+
+
+<section id="s8a">
+
+<h3>Allegare elementi nodi ad un elemento</h3>
+<p>
+La funzione permette di incorporare degli elementi nodi in un dato nodo. Il primo argomento deve essere il nodo che incopora.<br>
+Nell'esempio seguente gli elementi nodi sono creati con la funzione "creaElementi()" vista precedentemente:
+</p>
+<pre>
+function allegaNodi(genitore){
+	var padre = document.querySelector(genitore);
+	for(var i=1; i &lt;arguments.length; i++){
+		padre.appendChild(arguments[i]);
+	}
+}
+
+var divo = document.getElementById("divo"); 
+var f1 = creaElementi('div', {id:'f1'}, {fontWeight: 'bold'}, 'sono il primo figlio di divo' );
+var f2 = creaElementi('div', {id:'f2'}, {}, 'sono il secondo figlio di divo' );		
+<span class="azzurro">
+allegaNodi("#divo", f1, f2);
+</span>
+</pre>
+</section>
+
+<section id="s8b">
+<h3>Eliminare nodi interni da un elemento</h3>
+<p>
+Le due funzioni seguenti permettono di eliminare nodi ad un elemento. La prima elimina tutti i nodi di uno specificato elemento. 
+La seconda permette di eliminare soltanto un nodo in base al suo attributo "id".
+</p>
+<pre>
+function eliminaNodiInterni (nodo) {
+	var elementiNodo = document.querySelectorAll(nodo+' > *');
+	for(var i=0; i &lt; elementiNodo.length; i++){
+		elementiNodo[i].parentNode.removeChild(elementiNodo[i]);		
+	}
+};
+
+</pre>
+<p></p>
+<pre>
+function eliminaNodoBox(box, iddiNodo) {
+	var elementiBox = document.querySelectorAll(box+' > *');
+	var i, elem;
+	for(i=0; i &lt; elementiBox.length; i++){
+		elem = elementiBox[i];
+		if(elem.getAttribute('id') === iddiNodo)
+			elem.parentNode.removeChild(elem);	
+	}
+}
+
+
+</pre>
+
+
+</section>
+
+<section id="s9">
+<h3>Funzione che applica stili CSS a elementi nodo </h3>	
+<p>
+La funzione permette di applicare uno o più regole CSS ad un elemento nodo o a più elementi che abbiano la stessa classe. <br>	
+</p>
+<pre>
+function applicaStili(nodi, stiliCSS){
+	var nodi = document.querySelectorAll(nodi);
+	for (var i = 0; i < nodi.length; i++) {
+		var elemento = nodi[i];
+		if (stiliCSS) {
+			for (var attr in stiliCSS){
+				if (stiliCSS.hasOwnProperty(attr)){
+					elemento.style[attr] = stiliCSS[attr];
+				}				
+			}
+		}
+	}
+}
+
+var stili = {color:'blue', background:'#ccc', border:'1px solid rgb(255,0,0)' }
+<span class="azzurro">
+applicaStili('#diva', stili);				<span class="nota">// le regole definite nell'oggetto 'stili' vengono applicate all'elemento id='diva'
+</span>
+<span class="grigio">Oppure</span>	
+<span class="azzurro">
+applicaStili('.frutta', stili);				<span class="nota">// le regole saranno applicate a tutti gli elementi con classe "frutta" </span>
+</span>	
+
+</pre>	
+</section>	
+
+
+<section id="s10">
+<h3>Ottenere uno stile CSS </h3>
+
+<pre>
+var elem = document.querySelector(elemento); 
+var larghezzaElemento =	window.getComputedStyle(elem).width || document.defaultView.getComputedStyle(elem, null)['width'];
+<span class="azzurro">
+console.log(larghezzaElemento);						<span class="nota">// es: 400px</span>	
+console.log(parseFloat(larghezzaElemento));				<span class="nota">// es: 400</span>	
+</span>	
+</pre>
+<p>"document.defaultView" fa riferimento al documento corrente, che altro non è che "window"; quindi i due sembrano simili ... comunque. <br> 
+Volendo invece ottenere uno pseudo-elemento, per esempio "after":</p>
+<pre>
+&lt;style &gt;
+ h3::after {
+   content: ' rocks!';
+ }
+&lt;/style &gt;
+
+var h3 = document.querySelector('h3'), 
+result = getComputedStyle(h3, ':after').content
+<span class="azzurro">
+console.log(result);					<span class="nota">// rocks! </span>
+</span>	
+
+
+</pre>
+
+</section>
+
+<section id="s11">
+<h3 id="sortOggetti">Ordinare oggetti, in base alle proprietà,  con il metodo 'sort'  </h3>
+
+<p>
+L'ordinamento degli array col metodo <tt>sort</tt>  ( <a href="Array.html#sort">vedi qui</a> ) utilizzando la funzione parametrale opzionale  lo possiamo utilizzare anche con gli oggetti per fare un ordinamento in base ad una proprietà ponendo tali oggetti in un'array
+</p>
+
+<pre>
+var frutti = [
+	{ name: 'banana', costo: 21 },
+	{ name: 'mela', costo: 37 },
+	{ name: 'Ananas', costo: 45 },
+	{ name: 'Mandarino', costo: 2 },
+	{ name: 'Mango' },
+	{ name: 'pesca', costo: 37 }
+];
+
+frutti.sort(function (a, b) {
+	if (a.name > b.name) {
+		return 1;
+	}
+	if (a.name &lt; b.name) {
+		return -1;
+	}
+	return 0;			<span class="nota">a deve essere uguale a b</span>	
+});
+
+for(var i=0; i &lt; frutti.length; i++){
+	console.log(frutti[i].name);					<span class="nota">// Ananas Mandarino Mango banana mela pesca  </span>
+}
+
+<span class="grigio">oppure</span>	
+
+for(frutto in frutti){
+	console.log(frutti[frutto].name+ ' costa € ' + frutti[frutto].costo+ ' al Kilogrammo' );
+}
+<span class="nota">Ananas costa € 2.25 al Kilogrammo   
+Mandarino costa € 2 al Kilogrammo
+...
+</span>	
+</pre>
+</section>
+
+<section id="s12">
+<h3>Assegnazione di proprietà/valore ad un oggetto da due array</h3>	
+
+<p>
+Può capitare (e capita) che si vogliano aggiungere delle proprietà (chiave/valore) ad un oggetto esistente; può essere il caso di un elemento nodo oppure un semplice oggetto da definire in una funzione. <br>
+La funzione seguente viene utile quando le proprietà (e i valori) da aggiungere sono numerose, allora si possono mettere le proprietà nel primo array e i valori nel secondo array:
+</p>
+<pre>
+function adPropsOggettoDaArrays(oggetto, array1, array2){
+	var a, b;
+	if(Array.isArray(array1) && Array.isArray(array2)){
+		if(array1.length === array2.length ){ 
+			for(var i=0; i < array1.length; i++){
+				a = array1[i];
+				b = array2[i];
+				oggetto[a] = b;
+			}
+		}
+	}
+}
+<span class="grigio">
+La possiamo chiamare definendo le proprietà per l'argomento "array1" e i valori nell'argomento "array2" e l'oggetto come primo argomento 
+</span>
+var o = {};
+var a = ['uno', 'due', 'tre'];
+var b = ['rosso', 'verde', 'bianco'];
+<span class="azzurro">
+adPropsOggettoDaArrays(o, a, b);				<span class="nota">// {uno: "rosso", due: "verde", tre: "bianco"}</span>
+</span>
+</pre>	
+
+<p>  
+Se andiamo ad aggiungere delle proprietà all'oggetto, il quale a sua volta contiene già delle proprietà, le nuove si andranno ad aggiungere alle vecchie. <br>
+Se l'oggetto non esiste allora lo si deve definire cosi come fatto nell'esempio precedente. 
+</p>
+	
+</section>	
+
+
+
+
+
+						<div id="freccia_sali"><div></div> </div> 
+
+
+
+<br /><br /><br /><br /><br /><br />
+
+<script type="text/javascript" src="../../baseLocali.js"></script>
+<script type="text/javascript">
+// Scorrimento verso la sezione cliccata
+var select = document.querySelector('select.sezioni');
+select.addEventListener("change", function(){ 
+	var valSez = this.value;									// s3
+	var pattern = "#" + valSez;
+	var of = document.querySelector(pattern).offsetTop;
+	window.pageYOffset = of;
+	document.documentElement.scrollTop = of;
+	document.body.scrollTop = of;
+//	Togliere il focus dalla <select> e assegnarlo al documento 
+	window.focus();
+	document.documentElement.focus();
+	document.body.focus();
+},false);
+
+// Per lo scorrimento del documento, verso l'alto
+var obj = new ScrollPage('600', 100, 'freccia_sali', 300);
+obj.showFreccia();
+obj.clickScroll();
+//bloccaPropagazione();	
+
+</script>
+
+
+
+</body>
+</html>

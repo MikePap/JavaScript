@@ -1,0 +1,375 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title> Numeri </title>
+<style type="text/css">
+
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grigio{color:gray;}
+.azzurro{color:rgb(50,100,255);}
+.scuro{color:#333;}
+code, pre{ color:rgb(20,150,30); font-weight:bold;}
+tt, em{color:#6a9999}
+
+table{}
+tr{  }
+		
+</style>
+
+<script type="text/javascript" src="jQuery-1.6.min.js"></script>
+
+ <script>
+  $(document).ready(function(){
+	$("#prima th").css({"background-color":"rgb(180,100,100)", "color":"rgb(250,250,250)"});
+    var primoTH = $("#prima th:first");
+	var secondoTH = $(primoTH).next();
+	var terzoTH = $("#prima th:last");	  
+    $(primoTH).css("width", "80px");
+	$(secondoTH).css("width", "300px");
+	$(terzoTH).css("width", "600px");
+	$("#prima tr").css("background-color", "rgb(230,230,255)");
+    $("#prima tr:even").css("background-color", "rgb(200,200,250)");
+	var primiTD = $("#prima td:first-child"); 
+	$(primiTD).css({"font-size": "18px", "font-weight" : "bolder", "text-align" : "center"});
+	var secondiTD =  $(primiTD).next();
+	$(secondiTD).css("color", "rgb(50,150,50)");
+	var terziTD = $(secondiTD).next();
+	$(terziTD).css("color", "rgb(150,50,50)"); 
+  //  var terziTD = $("#prima td:last-child");
+//	$(terziTD).css("color", "rgb(150,50,50)");
+    $("#prima tr").hover(
+	function() {
+	 $(this).css("font-weight" , "bolder");
+	},
+	function() {
+	$(this).css("font-weight" , "normal");
+	}
+	);
+  }); // chiude ready
+  </script>
+
+
+</head>
+
+<body>
+
+
+
+<h1> Number </h1>
+
+<p>Per definire una variabile con la classe <q>Number</q>(per creare un oggetto): <br />   
+<span class="codice">var numero = new Number(88); </span>
+</p>
+
+<script>
+  $(document).ready(function(){
+
+//var nm = typeof 12; // "number"
+var nm = typeof 3.543; // "number"
+
+$("#nm").text(nm);
+
+});
+
+
+</script>
+
+<p id="nm"></p>
+
+
+<h2> Boolean Default </h2>
+
+<script>
+  $(document).ready(function(){
+
+var num = !0 // true
+//var num = !1 // false
+//var num = !-1 // false
+
+$("#mun").text(num);
+
+});
+</script>
+
+<p id="mun"></p>
+
+
+<h2>Decimali dopo la virgola (metodo "toFixed")</h2>
+
+<pre>
+var numer = 46.1234567;
+var numer = numer.toFixed(3);			<span class="nota"> richiesta di 3 decimali   </span>		
+<span class="azzurro">console.log(number)</span>				<span class="nota">// restituisce 46.123 </span>
+</pre>
+
+<p id="nm_decimali"></p>
+
+<h2> metodi Math </h2>
+
+<table border="1" cellpadding="3" id="prima">
+<tr>
+    <th> Metodo</th>
+    <th> espressione </th>
+    <th> descrizione </th>
+</tr>    
+<tr>
+    <td> abs </td>
+    <td> Math.abs(-10) => 10 </td>
+    <td> Restituisce un valore assoluto </td>
+</tr>    
+<tr>    <td> acos </td>
+    <td>  </td>
+    <td> Returns the arccosine value. </td>
+</tr>    
+<tr>
+    <td> asin </td>
+    <td>  </td>
+    <td> Arcsine value for the number specified. </td>
+</tr>
+<tr>
+    <td> atan </td>
+    <td>  </td>
+    <td> Arctangent value.  </td>
+</tr>
+<tr>
+    <td> atan 2 </td>
+    <td> Math.atan2(param1, param2) </td>
+    <td> By X and Y coordinates.  </td>
+</tr>
+<tr>
+    <td> ceil </td>
+    <td> Math.ceil(1.1) => 2 </td>
+    <td> Arrotonda un numero float al valore più alto </td>
+</tr>
+<tr>
+    <td> cos  </td>
+    <td> Math.cos(param1) </td>
+    <td> Coseno </td>
+</tr>
+<tr>    
+    <td> exp </td>
+    <td> Math.exp(1) => 2.718281828459045 </td>
+    <td> Restituisce la base di un logaritmo elevato alla potenza di uno specifico numero </td>
+</tr>
+<tr>    
+    <td> floor  </td>
+    <td> Math.floor(1.1) => 1 </td>
+    <td> Arrotonda un numero float al valore più basso </td>
+</tr>
+<tr>    
+    <td> log </td>
+    <td> Math.log(param1) </td>
+    <td> Logaritmo di un numero  </td>
+</tr>
+<tr>    
+    <td> max </td>
+    <td> Math.max(1,2,5,3) => 5 </td>
+    <td> controlla una serie di numeri e restituisce il valore più alto </td>
+</tr>
+<tr>    
+    <td> min </td>
+    <td> Math.min(1,2,5,3) => 1  </td>
+    <td> controlla una serie di numeri e restituisce il valore più basso </td>
+</tr>
+<tr>    
+    <td> pow </td>
+    <td> (Math.pow(2,4) => 16 </td>
+    <td> Eleva il primo valore alla potenza del secondo  </td>
+</tr>
+<tr>   
+    <td> random  </td>
+    <td>Math.random() =>0.6242925183604852  </td>
+    <td>Restituisce un numero compreso tra 0 e 1  </td>
+</tr>
+<tr>    
+    <td> round </td>
+    <td> Math.round(1.49) => 1 , (1.50) => 2 </td>
+    <td> Arrotonda approssimando al valore più alto o più basso   </td>
+</tr>
+<tr>    
+    <td> sin </td>
+    <td> Math.sin(param1) </td>
+    <td> Seno di un numero </td>
+</tr>
+<tr>    
+    <td> sqrt </td>
+    <td> Math.sqrt(16) => 4  </td>
+    <td> Radice quadrata di un numero </td>
+</tr>
+<tr>    
+    <td> tan </td>
+    <td> Math.tan(param1) </td>
+    <td>  Tangente di un numero </td>
+</tr>    
+
+</table>
+
+
+
+<h2> parseInt e parseFloat  </h2>
+<p>
+<tt>parseInt()</tt> converte un valore in un numero intero (senza decimali); Può contenere due argomenti; il primo è il valore da analizzare ed il secondo è una radice. La radice serve a specificare quale sistema numerico da usare. Conviene sempre specificare tale valore per evitare di avere differenti risultati interpretativi dai vari browser.
+<pre>
+parseInt(string, radix);
+</pre>
+La funzione <tt>parseInt</tt> converte il primo argomento ad una stringa, lo analizza e restituisce un numero intero oppure <em>NaN</em>. In caso di NaN il valore restituito sarà la rappresentazione dell'intero decimale del primo argomento preso come numero. Per esempio una radice di 10 indica di convertire a numero decimale, radice 8 a ottale, 16 a esadecimale e cosi via.   
+<pre>
+parseInt("100px");			<span class="nota">// 100</span>
+parseInt("123");			<span class="nota">// 123 (implicit decimal)</span>
+parseInt("123hello");			<span class="nota">// 123 (implicit decimal)</span>
+parseInt(220.84);			<span class="nota">// 220</span>
+parseInt(0.0000001);			<span class="nota">// 1</span>
+parseInt("010");			<span class="nota">// 8 (implicit octal)</span>
+parseInt("0xCAFE");			<span class="nota">// 51966 (implicit hexadecimal)</span>
+parseInt("10.20Hello");			<span class="nota">// 10 (vedi la differenza con 'parseFloat')</span>
+
+<span class="grigio">Con secondo parametro</span>
+parseInt("010", 10);			<span class="nota">// 10 (explicit decimal)</span>
+parseInt("11", 2);			<span class="nota">// 3 (explicit binary)</span>
+parseInt("10.20Hello", 10);		<span class="nota">// 10 (vedi la differenza con 'parseFloat')</span>
+</pre>
+
+<tt>parseFloat</tt>, a differenza di <tt>parseInt</tt> converte un valore sempre in un numero decimale
+<pre>
+parseFloat('421.45');			<span class="nota">// 421.45</span>
+parseFloat('+421.45');			<span class="nota">// 421.45</span>
+parseFloat('-421.45');			<span class="nota">// -421.45</span>
+parseFloat("10.20Hello");		<span class="nota">// 10.2 (qui il risultato è diverso che con 'parseInt')</span>
+</pre>
+Un'altro modo per convertire una stringa in numero è con l'utilizzo degli <b>operatori unari + e -</b>
+<pre>
++ "42"					<span class="nota">// restituisce 42</span> 
+(+"1.1") + (+"1.1")			<span class='nota'>// restituisce 2.2</span>
+<span class="grigio">altrimenti senza operatore unario</span>
+"1.1" + "1.1"				<span class="nota">// restituisce "1.11.1"</span>
+</pre>
+</p>
+
+
+<h2> Numbers to Strings </h2>
+
+<p class="nota"> Quando si unisce un numero ad una stringa il risultato è sempre una stringa </p>
+<pre>
+console.log("La somma è  " + 1 + 2);			<span class="nota">// restituisce una stringa => "La somma è  12"</span>
+console.log("OK " + 0.0000001);				<span class="nota">// "OK 1e-7"</span>
+
+<span class="grigio">Nel seguente facendso uso dell'operatore + il discorso viene cambiato</span>
+console.log("La somma è " + (1 + 2) );			<span class="nota">// restituisce la stringa "La somma è 3"</span>
+</pre>
+
+<p id="NmStr"></p>
+
+<h2>valueOf</h2>
+
+<p class="nota">Il metodo <q>valueOf</q> ottiene il primitivo valore di un oggetto numero come tipo di numero  </p>
+<pre>
+var myNumero = new Number(24);
+var myN = myNumero.valueOf();
+<span class="azzurro">console.log(myN);</span>			<span class="nota">// 24</span>
+</pre>
+
+
+<h2>isNaN( )</h2>
+<p>
+Serva a verificare se un valore non sia un  numero. Succede che il valore passato viene convertito in un numero e quindi verifica se sia un numero e restituisce un risultato. Siccome la sua gestione è leggermante confusionale è conveniente far affidamento su <tt>typeof</tt> 
+
+<pre>
+isNaN("testo");				<span class="nota">// true</span> 
+isNaN(37);				<span class="nota">// false</span>         
+isNaN("37");				<span class="nota">// false (37 è convertito a numero e quindi valutato 'false' perchè è un numero)</span> 
+isNaN(null);				<span class="nota">// false</span>       
+isNaN("");				<span class="nota">// false (la stringa vuota è convertita a zero che è un numero ) </span> 
+isNaN(" ");				<span class="nota">// false (la stringa vuota con spazio è convertita a zero che è NaN)</span>  
+
+isNaN(new Date());			<span class="nota">// false</span>                 
+isNaN(new Date().toString());		<span class="nota">// true</span>     
+
+</pre>
+</p>
+
+
+
+
+
+
+<h2> NaN and Infinity </h2>
+
+<pre>
+typeof NaN;				<span class="nota">// number </span>
+
+typeof Infinity;			<span class="nota">// number </span>
+
+1 / 0;					<span class="nota">// Infinity</span>
+
+</pre>
+
+
+<script type="text/javascript">
+
+console.log( parseFloat("10.2abc") );
+
+console.log( parseInt("10.20Hello", 10) );
+
+//alert(+ "42");
+//alert("hello".length)
+
+</script>
+
+
+<h2>Verifica numeri interi ( Number.isInteger() )</h2>
+<p>
+<q>Number.isInteger()</q>  è una nuova funzione introdotta da <b>ECMAscript 6</b>. Nelle versioni precedenti non c'è un metodo per stabilire con esattezza se un numero sia intero o meno. Comunque, al momento, ci sono delle soluzioni abbastanza semplici per ovviare  al problema
+<pre>
+function isInteger(x) {
+	return Math.round(x) === x;
+}
+<span class="azzurro">
+console.log(isInteger(45));		<span class="nota">true</span>
+console.log(isInteger(45.4));		<span class="nota">false</span>
+console.log(isInteger('45'));		<span class="nota">false</span>
+</span>
+</pre>
+Invece di <q>Math.round()</q> si potrebbero benissimo usare anche i metodi <q>Math.ceil()</q> e <q>Math.floor()</q>   <br />
+Altra funzione alternativa, che trovo più completa, è la seguente
+<pre>
+function isInteger(x) {
+	return (typeof x === 'number') && (x % 1 === 0);
+}
+</pre>
+
+</p>
+
+
+
+<br /><br />
+<br /><br /><br /><br />
+
+
+
+<script type="text/javascript">
+function isInteger(x) {
+	return Math.round(x) === x;
+}
+console.log(isInteger(45.4));
+
+function Intero(x) {
+	return (typeof x === 'number') && (x % 1 === 0);
+}
+
+console.log(Intero('uiui'));
+
+
+
+</script>
+
+
+
+
+</body>
+</html>

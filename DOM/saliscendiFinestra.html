@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Saliscendi finestra  </title>
+<style type="text/css">
+html,body,div,p,h1,h2,h3,h4,h5,input,textarea,select,span,ul,li,a,img{
+margin: 0;padding:0;
+}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section {
+display:block; margin:0;padding:0;
+}
+
+* { 
+  -moz-box-sizing: border-box; 
+  -webkit-box-sizing: border-box; 
+   box-sizing: border-box; 
+}
+
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);  z-index:3;} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30); }
+
+body{ /*overflow:hidden;*/ }
+
+#container{
+position:relative; width:100%; /*height:500px;*/ background:#CCC; overflow:hidden;
+}
+#container > div.sezioni{
+position:relative; width:100%; text-align:center; border:1px solid #CCC;  z-index:1; 
+background-color:rgba(0,0,0,0.5); /*opacity:0.5; filter:Alpha(opacity=50); /* IE8 and earlier */
+background-repeat:no-repeat;		/* x IE */
+}
+
+#container div.sezioni > article{
+position:absolute; top:180px; left:100px; width:300px; padding:10px; color:#3a4482;
+background:rgba(250,250,250,0.5);  border:1px solid #e2e2e2; border-radius:6px; z-index:3;
+}
+#container div.sezioni > figure{
+position:absolute; top:100px; right:150px; width:200px; height:400px; padding:2px; color:#FFF; border:5px solid #FFF; z-index:3;
+border-radius:6px;
+}
+figure img{
+width:100%; height:90%;
+}
+div.opaco{
+position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.5); z-index:2; 
+}
+#uno{
+background-image: url(../img/Immagini1.jpg); /*  no-repeat*/
+background-size:100% 100%; /*opacity:0.2;*/
+}
+#due{
+background-image: url(../img/Immagini2.jpg); 
+background-size:100% 100%;
+}
+#tre{
+background-image: url(../img/olive2.jpg);
+background-size:100% 100%;
+}
+#quattro{
+background-image: url(../img/McCurry-bombay.jpg);
+background-size:100% 100%;
+}
+#cinque{
+background-image: url(../img/high_desert.jpg);
+background-size:100% 100%;
+}
+
+#scendi{
+position:fixed; bottom:0; left:0; width:100%; height:50px; text-align:center;
+background:rgb(100,100,100); background:rgba(0,0,0,0.5); z-index:3; display:none; 
+}
+#scendi div{
+position:relative; margin:0 auto; width:0; height:0; 
+border-left: 50px solid transparent; border-right: 50px solid transparent; border-top: 50px solid #000; 
+}
+
+#sali{
+position:fixed; top:0; left:0; width:100%; height:50px;  text-align:center; 
+background:rgb(100,100,100);  background:rgba(0,0,0,0.5); z-index:3; display:none;
+}
+#sali div{
+position:relative; margin:0 auto; width:0; height:0; 
+border-left: 50px solid transparent; border-right: 50px solid transparent; border-bottom: 50px solid #000; 
+}
+
+#spiegazioni{
+position:fixed; top:50px; right:0; width:50px; height:50px; text-align:center; 
+border:5px double	#FFF; border-radius:25px; background:#000;  z-index:3;
+transition:width 500ms;
+-moz-transition:width 500ms;
+-webkit-transition:width 500ms;
+}
+#spiegazioni:hover{
+width:200px; 
+}
+#int{
+color:#FFF; font-size:35px;
+}
+#spiegaz{
+color:#FFF; font-size:15px; /*padding:5px;*/ display:none;
+}
+
+#pallini{ 
+position:fixed; top:200px; left:0;  width:20px; height:100px; z-index:3; border:1px solid #FFF; 
+}
+div.pallino{ 
+position:relative; width:10px; height:10px; margin:8px 5px; background-color:#FFF;  border:1px solid; cursor:pointer;    
+border-radius:5px;
+-moz-border-radius:8px; /* Firefox */
+-webkit-border-radius:8px;  /* Safari e Chrome */
+}
+
+
+
+
+
+</style>
+<script type="text/javascript" src="../Book/core.js"> </script>
+</head>
+<body>
+
+
+<div id="container">
+									<div id="sali"><div></div> </div> 
+									<div id="scendi"><div></div></div> 
+	<div id="spiegazioni">
+			<div id="spiegaz">utilizzare i tasti  &uarr; e &darr; <br /> oppure scorrrere il mouse</div> 
+			<div id="int"> ? </div> 
+	</div><!--spiegazioni-->
+
+	<div id="uno" class="sezioni">
+		<h1>section 1</h1>
+		<article>balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balb
+		</article>
+		<figure>
+			 <img src="../img/dimensions.gif" alt="Bubbles, sitting in his office chair " />
+			 <figcaption>Bubbles at work</figcaption>
+		</figure>	
+		<div class="opaco"></div>
+	</div>
+
+	<div id="due" class="sezioni">
+		<h1>section 2</h1>
+		<article>balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla  FINE 
+		</article>
+		<figure>
+			 <img src="../img/p0047_4.gif" alt="Bubbles, sitting in his office chair " />
+			 <figcaption>fuker at work</figcaption>
+		</figure>	
+		<div class="opaco"></div>
+	</div>
+
+	<div id="tre" class="sezioni">
+		<h1>section 3</h1>
+		<article>balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla  FINE 
+		</article>
+		<figure>
+			 <img src="../img/p0831_4.gif" alt="Bubbles, sitting in his office chair " />
+			 <figcaption>Bubbles at work</figcaption>
+		</figure>	
+		<div class="opaco"></div>
+	</div>
+
+	<div id="quattro" class="sezioni">
+		<h1>section 4</h1>
+		<article>balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla  FINE 
+		</article>
+		<figure>
+			 <img src="../img/p0850_4.gif" alt="Bubbles, sitting in his office chair " />
+			 <figcaption>Bubbles at work</figcaption>
+		</figure>	
+		<div class="opaco"></div>
+	</div>
+
+	<div id="cinque" class="sezioni">
+		<h1>section 5</h1>
+		<article>balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla balbla  FINE 
+		</article>
+		<figure>
+			 <img src="../img/box_ap.gif" alt="Bubbles, sitting in his office chair " />
+			 <figcaption>Bubbles at work</figcaption>
+		</figure>	
+		<div class="opaco"></div>
+	</div>
+
+	<div id="pallini">
+		<div class="pallino"></div>
+		<div class="pallino"></div>
+		<div class="pallino"></div>
+		<div class="pallino"></div>
+		<div class="pallino"></div>
+	</div><!--pallini-->
+
+</div><!--container-->
+
+
+
+<script type="text/javascript">
+
+
+!function scorriFinestra(container,sezione,frecciaSu,frecciaGiu,indPagina){
+
+
+	var box = document.getElementById(container);
+	var h = window.innerHeight || window.screen.availHeight;			// quest'ultimo per IE8 (anche se su IE8 non funziona)
+	box.style.height = h+'px';													// impostazione dell'altezza del 'container'
+	var sezioni = document.querySelectorAll(sezione);
+//	alert(h);
+//	var hSezioni = 700;															//**IMPOSTABILE #NB: questo valore deve finire con 0 ed deve essere superiore al valore di h. 
+
+// Funzione per ottenere un numero con lo zero finale 
+	var hSezioni =	function (){
+		var h = window.innerHeight || window.screen.availHeight;		// 653 
+		j = h / 10;														// 65.3 (la si divide per dieci )
+		var y =	parseInt(j.toFixed(0));							// il toFixed è per Chrome perchè non riconosceva il parseInt restituendolo con il decimale
+		y *= 10;															// 650 (la si moltiplica e quindi si ottiene il valore iniziale ridotto con lo zero finale)
+		y += 50;			// il 50 rappresenta un valore di sicurezza da aggiungere per ottenere un valore di altezza maggiore all'altezza del dispositivo
+		return y;
+	}//
+
+
+	for(var s=0; s<sezioni.length; s++){
+//		sezioni[s].style.height = h+'px';									// errato (provare per credere)
+		sezioni[s].style.height = hSezioni()+'px';							// impostazione altezza delle sezioni 
+	}
+
+	box.scrollTop = 0;															// impostazione dello scroll al container a apertura pagina
+	var nm = sezioni.length;													// 5	
+	var sali = document.getElementById(frecciaSu);
+	var scendi = document.getElementById(frecciaGiu);
+
+	var pallini = document.querySelectorAll(indPagina);
+	pallini[0].style.background = 'red';
+	var n=0;
+
+	var pallino = function (){
+		for(var p=0; p<pallini.length; p++){
+			pallini[p].style.background = '';
+			pallini[n].style.background = 'red';	
+		}
+	};
+
+
+/*	var pallino = document.querySelectorAll(indPagina);
+	pallino[0].style.background = 'red';
+	var n=0;
+
+	var pallini = function (){
+		for(var p=0; p<pallino.length; p++){
+			pallino[p].style.background = '';
+			pallino[n].style.background = 'red';	
+		}
+	};
+*/
+	var getScrollTop = function (){
+		return box.scrollTop;
+	};
+
+
+	var scrollScendi = function  (){					
+		var limite = hSezioni()*n;												// 700*n = 3500  (IMPORTANTE: il valore deve essere 5 o multiplo di 5 )
+		var rp = hSezioni() /10;				// 70
+		if(getScrollTop() >= limite)  { return;}
+		valScorrimentoY = getScrollTop() + rp;
+		box.scrollTop = valScorrimentoY;
+		setTimeout(scrollScendi, 10);											// (IMPORTANTE: il valore deve essere 5 o multiplo di 5 )
+	};
+
+	var scrollSali = function  (){					
+		var limite = hSezioni() *n;
+		var rp = hSezioni() /10;				// 70
+		if(getScrollTop() <= limite)  { return;}
+		valScorrimentoY = getScrollTop() - rp;
+		box.scrollTop = valScorrimentoY;
+		setTimeout(scrollSali, 10);
+	};
+
+	var tastiera = function (){ 
+//		document.addEventListener("keydown", 
+		Core.addEventListener(document, "keydown", 
+		function (e){
+			var k = e.keyCode;
+			switch(k){
+				case 40:						// freccia giù
+					n++;
+					if(n < nm){				// n non deve superare il numero totale delle section altrimenti n aumenta sempre di valore 
+//						box.scrollTop = hSezioni*n;
+						scrollScendi();
+						pallino();
+					}else{
+						n=nm-1;
+					}
+				break;				 
+				case 38:						// freccia su	
+					n=n-1;
+					if(n >= 0){
+//						box.scrollTop = hSezioni*n;
+						scrollSali();
+						pallino();
+					}else{
+						n=0;
+					}
+				break;
+				case 36:						// tasto inizio
+					n=0;
+					box.scrollTop = 0;
+					pallino();
+					break;
+				case 35:						// tasto fine
+					n=nm-1;
+					box.scrollTop = hSezioni()*n;
+					pallino();
+				break;
+			} // switch
+		});
+	}();
+
+	var mostraFrecce = function (){
+
+		Core.addEventListener(document, 'mousemove', 
+		function (e){
+			var y = e.pageY; 
+			var h2 = h - 50;					// 50 corrisponde all'altezza del <div> #scendi
+			if(y > h2 && y < h){
+				scendi.style.display = 'block';
+			}else{
+				scendi.style.display = 'none';
+			}
+
+			if(y > 0 && y < 50){				// 50 corrisponde all'altezza del <div> #sali 
+				sali.style.display = 'block';
+			}else{
+				sali.style.display = 'none';
+			} 
+		});
+	}();
+
+	var usoFrecce = function (){
+		Core.addEventListener(scendi, 'click', 
+		function (){
+			n++;
+			if(n < nm){			// n non deve superare il numero totale delle section altrimenti n aumenta sempre di valore 
+//				box.scrollTop = hSezioni*n;
+				scrollScendi();
+				pallino();
+			}else{
+				n=nm-1;
+			}
+		});
+
+		Core.addEventListener(sali, 'click', 
+		function (){
+			n=n-1;
+			if(n >= 0){
+//				box.scrollTop = hSezioni*n;
+				scrollSali();
+				pallino();
+			}else{
+				n=0;
+			}
+		})
+	}();
+
+	var mostraDettagli = function (){
+		var spiegazioni = document.getElementById('spiegazioni');
+		var dettagli = document.getElementById('spiegaz');	
+		var puntoInterrogativo = document.getElementById('int');
+		var mostraSpiegazioni = function () { dettagli.style.display = 'block';}		// x il setTimeout
+		Core.addEventListener(spiegazioni, 'mouseenter',
+		function (){
+			puntoInterrogativo.style.display = 'none';
+//			dettagli.style.display = 'block';
+			var anim = setTimeout(mostraSpiegazioni, 200);
+		});
+
+		Core.addEventListener(spiegazioni, 'mouseleave',
+		function (){
+			dettagli.style.display = 'none';
+			puntoInterrogativo.style.display = 'block';
+		});
+	}();
+
+//	Blocca IE 8		
+	var usoPallini = function (){
+		var lista = Array.prototype.slice.call(pallini);			// 'pallino' trasformato in un'array reale (NO in IE 8)
+		for(var i=0; i<lista.length; i++){
+			Core.addEventListener(lista[i], 'click', 		
+			function (){
+				indice = lista.indexOf(this);
+				n=indice;
+				box.scrollTop = hSezioni()*n;
+				pallino();
+			});			
+		}
+	}(); 
+
+//	Mouse scroll 
+
+	var mouseScroll = function(event){
+
+		var rolled = event.wheelDelta || -40 * event.detail;
+//		var rolled = event.wheelDelta;
+//		if(rolled === 120 || rolled === 240 || rolled === 720){
+		if(rolled === 120){
+//			alert('su')
+			n=n-1;
+//				event.preventDefault();
+			if(n >= 0){
+				scrollSali();
+				pallino();
+//				rolled = -120;					// lo blocca 
+//				event.preventDefault();
+				if (event.preventDefault)
+                event.preventDefault();
+				event.returnValue = false;
+
+			}else{
+				n=0;
+//				rolled = 0;
+//				event.preventDefault();
+			}
+		}
+		if(rolled === -120){
+			n++;
+			if(n < nm){				
+				scrollScendi();
+				pallino();
+//				rolled = 0;
+//				event.preventDefault();
+			}else{
+				n=nm-1;
+//				rolled = 0;
+//				event.stopImmediatePropagation();
+			}
+		}
+	}; //
+
+/*
+	var scrollSal = function  (event){					// ** NON UTILIZZATA
+		var rolled = event.wheelDelta || -40 * event.detail;
+		if(rolled === 120){
+			n=n-1;
+			if(n >= 0){
+				var limite = hSezioni*n;
+				var rp = hSezioni/10;				// 60
+				if(getScrollTop() <= limite)  { return;}
+					valScorrimentoY = getScrollTop() - rp;
+				box.scrollTop = valScorrimentoY;
+				setTimeout(scrollSal, 10);
+//			rolled = -120;
+			}else{
+				n=0;
+			}
+		}
+	};
+*/
+
+
+	var scorriMouse = function (){
+
+		if (box.addEventListener){														// Opera, Chrome, Safari e IE >= 9
+			box.addEventListener ("mousewheel", mouseScroll, false);
+			box.addEventListener ("DOMMouseScroll", mouseScroll, false);		// Firefox
+		}else{
+			if (document.attachEvent) { 												// IE before version 9
+				document.attachEvent ("onmousewheel", mouseScroll);
+			}
+		}
+	}()  
+
+
+}('container','div.sezioni','sali','scendi','div.pallino');
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

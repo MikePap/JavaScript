@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>oggetto testo  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(50,150,50);}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+.grigio{color: grey;}
+.blu{color:#00f;}
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+
+</style>
+
+<script type="text/javascript">
+function proprieta()
+{
+	var d = document.getElementById("divo"); 
+	var dcn = d.childNodes[0];
+	var dd = dcn.data;
+	var ddd = dcn.textContent;
+	var dh = dd.length;			// conta il numero dei caratteri che compongono la stringa di testo compreso gli spazi vuoti 
+
+	for(var i in dcn)
+	{							// mostra tutte le proprietà dell'oggetto Text 
+//	for(var i in dd){							// mostra i valori di length del testo 0,1,2,3  ecc..
+		document.getElementById("box").innerHTML += i + "<br>";
+	} 
+} // "proprieta()" 
+
+///////////////////////////////////////
+
+function prove()
+{
+	var spanna = document.getElementById("spanna");
+	var figlia = spanna.childNodes[0];
+	var d = document.getElementById("divo"); 
+	var dcn = d.childNodes[0];			// il testo contenuto nell'elemento 'divo' risulta essere il figlio dell'elemento 'divo' 
+	var figlio = d.firstChild;			// è uguale al 'childNodes'
+	var dd = dcn.data;					// restituisce il testo dell'elemento 
+	var ddd = dcn.textContent;			// è uguale al precedente (restituisce il testo dell'elemento )	
+	var dddd = dcn.wholeText;			// è uguale al precedente (restituisce il testo dell'elemento )	
+	var dh = dd.length;					// conta il numero dei caratteri che compongono la stringa di testo compreso gli spazi vuoti 
+	var tipo = d.nodeType;				// restituisce 1 
+	var nome = d.nodeName;				// restituisce DIV 
+	var genitore = d.parentNode;			// restituisce [object HTMLBodyElement] (l'lemento body)
+	var genitore2 = spanna.parentElement;	//[object HTMLDivElement] è il div='divo' 
+	var precedente = d.previousSibling;		// 
+	var seguente = d.nextSibling;			// 
+	dcn.appendData(" - testo aggiunto con 'appendData' - ");	// agiunta di testo 
+//	spanna.firstChild.replaceWholeText("un nuovo spanna");	// NON FUNZIONA e mi blocca l'alert 
+	figlia.deleteData(3, 5);						// NON FUNZIONA 
+	dcn.insertData(1, 'add');						// NON FUNZIONA 	
+
+// ALTRE PROPRIETA':	deleteData(offset, count) -- replaceData(offset,count, string) -- splitText(number) -- substringData(offset, count) 
+	alert(dd);				// 
+
+} // chiude la funzione "prove()" 
+
+function jk(e)
+{
+//	alert('OK');
+//	var jj = e.textContent;										// NON FUNZIONA IN IE 8
+	var jj = e.childNodes[0].data;							// OK  
+//	var divo = document.getElementById('divo');
+//	var jj = divo.childNodes[0].data;	
+	alert(jj);
+}
+
+</script>
+
+
+</head>
+<body>
+
+<h1>Oggetto Text</h1>
+<p>
+Il contenuto testo di un elemento (<b>nodo testo</b>) è rappresentato dall'oggetto <b>Text</b> che risulta, comunque, essere l'elemento figlio dell'elemento in questione.<br />
+Da ricordarsi che gli <b>spazi vuoti</b> (white spaces) e i <b>ritorni a capo</b> (carriage returns) sono considerati, allo stesso modo, nodi testo. Questo vuol dire che tutti vanno a formare la lista di nodi che forma la <q>childNodes</q> 
+</p>
+
+<h2>Estrazione di testo</h2>
+<h3>data, nodeValue</h3>
+<p>
+<pre>
+<span class="blu">&lt;p&gt;Hello, &lt;strong&gt;Jon&lt;/strong&gt;&lt;/p&gt;</span>
+
+var testo = document.querySelector('p').firstChild.data;			<span class="nota">// restituisce: Hello </span>
+var testo = document.querySelector('p').firstChild.nodeValue;			<span class="nota">// restituisce: Hello </span>
+
+var testo = document.querySelector('p').firstChild.data.length;			<span class="nota">// restituisce: 4 </span>
+var testo = document.querySelector('p').firstChild.nodeValue.length;		<span class="nota">// restituisce: 4 </span>
+</pre>
+</p>
+
+
+<h2>Manipolazione di testo</h2>
+
+<h3>appendData, deleteData, insertData, replaceData, subStringData</h3>
+<pre>
+<span class="blu">&lt;p&gt;Go big Blue Baby&lt;/p&gt; </span>
+var pt = document.querySelector('p').firstChild;
+
+pt.appendData('!');
+pt.data;			<span class="nota">// => Go big Blue Baby! (aggiunge '!' alla fine del nodo)</span>
+
+pt.deleteData(7,5);
+pt.data;			<span class="nota">// => Go big Baby! (elimina 'Blue': elimina 5 caratteri a partire dalla posizione 7)</span>
+
+pt.insertData(7,'Blue ');
+pt.data;			<span class="nota">// => Go big Blue Baby! (aggiunge 'Blue' a partire dalla posizione 7)</span>
+
+pt.replaceData(7,5,'Bunny ');
+pt.data;			<span class="nota">// => Go big Bunny Baby! (inserisce 'Bunny' dalla posione 7 che è quella di Blue, quindi lo rimpiazza )</span>
+
+pt.substringData(7,10));
+pt.data;			<span class="nota">// => Bunny Baby (restituisce 10 caratteri a partire dalla posizione 7)</span>
+</pre>
+
+<h3>splitText</h3>
+<p>
+Metodo che divide un testo in due parti restituendo la parte di testo a partire dalla posizione data dal parametro
+<pre>
+<span class="blu">&lt;p&gt;Hi Jon&lt;/p&gt;</span>
+var p = document.querySelector('p');
+
+p.childNodes.length;			<span class="nota">// restituisce 2</span>
+p.firstChild.splitText(3).data;		<span class="nota">// restituisce 'Jon' (testo a partire dalla posizione 3)</span>
+</pre>
+</p>
+
+
+<h2>Normalizzare un oggetto testo</h2>
+<h3>normalize</h3>
+<p>
+E' un metodo che normalizza il contenuto testo di un elemento (text object: oggetto testo) quando viene aggiunto del testo a quello già esistente. 
+<pre>
+<span class="grigio">Prendiamo l'esempio di un paragrafo contenente del testo</span>
+<span class="blu">&lt;p&gt;Testo esistente &lt;/p&gt;</span>
+var p = document.getElementsByTagName('p')[0];
+p.childNodes.length;			<span class="nota">// restituisce: 1</span>
+
+<span class="grigio">creiamo e aggiungiamogli del testo</span>
+var nuovoT = document.createTextNode('Testo aggiunto');
+p.appendChild(nuovoT);
+p.childNodes.length;			<span class="nota">// restituisce: 2</span>
+
+<span class="grigio">ora utilizzando il metodo normalize() riportiamo la sua 'length' al valore iniziale (che sarebbe il valore regolare appropriato)</span>
+p.normalize();
+p.childNodes.length;			<span class="nota">// restituisce: 1</span>
+</pre>
+</p>
+
+
+
+<br />
+<hr /> 
+<br />
+
+
+<div id="divo"> sono io l'unico divo
+<span id="spanna" style="color:red;">sono spanna</span>
+</div><!--divo-->
+ 
+
+<button id="vaijo" onclick="prove();">Vai Jo</button>
+<br /><br />
+<button id="puls" onclick="proprieta();" >Mostra le proprietà dell'oggetto Text</button>
+
+<br />
+<br />
+
+<div id="box"></div> 
+
+
+<button id="puls" onclick="jk(this)" >we wagliò</button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

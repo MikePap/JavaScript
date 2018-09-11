@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Destructuring  </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+
+<h1>Destructuring</h1>
+
+<p>
+Sono un nuovo modo di scrivere le espressioni che cambiano lo stile classico
+</p>
+
+
+<pre>
+var numeri = ["one", "two", "three"];
+<span class="azzurro">
+numeri[0];						<span class="nota">// 'one' (classico)</span>	
+...
+</span>	
+<span class="grigio">con destructuring</span>
+<span class="azzurro">
+var [primo, secondo, terzo] = numeri;
+primo							<span class="nota">// 'one' (con destructuring)  </span>	
+</span>	
+</pre>
+
+<p>Oppure si possono scegliere gli argomenti da estrarre, in questo modo </p>
+<pre>
+var numbers = [10, 20, 30, 40, 50];
+var [primo, , terzo, , quinto] = numbers;
+<span class="azzurro">
+console.log(primo);					<span class="nota">// 10</span>	
+console.log(terzo);					<span class="nota">// 30</span>	
+console.log(quinto);					<span class="nota">// 50</span>	
+</span>
+
+</pre>
+
+
+<pre>
+var a = 1;
+var b = 3;
+
+[a, b] = [b, a];
+<span class="grigio">è come se fosse</span>	
+[a, b] = [3, 1]
+<span class="azzurro">
+console.log(a);						<span class="nota">// 3</span>	
+console.log(b);						<span class="nota">// 1</span>	
+</span>	
+</pre>
+
+<p>Osserviamo i prossimi due esempi; nel primo si costruisce un array e nel secondo si ottiene il valore dell'array</p>
+
+<pre>
+const wrap = (something) => {
+	const wrapped = [something];
+	return wrapped;
+}
+<span class="azzurro">
+console.log(wrap("package"));				<span class="nota">// ['package']  </span>	
+</span>	
+const unwrap = (wrapped) => {
+	const [something] = wrapped;
+	return something;
+}
+<span class="azzurro">
+console.log(unwrap(["present"]));			<span class="nota">// 'present'  </span>	
+</span>	
+</pre>
+
+<p>Potremmo anche passare più valori</p>
+<pre>
+const surname = (name) => {
+	const [first, last] = name;
+	return last;
+}
+<span class="azzurro">
+console.log(surname(["Reginald", "Braithwaite"]));	<span class="nota">// 'Braithwaite'  </span>	
+</span>	
+</pre>
+
+
+<p>
+Esempio di <tt>destructuring</tt> con funzioni
+</p>
+<pre>
+function f() {
+	return [1, 2];
+}
+<span class="grigio">oppure con le arrows </span>	
+var f = () => [1,2]
+
+var a, b;
+[a, b] = f();
+<span class="azzurro">
+console.log("A is " + a + " B is " + b);		<span class="nota">// "A is 1 B is 2"</span>	
+</span>	
+<span class="grigio">Attenzione: se dovessimo invece fare</span>	
+var a = f();
+<span class="azzurro">
+console.log(a);						<span class="nota">// "A is 1,2" (restituisce l'array)</span>	
+</span>	
+<span class="grigio">
+mentre
+</span>
+var [a] = f();
+<span class="azzurro">
+console.log("A is " +a);				<span class="nota">// "A is 1" (non resituisce l'array)</span>
+</span>
+</pre>
+
+
+<h3>Object destructuring</h3>
+
+<pre>
+var oggetto = {p: 42, q: true};
+<span class="azzurro">
+console.log(oggetto.p);						<span class="nota">// 42 (metodo classico)</span>	
+</span>	
+var {p, q} = oggetto;
+<span class="azzurro">
+console.log(p);							<span class="nota">// 42 (con destructuring)</span>	
+</span>	
+<span class="grigio">volendo si può anche assegnare un nuovo nome alle variabili</span>	
+var {p: foo, q: bar} = oggetto;
+<span class="azzurro">
+console.log(foo);						<span class="nota">// 42 </span>
+console.log(bar);						<span class="nota">// true</span>
+</span>
+</pre>
+
+<h3>Funzioni con argomenti di deaults</h3>
+
+<pre>
+<span class="grigio">ES5</span>	
+function drawES5Chart(options) {
+	options = options === undefined ? {} : options;
+	var size = options.size === undefined ? 'big' : options.size;
+	var cords = options.cords === undefined ? { x: 0, y: 0 } : options.cords;
+	var radius = options.radius === undefined ? 25 : options.radius;
+	console.log(size, cords, radius);
+}
+
+<span class="grigio">ES6</span>	
+function drawES6Chart({size = 'big', cords = { x: 0, y: 0 }, radius = 25} = {}) 
+{
+  console.log(size, cords, radius);
+}
+<span class="azzurro">
+drawES5Chart({ cords: { x: 18, y: 30 }, radius: 30 });		<span class="nota">// "big" Object { x: 18, y: 30 } 30</span>	
+</span>	
+</pre>
+
+<h3>Caricamento moduli</h3>
+
+<p>
+<tt>Destructuring</tt> può anche essere utile nel caricamento di uno specifico subset di modulo
+</p>
+<pre>
+const { Loader, main } = require('toolkit/loader');
+</pre>
+
+<h3>Oggetti innestati e array destructuring</h3>
+
+<pre>
+var metadata = {
+	title: "Scratchpad",
+	translations: [
+	{
+		locale: "de",
+		localization_tags: [ ],
+		last_edit: "2014-04-14T08:43:37",
+		url: "/de/docs/Tools/Scratchpad",
+		title: "JavaScript-Umgebung"
+	}
+	],
+	url: "/en-US/docs/Tools/Scratchpad"
+};
+
+var { title: englishTitle, translations: [{ title: localeTitle }] } = metadata;
+<span class="azzurro">
+console.log(englishTitle);					<span class="nota">// "Scratchpad"</span> 
+console.log(localeTitle);					<span class="nota">// "JavaScript-Umgebung"</span>  
+</span>
+</pre>
+
+
+<h3>Iterazione con destructuring</h3>
+
+<pre>
+var people = [
+	{
+		name: "Mike Smith",
+		family: {
+			mother: "Jane Smith",
+			father: "Harry Smith",
+			sister: "Samantha Smith"
+		},
+		age: 35
+	},
+	{
+		name: "Tom Jones",
+		family: {
+			mother: "Norah Jones",
+			father: "Richard Jones",
+			brother: "Howard Jones"
+		},
+		age: 25
+	}
+];
+
+for (var {name: n, family: { father: f } } of people) {
+	console.log("Name: " + n + ", Father: " + f);
+}
+<span class="nota">
+"Name: Mike Smith, Father: Harry Smith"
+"Name: Tom Jones, Father: Richard Jones"
+</span>	
+</pre>
+
+
+<h3>Capo e coda (con Spread) </h3>
+
+<p>Estrarre arrays da arrays</p>
+<pre>
+const [capo, ...coda] = [1, 2, 3, 4, 5];
+<span class="azzurro">
+console.log(capo);						<span class="nota">// 1 </span>	
+console.log(coda);						<span class="nota">// [2, 3, 4, 5]</span>	
+</span>	
+
+<span class="grigio">oppure unire array</span>	
+const oneTwoThree = ["one", "two", "three"];
+var unioneArray = ["zero", ...oneTwoThree];
+<span class="azzurro">
+console.log(unioneArray);					<span class="nota">// Array [ "zero", "one", "two", "three" ] </span>	
+</span>
+
+const numbers = (...nums) => nums;
+<span class="azzurro">
+console.log(numbers(1, 2, 3, 4, 5));				<span class="nota">// Array [1, 2, 3, 4, 5] </span>	
+</span>
+</pre>
+
+<p>In sintesi</p>
+
+<pre>
+const [first, ...rest] = [];
+<span class="azzurro">
+first								<span class="nota">// undefined </span>	
+rest								<span class="nota">// [] </span>	
+</span>
+const [first, ...rest] = ["foo"];
+<span class="azzurro">
+first								<span class="nota">// 'foo' </span>	
+rest								<span class="nota">// [] </span>	
+</span>
+const [first, ...rest] = ["foo", "bar"];
+<span class="azzurro">
+first								<span class="nota">// 'foo' </span>	
+rest								<span class="nota">// ['bar'] </span>	
+</span>
+const [first, ...rest] = ["foo", "bar", "baz"];
+<span class="azzurro">
+first								<span class="nota">// 'foo' </span>	
+rest								<span class="nota">// ["bar","baz"] </span>	
+</span>
+</pre>
+
+
+<h1>Spread operator</h1>
+
+<p>
+L'opeatore <tt>Spread</tt> permette di espandere un'espressione qualora sono richiesti molteplici argomenti (in caso di funzioni) o elementi (in caso di array). La sintassi prevede l'uso di tre puntini (...) a precedere l'elemento
+</p>
+
+
+<p>Applicato sugli array</p>
+
+<pre>
+var parts = ['shoulder', 'knees'];
+var lyrics = ['head', ...parts, 'and', 'toes'];
+<span class="azzurro">
+console.log(lyrics);						<span class="nota">// [ "head", "shoulder", "knees", "and", "toes" ]</span>	
+</span>	
+</pre>
+
+<p>
+Utilizzo col metodo <tt>push</tt>
+</p>
+<pre>
+<span class="grigio">Metodo classico in ES5 con l'utilizzo di 'apply'</span>				
+var arr1 = [0, 1, 2];
+var arr2 = [3, 4, 5];
+Array.prototype.push.apply(arr1, arr2);
+<span class="azzurro">
+console.log(arr1);						<span class="nota">// [0, 1, 2, 3, 4, 5]</span>	
+</span>	
+
+<span class="grigio">Metodo alternativo, in ES6, con Spread </span>				
+var arr1 = [0, 1, 2];
+var arr2 = [3, 4, 5];
+arr1.push(...arr2);
+<span class="azzurro">
+console.log(arr1);						<span class="nota">// [0, 1, 2, 3, 4, 5]</span>	
+</span>	
+</pre>
+
+<p>In caso di tre o più array </p>
+<pre>
+var arr1 = ['1', 2, 'tre'];
+var arr2 = ['mela', 'pera', 'cocco'];
+var arr3 = ['verde', 'rosso', 'bianco'];
+
+arr1.push(...arr2, ...arr3);
+<span class="azzurro">
+console.log(arr1);						<span class="nota">// Array [ "1", 2, "tre", "mela", "pera", "cocco", "verde", "rosso", "bianco" ]</span>
+</span>
+</pre>
+
+
+<p>
+Con funzioni
+</p>
+<pre>
+<span class="grigio">IN ES5</span>				
+function f(x, y, z) { 
+	console.log(x + y + z);
+}
+var args = [2, 1, 5];
+<span class="azzurro">
+f.apply(null, args);					<span class="nota">// 8</span>	
+</span>	
+
+<span class="grigio">IN ES6</span>				
+function f(x, y, z) { 
+	return x + y + z;
+}
+var args = [2, 1, 5];
+<span class="azzurro">
+console.log(f(...args));				<span class="nota">// 8</span>	
+</span>	
+<span class="grigio">oppure</span>				
+function f(v, w, x, y, z) { }
+var args = [0, 1];
+f(-1, ...args, 2, ...[3]);
+</pre>
+
+
+<p>
+Con Destructuring
+</p>
+<pre>
+[a, b, ...iterableObj] = [1, 2, 3, 4, 5];
+</pre>
+
+
+
+
+<script type="text/javascript">
+
+function f(x, y, z) { 
+	console.log(x + y + z);
+}
+var args = [2, 1, 5];
+f.apply(null, args);
+f();
+
+
+function fp(x, y, z) { 
+	return x + y + z;
+}
+var args = [2, 1, 5];
+//console.log(fp(...args));
+
+
+var parts = ['shoulder', 'knees'];
+var lyrics = ['head', ...parts, 'and', 'toes'];
+
+
+
+var arr1 = [0, 1, 2];
+var arr2 = [3, 4, 5];
+Array.prototype.push.apply(arr1, arr2);
+//console.log(arr1);
+
+
+var arr1 = [0, 1, 2];
+var arr2 = [3, 4, 5];
+arr1.push(...arr2);
+console.log(arr1);
+
+for(var i of arr1){
+//	console.log(i);
+}
+
+
+
+//////////////////////////////////////////////
+/*
+const headAndTail = (capo, ...coda) => [capo, coda];
+console.log(headAndTail(1, 2, 3, 4, 5));
+
+
+const numbers = (...nums) => nums;
+//console.log(numbers(1, 2, 3, 4, 5));
+
+
+const oneTwoThree = ["one", "two", "three"];
+var unioneArray = ["zero", ...oneTwoThree];
+//console.log(unioneArray);
+
+const [capo, ...coda] = [1, 2, 3, 4, 5];
+//console.log(coda);
+
+
+///////////////////////////////////////////////////////
+
+function drawES5Chart(options) {
+	options = options === undefined ? {} : options;
+	var size = options.size === undefined ? 'big' : options.size;
+	var cords = options.cords === undefined ? { x: 0, y: 0 } : options.cords;
+	var radius = options.radius === undefined ? 25 : options.radius;
+	console.log(size, cords, radius);
+}
+
+function drawES6Chart({size = 'big', cords = { x: 0, y: 0 }, radius = 25} = {}) 
+{
+  console.log(size, cords, radius);
+}
+// In fierefox questo discorso non è stato (ancora) implementato
+
+
+drawES5Chart({
+	cords: { x: 18, y: 30 },
+	radius: 30
+});
+
+
+
+var oggetto = {p: 42, q: true};
+//var {p, q} = oggetto;
+//console.log(oggetto.p);
+
+
+/*
+/////////////////////////////////////////////
+
+function f() {
+	return [1, 2];
+}
+
+
+var f = () => [1,2]
+
+//var a, , b;
+//var [a, b] = f();
+var a = f();
+console.log("A is " +a);
+
+var [a] = f();
+console.log("A is " +a);
+
+//console.log("A is " + a + " B is " + b);
+
+
+var a = f();
+console.log("A is " +a);
+////////////////////////////////////////
+
+const wrap = (something) => [something];
+console.log(wrap('pacco'));
+
+////////////////////////
+var a = 1;
+var b = 3;
+
+[a, b] = [b, a];
+
+//console.log(a);
+//console.log(b);
+
+
+//console.log(	[2+2] === [2+2]);										// false
+
+//const array_of_one = () => [1];
+//console.log(	array_of_one() === array_of_one());				// false
+
+
+const wrap = (something) => [something];
+//console.log(wrap("lunch"))
+
+
+var numeri = ["one", "two", "three"];
+var [primo, secondo, terzo] = numeri;
+//console.log(secondo);
+
+*/
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+
+</body>
+</html>
+

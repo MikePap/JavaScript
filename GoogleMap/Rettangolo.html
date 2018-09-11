@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>Rettangolo</title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.nota{color:orange;}
+.codice{color:green;}
+
+#map_canvas{ position:relative; margin:20px; width:80%; height:80%;  }
+
+</style>
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=it"></script>
+
+<script type="text/javascript">
+
+//jk.prototype = new google.maps.Map();
+
+//var map;
+function initialize() {
+  
+    var rectangle;
+    var coachella = new google.maps.LatLng(33.6803003, -116.173894);
+
+    var myOptions = {
+      zoom: 10,
+      center: coachella,
+      mapTypeId: google.maps.MapTypeId.TERRAIN
+    };
+
+     map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+/*
+33.39241215940869, -116.86740596289064), (33.96722766816983, -115.4803820371094  --> zoom a 10
+33.53647607413813, -116.52064998144533), (33.823884331035586, -115.8271380185547 --> zoom a 11
+
+Le coordinate (bounds) di cui sopra  me le sono ricavate con: 
+
+google.maps.event.addListener(map, 'click', function() {
+alert(this.getBounds());
+} // listener 
+);
+
+NOTA: le coordinate che mi restituisce questo listener non sono altro che i punti estremi della mappa (i punti che compongono il div "map_canvas" ) che viene visualizzata. In pratica per visualizzare il rettangolo in forma ridotta utilizzando le coordinate ottenute a zoom 11 (riga 40) dovrei imposatare lo zoom a '10' (uno in meno) altrimenti il rettangolo occuperebbe tutta la mappa
+
+*/
+
+/*
+    var swBound = new google.maps.LatLng(33.53647607413813, -116.52064998144533);
+    var neBound = new google.maps.LatLng(33.823884331035586, -115.8271380185547);
+    var bounds = new google.maps.LatLngBounds(swBound, neBound);
+
+   var rectOptions = {
+        strokeColor: "#FF0000",
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: "#FF0000",
+        fillOpacity: 0.35,
+        map: map,
+	bounds: bounds
+      };
+	rectangle = new google.maps.Rectangle();
+	rectangle.setOptions(rectOptions);
+ 	
+*/
+
+} // "initialize" 
+
+// NOTA: questa funzione sarà richiamata dopo la funzione "initialize". Non posso creare l'oggetto 'rectangle' all'interno di 'initialize' per il semplice motivo che i 'bounds' non me li fornisce se la funzione 'initialize' è completata. Nonostante aver creato questa funzione e posizionata e richiamata dopo 'initialize' per farla entrare appunto dopo, nonostante ciò non mi visualizzava l'oggetto rettangolo. In pratica questa funzione partiva ma la mappa non aveva completato ancora il suo caricamento per cui non poteva fornire i 'bounds' ... allora ho trovato lo stratagemma "setTimeout" ... e faccio partire la funzione in ritardo (vedi richiamo funzioni in jQuery ready) è il gioco è fatto. 
+
+function displayRect(){
+var z = map.getZoom();				// ok 
+var tipo = map.getMapTypeId();		// ok
+var ll = map.getCenter();			// (33.6803003, -116.17389400000002)
+var ce = map.getBounds();			// saranno forniti solo dopo che la mappa ssarà caricata per cui ... ^^^ (vedi commento a riga 49)
+// 
+var rectOptions = {
+strokeColor: "#FF0000",
+strokeOpacity: 0.8,
+strokeWeight: 2,
+fillColor: "#FF0000",
+fillOpacity: 0.35,
+map: map,
+bounds: ce						// vedi commento a riga 49 
+}; // 'rectOptions'
+
+rectangle = new google.maps.Rectangle();
+rectangle.setOptions(rectOptions);
+map.setZoom(9);		// se non 
+// alert(rectOptions.strokeColor);
+} // "displaRect"
+
+
+</script>
+
+</head>
+<!-- <body onload=""> -->
+<body>
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+initialize();
+setTimeout("displayRect()",2000);
+
+}); // chiude ready 
+</script>
+
+<p>Vedere i commenti all'interno dello script </p>
+
+<div id="map_canvas"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

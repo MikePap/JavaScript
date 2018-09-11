@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>fisarmonica  </title>
+<style type="text/css">
+
+div.yumi{
+padding:10px;	border:1px solid #ccc;
+}
+div.yumi div{
+width:100%; border:1px solid; padding:10px; display:none;
+}
+
+
+</style>
+
+<script type="text/javascript">
+document.onreadystatechange = function(){
+if (document.readyState == "interactive"){ 
+
+//		var elems = document.getElementsByClassName("yumi")[1];
+//		elems.style.color = "red"; 
+
+	var elems = document.querySelectorAll(".yumi"); 
+//	alert(elems.length);
+	elems[2].style.color = "green";
+
+//	elems.firstElementChild.style.color = "purple";
+
+
+/*
+var me = 
+{
+	divi: document.querySelectorAll(".yumi")[0],
+	testo: me.divi.textContent,
+
+	evento: function()
+	{
+//		divi.addEventListener("click", resultado, false);
+	},
+
+	resultado: function()
+	{
+		alert(me.testo);
+	}
+}//
+*/
+//me();
+//var kl = me();
+//me.resultado();
+
+	var el = document.querySelectorAll(".yumi"); 	
+//	var subel = document.querySelectorAll("div.yumi div"); 	
+//	subel.style.display = "none"; 
+	for(var i=0; i< el.length; i++ ){
+//	subel[i].style.display = "none";
+	el[i].addEventListener("click", funzione, false)	
+	}
+
+
+}}	// readyState
+
+var funzione = function (e){
+	var yumi = document.querySelectorAll(".yumi"); 		
+//		e.stopPropagation();
+	for(var i=0; i< yumi.length; i++) 
+	{
+		var sotto = yumi[i].children;
+		for(var a=0; a < sotto.length; a++) 
+		{
+
+			if(sotto[a].style.display == "none")
+			{
+				e.currentTarget.children[0].style.display = "block";						
+			}
+			else
+			{
+				sotto[a].style.display = "none";
+				e.currentTarget.children[0].style.display = "block";		
+			}
+
+		}
+
+
+//		e.target.children[0].style.display = "block";
+	}
+//		e.currentTarget.children[0].style.display = "block";					// va bene anche qui 
+} //
+
+
+
+
+
+
+
+</script>
+
+</head>
+<body>
+<h1>	fisarmonica</h1>
+
+
+<div class="yumi" id="primo">primo div
+	<div>sotto div di primo </div>
+</div> 
+
+<div class="yumi">secondo div
+		<div>sotto div di secondo </div>
+</div> 
+<div class="yumi">terzo div
+		<div>sotto div di terzo </div>
+</div> 
+<div class="yumi">quarto div
+		<div>sotto div di quarto</div>
+</div> 
+
+
+
+
+
+
+
+
+
+
+
+<!--
+http://localhost/JavaScript/DOM/fisarmonica.html
+-->
+
+</body>
+</html>

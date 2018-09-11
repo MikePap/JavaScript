@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>JavaScript ajax</title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); }
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+
+#kok{ 
+width:300px; height:100px; border:1px solid; background:#99FF00; margin:0; padding-left:5px;  
+}
+
+#divo{
+width:300px; height:200px; border:1px solid; background:#CCC; margin:0; padding-left:5px;  
+}
+
+</style>
+
+<script type="text/javascript"  src="../allegati/core.js"></script>
+
+<script type="text/javascript">
+function loadDoc(dname,elem)
+{
+/*	if (window.XMLHttpRequest)
+	{
+		xhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		xhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}*/
+
+
+	xhttp=new XMLHttpRequest();
+	xhttp.onreadystatechange=function(){
+		if (xhttp.readyState==4 && xhttp.status==200){
+			document.getElementById(elem).innerHTML=xhttp.responseText;
+		}
+	}
+	xhttp.open("POST",dname,true);
+	xhttp.send();
+
+	xhttp.addEventListener("load", function() {
+		console.log("Done:", xhttp.status, xhttp.statusText);					// "Done:" 200 "OK"
+	});
+
+} 
+
+//document.addEventListener("DOMContentLoaded", function(){
+//	var indirizzo = "../../../BookPHP/DataBase/MySql-5_book/Esample_mysqli-php/Prepared_Statement-02.php";
+//	var indirizzo = "../../../BookPHP/DataBase/MySql-5_book/Esample_mysqli-php/Prepared_Statement-02.php?titolo=%MySQL%";
+	var indirizzo ="prova.txt";
+	var xDoc = loadDoc(indirizzo,"kok");
+//	var kok = document.getElementById("kok");
+//	kok.innerHTML = xDoc; 
+//});
+
+///////////////////////
+
+
+
+
+
+</script>
+
+</head>
+<body>
+
+<h1>Ajax con JavaScript nativo</h1>
+
+
+<div id="kok"></div>
+
+<br />
+
+
+<form>
+	<select name="name" id="menu">
+		<option value="">Seleziona</option>
+		<option value="%Linux%">Linux</option>
+		<option value="%MYSQL%">MySql</option>
+	</select>
+</form>
+
+<br />
+
+<div id="divo">I risultati saranno caricati qui...</div>
+
+
+
+
+<script type="text/javascript">
+function mostra(){
+	var xhttp;    
+	if (window.XMLHttpRequest){
+		xhttp = new XMLHttpRequest();
+	}else{
+		xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+	xhttp.onreadystatechange = function(){
+		if (xhttp.readyState == 4 && xhttp.status == 200){
+			document.getElementById("divo").innerHTML=xhttp.responseText;
+		}
+	}
+
+//	var seletta = document.getElementById('menu');				// NON E' NECESSARIO
+	var url = "../../../BookPHP/DataBase/MySql-5_book/Esample_mysqli-php/Prepared_Statement-02.php?titolo="+seletta.value;
+//	var url = "../../../BookPHP/DataBase/MySql-5_book/Esample_mysqli-php/Prepared_Statement-02.php?titolo="+str;
+	xhttp.open("GET", url, true);
+	xhttp.send();
+
+
+}; // "mostra()"
+
+//Core.addEventListener(seletta, "onchange", mostra(this.value));
+//seletta.addEventListener('onchange', mostra(this.value), false );				
+
+	var seletta = document.getElementById('menu');
+	seletta.addEventListener('change', mostra, false );				
+//	Core.addEventListener(seletta, "change", mostra);
+
+
+
+document.addEventListener("DOMContentLoaded", function() 
+{
+
+//		Core.addEventListener(seletta, "change", mostra(seletta.value));
+
+});
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+	<select name="name" name="customers" onchange="mostra(this.value)">
+-->
+
+
+
+
+
+
+</body>
+</html>

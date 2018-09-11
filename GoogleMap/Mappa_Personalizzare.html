@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>Personalizzare il tipo di mappa</title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.nota{color:orange;}
+.codice{color:green;}
+
+#map_canvas{ position:relative; margin:20px; width:80%; height:80%;  }
+
+</style>
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=it"></script>
+
+<script type="text/javascript">
+
+//CLASSE "google.maps.StyledMapType" http://code.google.com/intl/it-IT/apis/maps/documentation/javascript/reference.html#StyledMapType
+
+// file esempio in google http://code.google.com/intl/it-IT/apis/maps/documentation/javascript/examples/maptype-styled-simple.html
+var map;
+var brooklyn = new google.maps.LatLng(40.6743890, -73.9455);
+
+var MY_MAPTYPE_ID = 'hiphop';
+
+function initialize() {
+// Saturazione (saturation) e luminosità (lightness) vanno da 0-240. Se la luminosità è 0 perde tutto il colore e diventa bianco rgb(255,255,255) se è 240 diventa nero rgb(0,0,0). Se la saturazione è 0 diventa grigio se è 240 ottiene tutto il colore. IMPORTANTE:    
+
+// QUI C'è DA RINCOGLIONIRE CON L'IMPOSTAZIONE DEI COLORI NON CIO' CAPITO NULLA
+  var stylez = [{
+      featureType: "road",			// 'landscape' fa riferimento alla colorazione delle terre emerse (stati)
+      elementType: "geometry",				// all - geometry - labels
+      stylers: [
+        { hue: '#000000' },			// -45	-- NOTA: #FFF --> SBALIATO  #FFFFFF --> CORRETTO
+//        { saturation: 240 },		// 100
+//       { lightness: 150}		// 
+      ] // 'stylers'
+    },
+/*
+    {
+      featureType: "landscape",
+      elementType: "all",
+      stylers: [
+//        { hue: "#000000" },		// 
+//        { saturation: 140 },		// 75
+//        { lightness: 150}		// -100
+      ] // 'stylers'
+    }
+*/
+ ]; // 'stylez' 
+
+  var mapOptions = {
+    zoom: 10,
+    center: brooklyn,
+    mapTypeControlOptions: {
+       mapTypeIds: [google.maps.MapTypeId.ROADMAP, MY_MAPTYPE_ID]
+    },
+    mapTypeId: MY_MAPTYPE_ID		// richiamo tipo di mappa (variabile impostata in riga 28)
+  };  // 'myOptions'
+
+  map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+      
+  var styledMapOptions = {
+    name: "Hip-Hop"		// proprietà che definisce la stringa da visualizzare all'interno del controllo della mappa
+  };
+
+  var jayzMapType = new google.maps.StyledMapType(stylez, styledMapOptions);	// il primo parametro dell'oggetto è un array di stili da impostare (vei sopra che è un macello) e il secondo è un oggetto che contiene 4 proprietà e qui ne è impostata solo una che è 'name' 
+
+  
+  map.mapTypes.set(MY_MAPTYPE_ID, jayzMapType);		// la proprietà 'mapTypes' della classe "Map" accetta istanze della classe "google.maps.MapTypeRegistry" e di quest'ultima viene passato il metodo 'set' che accetta due parametri di cui il primo è il nome dell'id impostato in riga 28 e l'altro parametro è l'oggetto "StyledMapType" (riga 71) 
+
+} // "initialize" 
+
+</script>
+
+</head>
+<!-- <body onload=""> -->
+<body>
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+initialize();
+
+}); // chiude ready 
+</script>
+
+<div id="map_canvas"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

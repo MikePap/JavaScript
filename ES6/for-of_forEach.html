@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>ciclo for of  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); margin:10px 50px; } 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150); margin:10px 40px; }
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20); margin:10px 31px; }
+code, pre{ color:rgb(20,150,30); font-weight:bold; background:rgb(230,230,230); margin:5px 10px; padding:8px; }
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(100,150,255);}
+.scuro{color:#333;}
+tt, em{color:#6a9999}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-left:10px;}
+dd{ color:#0066FF; margin-left:10px;}
+
+</style>
+</head>
+<body>
+
+<h1>Ciclo for of</h1>
+
+<p>
+La dichiarazione <tt>for of</tt> crea un ciclo che permette di iterare oggetti incluso <tt>Array, Map, Set, arguments</tt>. <br />
+La differenza con il ciclo <tt>for in</tt> sta nel fatto che quest'ultimo itera i <em>nomi delle proprietà</em> mentre <tt>for of</tt> itera i <em>valori delle proprietà</em>
+</p>
+<pre>
+let arr = [ 3, 5, 7 ];
+arr.foo = "hello";
+
+for (let i in arr) {
+	console.log(i);					<span class="nota">// "0", "1", "2", "foo"</span>
+}
+
+for (let i of arr) {
+   console.log(i);					<span class="nota">// "3", "5", "7"</span>
+}
+</pre>
+
+
+<h1>Array.prototype.forEach()</h1>
+
+<p>
+Da la possibilità di	ottenere gli stessi risultati ottenuti con il ciclo <tt>for in </tt> e il ciclo <tt>for of</tt> con un'unica dichiarazione
+</p>
+<pre>
+let arr = [ 3, 5, 7 ];
+arr.foo = "hello";
+
+arr.forEach(function (element, index) {
+	console.log(element);				<span class="nota">// logs "3", "5", "7"</span>
+	console.log(index);				<span class="nota">// logs "0", "1", "2"</span>
+});
+
+</pre>
+
+<p>
+Come si può vedere il valore della proprietà <q>foo</q> non viene restituito. In tal caso si ricorre a <b>Object.keys()</b> 
+</p>
+<pre>
+Object.keys(arr).forEach(function (element, index) {
+	console.log(arr[element]);			<span class="nota">// logs "3", "5", "7", "hello"</span>
+	console.log(arr[index]);			<span class="nota">// logs "3", "5", "7"</span>
+});
+</pre>
+
+<h2>Iterazione di una lista di elementi del DOM</h2>
+
+<p>
+L'esempio seguente aggiunge una classe ('read') ai discendenti di un elemento &lt;article&gt; 	
+</p>
+<pre>
+let articleParagraphs = document.querySelectorAll("article > p");
+
+for (let paragraph of articleParagraphs) {
+	paragraph.classList.add("read");
+}
+
+</pre>
+
+
+<h2>Funzione Fibonacci</h2>
+
+<pre>
+function* fibonacci() {					<span class="nota">funzione generatore </span>	
+	let [prev, curr] = [0, 1];
+	for (;;) {
+		[prev, curr] = [curr, prev + curr];
+		yield curr;
+	}
+}
+
+for (let n of fibonacci()) {
+	if (n > 1000)					<span class="nota">blocca la sequenza a 1000</span>
+		break;
+	print(n);
+}
+
+</pre>
+
+
+
+<script type="text/javascript">
+
+/*
+let arr = [ 3, 5, 7 ];
+arr.foo = "hello";
+
+for(let i in arr){
+	console.log(i);
+}
+*/
+
+// for-of_forEach.html
+
+</script>
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+
+
+
+
+
+</body>
+</html>

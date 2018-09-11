@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>bind, call e apply </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(20,150,30); font-weight:bold; background:rgb(230,230,230); padding:10px; }
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(100,150,255);}
+.scuro{color:#333;}
+tt, em{color:#6a9999}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+<p>
+JavaScript ha tre particolari funzioni <q>built-in</q> (interne) di particolare interesse che sono: <b>call(), apply()</b> e <b>bind()</b>
+</p>
+
+
+<h1 id="callFunction" >call()</h1>
+
+<p>
+Come si intuisce dal nome il metodo <q>call()</q> chiama una funzione in cui è possibile passare dei parametri. Il primo argomento fà riferimento ad un oggetto da utilizzare mentre i restanti argomenti avranno una relazione con l'oggetto di riferimento. <a href="Prototype.html#call">Alcuni esempi sono qui</a> ma vediamone altri
+</p>
+<pre>
+function fruttiBuoni() {
+    console.log(this.fruttoPreferito);
+}
+
+var tropicale = {fruttoPreferito: 'guanabana'};
+var italiano =  {fruttoPreferito: 'anguria'};
+<span class="azzurro">
+fruttiBuoni();						<span class="nota">// Undefined</span>	
+fruttiBuoni.call(tropicale);				<span class="nota">// guanabana</span>
+fruttiBuoni.call(italiano);				<span class="nota">// anguria</span>
+</span>	
+<span class="grigio">oppure</span>
+
+function frutti(){
+	return this.mela + this.pera + this.ananas;
+}; 	
+
+var spesa = {'mela':2.50, 'pera':1.90, 'ananas':3.85};
+var totaleSpesa = frutti.call(spesa);
+<span class="azzurro">
+console.log(totaleSpesa);				<span class="nota">// 8.25</span>
+</span>
+</pre>
+
+<p>anche il seguente esempio è abbastanza comune</p>
+<pre>
+function numeri(primo, secondo){
+	this.primo = primo;
+	this.secondo = secondo;
+	return this.primo + this.secondo;
+}; 
+
+var somma = numeri.call(this, 50, 20);
+<span class="azzurro">
+console.log(somma);					<span class="nota">// 70</span>
+</span>
+</pre>
+
+
+
+
+<p>
+Il seguente è un'esempio con il quale grazie al metodi call() riusciamo a sfruttare delle funzioni native di un oggetto
+</p>
+<pre>
+function unioneArguments(a, b, c) {
+	var unisci = arguments.join('-');				<span class="nota">darà errore perchè 'arguments' non contiene un metodo 'join' </span>	
+	console.log(unisci);
+}
+<span class="azzurro">
+unioneArguments(1, 4, 9);						<span class="nota">// "arguments.join" is not a function</span>	
+</span>	
+<span class="grigio">come sappiamo 'join' è un metodo di 'Array' pertanto  </span>	
+
+function unioneArguments(a, b, c) {
+	var unisci = Array.prototype.join.call(arguments, '-');		<span class="nota">con call() risolviamo il problema</span>
+	console.log(unisci);
+}
+<span class="azzurro">
+unioneArguments(1, 4, 9);						<span class="nota">// 1-4-9</span>	
+</span>
+</pre>
+
+
+<h1>apply()</h1>
+
+<p>
+Il metodo <q>apply()</q> è simile al precedente metodo <q>call()</q>, la differenza sta nel fatto che mentre in <q>call()</q> gli argomenti passati sono separati da una virgola  in <q>apply()</q> sono contenuti in un array (tranne il primo). <a href="Prototype.html#apply">Alcuni esempi sono qui</a> ma vediamone altri. <br />
+Il seguente è un esempio che fa uso di <q>apply</q> per unire funzioni con gli stessi argomenti
+</p>
+<pre>
+function doStuff(a, b, c) {
+	doMoreStuff.apply(this, arguments);				<span class="nota">da ricordare che 'arguments' è un array</span>			
+}
+
+function doMoreStuff(a, b, c) {
+	console.log(a, b, c);
+}
+<span class="azzurro">
+doStuff('carrot', 'star', 'spatula');					<span class="nota">// carrot star spatula</span>
+</span>
+
+</pre>
+
+
+
+<h1>bind( )</h1>
+<span class="azzurro">fun.bind(thisArg[, arg1[, arg2[, ...]]])</span>
+<p>
+E' un metodo che cra una nuova funzione che, quando chiamata, ha il suo valore di <tt>this</tt> impostato al valore dell'argomento passato (<em>thisArg</em>). <br /> Il metodo <tt>bind</tt> è stato aggiunto nella 5° edizione ECMA-262 ed è supportato nei nuovi browser; per IE solo dalla versione 9. Per i più vecchi di IE c'è un polyfill che per quanto mi riguarda è efficace in IE 8 
+</p>
+<pre>
+var x = 9; 
+var module = {
+	x: 81,
+	getX: function() { return this.x; }
+};
+<span class="azzurro">
+module.getX();						<span class="nota">// restituisce 81</span>
+</span>
+var getX = module.getX;
+<span class="azzurro">getX();							<span class="nota">// restituisce 9 perchè 'this' si riferisce all'oggetto globale</span> 
+</span>
+<span class="scuro">Ora con l'uso di <b>bind</b> si crea una nuova funzione in cui 'this' è quello originario di 'module' </span>	
+var boundGetX = getX.bind(module);
+<span class="azzurro">
+boundGetX();						<span class="nota">// restituisce 81</span>
+</span>
+</pre>
+
+<p>
+Riprendendo l'esempio, visto sopra con <q>call()</q>, della funzione "fruttiBuoni()" collegata agli oggetti "tropicale" e "italiano" con l'uso di <q>bind()</q> avremo 
+</p>
+
+<pre>
+...
+
+var fruttoPreferitoItaliano = fruttiBuoni.bind(italiano);
+var fruttoPreferitotropicale = fruttiBuoni.bind(tropicale);
+<span class="azzurro">
+fruttoPreferitoItaliano();				<span class="nota">// anguria</span>
+fruttoPreferitotropicale();				<span class="nota">// guanabana</span>
+</span>
+
+</pre>
+
+
+
+<p>Un'altro esempio con gli array</p>
+<pre>
+function list() {
+	return Array.prototype.slice.call(arguments);
+}
+
+var list1 = list(1, 2, 3);				
+<span class="azzurro">console.log(list1);					<span class="nota">// restituisce l'array [1, 2, 3]</span>
+</span>
+var leadingThirtysevenList = list.bind(undefined, 37);		
+<span class="azzurro">var list2 = leadingThirtysevenList();			<span class="nota">// restituisce l'array [37]</span>
+</span>
+<span class="azzurro">var list3 = leadingThirtysevenList(1, 2, 3);		<span class="nota">// restituisce l'array [37, 1, 2, 3]</span>
+</span>
+<span class="grigio">Osservando il risultato di 'lista3' si nota che il valore assegnato con bind alla variabile 'lista2'(37) lo ha tenuto in memoria </span>
+</pre>
+
+
+<h3>bind con setTimeout  </h3>
+
+<p>
+Il metodo <q>bind()</q> è utile quando si vuole creare funzioni di callback con argomenti che vengono richiamate. 
+</p>
+
+<pre>
+function logValue(value) {
+	console.log('i = ' + value);
+}
+<span class="grigio">Esempio senza bind</span>	 
+for (var i = 0; i &lt; 3; i++) {
+	setTimeout(function() {
+		logValue(i);
+	}, i * 1000);
+}
+<span class="nota">// restituisce "i = 3", "i = 3", "i = 3" (non è questo che si desidera)  </span>
+
+<span class="grigio">Esempio con bind</span>	
+for (var i = 0; i &lt; 3; i++) {
+	setTimeout(logValue.bind(this, i), i * 1000);	 
+}
+<span class="nota">// restituisce i = 0; i = 1; i = 2; (il risultato desiderato) </span>
+</pre>
+
+
+<p>Un'altro esempio più complesso </p>
+
+<pre>
+function LateBloomer() {
+	this.petalCount = Math.ceil( Math.random() * 12 ) + 1;		<span class="nota">// massimo 13</span>
+}
+
+<span class="grigio">declare bloom after a delay of 1 second</span>
+LateBloomer.prototype.bloom = function() {
+	window.setTimeout( this.declare.bind( this ), 1000 );
+//	window.setTimeout( this.declare( this ), 1000 );		<span class="nota">// sembra che vada bene anche così senza il metodo 'bind'</span>
+};
+
+LateBloomer.prototype.declare = function() {
+	console.log('I am a beautiful flower with ' + this.petalCount + ' petals!');
+};
+
+var t = new LateBloomer();
+<span class="azzurro">t.declare();					<span class="nota">// I am a beautiful flower with x petals!</span>
+</span>
+<span class="grigio">Il risultato cambia numero di petali senza mai superare il 13</span>
+</pre>
+
+<p>
+Il seguente è un esempio che mostra come aggiungere argomenti quando si usa <q>bind</q> 
+</p>
+
+<pre>
+function greet(me, you) {
+	console.log('Hi, I\'m ' + me + '. Nice to meet you, ' + you + '!');
+}
+
+var willGreet = greet.bind(this, 'Will');
+<span class="azzurro">
+willGreet('Joni');				<span class="nota">// "Hi, I'm Will. Nice to meet you, Joni!"</span>
+willGreet('Mike');				<span class="nota">// "Hi, I'm Will. Nice to meet you, Mike!"</span>
+</span>
+
+<span class="grigio">Come potrei fare anche</span>
+var willGreet = greet.bind(this, 'Gianni', 'Maria');
+<span class="azzurro">
+willGreet();					<span class="nota">// "Hi, I'm Gianni. Nice to meet you, Maria!"</span>
+</span>
+</pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+//##### Polyfill 'bind' x vecchi browser ##### (funziona in IE 8)
+
+if (!Function.prototype.bind) {
+	Function.prototype.bind = function (oThis) {
+		if (typeof this !== "function") {
+// closest thing possible to the ECMAScript 5 internal IsCallable function
+			throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+		}
+
+
+		var aArgs = Array.prototype.slice.call(arguments, 1), 
+		fToBind = this, 
+		fNOP = function () {},
+		fBound = function () {
+		return fToBind.apply(this instanceof fNOP && oThis
+										? this
+										: oThis,
+										aArgs.concat(Array.prototype.slice.call(arguments)));
+		};
+
+		fNOP.prototype = this.prototype;
+		fBound.prototype = new fNOP();
+
+		return fBound;
+	};
+}
+//##### Polyfill 'bind' #####
+
+/*
+var x = 9; 
+var module = {
+	x: 81,
+	getX: function() { return this.x; }
+};
+
+console.log(module.getX());
+
+var getX = module.getX;
+console.log(getX());				
+
+var boundGetX = getX.bind(module);
+console.log(boundGetX());
+*/
+
+/*
+function list() {
+  return Array.prototype.slice.call(arguments);
+}
+
+var list1 = list(1, 2, 3); // [1, 2, 3]
+console.log(list1);
+
+var leadingThirtysevenList = list.bind(undefined, 37);
+//var leadingThirtysevenList = list(undefined, 37);
+var list2 = leadingThirtysevenList(); // [37]
+console.log(list2);
+
+var list3 = leadingThirtysevenList(1, 2, 3);
+console.log(list3);
+*/
+
+function LateBloomer() {
+	this.petalCount = Math.ceil( Math.random() * 12 ) + 1;		// massimo 13
+}
+
+// declare bloom after a delay of 1 second
+LateBloomer.prototype.bloom = function() {
+//	window.setTimeout( this.declare.bind( this ), 1000 );
+	window.setTimeout( this.declare( this ), 1000 );
+};
+
+LateBloomer.prototype.declare = function() {
+	console.log('I am a beautiful flower with ' + this.petalCount + ' petals!');
+};
+
+var t = new LateBloomer();
+t.declare();
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br /><br /><br /><br />
+
+
+
+
+
+
+
+
+
+</body>
+</html>

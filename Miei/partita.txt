@@ -1,0 +1,15 @@
+Giocatore 1 => 0 - 5 - 15
+Giocatore 1 => 0 - 5 - 30
+Giocatore 1 => 0 - 5 - 15
+Partita: Mik - Jon
+Mik => 0 - 5 - 30
+Mik => 0 - 5 - 40
+Mik => 0 - 6 - 0
+Mik => 0 - 6 - 1
+Mik => 0 - 6 - 2
+Mik => 0 - 6 - 3
+Jon => 0 - 6 - 1
+Jon => 0 - 6 - 2
+Mik => 0 - 6 - 4
+Jon => 0 - 6 - 3
+Mik => 0 - 6 - 5

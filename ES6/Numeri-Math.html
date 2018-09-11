@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Numeri e Math  </title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css" /> 
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+<h4>ES6 ha introdotto nuovi metodi interni sui numeri e su Math</h4>
+
+
+<h1>Numeri </h1>
+
+
+<h3>Number.isFinite</h3>
+
+<pre>
+Number.isFinite(Infinity)				<span class="nota">// false</span>
+Number.isFinite(-Infinity)				<span class="nota">// false</span>
+Number.isFinite(NaN)					<span class="nota">// false</span>
+Number.isFinite(123)					<span class="nota">// true</span>
+Number.isFinite('123')					<span class="nota">// false</span>
+<span class="grigio">mentre</span>	
+isFinite('123')						<span class="nota">// true</span>
+</pre>
+
+
+<h3>Number.isInteger(number)</h3>
+
+
+<pre>
+Number.isInteger(-14)					<span class="nota">// true</span>
+Number.isInteger(25)					<span class="nota">// true</span>
+Number.isInteger(25.4)					<span class="nota">// false</span>
+Number.isInteger('25')					<span class="nota">// false</span>
+Number.isInteger(NaN)					<span class="nota">// false</span>
+Number.isInteger(Infinity)				<span class="nota">// false</span>
+</pre>
+
+
+
+
+<h1>Math</h1>
+
+<h3>Math.sign(x)</h3>
+
+<p>Restituisce il segno di un numero a seconda che esso sia negativo o positivo</p>
+
+<pre>
+Math.sign(-8)						<span class="nota">// -1</span>
+Math.sign(8)						<span class="nota">// 1</span>
+Math.sign(0)						<span class="nota">// 0</span>
+Math.sign(NaN)						<span class="nota">// NaN</span>
+Math.sign(Infinity)					<span class="nota">// 1</span>
+Math.sign(-Infinity)					<span class="nota">// -1</span>
+</pre>
+
+
+<h3>Math.trunc(x)</h3>
+
+<p>Rimuove la frazione decimanle da un numero </p>
+
+<pre>
+Math.trunc(3.1)						<span class="nota">// 3</span>
+Math.trunc(3.8)						<span class="nota">// 3</span>
+Math.trunc(-3.1)					<span class="nota">// -3</span>
+Math.trunc(-3.8)					<span class="nota">// -3</span>
+</pre>
+
+
+<h3>Math.cbrt(x)</h3>
+
+<p>Restituisce la radiuce cubica di un numero</p>
+
+<pre>
+Math.cbrt(8)						<span class="nota">// 2</span>
+</pre>
+
+<br />
+
+<h4>Altri metodi sono:</h4>
+
+<dl>
+	<dd>Math.expm1(x)</dd>
+	<dd> Math.log1p(x)</dd>
+	<dd>Math.log2(x)</dd>
+	<dd>Math.log10(x)</dd>
+	<dd>Math.fround(x)</dd>
+	<dd>Math.imul(x, y)</dd>
+</dl>
+
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+
+
+
+</body>
+</html>
+

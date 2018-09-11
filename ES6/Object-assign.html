@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title> Object.assign() </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+<style type="text/css">
+
+</style>
+<script type="text/javascript" src="allegati/arrays-polyfill.js"></script>
+</head>
+<body>
+
+
+<h1>Object.assign()</h1>
+
+<p>
+Il metodo <q>Object.assign</q> è utilizzato per copiare tutte le proprietà enumerabili da uno (o più) oggetti in un'altro. <br />
+E' un metodo che fa parte della versione ES6. <span class="nota">C'è il polyfill (allegati/arrays-polyfill.js).</span> 
+</p>
+
+<pre>
+Object.assign(target, ...sources)
+</pre>
+
+<pre>
+var obj = { a: 1 };
+var copy = Object.assign({}, obj);			<span class="nota">// esegue una copia dell'oggetto 'obj'</span>
+<span class="grigio">Oppure</span>
+var copy = Object.assign(obj);				<span class="nota">// uguale al precedente, esegue una copia dell'oggetto 'obj'</span>
+
+<span class="azzurro">console.log(copy);					<span class="nota">// { a: 1 }</span>
+console.log(copy.a);					<span class="nota">// 1</span>
+</span>
+obj.a = 5						<span class="nota">// modifica del valore di 'a'</span>
+<span class="azzurro">
+console.log(obj.a);					<span class="nota">// 5 </span>
+console.log(copy.a);					<span class="nota">// 1 (la modifica non ha effetto sul nuovo oggetto creato)</span>
+</span>
+</pre>
+
+<p>
+da quello che si nota è che la modifica apportata alla proprietà 'a' dell'oggetto 'obj' non ha effetto sull'oggetto 'copy' creato col metodo 'assign'. Quindi si può dire che non si tratta di un clone 
+</p>
+
+<p>oppure</p>
+
+<pre>
+var obj = {
+	foo: 1,
+	bar: function() {
+		return 2;
+	},
+	get boom(){
+		return 3
+	}
+}
+
+var copy = Object.assign({}, obj); 
+<span class="azzurro">
+console.log(copy.foo);					<span class="nota">// 1</span>
+console.log(copy.bar());				<span class="nota">// 2</span>
+console.log(copy.boom);					<span class="nota">// 3</span>
+</span>
+</pre>
+
+<p>
+L'esempio seguente mostra una <b>fusione di oggetti</b>
+</p>
+
+<pre>
+var obj1 = { a: 1 };
+var obj2 = { b: 2 };
+
+Object.assign( obj1, obj2);				<span class="nota">all'oggetto 'obj1' vengono aggiunte le proprietà di obj2</span>
+<span class="azzurro">
+console.log(obj1);					<span class="nota">// { a: 1, b: 2 }</span>
+console.log(obj2);					<span class="nota">// { b: 2 }</span>
+</span>
+</pre>
+
+<p>oppure</p>
+
+<pre>
+var o1 = { a: 1 };
+var o2 = { b: 2 };
+var o3 = { c: 3 };
+
+var obj = Object.assign(o1, o2, o3);
+<span class="azzurro">
+console.log(obj);					<span class="nota">// {a: 1, b: 2, c: 3}</span>
+console.log(o1);  					<span class="nota">// {a: 1, b: 2, c: 3}</span>
+console.log(o2);					<span class="nota">// {b: 2}</span>
+console.log(o3);					<span class="nota">// {c: 3}</span>
+</span>
+</pre>
+
+<p>
+Oltre ad ottenere un nuovo oggetto (obj) che contiene tutte le proprietà degli altri oggetti c'è da da notare l'oggetto 'o1' che rappresenta il primo argomento del metodo 'assign'; in altre parole esso rappresenta l'oggetto target, a cui vengono passati gli oggetti 'o2' e 'o3' e quindi diventa come il nuovo oggetto 'obj'
+</p>
+
+
+<p>
+L'esempio seguente mostra che le <b>proprietà ereditate e quelle che non sono enumerabili non vengono copiate</b>
+</p>
+
+<pre>
+var obj = Object.create({ foo: 1 }, {			<span class="nota">foo è una proprietà ereditata (?)</span>
+	bar: {
+		value: 2				<span class="nota">bar per default non è enumerabile</span>
+	},
+	baz: {
+		value: 3,
+		enumerable: true			<span class="nota">baz ora è enumerabile</span>
+	}
+});
+
+var copy = Object.assign({}, obj);
+<span class="azzurro">
+console.log(copy);					<span class="nota">// { baz: 3 }</span>
+</span>
+</pre>
+
+<p>
+L'esempio seguente mostra che un eccezione può interrompere il processo di assegnamento
+</p>
+
+<pre>
+var obj = { a: 1 };
+
+Object.assign( obj, {c:5, d:12, a:4});			<span class="nota">a 'obj' vengono passate nuove proprietà tra cui 'a'</span>
+
+console.log(obj);					<span class="nota">//  { a: 4, c: 5, d: 12 }</span>
+</pre>
+
+<p>
+da quello che si nota è che la proprietà 'a' che aveva un valore di 1 assume il nuovo valore pasatogli di 4. <br />
+Altra cosa è se utilizziamo il metodo <q>defineProperty()</q>
+</p>
+
+<pre>
+var target = Object.defineProperty({}, 'foo', {
+	value: 1,
+	writeable: false
+});					
+
+Object.assign(target, { bar: 2 }, { foo2: 3, foo: 3, foo3: 3 }, { baz: 4 });			<span class="nota">errore</span>
+</pre>
+
+<p>
+L'esempio di sopra produrrà errore perchè si è definito un valore per la proprietà 'foo' che non è riscrivile. Produrrebbe errore anche se definiamo 'foo' come riscrivibile
+</p>
+
+<pre>
+var target = Object.defineProperty({}, 'foo', {
+	value: 1,
+	writeable: true
+});					
+
+Object.assign(target, { bar: 2 }, { foo2: 3, foo: 3, foo3: 3 }, { baz: 4 });			<span class="nota">errore</span>
+</pre>
+
+<p>
+Il seguente è un esempio interessante:
+</p>
+
+<pre>
+var animal = {
+	animalType: 'animal',
+  
+	describe () {
+		return `An ${this.animalType}, with ${this.furColor} fur, 
+		${this.legs} legs, and a ${this.tail} tail.`;
+  }
+};
+
+var mouse = Object.assign(Object.create(animal), {
+	animalType: 'mouse',
+	furColor: 'brown',
+	legs: 4,
+	tail: 'long, skinny'
+});
+
+var m = mouse;
+<span class="azzurro">
+console.log(m.describe());					</span>
+<span class="nota">// 
+"An mouse, with brown fur, 
+		4 legs, and a long, skinny tail."
+</span>
+</pre>
+<p>lo stesso risultato lo otteniamo in quest'altro modo: </p>
+
+<pre>
+let animal = {
+	animalType: 'animal',
+ 
+	describe () {
+		return `An ${this.animalType} with ${this.furColor} fur, 
+			${this.legs} legs, and a ${this.tail} tail.`;
+	}
+};
+ 
+let mouseFactory = function mouseFactory () {
+	return Object.assign(Object.create(animal), {
+		animalType: 'mouse',
+		furColor: 'brown',
+		legs: 4,
+		tail: 'long, skinny'
+	});
+};
+
+let mickey = mouseFactory();
+<span class="azzurro">
+console.log(mickey.describe());	</span>
+</pre>
+
+<p>volendo prolungare il discoro aggiungendo un'altra funzione: </p>
+
+<pre>
+let mouseFactory = function mouseFactory () {
+
+  let secret = 'secret agent';
+
+	return Object.assign(Object.create(animal), {
+		animalType: 'mouse',
+		furColor: 'brown',
+		legs: 4,
+		tail: 'long, skinny', 
+
+		professione (){
+			return secret;
+		}
+	});
+
+};
+let mickey = mouseFactory();
+<span class="azzurro">
+console.log(mickey.professione());			<span class="nota">// secret agent</span>
+</span>
+
+</pre>
+
+
+
+<p>lo stesso risultato col metodo <q>call</q> lo otteniamo in questo modo: </p>
+
+<pre>
+function animal (){
+	var animalType = 'animal';
+
+	return `An ${this.animalType}, with ${this.furColor} fur, 
+      ${this.legs} legs, and a ${this.tail} tail.`;
+
+};
+
+var prop = { animalType: 'mouse', furColor: 'brown', legs: 4, tail: 'long, skinny' };
+
+var k = animal.call(prop);
+<span class="azzurro">
+console.log(k);	</span>
+</pre>
+
+
+<script type="text/javascript">
+
+function animal (){
+	var animalType = 'animal';
+
+	return `An ${this.animalType}, with ${this.furColor} fur, 
+      ${this.legs} legs, and a ${this.tail} tail.`;
+
+};
+
+var prop = { animalType: 'mouse', furColor: 'brown', legs: 4, tail: 'long, skinny' };
+
+var k = animal.call(prop)
+console.log(k);
+
+
+/*
+let animal = {
+  animalType: 'animal',
+ 
+  describe () {
+    return `An ${this.animalType} with ${this.furColor} fur, 
+      ${this.legs} legs, and a ${this.tail} tail.`;
+  }
+};
+ 
+let mouseFactory = function mouseFactory () {
+  return Object.assign(Object.create(animal), {
+    animalType: 'mouse',
+    furColor: 'brown',
+    legs: 4,
+    tail: 'long, skinny'
+  });
+};
+
+let mickey = mouseFactory();
+*/
+
+
+
+</script>
+
+
+
+
+
+<div id="jk"></div> 
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>referrer</title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(50,150,50);}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+
+</style>
+<script type="text/javascript" src="jQuery-1.6.min.js"></script>
+</head>
+<body>
+
+
+<h1>document.referrer</h1>
+
+
+<p class="nota">La proprietà <q>referrer</q> contiene l'URL della pagina da cui si è arrivati. Se l'URL è scritto direttamente nella barra degli indirizzi allora la proprietà non conterrà alcun valore. Provare ad aprire una scheda e a digitare "http://localhost/JavaScript/referrer.html". Cliccando sul link "Go back" non succederà nu	lla </p>
+
+<script type="text/javascript">
+
+document.write("<a href='",document.referrer,"'>Go back</a>");
+</script>
+
+<br />
+<br />
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+var arrivo = document.referrer;
+//alert(arrivo);
+//var arrivo = "http://www.google.it";
+
+//$('#collegamento').attr('href', arrivo);	// assegnazione al collegamento dell'attributo "href"
+$('#collegamento').prop('href', arrivo);		// utilizzo del metodo "prop" anzichè del metodo "attr" 
+
+
+}); // chiude ready 
+</script>
+
+
+<a href="" id='collegamento'>Vai indietro</a>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8">
+    <title>Google Maps JavaScript API v3 Example: Directions Complex</title>
+
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+#map_canvas { position:relative; margin:20px; width:60%; height:60%;  }
+#directionsPanel{position:relative; width:80%; margin:20px 10px; border:3px double #00F; }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+
+</style>
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=it"></script>
+<script type="text/javascript">
+  var directionDisplay;
+  var directionsService = new google.maps.DirectionsService();
+  var map;
+
+  function initialize() {
+    directionsDisplay = new google.maps.DirectionsRenderer(); // creazione di un oggetto della classe "DirectionsRenderer"
+    var chicago = new google.maps.LatLng(41.850033, -87.6500523);
+    var bari = new google.maps.LatLng(41.126000, 16.868378);
+    var myOptions = {
+      zoom:7,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      center: bari
+    }
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    directionsDisplay.setMap(map);	// 'setMap' è un metodo della classe "DirectionsRenderer" (riga 23) e specifica la mappa per la quale le direzioni devono essere restituite
+    directionsDisplay.setPanel(document.getElementById("directionsPanel"));	// descrizione del percorso impostato nel div
+  }	// chiude initialize
+  
+  function calcRoute() {
+    var start = document.getElementById("start").value;
+    var end = document.getElementById("end").value;
+    var request = {
+        origin:start, 
+        destination:end,
+//        travelMode: google.maps.DirectionsTravelMode.DRIVING	// Non so perchè funziona ma sembra sbagliato
+        travelMode: google.maps.TravelMode.DRIVING
+    };
+	// Invio di query a Google server attraverso il metodo "route" a cui vengono passate "request" e una funzione di callback richiesta per delineare che il servizio è stato reso con successo 
+    directionsService.route(request, function(response, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+        directionsDisplay.setDirections(response);	// "directionDisplay" è un oggetto della classe "DirectionsRenderer" (riga 23)
+      }
+    });
+  }
+</script>
+
+
+  </head>
+  <body onload="initialize()">
+    <div id="control">
+      <strong>Partenza:</strong>
+      <select id="start" onchange="calcRoute();">
+		<option value="Bari, Italia">Bari</option>
+		<option value="Lecce, Italia">Lecce</option>
+		<option value="Brindisi, Italia">Brindisi</option>
+		<option value="Roma, Italia">Roma</option>
+		<option value="Matera, Italia">Matera</option>
+	</select>
+      <strong>Destinazione:</strong>
+      <select id="end" onchange="calcRoute();">
+		<option value="Bari, Italia">Bari</option>
+		<option value="Lecce, Italia">Lecce</option>
+		<option value="Brindisi, Italia">Brindisi</option>
+		<option value="Roma, Italia">Roma</option>
+		<option value="Matera, Italia">Matera</option>
+	</select>
+
+    </div>
+
+    <div id="map_canvas"></div>
+    <div id="directionsPanel"></div>
+  </body>
+</html>
+
+

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>caricare un js esterno</title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); }
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+
+#kok{ 
+width:300px; height:100px; border:1px solid; background:#fff; margin:31px; padding-left:5px;  
+}
+
+
+</style>
+
+<script type="text/javascript" src="load-txt.js"></script>
+
+<script type="text/javascript">
+//document.addEventListener("DOMContentLoaded", function(){			// Non c'è ne bisogno 
+var indirizzo ="prova.txt";						
+var xDoc = loadDoc(indirizzo,"kok");				// la funzione "loadDoc()" sta nel file esterno "load-txt.js"
+//}); // DOMContentLoaded
+</script>
+
+</head>
+<body>
+
+<h1>Caricare script da file js esterno</h1>
+
+
+<div id="kok"></div> 
+
+
+
+
+</body>
+</html>

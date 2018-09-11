@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Sicurezza</title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(20,150,30); font-weight:bold; background:rgb(235,245,255); padding:10px;}
+
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(100,150,255);}
+.rosso{color:red;}
+.scuro{color:#333;}
+tt, em{color:#6a9999}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+
+</style>
+</head>
+<body>
+
+<h2>Same Origin Policy</h2>
+<p> 
+Prima di parlare della <tt>Content Security Policy</tt> è doveroso capire cosa sia la <tt>Same Origin Policy</tt>. <br />
+In informatica il <b>Same-Origin Policy</b> è un'importante concetto sulla sicurezza dei linguaggi di programmazione. Il concetto fondamentale è basato sul fatto che gli script eseguiti sui documenti debbano far parte dello stesso sito e non provenienti da altri locazioni. Il controllo viene fatto considerando tre parametri: il <em>protocollo</em>, l'<em>host</em> (dominio) e il numero di <em>porta</em>. Lo stesso discorso è applicato nel caso degli <b>XMLHttpRequest</b> e dei file <b>robots.txt</b>.  <br />
+In teoria questa funzionalità sembrerebbe ottimale ma nella realtà invece contiene delle falle. Infatti gli hackers hanno trovato il modo di evitare questo meccanismo attraverso delle tecniche varie. Una delle più utilizzate è quella del <b>Cross-site scripting</b> (XSS) che è grazie alla quale un hacker può iniettare degli script dannosi all'interno di pagine web.
+</p>
+
+<h1>Content Security Policy</h1>
+<p>
+La <b>Content Security Policy</b> (CSP) è una nuova funzionalità che permette di definire una lista di risorse che possono essere caricate in un documento tramite richiesta HTTP. Per cui anche se un hacker trova una possibilità, una falla, un buco per iniettare codice dannoso il browser bloccherà l'esecuzione di tale script perchè proveniente da una locazione non permessa. <br />
+Le cosidette direttive vengono inserite all'interno di un <em>header</em> 
+<pre>
+Content-Security-Policy: script-src 'self' https://apis.google.com
+<span class="nota">Semplicemente questa direttiva indica al browser di caricare script soltanto dal proprio <tt>host</tt> e dal sito di google.</span>
+</pre>
+E' supportato nei browser più moderni. Per IE dalla versione 10 che al momento richiede il prefisso <b>X</b> ( X-Content-Security-Policy). <span class="nota"> Se il browser non lo supporta lo ignorerà</span>
+</p>
+
+<h3>Inserimento nel tag 'meta'</h3>
+
+<pre>
+&lt; meta http-equiv="Content-Security-Policy" content="script-src 'self' ecc... " &gt;
+
+</pre>
+
+<h3>Direttive</h3>
+<p>
+L'header del <tt>Content Security Policy</tt> può essere composto da una o più direttive (separate da un punto e virgola) che definiscono le specifiche per il download delle risorse. <br />
+Le direttive sono le seguenti:
+
+<dl>
+	<dd><b>default-src</b>: definisce delle risorse di default</dd>
+	<dd><b>script-src</b>: definisce risorse per gli script </dd>
+	<dd><b>object-src</b>: definisce risorse per gli elementi &lt;object&gt;, &lt;embed&gt; e &lt;applet&gt; </dd>  
+	<dd><b>img-src</b>: definisce le risorse per il caricamento delle immagini </dd>
+	<dd><b>media-src</b>: definisce le risorse per il gli elementi &lt;video&gt; e &lt;audio&gt;    </dd>
+	<dd><b>frame-src</b>: definisce le risorse per gli elementi &lt;frame&gt; e &lt;iframe&gt;    </dd>
+	<dd><b>font-src</b>: definisce risorse per il caricamneto di web font con <q>@font-face</q> </dd>
+	<dd><b>connect-src</b>: definisce valide risorse per  XMLHttpRequest, WebSocket and connessioni EventSource </dd>
+	<dd><b>style-src</b>: definisce le risorse da cui caricare i fogli di stile</dd>
+	<dd><b>report-uri</b>: vedere spiegazioni (Recupero tentativi dannosi e Report-Only)</dd>
+	<dd><b>sandbox</b>: vedere spiegazioni più avanti</dd>
+</dl>	
+Per default le direttive sono <em>completamente aperte</em> nel senso che se non si specifica una politica per una direttiva è come se fosse valida qualsiasi risorsa: per esempio se non si specifica nulla per la direttiva <tt>img-src</tt> vorrà dire che saranno ammesse tutte le immagini provenienti da qualsiasi sito. <br />
+Questo comportamento di default  è possibile cambiarlo utilizzando la direttiva <b>default-src</b>. Se la impostiamo per esempio a 
+<pre>
+default-src https://example.com
+</pre>
+vorrà dire che le risorse ammesse potranno essere caricate soltanto dal sito <q>example.com</q> a meno che non si specificano altre direttive. <br />
+</p>
+<p>
+Come detto su, ogni direttiva deve essere obbligatoriamente separata da un'altra da un punto e virgola ( ; ), ma le risorse di uno specifico tipo per una direttiva non vanno separate da un punto e virgola; per esempio se scriviamo 
+<pre>
+script-src https://host1.com;  script-src https://host2.com;			
+<span class="nota">la seconda direttiva ( che è dello stesso tipo della prima) verrà ignorata</span>
+</pre>
+pertanto è corretto scrivere 
+<pre>
+script-src  https://host1.com  https://host2.com;
+<span class="nota">semplicemente separare le due sorgenti da uno spazio vuoto e alla fine porre un punto e virgola</span>
+</pre>
+A riguardo della direttiva <b>sandbox</b> c'è da dire che è differente dalle altre in quanto essa imposta una politica sulle azioni che la pagina deve prendere piuttosto che sulle risorse da caricare. Se tale direttiva è presente la pagina sarà considerata come se caricata in un <em>iframe</em> con attributo <tt>sandbox</tt>. Se la direttiva la si lascia vuota implicitamente si rendono effettive tutte le restrizioni quali il blocco dei plugin delle pop-up degli script ecc.. oppure si può definire una per una  con la seguente sintassi: <q> allow-scripts</q>, <q>allow-forms</q>, <q>allow-same-origin</q>   
+
+</p>
+
+<h3>Parole chiavi</h3>
+<p>
+Per una maggiore flessibilità c'è la possibilità di usare cinque parole chiavi:
+<dl>
+	<dd><b>*</b></dd>
+	<dd><b>self</b></dd>
+	<dd><b>none</b></dd>
+	<dd><b>unsafe-inline</b></dd>
+	<dd><b>unsafe-eval</b></dd>
+</dl>	
+Queste parole chiavi vanno indicate obbligatoriamente all'interno di <b>virgolette singole ( ' )</b> altrimenti, per esempio, se indicassimo
+<pre>
+script-src self				<span class="nota">sarebbe come dare il permesso di eseguire script dal sito "self" </span>
+</pre>
+Volendo per esempio caricare da un certo sito (https://cdn.example.net) tutte le risorse tranne <tt>frame</tt> o <tt>plugin</tt> si potrebbe scrivere
+<pre>
+Content-Security-Policy: default-src https://cdn.example.net; frame-src 'none'; object-src 'none'
+</pre>
+Oppure se si vuole che tutte le risorse siano caricate soltanto dal proprio sito si può utilizzare la parola chiave <em>self</em>
+<pre>
+default-src  'self'			
+</pre>
+L'uso di * potrebbe venire utile se si vuole dare il permesso alle risorse di subdomini di un dato sito
+<pre>
+*.example.com			
+<span class="nota">permette di caricare risorse da tutti i sottodomini di "example.com" escluso lo stesso "example.com" </span>
+</pre>
+</p>
+
+<h3>Non mettere codice inline </h3>
+<p>
+Risulta chiaro che se con la <em>Content Security Policy</em> ci si può guardare dalle risorse esterne nel momento in cui mettiamo del codice JavaScript all'interno della pagina si da agli hacker la possibilità di iniettare codice dannoso e il bowser in quel caso è inerme non potendo distinguerlo. Quindi la pratica corretta è quella di porre tutto il codice in file esterni e impostare le dovute direttive della CSP. <br />
+Se proprio lo si deve si può in tal caso usare la parola chiave <tt>unsafe-inline</tt> che permette, appunto, l'uso degli &lt;script&gt; inline come del resto quello degli &lt;style&gt; inline. Ma rimane una pratica sconsigliata. 
+<pre>
+script-src 'unsafe-inline' 
+</pre>
+Quando un hacker riesce ad inserire codice malevolo direttamente inline lo fa convertendo del semplice testo inerme in eseguibile utilizzando alcuni vettori fra i quali <em>eval(), new Function(), setTimeout([string], ...), and setInterval([string], ...)</em>, per cui alcune raccomandazioni sono utili quali <br />
+&bull; Analizzare JSON attraverso il <tt>JSON.parse</tt> piuttosto che con <tt>eval</tt> <br />
+&bull; Evitare il <tt>new Function()</tt> che alcune librerie usano per lanciare i loro template dinamicamente ... <br /> 
+&bull; Scrivere  i <tt>setTimeout</tt> o <tt>setInterval</tt> con l'uso di <em>function</em> piuttosto che con stringhe
+<pre>
+<span class="grigio">piuttosto che scrivere </span>
+setTimeout("document.querySelector('a').style.display = 'none';", 10);
+
+<span class="grigio">sarebbe meglio scrivere  </span>
+setTimeout(function () {
+document.querySelector('a').style.display = 'none';}, 10);
+</pre>
+Cosi come per permettere gli script inline si ha la possibilità di permettere gli script <em>eval</em> attraverso la diretiva <tt>script-src</tt>
+<pre>
+script-src: 'unsafe-eval'
+</pre>
+</p>
+
+<h3>Recupero tentativi di attacco</h3>
+<p>
+La CSP da la possibilità attraverso la direttiva <b>report-uri</b> di recuperare un report dell'attaco subito in formato JSON in un file specifico
+<pre>
+Content-Security-Policy: default-src 'self'; ...; report-uri /my_amazing_csp_report_parser;
+
+<span class="grigio">il report sarà all'incirca di questo tipo</span>
+{
+	"csp-report": {
+		"document-uri": "http://example.org/page.html",
+		"referrer": "http://evil.example.com/",
+		"blocked-uri": "http://evil.example.com/evil.js",
+		"violated-directive": "script-src 'self' https://apis.google.com",
+		"original-policy": "script-src 'self' https://apis.google.com; report-uri http://example.org/my_amazing_csp_report_parser"
+	}
+}
+</pre>
+</p>
+
+<h3>Report-Only</h3>
+<p>
+Come primo approccio alla CSP è consigliabile iniziare con l'header <b>Content-Security-Policy-Report-Only</b>. Questa direttiva non impone le restrizione ma semplicemente invierà un report della violazione in uno specificato file. In altre parole è un mezzo per monitorare le vulnerabilità del sito prima di procedere ad impostare una adeguata CSP. 
+<pre>
+Content-Security-Policy-Report-Only: default-src 'self'; ...; report-uri /my_amazing_csp_report_parser;
+</pre>
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br />
+<br /><br /><br />
+
+
+
+
+
+
+</body>
+</html>

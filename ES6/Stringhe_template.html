@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Stringhe in ES6  </title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css" /> 
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+<h1>Stringhe</h1>
+
+<p>ES6 ha introdotto nuovi metodi interni per le <q>Stringhe</q></p>
+
+<h3>startsWith(), endsWith(), includes() e repeat()</h3>
+
+<pre>
+'hello'.startsWith('hell')				<span class="nota">// true</span>
+'hello'.endsWith('ello')				<span class="nota">// true</span>
+'hello'.includes('ell')					<span class="nota">// true</span>
+'doo '.repeat(3)					<span class="nota">// doo doo doo</span>
+</pre>
+
+
+<h1>Template strings</h1>
+
+<p>
+E' un modo di rappresentare o se vogliamo di richiamare le variabili attraverso dei simboli che sono il <em>dollaro</em> ($) e le parentesi graffe {} e racchiudere le espressioni tra virgolette contrarie `` <b>(In windows: Alt + 96 --- in Ubuntu: AltGr + ' ) </b>
+</p>
+
+<pre>
+var x = 1;
+var y = 2;
+var somma = `${ x } + ${ y } = ${ x + y}`;
+<span class="azzurro">
+console.log(somma);						<span class="nota">// "1 + 2 = 3"</span>	
+</span>	
+<span class="grigio">è un altro modo di scrivere</span>	
+
+var somma = x+ ' + ' +y+ ' = ' +(x+y);
+</pre>
+
+<p>Interessante diventa quando si vogliono ottenere stringhe su più righe </p>
+
+<pre>
+var s = `a
+	b
+		c`;
+<span class="azzurro">
+console.log(s);
+<span class="nota">
+"a
+	b
+		c"
+</span>
+</span>
+</pre>
+
+<p>
+Quindi non c'è più bisogno di inserire "\n" per una nuova linea anche perchè non lo è più considerata tale, infatti
+</p>
+<pre>
+var str = String.raw`This is a text
+	with multiple lines.
+	Escapes are not interpreted,
+	\n e \r is not a newline.`;
+<span class="azzurro">
+console.log(str);
+<span class="nota">
+String.raw`This is a text
+	with multiple lines.
+	Escapes are not interpreted,
+	\n e \r is not a newline.`;
+</span></span>
+</pre>
+
+
+<p>Vediamo questo esempio carino</p>
+
+<pre>
+<span class="grigio">// Funzione che ripete un numero (n) di spazi vuoti</span>	
+function ripeteSpazioVuoto(n){
+	return " ".repeat(n);
+}
+
+var bello = "Jon";
+<span class="azzurro">
+console.log(`Ciao ${bello} 
+${ripeteSpazioVuoto(8)}come stai?`);
+</span>
+<span class="grigio">Output:</span><span class="nota">
+Ciao Jon
+        come stai?  
+</span>
+</pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>Personalizzare i controlli  </title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.nota{color:orange;}
+.codice{color:green;}
+
+
+#mappa { position:relative; margin:20px; width:80%; height:80%;  }
+
+</style>
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true">
+</script>
+
+<script type="text/javascript">
+
+function initialize() {
+var myOptions = {	// impostazione delle proprietà dell'oggetto "MapOptions" che è il secondo argomento della classe "Map" 
+zoom: 12,
+center: new google.maps.LatLng(-28.643387, 153.612224),
+mapTypeId: google.maps.MapTypeId.ROADMAP,
+//mapTypeId: google.maps.MapTypeId.ROADMAP,
+
+mapTypeControl: true,	// per prima cosa bisogna impostarlo a 'true' la proprietà "mapTypeControl" dell'oggetto "MapOptions" ...
+mapTypeControlOptions: {	//  ... e poi impostare le proprietà 
+style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,	// 
+
+position: google.maps.ControlPosition.BOTTOM_CENTER,
+//		mapTypeIds: ["TERRAIN", "HYBRID", "ROADMAP","SATELLITE"]	// 	ERRATO
+//mapTypeIds:['roadmap', 'terrain', 'satellite','hybrid']
+mapTypeIds: [google.maps.MapTypeId.SATELLITE, google.maps.MapTypeId.ROADMAP, google.maps.MapTypeId.TERRAIN, google.maps.MapTypeId.HYBRID ],
+// pare che si possano visualizzare soltanto due tipi di mappa (anche se non lo trovato specificato in Google Maps Reference Version 3)
+}, // mapTypeControlOptions
+
+//disableDefaultUI: false,
+draggable: true,	// 
+draggableCursor: "../../Immagini/frecciaAv2.png",		// NON FUNZIONA
+//draggableCursor: "http://www.abcoliodoliva.com/img/frecce/TastoChiusura.png",
+draggingCursor: "../../Immagini/frecciaAv2.png",		// NON FUNZIONA
+//draggingCursor: "http://www.abcoliodoliva.com/img/frecce/TastoChiusura.png",
+
+panControl: true,			// è il cerchietto con le freccette di spostamento della mappa nelle quattro direzioni
+panControlOptions: {
+position: google.maps.ControlPosition.TOP_CENTER
+}, // panControlOptions
+zoomControl: true,		// è la barra dell zoom 
+zoomControlOptions: {
+style: google.maps.ZoomControlStyle.SMALL,		// SMALL -- LARGE (grandezza della barra dello zoom)
+position: google.maps.ControlPosition.RIGHT_CENTER
+}, // zoomControlOptions
+scaleControl: true,		// è la scala (unità di misura)
+scaleControlOptions: {
+position: google.maps.ControlPosition.TOP_RIGHT
+}, // scaleControlOptions
+streetViewControl: true,	// è l'omino che permette di entrare nelle strade 
+streetViewControlOptions: {
+position: google.maps.ControlPosition.RIGHT_BOTTOM
+}, // streetViewControlOptions
+
+} // myOptions
+    var map = new google.maps.Map(document.getElementById("mappa"),
+                                  myOptions);                          
+} // inizialize 
+
+
+
+</script>
+
+</head>
+<!-- <body onload="gs()"> -->
+<body>
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+initialize();
+
+// HYBRID, ROADMAP, SATELLITE, TERRAIN 
+// http://www.abcoliodoliva.com/img/frecce/TastoChiusura.png
+
+/*
+var latlng = new google.maps.LatLng(-34.397, 150.644);
+var myOptions = {
+zoom: 8,
+center: latlng,
+mapTypeId: google.maps.MapTypeId.ROADMAP,
+} // myOptions 
+var map = new google.maps.Map(document.getElementById("mappa"),  myOptions);
+$("#pulsante").click(function(){
+//gs();
+//var divo = $("#mappa");
+//var map = new google.maps.Map(divo,  myOptions);
+
+//var nuove_coord = "41.05036,16.922207";				// ERRATO  
+var nuove_coord = new google.maps.LatLng(41.0449,16.9185);	// GIUSTO 
+
+var nuovo_zoom = 12;
+map.setCenter(nuove_coord);	// 
+map.setZoom(21);
+//alert(map.getCenter());
+}); // click 
+
+*/
+
+}); // chiude ready 
+</script>
+
+
+<div id="mappa"></div>
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

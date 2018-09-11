@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Calcolo Percorso</title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+
+
+#mappa { position:relative; float:left; margin:20px; width:600px; height:500px; border:1px solid; }
+#directionsPanel{position:relative; float:left; margin:20px; width:300px; height:500px; border:1px solid; overflow:auto; }
+div.controllo_panel{position:relative; margin:10px auto; width:95%; padding:10px; border:3px double;}
+
+</style>
+
+<!--
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=it"></script>
+-->	
+
+
+</head>
+<body>
+
+<h3>Calcola Percorso </h3>
+	
+<div class="controllo_panel">
+<p>
+Ottieni informazioni stradali dal punto desiderato alla stazione di Capurso. Puoi ottenerle i due modi: <br />
+- clicca col mouse sulla mappa per stabilire il punto di partenza <br /> 
+- Inserisci il punto di partenza specificando via, civico, città, provincia o stato: 
+<input id="address" size="40" maxlength="100" type="textbox" value=""> &nbsp; <button id="ottieniP">Ottieni Percorso</button>
+<br />
+Puoi scegliere il tipo di percorso &nbsp;
+<select id="mode" onchange="updateMode()">
+	<option value="driving">Percorso Stradale</option>
+	<option value="bicycling">Percorso Ciclabile</option>
+	<option value="walking">Percorso Pedonale</option>
+</select> &nbsp; &nbsp; &nbsp;  &nbsp; 
+
+ <button id="resetta">Reset</button>
+
+
+
+</div><!--controllo_panel-->
+ 
+
+
+<div id="mappa"></div> 
+<div id="directionsPanel"></div> 
+
+
+
+<br />
+<br />
+
+
+
+
+
+<script type="text/javascript">
+// http://lnx.abcoliodoliva.com/CalcolaPercorso-2.html
+
+function initialize() {
+
+	var stazione_Capurso = new google.maps.LatLng(41.049332,16.922861); // 
+//	var stazione_Capurso = "Via Francesco Lattanzio, 63, Capurso, Bari"; // vicino Stazione ferroviaria
+
+	var directionDisplay;
+	var directionsService = new google.maps.DirectionsService();	// creazione oggetto di classe "DirectionsService" 
+	var map;					// inizializzazione variabile oggetto classe "Map"
+	var origin = null;			// inizializzazione variabile punto di partenza  
+	var destination = stazione_Capurso; 
+//	var destination = "Via Casamassima, 43, 70010 Capurso BA, Italia";
+	var markers = [];			// inizializzazione variabile dei marcatori (array)
+	var directionsVisible = false;	// inizializzazione variabile 
+
+	directionsDisplay = new google.maps.DirectionsRenderer();	// creazione oggetto di classe "DirectionsRenderer" 
+
+	directionsDisplay.draggable = true;	// 'draggable' è una proprietà della classe che permette all'utente di modificare il percorso esistente
+
+	var stazione_Capurso = new google.maps.LatLng(41.049394750808794, 16.922303372383112);
+	var myOptions = {
+		zoom:16,
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		center: stazione_Capurso
+	} // 'myOptions'
+
+	map = new google.maps.Map(document.getElementById("mappa"), myOptions);
+	directionsDisplay.setMap(map);	// 'setMap' è un metodo della classe "DirectionsRenderer" (riga 28) e specifica la mappa per la quale le direzioni devono essere restituite
+	directionsDisplay.setPanel(document.getElementById("directionsPanel"));	// metodo che restituisce le direzioni in un <div> passato come parametro. Se impostato a 'null' rimuove il contenuto daql <div> 
+
+//	Info window 
+	var contentString =
+	'<div id="content">'+
+	'<p>Stazione di Capurso <br> Ferrovie Sud-Est'
+	'</div>'; // fine contentString
+
+
+	var infowindow = new google.maps.InfoWindow({
+		content: contentString,
+		maxWidth:100, // è l'unica proprietà dei css possibile. l'height non è possibile impostarlo ed è automatico. In questo caso e con queste opzioni se "maxWidth" è 200 appare la barra di scorrimento laterale se 300 no
+	}); // chiude infoWindow
+
+// Marker
+	var marker = new google.maps.Marker({
+		position: stazione_Capurso,
+		map: map,
+	//	icon: "../../Immagini/sfondi/Pirates-flag.png",
+		icon: "../img/Pirates-flag.png",
+		title: 'Stazione'
+	});
+
+	google.maps.event.addListener(marker, 'click', function() {
+	infowindow.open(map,marker);
+	});
+
+// Impostazioni variabili di partenza, destinazione e fermate intermedie con aggiunta di marcatori (vedi var request riga )
+	google.maps.event.addListener(map, 'click', function(event) {
+	if (origin == null) {
+	origin = event.latLng;
+	//addMarker(origin);			// aggiunge un 'marker' nel punto in cui si clicca impostandolo come punto di partenza
+	calcRoute();
+	} 
+	}); // 'addListener' 
+
+
+// Visualizzazione delle direzioni sulla mappa e di indicazioni stradali nel div 
+	function calcRoute() {
+
+		var mode;	// inizializzazione variabile per l'impostazione di un oggetto della classe "TravelMode". L'oggetto definisce il tipo di percorso che può essere di tre tipi: "ciclabile" "stradale" "pedonale" 
+		switch (document.getElementById("mode").value) {
+			case "bicycling":
+	//			mode = google.maps.DirectionsTravelMode.BICYCLING;
+				mode = google.maps.TravelMode.BICYCLING;
+			break;
+			case "driving":
+	//			mode = google.maps.DirectionsTravelMode.DRIVING;
+				mode = google.maps.TravelMode.DRIVING;
+			break;
+			case "walking":
+	//			mode = google.maps.DirectionsTravelMode.WALKING;
+				mode = google.maps.TravelMode.WALKING;
+			break;
+		} // switch
+
+	//	Proprietà da passare al metodo 'route' (successivo) della classe "DirectionsService"      
+		var request = {
+			origin: origin,
+			destination: destination,
+			travelMode: mode,
+		}; 
+
+		directionsService.route(request, function(response, status) {
+			if (status == google.maps.DirectionsStatus.OK) {
+				directionsDisplay.setDirections(response);	// metodo della classe "DirectionsRenderer" che visualizza il responso dal server
+			} 
+		}); // route
+		 
+		clearMarkers();			// richiamo funzione 
+		directionsVisible = true;	// Impostazione variabile 
+
+
+	} // "calcRoute" 
+
+// Chiamata della funzione "calcRoute" solo se la variabile 'directionsVisible' è esistente   
+	function updateMode() {
+		if (directionsVisible) {
+			calcRoute();
+		}
+	} // "updateMode" 
+
+// Rimuove i marcatori   
+	function clearMarkers() {
+		for (var i = 0; i < markers.length; i++) {
+			markers[i].setMap(null);	// il metodo 'setMap' della classe "Marker" rende i marcatori di una specificata mappa indicata nel parametro richiesto, ma se tale parametro è impostato a 'null' i marcatori vengomno rimossi  
+		}
+	} // "clearMarkers" 
+ 
+	function reset() {
+		clearMarkers();
+		markers = [];
+		origin = null;						// richiamo funzione 
+		directionsDisplay.setMap(null);
+		directionsDisplay.setPanel(null);		// MI DA ERRORE SOLO IN FIREFOX (LOCALE). SUL MIO SERVER ARUBA (MIO SITO lnx.abc) FUNZIONA 
+		// Ricostituzione dell'oggetto  
+		directionsDisplay = new google.maps.DirectionsRenderer();
+		directionsDisplay.setMap(map);
+		directionsDisplay.setPanel(document.getElementById("directionsPanel"));    
+	} 
+
+	var resetta = document.getElementById("resetta"); 
+	resetta.addEventListener("click", function(){ 
+		reset();
+	},false);
+	
+
+	function Scritto(){
+		var testo_inserito = document.getElementById("address").value;
+		if(testo_inserito == ""){
+			alert("Inserite un indirizzo: via,numero,città,provincia o stato");
+		}else{
+			origin = testo_inserito;
+			calcRoute();
+		} // 
+	}; 
+//	Scritto();
+
+	var ottieniP = document.getElementById("ottieniP"); 
+	ottieniP.addEventListener("click", function(){ 
+		Scritto();
+//		alert('fuk');
+	},false);
+	
+} // "initialize"
+
+
+// http://lnx.abcoliodoliva.com/CalcolaPercorso-2.html
+</script>
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGdgU_LiffVIA7leAWvnyfy_DxUa90O-g&callback=initialize" async defer></script>
+
+
+
+
+
+
+</body>
+</html>

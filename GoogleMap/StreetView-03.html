@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>Vista Strada 04 </title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.nota{color:orange;}
+.codice{color:green;}
+
+#map_canvas{ position:relative; margin:20px; width:80%; height:80%;  }
+
+</style>
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=it"></script>
+
+<script type="text/javascript">
+
+var map;
+var panorama;
+var astorPlace = new google.maps.LatLng(40.729884, -73.990988);
+var busStop = new google.maps.LatLng(40.729559678851025, -73.99074196815491);
+var cafe = new google.maps.LatLng(40.730031233910694, -73.99142861366272);
+var bank = new google.maps.LatLng(40.72968163306612, -73.9911389350891);
+
+  function initialize() {
+
+    // Set up the map
+    var mapOptions = {
+      center: astorPlace,
+      zoom: 18,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      streetViewControl: false			// l'omino' viene impostato a 'false' per non visualizzarlo 
+    };
+    map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+
+    // Setup the markers on the map
+    var cafeMarkerImage =
+        new google.maps.MarkerImage('http://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=cafe|FFFF00');	// url dell'immagine' icona
+    var cafeMarker = new google.maps.Marker({
+        position: cafe,
+        map: map,
+        icon: cafeMarkerImage,
+        title: 'Cafe'
+    });
+
+    var bankMarkerImage =
+        new google.maps.MarkerImage('http://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=dollar|FFFF00');
+    var bankMarker = new google.maps.Marker({
+        position: bank,
+        map: map,
+        icon: bankMarkerImage,
+        title: 'Bank'
+    });
+
+    var busMarkerImage =
+        new google.maps.MarkerImage('http://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=bus|FFFF00');
+    var busMarker = new google.maps.Marker({
+        position: busStop,
+        map: map,
+        icon: busMarkerImage,
+        title: 'Bus Stop'
+    });
+
+    // We get the map's default panorama and set up some defaults.  Note that we don't yet set it visible.
+	panorama = map.getStreetView();		// il metodo 'getStreetView' di classe "Map" restituisce lo 'StreetViewPanorama' collegato alla mappa che può essere sia il panorama incorporato per default che quello impostato con il metodo 'setStreetView()  
+	panorama.setPosition(astorPlace);	// posiziona l'oggetto 'StreetViewPanorama' creato ^ 
+//	panorama.scrollwheel = true;		
+	panorama.setPov({				// impostazione camera 
+	heading: 265,
+	zoom:1,
+	pitch:0}
+    );
+  } // "initialize" 
+
+// NON SO PERCHE' MA I PULSANTI DELLA TASTIERA  NON PERMETTONO L'AVANZAMENTO ("scrollwheel")
+
+function toggleStreetView() {
+var testo = document.getElementById('alterna');
+var toggle = panorama.getVisible();			// il metodo 'getVisible' restituisce se la mappa è visibile 
+if (toggle == false) {
+panorama.setVisible(true);
+testo.value = "Vista mappa";
+}else{
+panorama.setVisible(false);
+testo.value = "Vista strada";
+}
+}  // "toggleStreetView" 
+
+
+</script>
+
+</head>
+<!-- <body onload=""> -->
+<body>
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+initialize();
+
+}); // chiude ready 
+</script>
+
+<div id="toggle">
+  <input type="button" id="alterna" value="Vista strada" onclick="toggleStreetView();"></input>
+
+  </div>
+
+<div id="map_canvas"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

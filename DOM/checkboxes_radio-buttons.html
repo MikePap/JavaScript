@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Checkboxes  radio buttons  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); }
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+
+.nota{ color:rgb(250,120,0);}
+.codice, pre{ color:rgb(30,120,30);}
+.blu{color: #00f;}
+.grigio{color: grey;}
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+<h2>Checkboxes</h2>
+
+
+<input type="checkbox" id="purple">
+<label for="purple">Make this page purple</label>
+
+
+
+<script>
+
+var checkbox = document.querySelector("#purple");
+checkbox.addEventListener("change", function() {
+	document.body.style.background = checkbox.checked ? "mediumpurple" : "";
+
+/*
+//	utilizzando questo metodo non funziona 
+	var bg = document.body.style.background;			
+	checkbox.checked ? bg="mediumpurple" : bg="";
+
+*/
+	// mentre con il seguente funziona 
+//	checkbox.checked ? document.body.style.background="mediumpurple" : document.body.style.background="";	
+	
+/*
+//	classico	
+	if(checkbox.checked)
+		document.body.style.background="mediumpurple";		
+	else
+		document.body.style.background="";
+*/
+});
+
+</script>
+
+
+
+
+
+<h2>Radio buttons</h2>
+
+Color:
+<input type="radio" name="color" value="mediumpurple"> Purple
+<input type="radio" name="color" value="lightgreen"> Green
+<input type="radio" name="color" value="lightblue"> Blue
+
+<script>
+
+var buttons = document.getElementsByName("color");
+function setColor(event) {
+	document.body.style.background = event.target.value;
+}
+
+for (var i = 0; i < buttons.length; i++)
+buttons[i].addEventListener("change", setColor);
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

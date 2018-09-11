@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Generators  </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+<h1>Generators</h1>
+
+<p>
+La caratteristica che contradistingue una <b>funzione generatore</b> è la stella (*) aggiunta alla parola <tt>function</tt>
+</p>
+<pre>
+function* nomeFunzione([param[, param[, ... param]]]){  
+	// ...
+}
+<span class="grigio">I parametri aggiunti non possono essere più di 250</span>
+</pre>
+
+<p>
+La stelletta si può mettere sia dopo la parloa 'function' (<tt>function* nomerFunzione(){...}</tt>) o prima del nome della funzione (<tt>function *nomeFunzione(){...}</tt>). <br />
+La differenza più sostanziale fra una funzione classica e una <tt>funzione generatore</tt> e che quest'ultima quando viene invocata non esegue il suo corpo immediatamente fino al suo completamento ma restituisce un oggetto iteratore (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/The_Iterator_protocol">vedi qui</a>). L'oggetto iteratore procede nell'iterazione a seguito della chiamata del metodo <b>next</b> che a sua volta produce un valore (value) a seguito dell'istruzione prodotta dalla parola chiave <b>yield</b>. Il ruolo di <tt>yield</tt> all'interno del corpo della funzione è quello di interrompere la funzione, o se vogliamo di metterla in pausa, in un determinato momento. 
+</p>
+
+<pre>
+function* idMaker(){
+	var index = 0;
+	while(index < 4)
+		yield index++;
+}
+
+var a = idMaker()
+
+a.next()						<span class="nota">// Object {value: 0, done: false}</span>
+a.next()						<span class="nota">// Object {value: 1, done: false}</span>
+a.next()						<span class="nota">// Object {value: 2, done: false}</span>
+a.next()						<span class="nota">// Object {value: 3, done: false}</span>
+a.next()						<span class="nota">// Object {value: undefined, done: true}</span>
+
+</pre>
+
+
+<pre>
+function* idMaker(){
+	var index = 0;
+	while(true)
+		yield index++;
+}
+
+var gen = idMaker();
+<span class="azzurro">
+console.log(gen.next().value);				<span class="nota">// 0</span> 
+console.log(gen.next().value);				<span class="nota">// 1</span>
+console.log(gen.next().value);				<span class="nota">// 2</span>
+// ... 
+</span>
+
+function foo(x) {
+	while(true) {
+		x = x * 2;
+		yield x;
+	}
+}
+
+var g = foo(2);
+<span class="azzurro">
+console.log((g.next().value));				<span class="nota">// 4</span> 
+console.log((g.next().value));				<span class="nota">// 8</span> 
+console.log((g.next().value));				<span class="nota">// 16</span> 
+</span>
+</pre>
+
+<h3>yield generatore (yield*)</h3>
+
+<p>
+Nell'esempio si comprende come anche la parola chiave <tt>yield</tt> può diventare a sua volta un generatore 
+con lo scopo di richiamare un'altra funzione
+</p>
+
+<pre>
+function* anotherGenerator(i) {
+	yield i + 1;
+	yield i + 2;
+	yield i + 3;
+}
+
+function* generator(i){
+	yield i;
+	yield* anotherGenerator(i);			<span class="nota">qui yield invoca l'altra funzione generatore diventanto in tal modo un generatore</span> 
+	yield i + 10;
+}
+
+var gen = generator(10);
+<span class="azzurro">
+console.log(gen.next().value);				<span class="nota">// 10 (prima iterazione della funzione 'generator')</span> 
+console.log(gen.next().value);				<span class="nota">// 11 (prima iterazione della funzione 'anotherGenerator')</span>
+console.log(gen.next().value);				<span class="nota">// 12 (seconda iterazione della funzione 'anotherGenerator')</span>
+console.log(gen.next().value);				<span class="nota">// 13 (terza iterazione della funzione 'anotherGenerator')</span>
+console.log(gen.next().value);				<span class="nota">// 20 (seconda iterazione della funzione 'generator')</span>
+</span>
+</pre>
+
+<h3>Generators in un ciclo for of</h3>
+
+<pre>
+function *lista (){
+	yield 1;
+	yield 2;
+	yield 3;
+	yield 4;
+	yield 5;
+}
+
+for (var v of lista()) {
+	console.log( v );				<span class="nota">// 1 2 3 4 5</span>
+}
+
+
+function *titoli(){
+	var h1 = document.querySelectorAll('h1')[0].textContent;
+	var h31 = document.querySelectorAll('h3')[0].textContent;
+	var h32 = document.querySelectorAll('h3')[1].textContent;
+	yield console.log(h1);
+	yield console.log(h31);
+	yield console.log(h32);
+}
+var h3 = titoli();
+for(var h of titoli()){
+	h;
+}
+<span class="nota">// "Generators" "yield generatore (yield*)" "Generators in un ciclo for of"</span>
+</pre>
+
+
+<h3>Funzione di Fibonacci con generators </h3>
+
+<pre>
+function* fibonacci(){
+	var a=0,  b=1, c=0;
+
+	while(true){
+		yield a;
+		c=a,	a=b,	b=c+b;	
+	}
+} 
+<span class="azzurro">
+console.log(seq.next().value);				<span class="nota">// 0</span>	
+console.log(seq.next().value);				<span class="nota">// 1</span>	
+console.log(seq.next().value);				<span class="nota">// 1</span>	
+console.log(seq.next().value);				<span class="nota">// 2</span>	
+console.log(seq.next().value);				<span class="nota">// 3</span>	
+console.log(seq.next().value);				<span class="nota">// 5</span>	
+console.log(seq.next().value);				<span class="nota">// 8</span>	
+console.log(seq.next().value);				<span class="nota">// 13</span>	
+console.log(seq.next().value);				<span class="nota">// 21</span>	
+</span>	
+</pre>
+
+
+<h3>Esempi con molteplici yield </h3>
+
+<pre>
+function* powGenerator(){
+	var result = Math.pow((yield "a"), (yield "b"));
+	return result;
+} 
+<span class="azzurro">
+var g = powGenerator();
+console.log(g.next().value);				<span class="nota">// "a" </span>
+console.log(g.next(10).value);				<span class="nota">// "b" </span>
+console.log(g.next(2).value);				<span class="nota">// 100</span>
+</span>	
+</pre>
+
+<p>
+Succede che alla prima chiamata viene restituito semplicemente il valore "a" che è il valore del primo <tt>yield</tt>. <br />
+Alla seconda chiamata viene passato al metodo <tt>next</tt> il valore 10. Quindi si ha come restituzione il valore del secondo <tt>yield</tt> ma allo stesso tempo ciò fa si che il valore 10 si vada a sostituirsi non solo al valore "a" ma a tutto il contesto di <tt>yield</tt> ; <br />
+Nella terza chiamata al metodo <tt>next</tt> viene passato il valore di 2 che a sua volta va a sostituirsi al contesto del secondo <tt>yield</tt>. Pertanto i due argomenti che richiede la funzione 'Math.pow' ora sono soddisfatti e si ha la restituzione della variabile 'result'. 
+</p>
+
+<p>Vediamo quest'altra un pò più complessa</p>
+
+<pre>
+function *fuk(x) {
+	var y = 2 * (yield (x + 1));
+	var z = yield (y / 3);
+	return (x + y + z);
+}
+
+var f = fuk(5);
+<span class="azzurro">
+console.log( f.next().value );				<span class="nota">// 6 (5+1) </span>
+console.log( f.next(12).value );			<span class="nota">// 8 (24:3) </span>
+console.log( f.next(13).value );			<span class="nota">// 42 (5+24+13) </span>
+</span>	
+</pre>
+
+<p>
+Succede che alla prima chiamata abbiamo un risultato di 6, dato dalla restituzione del primo <tt>yield</tt> (x+1), dove 'x' è stato definito a 5;<br />
+La seconda chiamata risolve il secondo <tt>yield</tt> (y/3); succede che si passa al metodo <tt>next</tt> il valore di 12 che va a sostituire il contesto del primo <tt>yield</tt> per cui si ha che y=2*12=24 e quindi 24:3=8 <br />
+Con la terza chiamata passiamo a <tt>next</tt> il valore di 13 che va a sostituire il contesto del secondo <tt>yield</tt> (y/3) che non è altro il valore di z; a questo punto abbiamo i valori delle tre variabili x,y e z  che sono rispettivamente 5,24 e 13 e quindi il valore finale non sarà altro che 42
+</p>
+
+<h3>Generator e return</h3>
+
+<p>
+Nel momento in cui le funzioni <em>Generator</em> sono funzioni vere e proprie (anche se particolari) 
+si può usare la dichiarazione <em>return</em> per uscire da esse ed eventualmente restituire un ultimo valore 	
+</p>	
+
+<pre>
+function *createIterator() {
+	yield 1;
+	return;
+	yield 2;
+	yield 3;
+}
+
+let iterator = createIterator();
+<span class="azzurro">
+console.log(iterator.next());			<span class="nota">// "{ value: 1, done: false }"</span>
+console.log(iterator.next());			<span class="nota">// "{ value: undefined, done: true }"</span>
+</span>
+<span class="grigio">oppure </span>
+
+function *createIterator() {
+	yield 1;
+	return 42;
+}
+
+let iterator = createIterator();
+<span class="azzurro">
+console.log(iterator.next());			<span class="nota">// "{ value: 1, done: false }"</span>
+console.log(iterator.next());			<span class="nota">// "{ value: 42, done: true }"</span>
+console.log(iterator.next());			<span class="nota">// "{ value: undefined, done: true }"</span>
+</span>
+	
+</pre>	
+
+
+
+
+
+<script type="text/javascript">
+
+/*
+function* idMaker(){
+	var index = 0;
+	while(true)
+		yield index++;
+}
+
+var gen = idMaker();
+
+console.log(gen.next().value);				 
+console.log(gen.next().value);				
+console.log(gen.next().value);				
+*/
+
+/*
+function* foo(x) {
+	while(true) {
+		x = x * 2;
+		yield x;
+	}
+}
+var g = foo(2);
+
+console.log((g.next().value));
+console.log((g.next().value));
+console.log((g.next().value));
+*/
+
+/*
+function* anotherGenerator(i) {
+	yield i + 1;
+	yield i + 2;
+	yield i + 3;
+}
+
+function* generator(i){
+	yield i;
+	yield* anotherGenerator(i);
+	yield i + 10;
+}
+
+var gen = generator(10);
+console.log(gen.next().value); // 10
+console.log(gen.next().value); // 11
+console.log(gen.next().value); // 12
+console.log(gen.next().value); // 13
+console.log(gen.next().value); // 20
+*/
+/*
+function *foo(x) {
+	while(true) {
+//	while(x < 10){ 
+		x = x * 2;
+		yield x;
+	}
+}
+var g = foo(4);
+
+console.log((g.next().value));
+console.log((g.next().value));
+console.log((g.next().value));
+*/
+
+function *foo() {
+	yield 1;
+	yield 2;
+	yield 3;
+//	yield 4;
+//	yield 5;
+//	return 3;
+}
+
+var it = foo();
+
+//console.log( it.next(4) );
+
+/*
+console.log( it.next(5).value);
+console.log( it.next(5).value);
+console.log( it.next(7).value);
+*/
+
+
+
+function *fuk(x) {
+	var y = 2 * (yield (x + 1));
+	var z = yield (y / 3);
+	return (x + y + z);
+}
+var f = fuk(5);
+
+console.log( f.next().value );						// 6 
+console.log( f.next(12).value );						// 8 
+console.log( f.next(13).value );						// 42 (5+24+13)
+
+
+/*
+function *lista (){
+	yield 1;
+	yield 2;
+	yield 3;
+	yield 4;
+	yield 5;
+	yield 6;
+}
+
+for (var v of lista()) {
+	console.log( v );
+}
+*/
+
+
+function *myFuncion(a,b){
+	var a = a;
+	yield a;
+	var b = b;
+	yield b;
+}
+var m = myFuncion('Jon', 'Dinger');
+//console.log(m.next().value);
+//console.log(m.next().value);
+
+function *titoli(){
+	var h1 = document.querySelectorAll('h1')[0].textContent;
+	var h31 = document.querySelectorAll('h3')[0].textContent;
+	var h32 = document.querySelectorAll('h3')[1].textContent;
+	yield console.log(h1);
+	yield console.log(h31);
+	yield console.log(h32);
+}
+
+var h3 = titoli();
+/*
+h3.next().value; 
+h3.next().value; 
+*/
+/*
+for(var h of titoli()){
+	h;
+}
+*/
+
+function* fibonacci(){
+	var a=0,  b=1, c=0;
+
+	while(true){
+		yield a;
+		c=a,	a=b,	b=c+b;	
+	}
+} 
+
+var seq = fibonacci();
+/*
+console.log(seq.next().value);
+console.log(seq.next().value);
+console.log(seq.next().value);
+console.log(seq.next().value);
+console.log(seq.next().value);
+console.log(seq.next().value);
+console.log(seq.next().value);
+console.log(seq.next().value);
+console.log(seq.next().value);
+*/
+
+
+function* powGenerator(){
+//	var result = Math.pow(10, 2);
+//	var result = Math.pow((yield "a"), (yield "b"));
+	var result = Math.pow((yield 2), (yield 3));
+	return result;
+
+} 
+//console.log(powGenerator());
+/*
+var g = powGenerator();
+console.log(g.next().value);
+console.log(g.next(10).value);
+console.log(g.next(2).value);
+*/
+
+
+
+
+
+// video stop 18:40° 
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+</body>
+</html>

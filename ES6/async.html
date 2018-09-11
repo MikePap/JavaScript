@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>async / await  </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+<h1>async - await</h1>
+
+<p>
+La dichiarazione <span class="nota">async function</span> definisce una funzione asincrona che restituisce un oggetto <b>AsyncFunction</b>. O se vogliamo, il costruttore «AsyncFunction» crea un oggetto «async function». 
+</p>
+<pre>
+async function nomeFunzione([param[, param[, ... param]]]) {
+	statements
+}
+</pre>
+
+<p>
+Una funzione «async» <b>restituisce sempre un «Promise»</b>. Per cui, per prelevare il suo valore dobbiamo usare il metodo <b>then</b>. 
+</p>
+<p class="nota">Il proposito di questo nuovo tipo di dichiarazione si basa sul concetto di rendere più facile l'uso di «Promise». In altre parole, così come «Promise» è stato creato per sostituire le "funzioni di callback", le «async/await»,  sono state pensate per sostituire le «Promise». In particolare non sono altro che una combinazione di «Promise» e «Generators».
+</p>
+
+<pre>
+async function add1(x) {
+	return x;						<span class="nota">** restituisce un oggetto Promise</span>
+}
+
+add1('hello').then(function (val) {
+	console.log(val);					<span class="nota">// hello</span>
+})
+</pre>
+
+<p>
+Una funzione «async» può contenere l'espressione <b>await</b>, che ha lo scopo di mettere la funzione in pausa e attendere la risoluzione del «Promise». <br>
+</p>
+<p>
+Nell'esempio seguente, abbiamo la funzione "resolveAfter2Seconds()" che restituisce un «Promise» che contiene un "setTimeout" che intende restituire un valore, passato come argomento, dopo due secondi. Abbiamo poi creato la funzione "add1()" che richiama il «Promise» usando l'espressione «await»:
+</p>
+
+
+<pre>
+function resolveAfter2Seconds(x) {
+	return new Promise(resolve => {
+		setTimeout(() => {
+			resolve(x);
+		}, 2000);
+	});
+}
+
+async function add1(x) {
+	const a = await resolveAfter2Seconds(20);
+	const b = await resolveAfter2Seconds(30);
+	return x + a + b;
+}
+
+add1(10).then(v => {
+	console.log(v);						<span class="nota">// restituisce 60 dopo 4 secondi</span>
+});
+
+</pre>
+
+<p>
+Il risultato (60) ci verrà restituito dopo 4 secondi perchè ci sono due funzioni "resolveAfter2Seconds()" taggate con «await» che impiegano due secondi ciascuna per completarsi. Ciò a dire che le due funzioni vanno in sequenza una dopo l'altra. <br>
+Anche se, per assurdo, volessimo ottenere soltanto il risultato di una delle due funzioni dovremmo aspettare comunque 4 secondi:
+</p>
+<pre>
+async function add1(x) {
+	const a = await resolveAfter2Seconds(20);
+	const b = await resolveAfter2Seconds(30);
+	return a;						<span class="nota">** Anche in questo caso il risultato di "a "lo avremo dopo 4 secondi</span>
+}
+</pre>
+
+<p>
+Altro scenario possiamo avere se definiamo «await» nel segente modo:
+</p>
+
+<pre>
+async function add2(x) {
+	const p_a = resolveAfter2Seconds(20);
+	const p_b = resolveAfter2Seconds(30);
+	return x + await p_a + await p_b;
+}
+
+add2(10).then(v => {
+	console.log(v);						<span class="nota">// restituisce 60 dopo 2 secondi</span>
+});
+</pre>
+<p>
+In questo caso abbiamo creato uno scenario asincrono, che effettivamente non lo è, ma abbiamo ottenuto il risultato dopo due secondi.
+</p>
+
+
+
+<h3>async e Promise </h3>
+
+<p>
+Vediamo alcuni esempi con l'uso di «Promise» e «async» distintamente. <br>
+Creiamo la funzione "getUsers()" con l'uso di «Promise»:
+</p>
+<pre>
+<span class="grigio">Con l'uso di «Promise»</span>
+
+function getUsers () {
+	return new Promise(function (resolve, reject){
+		var u = [{name: 'Mik'}];
+		resolve(u);
+	})
+}
+
+<span class="grigio">Se richiamiamo l'oggetto «promise» col metodo «then» otteniamo, ovviamente, l'oggetto: </span>
+
+getUsers().then((arr) => { 
+	console.log(arr);					<span class="nota">// restituisce l'Array [{ name: "Mik" }]</span>	
+});
+</pre>
+<p>
+Ora creiamo la funzione "getFirstUser()", che richiama il «Promise», con cui vogliamo ottenere il valore della proprietà "name" dell'oggetto
+</p>
+<pre>
+<span class="grigio">Con l'uso di «Promise»</span>
+
+function getFirstUser() {
+	return getUsers().then(function(users) {
+		return users[0].name;
+	}).catch(function(err) {
+		return {
+			name: 'default user'
+		};
+	});
+}
+
+<span class="grigio">Se vogliamo, quindi, prelevare il valore restituito dalla funzione dobbiamo usare il metodo «then» in questo modo:</span>
+
+getFirstUser().then(function (nomeOggetto) {
+	console.log(nomeOggetto);				<span class="nota">// Mik</span>
+});
+
+</pre>
+<p>
+<b>ATTENZIONE:</b> se non usassimo il metodo «then» ed invocassimo la funzione cosi come facciamo solitamente:
+</p>
+<pre>
+console.log( getFirstUser() );					<span class="nota">// Promise { <state>: "pending" }</span>
+</pre>
+<p>
+La consolle non ci restituirebbe un errore, ma ci avvertirebbe che il «Promise» è in fase di <b>pending</b>. Ciò a dire che l'azione correlata non ha ancora prodotto un risultato.
+</p>
+
+<p>
+Ora vediamo come usare «async» al posto di «Promise»
+</p>
+<pre>
+<span class="grigio">Con l'uso di «async»</span>
+
+async function getUsers () {
+	return [{name: 'Mik'}];					<span class="nota">** restituisce un Promise. E' uguale alla funzione vista sopra</span>
+}
+
+async function getFirstUser() {
+	try {
+		let users = await getUsers();
+		return users[0].name;
+	} catch (err) {
+		return {
+			name: 'default user'
+		};
+	}
+}
+
+<span class="grigio">Ovviamente per prelevare il valore restituito dalla funzione:</span>
+
+getFirstUser().then(function (nomeOggetto) {
+	console.log(nomeOggetto);				<span class="nota">// Mik</span>
+});
+</pre>
+
+<p>
+Volendo, possiamo utilizzare «async/await» soltanto per ri-costituire la funzione "getFirstUser()" e rifarci alla funzione "getUsers()"  costituita con «Promise».
+
+</p>
+
+<p>
+In definitiva, l'esempio ci mostra come usare «promise» e «async/await» nello stesso ambito. Come numero di righe di codice stiamo più o meno la, però la sintassi di «async» è meno verbosa e quindi più leggibile.
+</p>
+
+
+
+<br><br><br><br><br><br>
+
+
+<script type="text/javascript">
+
+"use strict";															////////////		"use strict";		///////////////////
+
+
+function resolveAfter2Seconds(x) {
+	return new Promise(resolve => {
+		setTimeout(() => {
+			resolve(x);
+		}, 2000);
+	});
+}
+
+
+
+async function add1(x) {
+	const a = await resolveAfter2Seconds(20);
+	const b = await resolveAfter2Seconds(30);
+//	return x + a + b;
+	return a;
+}
+
+add1(10).then(v => {
+	console.log(v);						// restituisce 60 dopo 4 secondi
+});
+
+
+
+/*
+async function getUsers () {
+	return [{name: 'Mik'}];
+}
+
+
+// Con l'uso di «async/await»
+async function getFirstUser() {
+	try {
+		let users = await getUsers();
+		return users[0].name;
+//		console.log(users[0].name);
+	} catch (err) {
+		return {
+			name: 'default user'
+		};
+	}
+}
+
+// ATTENZIONE: non è corretto anche se non produce errore. La console ci dice solo che il Promise sta in fase "Pending".
+//console.log( getFirstUser() );							// Promise { : "pending" }
+
+getFirstUser().then(function (nomeOggetto) {
+	console.log(nomeOggetto);
+});
+*/
+
+
+</script>
+
+
+
+
+
+
+
+
+</body>
+</html>
+

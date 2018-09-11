@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Conferma Operazione  </title>
+<link rel="stylesheet" href="../baseLocali.css" type="text/css" /> 
+<style type="text/css">
+
+.acciaio{ color:rgb(40%,50%, 80%); font-size:14px;}
+#result{ background:rgb(220,250,220);}
+
+</style>
+</head>
+<body>
+
+<h1>Conferma Operazione con <q>captcha</q> numerico</h1>
+
+<p class="acciaio">
+Lo scopo di questa applicazione, una specie di <q>captcha</q>, è obbligare l'utente a inserire l'esatto risultato dell'operazione prima che possa verificarsi la condizione voluta. <br>
+Può quindi essere usata, per esempio, per visualizzare un indirizzo di posta elettronica solo dopo che l'utente ha espresso il risultato dell'operazione evitando quindi a dei programmi malevoli di intercettare facilmente il nostro indirizzo di posta. <br />
+
+</p>
+<p class="acciaio">
+Per l'occasione sono state create due funzioni; una funzione auto-invocativa che contiene al suo interno il controllo dell'evento di invio che può essere di tipo "click" o "submit". <br> 
+Mentre l'altra può essere richiamata da un evento "click" o "submit" esterno.
+</p>
+
+<br>
+
+<form method="post" id="boxForm" >
+<!--
+*** IMPORTANTE: è necessario specificare il metodo "post" per il form altrimenti se non lo si specifica qualche browser lo interpreta come metodo "get" con la conseguenza di far apparire nella barra degli indirizzi le variabili (appunto 'get') con i loro valori.
+-->
+	<input type="text"  name="first" id="first" size="2" maxlength="2"  /> + 
+	<input type="text"  name="second" id="second" size="2" maxlength="2"  /> = 
+	<input type="text"  name="result" id="result" size="2" maxlength="2"  />
+	<button type="submit" id="invio">Invia</button>
+</form>
+
+<script  type="text/javascript">
+
+function captchaNumerico(lista) {
+	var primo = document.querySelector(lista[0]);					// campo primo operatore 
+	var secondo = document.querySelector(lista[1]);					// campo secondo operatore
+	var campoRisultato = document.querySelector(lista[2]);		// campo risultato somma
+	campoRisultato.focus();													// ogni volta che si inviano i dati la pagina si ricarica
+
+	var impostaCaptcha = function (){
+		var cas1 = (Math.random() * 9).toFixed(0);
+		var cas2 = (Math.random() * 9).toFixed(0);
+		primo.value = cas1;						
+		secondo.value = cas2;
+	}
+
+	var risultato = parseInt(primo.value) + parseInt(secondo.value);
+	if(risultato == campoRisultato.value){
+		return true;
+	}else{
+		campoRisultato.value = '';
+		impostaCaptcha();														// reimposta i valori degli operandi
+		return false;
+	}
+
+}//
+
+boxForm.addEventListener('submit', function (event){
+	var invioForm = captchaNumerico(["#first", "#second", "#result"]);
+	if(invioForm == true ){
+		alert ('OK');
+	} else {
+		alert('ATTENZIONE: il valore dell\'operazione non è esatto');		
+		event.preventDefault();			// blocca l'esecuzione di invio form
+	}
+},false);
+
+
+/*
+
+/////////////////////////// Soluzione con evento (click o submit) incorporato	/////////////////////////
+
+!function captchaNumerico(lista) {
+	var primo = document.querySelector(lista[0]);						// campo primo operatore 
+	var secondo = document.querySelector(lista[1]);						// campo secondo operatore
+	var campoRisultato = document.querySelector(lista[2]);			// campo risultato somma
+	var verificaDati = document.querySelector(lista[3]);				// campo invio form
+	campoRisultato.focus();					// riporta il focus su questo elemento perchè ogni volta che si inviano i dati la pagina si ricarica
+
+	var cas1 = (Math.random() * 9).toFixed(0);
+	var cas2 = (Math.random() * 9).toFixed(0);
+	primo.value = cas1;						
+	secondo.value = cas2;
+
+	var risultato = parseInt(primo.value) + parseInt(secondo.value);
+
+// Di seguito sono proposte due soluzioni x l'vento "Invio". La prima rileva l'evento "submit" e 
+// la seconda risponde al semplice clik sul pulsante "Invio". Isolare una delle due
+
+	boxForm.addEventListener('submit', function (event){				// boxForm è l'oggetto <form>
+		if(risultato == campoRisultato.value){
+			return true;
+//			alert('OK');
+			// ....
+		}else{
+			event.preventDefault();			// blocca l'esecuzione di invio form
+			campoRisultato.value = '';
+//			campoRisultato.focus();
+			alert('NO');		
+			// ....
+		}
+	},false);
+
+	verificaDati.addEventListener('click', function(){
+		if(risultato == campoRisultato.value){
+//			return true;
+			alert('OK');
+			// ....
+		}else{
+//			return false;
+			alert('NO');		
+			// ....
+		}
+	}, false)
+
+}(["#first", "#second", "#result", "#invio"]);
+
+*/
+
+</script>
+
+
+
+
+</body>
+</html>

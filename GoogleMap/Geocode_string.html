@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<title>Google Maps JavaScript API v3 Example: Geocoding Simple</title>
+<link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">
+
+  var geocoder;		// inizializzazione
+  var map;
+
+  function initialize() {
+    geocoder = new google.maps.Geocoder();		// crea un oggetto della classe "Geocoder" (sarà richiamato nella funzione 'codeAddress') 	
+    var latlng = new google.maps.LatLng(41.0449,16.9185);		// Casa via Casamassima, 43 Capurso Ba 
+    var myOptions = {
+      zoom: 12,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+  } // "initialize"
+
+// La classe "Geocoder" contiene un metodo 'geocode' che come primo argomento può accettare una delle 4 proprietà ('address', 'bounds', 'location', 'region') e come secondo argomento una funzione di callback vedere --> // vedere  http://code.google.com/intl/it-IT/apis/maps/documentation/javascript/geocoding.html#GeocodingResponses
+
+  function codeAddress() {
+    var address = document.getElementById("address").value;
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        map.setCenter(results[0].geometry.location);	
+
+        var marker = new google.maps.Marker({
+            map: map, 
+            position: results[0].geometry.location
+        });
+      } else {
+        alert("Geocode was not successful for the following reason: " + status);
+      }
+    });
+  } // "codeAddress"
+
+</script>
+</head>
+<body onload="initialize()">
+  <div>
+    <input id="address" size="40" type="textbox" value="via Casamassima,43, Capurso, BA, Italia">
+
+    <input type="button"  value="Geocode" onclick="codeAddress()">
+  </div>
+<div id="map_canvas" style="width:600px; height:600px;"></div>
+
+
+
+</body>
+</html>
+
+
+

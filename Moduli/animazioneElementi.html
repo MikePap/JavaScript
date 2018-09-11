@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Esempio funzione animazione  </title>
+<style type="text/css">
+html,body,div,p{ margin:0; padding:0;}
+
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); }
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grassetto{font-weight:bold;}
+
+
+#kok{
+width:200px; height:100px;	 background:yellow; border:1px solid;
+}
+
+
+</style>
+
+</head>
+<body>
+
+
+<h1>classe per animazione elementi </h1>
+
+<br />
+
+<button id="start">Vai</button>
+<button id="blocca">Ferma</button>
+
+<div id="kok"></div>
+<br />
+
+
+
+<script type="module">
+
+import {Animazione, fermaAnimazione} from "./module/animazioneElementi.js";
+
+//@@@ Invocazione funzione costruttore "Animazione" col pulsante "Vai"  @@@
+//var obj = new Animazione(['width'], [1000], 2000,100,'#kok','#start','click');						// animazione soltanto della 'width'
+var obj = new Animazione(['width', 'height'], [1000, 400], 2000,100,'#kok','#start','click');		// animazione di due proprietà
+obj.clickStart();
+
+
+//@@@ Invocazione funzione che blocca l'animazione col pulsante "Ferma" @@@
+fermaAnimazione.prototype = new Animazione();
+var ob = new fermaAnimazione('#blocca','click');
+ob.clickStop();
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

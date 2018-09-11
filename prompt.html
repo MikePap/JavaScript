@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>prompt   </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(50,150,50);}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+<script type="text/javascript" src="jQuery-1.6.min.js"></script>
+</head>
+<body>
+
+<h1>prompt</h1>
+
+<script type="text/javascript">
+yourname = prompt("What is your name?","Type your name here ...");
+var mostra_nome = "Il tuo nome è " + yourname;
+alert(mostra_nome);
+
+</script>
+
+
+<script type="text/javascript">
+/*
+function verify_password()
+{
+ var docpwrd = prompt("Inserisci la password per questo documento:", "");
+ if (docpwrd == "miapass") {
+//    self.location = docpwrd + ".htm";
+//http://localhost/JavaScript/prompt.html
+//    self.location = prompt + ".html";
+self.location.href
+ } else {
+    alert("Spaicente: la password non è corretta.");
+ }
+}
+*/
+</script>
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+/*
+function verify_password()
+{
+ var docpwrd = prompt("Inserisci la password per questo documento:", "");
+ if (docpwrd == "miapass") {
+//    self.location = docpwrd + ".htm";
+//http://localhost/JavaScript/prompt.html
+//    self.location = prompt + ".html";
+self.location.href
+ } else {
+    alert("Spiacente: la password non è corretta.");
+document.input.close();
+ }
+}
+*/
+
+$("#inp").click(function(){
+//verify_password();
+var docpwrd = prompt("Inserisci la password per questo documento:", "");
+ if (docpwrd == "miapass") {
+self.location.href;	// ricarica la pagina e ...
+$(this).hide();	// ... nasconde il pulsante
+}else{
+    alert("Spiacente: la password non è corretta.");
+}
+
+
+}); // chiude click
+
+
+}); // chiude ready 
+</script>
+
+
+<form>
+  <input type="button" id='inp' value="Apri la finestra password" />
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Cambio del testo  </title>
+<link rel="stylesheet" href="../../../baseLocali.css" type="text/css" /> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+<h1>Cambio testo</h1>
+
+<p>
+Il componente «clickCambioTesto» permette il cambio del testo di un elemento al click su se stesso. <br>
+Può essere il caso di un «pulsante» quando ci si clicca per eseguire un'azione. <br>
+L'azione può essere formata da una o più funzioni che eseguono un compito. Tali funzioni vanno create a seconda del caso. <br>
+In questo caso ciò inserito due funzioni per l'aggiunta o l'eliminazione dello sfondo all'elemento titolo della pagina.
+
+</p>
+
+<br><br>
+
+<button id="onoff">ON</button>
+
+
+<script type="text/javascript">
+
+/*
+Il componente «clickCambioTesto» permette il cambio del testo di un elemento al click su se stesso. 
+- "nodo" è l'elemento su cui scatta l'evento click che cambierà il suo testo 
+- "oggetto": racchiude due proprietà («a» e «b») che contengono i due diversi valori di testo per il "nodo"
+
+In questo caso sono state aggiunte due funzioni, "sfondoH1True()" e "sfondoH1False" che vengono richiamate, a seconda del caso, per aggiungere e togliere lo sfondo all'elemento h1
+ 
+*/
+(function clickCambioTesto(nodo, oggetto) {
+
+	var sfondoH1True = function() {
+		var h1 = document.querySelector('h1').style['backgroundColor'] = 'red';
+	}//
+
+	var sfondoH1False = function() {
+		var h1 = document.querySelector('h1').style['backgroundColor'] = '';
+	}//
+
+	var cambiaMioTesto = function(et) {
+		var t = et.innerHTML;
+		if(t === oggetto.a){
+			et.innerHTML = oggetto.b;
+			sfondoH1True();
+		} else {
+			et.innerHTML = oggetto.a;
+			sfondoH1False();
+		}
+	}//
+
+	var eventoClick = function () {
+		var el = document.querySelector(nodo);
+		el.addEventListener('click', function (e) {
+			cambiaMioTesto(e.target);
+		},false);
+	}();
+
+})('#onoff', { a: 'ON', b: 'OFF' });
+
+/*
+
+
+*/
+
+/*
+
+	function cambioTesto(et, obj, sfondoH1) {
+		var t = et.innerHTML;
+	//	(t === obj.a) ? et.innerHTML = obj.b : et.innerHTML = obj.a;
+	//	sfondoH1();
+		if(t === obj.a){
+			et.innerHTML = obj.b;
+			sfondoH1();
+		} else {
+			et.innerHTML = obj.a;
+		}
+
+	}//
+
+
+	function clickCambioTesto(nodo, cambiaMioTesto, oggetto, eseguiAltro) {
+		var el = document.querySelector(nodo);
+		el.addEventListener('click', function (e) {
+	//		eseguiAltro();
+			cambiaMioTesto(e.target, oggetto, eseguiAltro);
+		},false);
+	}
+
+	
+	function sfondoH1() {
+		var h1 = document.querySelector('h1');
+		h1.style['backgroundColor'] = 'red';
+	}
+
+
+//clickCambioTesto('#onof', sfondoH1, cambioTesto, { a: 'ON', b: 'OFF' });
+//clickCambioTesto('#onof', cambioTesto, { a: 'ON', b: 'OFF' }, sfondoH1);
+
+*/
+
+
+</script>
+
+
+</body>
+</html>
+

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Class in ES6  </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css" /> 
+<style type="text/css">
+
+</style>
+
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+
+</head>
+<body>
+
+
+<h1>Classes</h1>
+
+<pre>
+<span class="grigio">In ES5</span>	
+function Car( make ) { 								
+	this.make = make;
+	this.currentSpeed = 25;
+    
+	this.printCurrentSpeed = function(){		
+		console.log(this.make + ' is going ' + this.currentSpeed + ' mph.');
+	}
+}
+
+var car = new Car( "Kia");
+<span class="azzurro">
+car.printCurrentSpeed();				<span class="nota">// Kia is going 25 mph. </span>	
+</span>	
+
+<span class="grigio">Con class in ES6</span>	
+
+class Car {
+	constructor(make) {				<span class="nota">fa riferimento al costruttore cioè 'Car' </span>
+		this.make = make;
+		this.currentSpeed = 25;
+	}
+
+	printCurrentSpeed(){				<span class="nota">da notare che la funzione ('printCurrentSpeed') non ha la parrola chiave 'function'</span>
+		console.log(this.make + ' is going ' + this.currentSpeed + ' mph.');
+	}
+}
+
+class RaceCar extends Car {				<span class="nota">ereditarietà ('RaceCar' eredita da 'Car' metodi e proprietà)</span>
+	constructor(make, topSpeed) {
+		super(make);				<span class="nota">chiamata al costruttore genitore con la parola chiave 'super'</span>	
+		this.topSpeed = topSpeed;
+	}
+
+	goFast(){
+		this.currentSpeed = this.topSpeed;	<span class="nota">'currentSpeed' è ereditato dal genitore 'Car'</span>	
+		
+	}
+}
+
+let stang = new RaceCar('Mustang', 150);
+<span class="azzurro">
+stang.printCurrentSpeed();				<span class="nota">// Mustang is going 25 mph. </span>	
+</span>	
+stang.goFast();						<span class="nota">cambia il valore di'currentSpeed' nel valore di 'topSpeed' </span>	
+<span class="azzurro">
+stang.printCurrentSpeed();				<span class="nota">// Mustang is going 150 mph. </span>	
+
+console.log(stang instanceof RaceCar );			<span class="nota">// true</span>
+console.log(stang instanceof Car );			<span class="nota">// true</span>
+</span>	
+</pre>
+
+<p>è possibile utilizzare <tt>super</tt> all'interno di un metodo, pertanto considerando l'esempio di sopra si potrebbe richiamare la funzione <tt>printCurrentSpeed</tt> dal costruttore 'Car' con <tt>super</tt> </p>
+<pre>
+	printCurrentSpeed(){
+		return super.printCurrentSpeed();
+	}
+
+</pre>
+
+
+
+
+<h3>Class hoisted</h3>
+
+<p>
+Da ricordare che le classi in ES6 non sono <em>hoisted</em>, cioè non sono portate al di sopra delle dichiarazioni come succede per le funzioni
+</p>
+
+<pre>
+foo();							<span class="nota">va bene perchè la funzione seguente viene fatta posizionare prima di questa chiamata  </span>	
+function foo() {}
+
+<span class="grigio">mentre per le classi produce errore</span>	
+new Foo();						<span class="nota">// ReferenceError</span>
+class Foo {}
+</pre>
+
+<p>
+Attenzione: se abbiamo una funzione che fa riferimento alla classe, la sua chiamata può essere fatta sempre dopo la dichiarazione della classe
+</p>
+
+<pre>
+function uso-Classe-Car(){
+	new Car();					<span class="nota">fa riferimento alla classe Car</span>	
+}
+
+function uso-Classe-Car();				<span class="nota">// se chiamata qui produce errore</span>	
+
+class Car {};
+
+function uso-Classe-Car();				<span class="nota">// OK in questa posizione non produce errore </span>	
+</pre>
+
+
+<h3>class declarations e class expressions</h3>
+
+<p>
+Cosi come nelle funzioni anche le classi possono essere definite come <tt>statement(declaration) </tt> e <tt>expression(operator)</tt>. E quindi allo stesso modo nella definizione di una <tt>expression</tt>  l'identificatore fa riferimento a ciò definito all'interno
+</p>
+<pre>
+const MyClass = class Me {
+
+	getClassName(f) {
+		return this.f = f;
+	}
+};
+let inst = new MyClass();
+<span class="azzurro">
+console.log(inst.getClassName('fuk'));			<span class="nota">// 'fuk'</span>	
+</span>	
+</pre>
+
+
+<h3>Definire i metodi di una classe </h3>
+
+<p>E' possibile definire metodi di una classe mettendoli all'interno di parentesi quadre. Le seguenti sono simili e valide  </p>
+
+<pre>
+class Foo() {
+	myMethod() {}
+}
+    
+class Foo() {
+	['my'+'Method']() {}
+}
+    
+const m = 'myMethod';
+class Foo() {
+	[m]() {}
+}
+</pre>
+
+<p>
+Se si pone un asterisco (*) davanti ad un metodo esso diventa un <tt>metodo generatore</tt>. Oltretutto un metodo generatore diventa utile quando la sua chiave è un <tt>Symbol.iterator</tt> come nell'esempio seguente	
+</p>
+<pre>
+class IterableArguments {
+	constructor(...args) {
+		this.args = args;
+	}
+
+	* [Symbol.iterator]() {
+		for (let arg of this.args) {
+			yield arg;
+		}
+	}
+}
+    
+for (let x of new IterableArguments('hello', 'world')) {
+	console.log(x);				
+}
+<span class="nota">Restituisce:
+'hello'
+'world'
+</span>	
+</pre>
+
+
+
+
+
+
+
+
+
+
+
+<script type="module">
+
+
+
+
+
+/*
+class IterableArguments {
+	constructor(...args) {
+		this.args = args;
+	}
+
+	* [Symbol.iterator]() {
+		for (let arg of this.args) {
+			yield arg;
+		}
+	}
+}
+    
+for (let x of new IterableArguments('hello', 'world')) {
+	console.log(x);
+}
+
+
+/*
+//////////////////////////////////////////////////////////
+
+const MyClass = class Me {
+	getClassName(f) {
+//		return Me.name;
+		return this.f = f;
+	}
+};
+
+let inst = new MyClass();
+console.log(inst.getClassName('io')); // Me
+
+
+class Met{
+	getClassName(f) {
+//		return Me.name;
+		return this.f = f;
+	}
+}
+
+var jk = new Met();
+console.log(jk.getClassName('tu'));
+
+
+/////////////////////////////////////////////////////////
+
+class Car {
+	constructor(make) {										//constructors!
+		this.make = make;
+		this.currentSpeed = 25;
+	}
+
+	printCurrentSpeed(){
+  		console.log(this.make + ' is going ' + this.currentSpeed + ' mph.');
+	}
+}
+
+class RaceCar extends Car {								//inheritance
+	constructor(mak, topSpeed) {
+		super(mak);												//call the parent constructor with super
+		this.topSpeed = topSpeed;
+	}
+
+	goFast(){
+  		this.currentSpeed = this.topSpeed;
+	}
+
+/*	printCurrentSpeed(){
+		return super.printCurrentSpeed();				// altro modo per utilizzare 'super' 
+	}
+*/	
+}
+
+let stang = new RaceCar('Mustang', 150);
+
+stang.printCurrentSpeed();
+stang.goFast();
+stang.printCurrentSpeed();
+
+console.log(stang instanceof RaceCar );
+console.log(stang instanceof Car );
+
+
+*/
+
+
+/*
+function Car( make ) { 										//approximate a class/constructor
+	this.make = make;
+	this.currentSpeed = 25;
+    
+	this.printCurrentSpeed = function(){				 //expose a function
+		console.log(this.make + ' is going ' + this.currentSpeed + ' mph.');
+	}
+}
+*/ 
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+
+
+</body>
+</html>
+

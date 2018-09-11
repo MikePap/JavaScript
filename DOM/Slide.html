@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Slide   </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); }
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grassetto{font-weight:bold;}
+
+#contenitore{ 
+position:relative; margin:10px auto; width:500px; height:400px; overflow:hidden; border:1px solid; z-index:1;
+}
+
+#contenitore:hover > #avanti div, #contenitore:hover >  #indietro div{
+display:block;
+} 
+
+#box{ 
+position:absolute; left:50px; top:0;   width:400px; height:400px;  z-index:2; 
+}
+#box img{ 
+width:400px;  position:absolute; top:0; z-index:1; */
+}
+
+
+
+#avanti{
+position:absolute; top:0; right:0; width:50px; height:100%;  text-align:center; 
+background:white;  z-index:3; 
+}
+#avanti div{
+margin:auto;
+position:absolute; top:0; bottom:0; right:0; left:0;  width:0; height:0; 
+border-top: 50px solid transparent; border-bottom: 50px solid transparent; border-left: 50px solid #000; display:none;
+}
+
+#indietro{
+position:absolute; top:0; left:0; width:50px; height:100%;  text-align:center; 
+background:white;  z-index:3; 
+}
+#indietro div{
+margin:auto;
+position:absolute; top:0; bottom:0; right:0; left:0;  width:0; height:0; 
+border-top: 50px solid transparent; border-bottom: 50px solid transparent; border-right: 50px solid #000; display:none; 
+}
+
+
+
+/*
+*** Metodo con le freccette come pulsanti 
+#pulsanti{ 
+margin:auto;
+position:absolute; top:0; left:0; bottom:0; right:0;  width:100%; height:40px; text-align:center; display:none; border:1px solid;  z-index:2;
+}
+div.avanti{ 
+position:absolute; top:0; right:5px; width:40px; height:40px; background:url(../img/frecciaA-40.png);  
+}
+div.avanti:hover{ 
+background:url(../img/frecciaA2-40.png);
+}
+div.indietro{ 
+position:absolute; top:0; left:5px; width:40px; height:40px; background:url(../img/frecciaI-40.png); 
+}
+div.indietro:hover{ 
+background:url(../img/frecciaI2-40.png);
+}
+*/
+
+</style>
+<script type="text/javascript" src="../Book/core.js"> </script>
+</head>
+<body>
+
+<h1>Animazione immagini tipo diapositiva </h1>
+<p>
+La funzione <em>SlideImage</em> ha un metodo <tt>slideAutomatico</tt> che fa scorrere le immagini tipo diapositiva in automatico ed due metodi che danno la possibilità all'user di farle scorrere col mouse. Quando si mette il mouse sul contenitore delle immagini scatta un'altro metdo, <tt>fermaAutomatico()</tt> che blocca lo scorrimento automatico mentre se si sposta il mouse dalle immagini lo scorrimento automatico riuprende. Le immagini sono preventivamente caricate con <tt>XMLHttpRequest</tt> da un file XML 
+</p>
+
+
+<div id="contenitore">
+
+	<div id="box"></div>
+
+	<div id="avanti"><div></div></div> 
+	<div id="indietro"><div></div></div> 
+
+</div>
+
+
+
+<script type="text/javascript">
+
+function loadXMLDoc(dname){
+	if (window.XMLHttpRequest){
+		xhttp=new XMLHttpRequest();
+	}else{
+		xhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xhttp.open("GET",dname,false);
+	xhttp.send();
+	return xhttp.responseXML;
+} // 
+
+
+//function SlideImage (fileXML,bocs,pulsanti){ 
+function SlideImage (fileXML,bocs,pAvanti,pIndietro){ 
+
+	var contenitore = document.getElementById('contenitore');		// contenitore 
+	var box = document.getElementById(bocs);								// contenitore immagini 
+//	var boxPulsanti = document.getElementById(pulsanti);				// elemento che contiene i pulsanti > < 
+	var avanti = document.getElementById(pAvanti);
+	var indietro = document.getElementById(pIndietro);
+
+	//### Caricamento immagini nel 'box' da file XML ###// 	
+	var caricaImmagini =	function (){ 										
+		xmlDoc = loadXMLDoc(fileXML);											// carica il file .xml 
+		immagine = xmlDoc.getElementsByTagName('immagine');			// elemento root file xml (predefinito)
+		for(var a=0; a<immagine.length; a++){
+			var src = immagine[a].children[0];
+			var titolo = immagine[a].children[1];
+			var alt = immagine[a].children[2];
+			var imgSlider = document.createElement("img");	
+			imgSlider.setAttribute('src', src.childNodes[0].nodeValue);	
+			imgSlider.setAttribute('title', titolo.childNodes[0].nodeValue);	
+			imgSlider.setAttribute('alt', alt.childNodes[0].nodeValue);	
+			box.appendChild(imgSlider);
+		} 
+	}(); // 
+
+	var boxImg = document.querySelectorAll('#'+bocs+ ' > img');		 
+	var lBox = window.getComputedStyle(box).width;						// larghezza del box immagini in px (200px) 
+
+	var numImg = function (){
+		return boxImg.length;													// numero totale di immagini
+	};
+
+	var setImg = function  (){
+		for(var i=0; i<boxImg.length; i++){
+			var posLeft = i*parseFloat(lBox);
+			boxImg[i].style.left = '-'+posLeft+'px'; 
+		}
+	}();
+
+	var posizione = function (){
+		return parseFloat(window.getComputedStyle(box).left);			// posizione corrente 'left' box immagini			
+	};
+
+	var avantiUna = function (){
+//		var avanti = boxPulsanti.firstElementChild;
+		avanti.addEventListener('click',  
+		function (){
+			var lMax = parseFloat(lBox) * numImg();		
+			var lBoxx =  parseFloat(lBox);
+ 			var newPosizione = posizione() + lBoxx;					// non in px (200) 
+			if(newPosizione >= lMax){
+				box.style.left = '50px';
+				box.style.transition = '500ms ease';
+			}else{
+				box.style.left = newPosizione+'px';
+				box.style.transition = '500ms ease';
+				box.style.webkitTransition = '500ms ease';			// x safari 
+			}
+		},false);
+	}();
+
+	var indietroUna = function (){
+//		var indietro = boxPulsanti.lastElementChild;
+		indietro.addEventListener('click',  
+		function (){
+			var lMax = parseFloat(lBox) * numImg(); 
+			var lBoxx =  parseFloat(lBox);
+ 			var newPosizione = posizione() - lBoxx;					// non in px (200) 
+			if(newPosizione < 0 ){
+				box.style.left = (lMax - lBoxx + 50)+'px';
+				box.style.transition = '500ms ease';
+			}else{
+				box.style.left = newPosizione+'px';
+				box.style.transition = '500ms ease';
+				box.style.webkitTransition = '500ms ease';			// x safari 
+			}
+		}, false);
+	}();
+
+	this.slideAutomatico = function (){
+		var lMax = (parseFloat(lBox) * numImg()); 
+		var lBoxx =  parseFloat(lBox);
+		var newPosizione = posizione() + lBoxx;						// non in px (200) 
+		if(newPosizione >= lMax){
+			box.style.left = '50px';
+			box.style.transition = '500ms ease';
+		}else{
+			box.style.left = newPosizione+'px';
+			box.style.transition = '500ms ease';
+			box.style.webkitTransition = '500ms ease';				// x safari 
+		}
+		anim = setTimeout(this.slideAutomatico.bind(this), 5000);			// il 'bind' funziona in tutti i buoni e da IE9
+	}
+
+	this.stop = function (){
+		if(anim)										
+		clearTimeout(anim);						
+	}
+
+	this.fermaAutomatico = function(){
+		contenitore.addEventListener('mouseenter', this.stop.bind(this), false);
+	}
+
+	this.riprendiAutomatico = function(){
+		contenitore.addEventListener('mouseleave', this.slideAutomatico.bind(this), false);
+	}
+
+} // SlideImage
+
+//var slider = new SlideImage('../allegati/img_Slide.xml','box','pulsanti');
+var slider = new SlideImage('../allegati/img_Slide.xml','box','avanti','indietro');
+slider.slideAutomatico();
+slider.fermaAutomatico();
+slider.riprendiAutomatico();
+
+
+</script>
+
+
+
+<!--
+	<div id="avanti"><div></div></div> 
+	<div id="indietro"><div></div></div> 
+
+///###############   Con il vecchio metodo delle freccette ##################
+ 
+
+
+// HTML 
+
+	<div id="pulsanti">
+		<div class="avanti"></div>
+		<div class="indietro"></div>
+	</div>
+
+
+
+function SlideImage (fileXML,bocs,pulsanti){ 
+
+//	var io = this;																	// usando il 'bind' non è più utile
+	var box = document.getElementById(bocs);								// elemento contenitore delle immagini 
+	var boxPulsanti = document.getElementById(pulsanti);				// elemento che contiene i pulsanti > < 
+
+	//### Caricamento immagini nel 'box' da file XML ###// 	
+	var caricaImmagini =	function (){ 										
+		xmlDoc = loadXMLDoc(fileXML);											// carica il file .xml 
+		immagine = xmlDoc.getElementsByTagName('immagine');			// elemento root file xml (predefinito)
+		for(var a=0; a<immagine.length; a++){
+			var src = immagine[a].children[0];
+			var titolo = immagine[a].children[1];
+			var alt = immagine[a].children[2];
+/*			var larghezza = immagine[i].children[3];
+			var larghezza = larghezza.childNodes[0].nodeValue;
+
+			var altezza = immagine[i].children[4];
+			altezza = altezza.childNodes[0].nodeValue;
+*/			var imgSlider = document.createElement("img");	
+			imgSlider.setAttribute('src', src.childNodes[0].nodeValue);	
+			imgSlider.setAttribute('title', titolo.childNodes[0].nodeValue);	
+			imgSlider.setAttribute('alt', alt.childNodes[0].nodeValue);	
+//			imgSlider.setAttribute('width', larghezza);	
+//			imgSlider.setAttribute('height', altezza);	
+			box.appendChild(imgSlider);
+		} 
+	}(); // 
+
+	var boxImg = document.querySelectorAll('#'+bocs+ ' > img');		 
+	var lBox = window.getComputedStyle(box).width;						// larghezza del box immagini in px (200px) 
+
+	var posizione = function (){
+		return parseFloat(window.getComputedStyle(box).left);			// posizione corrente 'left' box immagini			
+	};
+
+	var numImg = function (){
+		return boxImg.length;													// numero totale di immagini
+	};
+
+	var setImg = function  (){
+		for(var i=0; i<boxImg.length; i++){
+			var posLeft = i*parseFloat(lBox);
+			boxImg[i].style.left = '-'+posLeft+'px'; 
+		}
+	}();
+
+	var avantiUna = function (){
+		var avanti = boxPulsanti.firstElementChild;
+		avanti.addEventListener('click',  
+		function (){
+			var lMax = parseFloat(lBox) * numImg();		
+			var lBoxx =  parseFloat(lBox);
+ 			var newPosizione = posizione() + lBoxx;					// non in px (200) 
+			if(newPosizione >= lMax){
+				box.style.left = 0;
+				box.style.transition = '500ms ease';
+			}else{
+				box.style.left = newPosizione+'px';
+				box.style.transition = '500ms ease';
+				box.style.webkitTransition = '500ms ease';			// x safari 
+			}
+		},false);
+	}();
+
+	var indietroUna = function (){
+		var indietro = boxPulsanti.lastElementChild;
+		indietro.addEventListener('click',  
+		function (){
+			var lMax = parseFloat(lBox) * numImg(); 
+			var lBoxx =  parseFloat(lBox);
+ 			var newPosizione = posizione() - lBoxx;					// non in px (200) 
+			if(newPosizione < 0 ){
+				box.style.left = (lMax - lBoxx)+'px';
+				box.style.transition = '500ms ease';
+			}else{
+				box.style.left = newPosizione+'px';
+				box.style.transition = '500ms ease';
+				box.style.webkitTransition = '500ms ease';			// x safari 
+			}
+		}, false);
+	}();
+
+	this.slideAutomatico = function (){
+		var lMax = (parseFloat(lBox) * numImg()); 
+		var lBoxx =  parseFloat(lBox);
+		var newPosizione = posizione() + lBoxx;						// non in px (200) 
+		if(newPosizione >= lMax){
+			box.style.left = 0;
+			box.style.transition = '500ms ease';
+		}else{
+			box.style.left = newPosizione+'px';
+			box.style.transition = '500ms ease';
+			box.style.webkitTransition = '500ms ease';				// x safari 
+		}
+//		setTimeout(io.ripetizione, 5000);								// attesa => 5 secondi 
+		setTimeout(this.slideAutomatico.bind(this), 5000);			// il 'bind' funziona in tutti i buoni e da IE9
+	}
+
+}
+
+
+-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

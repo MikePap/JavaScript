@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Metodi di controllo e prevenzione  </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+<h1>Metodi di controllo e prevenzione degli oggetti</h1>
+
+
+<h2>typeof</h2>
+
+<p>
+il metodo <b>typeof</b> permette di rilevare il tipo valore (o dato) 
+</p>
+<pre>
+var oggetto = { 
+	nome: 'mik',
+	cognome: 'pap',
+	funzione: function (){ return this.nome}
+} 
+<span class="azzurro">
+console.log( typeof oggetto.nome );			<span class="nota">// string</span>
+console.log( typeof oggetto.funzione );			<span class="nota">// function</span>
+</span>
+for (var prop in oggetto){
+	if( typeof oggetto[prop] === 'function')
+	console.log( prop+ ': ' +oggetto[prop]() );	<span class="nota">// funzione: mik </span>	
+	else
+	console.log( prop+ ': ' +oggetto[prop] );	<span class="nota">// nome: mik - cognome: pap</span>	
+}
+
+
+</pre>
+
+
+
+<h2>Object.is</h2>
+
+<p>
+Il metodo <b>Object.is()</b> permette di verificare se due valori sono uguali. 
+<pre>
+var isSame = Object.is(value1, value2);
+
+<span class="grigio">Alcuni esempi</span>
+
+Object.is("foo", "foo");		<span class="nota">// true</span>   
+Object.is(window, window);		<span class="nota">// true</span>   
+
+Object.is("foo", "bar");		<span class="nota">// false</span>   
+Object.is([], []);			<span class="nota">// false</span>   		
+
+var test = {a: 1};
+Object.is(test, test);			<span class="nota">// true</span>   
+	
+Object.is(null, null);			<span class="nota">// true</span>   
+
+Object.is(0, -0);			<span class="nota">// false</span>   
+Object.is(-0, -0);			<span class="nota">// true</span>   
+Object.is(NaN, 0/0);			<span class="nota">// true</span>   
+
+var a = "sono a";
+var b = "sono b";
+var paragona = Object.is(a.length, b.length);
+<span class="azzurro">console.log(paragona);			<span class="nota">// true</span>
+</span>
+var a = "sono a";
+var b = "sono b";
+var paragona = Object.is(a, b);
+<span class="azzurro">console.log(paragona);			<span class="nota">// false</span>
+</span>
+var a = "sono a";
+var b = "sono a";
+var paragona = Object.is(a, b);
+<span class="azzurro">console.log(paragona);			<span class="nota">// true</span>
+</span>
+var a = function(){ return 4*4 };
+var b = function(){ return 16 };
+var paragona = Object.is(a(), b());
+<span class="azzurro">console.log(paragona);			<span class="nota">// true</span>
+</span>
+var a = function(){ return 4*4 };
+var b = 16;
+var paragona = Object.is(a(), b);
+<span class="azzurro">console.log(paragona);			<span class="nota">// true</span>
+</span>
+var a = [4,8,2,9];
+var b = [4,8,2,9];
+var paragona = Object.is(a, b);
+<span class="azzurro">console.log(paragona);			<span class="nota">// false</span>
+</span>
+var a = [4,8,2,9];
+var b = [4,8,2,9];
+var paragona = Object.is(a[1], b[1]);
+<span class="azzurro">console.log(paragona);			<span class="nota">// true (x l'8)</span>
+</span>
+var a = {fragola:'8', mela:4};
+var b = {fragola:'8', mela:10};
+var paragona = Object.is(a, b);				<span class="nota">// false</span>
+var paragona1 = Object.is(a.mela, b.mela);		<span class="nota">// false</span>
+var paragona2 = Object.is(a.fragola, b.fragola);	<span class="nota">// true</span>
+</span>
+
+
+</pre>
+
+
+</p>
+
+<p>
+Qui di seguito il <em>polyfill</em> per i browser che non supportano il metodo
+<pre>
+if (!Object.is) {
+	Object.is = function(v1, v2) {
+		if (v1 === 0 && v2 === 0) {
+			return 1 / v1 === 1 / v2;
+		}
+		if (v1 !== v1) {
+			return v2 !== v2;
+		}
+		return v1 === v2;
+	};
+}
+</pre>
+</p>
+
+
+<h2>Object.isExtensible()</h2>
+<p>
+E' un metodo che permette di verificare se un oggetto è estendibile, se  è possibile poter aggiungere nuove proprietà. 
+<pre>
+Object.isExtensible(obj);
+</pre>
+Tutti gli oggetti creati inizialmente sono <tt>estendibili</tt> ma ci sono metodi che possono renderli non estendibili come il metodo <em>freeze</em>, il metodo <em>seal</em> o il <em>preventExtensions</em>
+<pre>
+var empty = {};
+<span class="azzurro">console.log(Object.isExtensible(empty));</span>		<span class="nota">// restituisce true</span>
+
+Object.preventExtensions(empty);
+<span class="azzurro">console.log(Object.isExtensible(empty));</span>		<span class="nota">// restituisce false</span>
+</pre>
+</p>
+
+<h2>Object.isFrozen()</h2>
+
+<p>
+E' simile al metodo precedente. Pertanto un oggetto risulta <em>frozen</em> se non è estendibile e quindi non è possibile gestire le proprietà 
+<pre>
+Object.isFrozen(obj)
+
+var empty = {};
+<span class="azzurro">console.log(Object.isFrozen(empty));</span>		<span class="nota">// restituisce false</span>
+
+Object.preventExtensions(empty);
+<span class="azzurro">console.log(Object.isFrozen(empty));</span>		<span class="nota">// restituisce true</span>
+</pre>
+</p>
+
+<h2>Object.preventExtensions()</h2>
+<p>
+Metodo che previene la possibilità di aggiungere altre proprietà ad un oggetto.
+<pre>
+Object.preventExtensions(obj)
+</pre>
+</p>
+
+<h2>instanceof</h2>
+<p>
+L'operatore <tt>instanceof</tt> permette di verificare se un oggetto ha nella sua catena prototype la proprietà prototype di un costruttore. In altre parole se un oggetto appartiene a tale costruttore nel senso di appartenere allo stesso <em>scope chain</em>
+<pre>
+object instanceof constructor
+
+function C(){}					<span class="nota">definizione di un costruttore</span>
+function D(){}					<span class="nota">definizione di un'altro costruttore</span>
+
+var o = new C();
+<span class="azzurro">console.log( o instanceof C );</span>			<span class="nota">// restituisce true</span>
+<span class="azzurro">console.log(o instanceof D );</span>			<span class="nota">// restituisce false</span> 
+<span class="azzurro">console.log(o instanceof Object );</span>		<span class="nota">// restituisce true</span> 
+<span class="azzurro">console.log(C.prototype instanceof Object )</span>	<span class="nota">// restituisce true</span>
+
+C.prototype = {};
+var o2 = new C();
+<span class="azzurro">console.log(o2 instanceof C );</span>			<span class="nota">// restituisce true</span> 
+<span class="azzurro">console.log(o instanceof C );</span>			<span class="nota">// ATTENZIONE restituisce false</span>
+</pre>
+</p>
+
+<h2>Object.getPrototypeOf()</h2>
+
+<p>
+Il metodo fornisce il <em>prototype</em>  di un oggetto. La struttura del prototype è ad <em>albero</em> alla cui cima (radice) c'è <tt>Object.prototype</tt>
+</p>
+<pre>
+var oggettoVuoto = {};
+<span class="azzurro">
+console.log(Object.getPrototypeOf(oggettoVuoto) == Object.prototype);		<span class="nota">// true</span>
+console.log(Object.getPrototypeOf(Object.prototype));				<span class="nota">// null (la radice)</span>
+</span>
+</pre>
+<p>
+Molti oggetti non hanno direttamente <tt>Object.prototype</tt> come loro prototype ma hanno un'altro oggetto che ha le sue proprietà. Le 'funzioni' derivano da <tt>Function.prototype</tt> e gli 'array' da <tt>Array.prototype</tt>
+</p>
+<pre>
+<span class="azzurro">
+console.log(Object.getPrototypeOf(isNaN) == Function.prototype);		<span class="nota">// true</span>
+console.log(Object.getPrototypeOf([]) == Array.prototype);			<span class="nota">// true</span>
+</span>
+</pre>
+
+<h2>Object.setPrototypeOf()</h2>
+
+<p>
+E' un metodo introdotto da ECMAScript 6 che da la possibilità di cambiare il prototype di uno specifico oggetto in corso d'opera. 
+Accetta due argomenti: l'oggetto il cui prototype deve cambiare e l'oggetto che trasferisce il suo prototype 	
+</p>	
+
+<pre>
+let person = {
+	getGreeting() {
+		return "Hello";
+	}
+};
+
+let dog = {
+	getGreeting() {
+		return "Woof";
+	}
+};
+
+let friend = Object.create(person);				<span class="nota">creazione oggetto "friend" che assume il prototype dell'oggetto "person"</span>
+<span class="azzurro">
+console.log(friend.getGreeting());				<span class="nota"> // "Hello"</span>
+console.log(Object.getPrototypeOf(friend) === person);		<span class="nota">// true</span>
+</span>
+Object.setPrototypeOf(friend, dog);				<span class="nota">cambiamo il prototype di "friend" assegnandogli quello di "dog"
+<span class="azzurro">
+console.log(friend.getGreeting());				<span class="nota">// "Woof"</span>
+console.log(Object.getPrototypeOf(friend) === dog);		<span class="nota">// true</span>
+</span>
+</pre>	
+
+
+
+
+<h2>Object.prototype.isPrototypeOf()</h2>
+<p>
+Metodo che verifica il prototype di un oggetto in un'altro oggetto. Differisce dall'operatore <tt>instanceof</tt> per il fatto che quest'ultimo controlla la catena del prototype dell'oggetto attraverso il suo prototype e non attraverso la funzione in se stessa.
+<pre>
+prototypeObj.isPrototypeOf(obj);
+
+function Fee() { }
+function Fi() { }
+
+var f = new Fi();					<span class="nota">si instanzia un oggetto per poter verificare il suo prototype</span>
+<span class="azzurro">console.log( Fi.prototype.isPrototypeOf(f) ); </span>		<span class="nota">// restituisce true </span>
+<span class="azzurro">console.log( Fee.prototype.isPrototypeOf(f) );</span>		<span class="nota">// restituisce false</span>
+
+Fi.prototype = new Fee();				<span class="nota">si collegano i prototype (il prototype di 'Fee' diventa anche di 'Fi') </span> 
+<span class="grigio">oppure con l'uso del metodo 'create' </span>
+//Fi.prototype = Object.create(Fee.prototype);		<span class="nota">è uguale al precedente </span>
+
+<span class="azzurro">console.log( Fee.prototype.isPrototypeOf(f) );</span>		<span class="nota">// restituisce true</span>
+<span class="azzurro">console.log( Fi.prototype.isPrototypeOf(f) );</span>		<span class="nota">// restituisce true</span>
+</pre>
+</p>
+
+
+<h2>Object.prototype.hasOwnProperty()</h2>
+<p>
+Il metodo restituisce un valore boleano ad indicare se una specificata proprietà appartiene ad un oggetto.
+<pre>
+obj.hasOwnProperty(prop)
+
+o = new Object();
+o.prop = 'exists';
+
+<span class="azzurro">console.log(o.hasOwnProperty('prop'));</span>		<span class="nota">// restituisce true</span>
+delete o.prop;
+<span class="azzurro">console.log(o.hasOwnProperty('prop'));</span>		<span class="nota">// restituisce false</span> 
+</pre>
+ATTENZIONE:	il metodo controlla le proprietà dirette e non controlla tutte quelle della catena
+<pre>
+o = new Object();
+o.prop = 'exists';
+<span class="azzurro">console.log(o.hasOwnProperty('prop'));</span>			<span class="nota">// restituisce true</span> 
+<span class="azzurro">console.log(o.hasOwnProperty('toString'));</span>		<span class="nota">// restituisce false</span>
+<span class="azzurro">console.log(o.hasOwnProperty('hasOwnProperty'));</span>	<span class="nota">// restituisce false</span>
+</pre>
+Ecco un esempio per iterare attraverso le proprietà di un oggetto senza considerare le proprietà ereditate
+<pre>
+var buz = {
+	nome: 'Marco',
+	cognome: 'Anselmi'		
+};
+
+for (var prendi in buz) {
+	if (buz.hasOwnProperty("nome")) {
+		console.log(prendi+ ": " +buz[prendi])	<span class="nota">// restituisce 'nome: Marco' 'cognome: Anselmi'</span>
+	}else{
+		console.log(prendi);			<span class="nota">toString o altre</span>
+	}
+}
+
+</pre>
+
+</p>
+
+
+<h2>Object.prototype.getOwnPropertyDescriptor</h2>
+
+<p>
+Il metodo restituisce una descrizione delle caratteristiche di una proprietà. Le caratteristiche riferite sono quelle interne e non quelle ereditate
+</p>
+
+<pre>
+var o, d, a, b, x, y;
+o = { bar: 42 };
+d = Object.getOwnPropertyDescriptor(o, 'bar');
+<span class="azzurro">
+console.log(d);						<span class="nota">// Object { value: 42, writable: true, enumerable: true, configurable: true }</span>
+</span>
+
+a = { get foo() { return 17; } };
+b = Object.getOwnPropertyDescriptor(a, 'foo');
+<span class="azzurro">
+console.log(b);						<span class="nota">// Object { get: a.foo(), set: undefined, enumerable: true, configurable: true } </span>
+</span>
+x = {};
+Object.defineProperty(x, 'baz', { value: 8675309, writable: false, enumerable: false });
+y = Object.getOwnPropertyDescriptor(x, 'baz');
+<span class="azzurro">
+console.log(y);						<span class="nota">// Object { value: 8675309, writable: false, enumerable: false, configurable: false }</span>
+</span>
+</pre>
+
+
+<h2>Object.getOwnPropertyNames</h2>
+
+<p>
+Metodo che restituisce tutte le proprietà (enumerabili e non) di un oggetto
+</p>
+
+<pre>
+var frutti = { 
+	mela: 42,
+	pera: 41,
+	alberoCilege: function(){
+		return 'nome'
+	}
+};
+<span class="azzurro">
+console.log(Object.getOwnPropertyNames(frutti));		<span class="nota">// Array [ "mela", "pera", "alberoCilege" ]</span>
+</span>
+
+var arr = ['a', 'b', 'c'];
+<span class="azzurro">
+console.log(Object.getOwnPropertyNames(arr).sort());		<span class="nota">// Array [ "0", "1", "2", "length" ]</span>
+</span>
+
+<span class="grigio">utilizzato con forEach otteniamo sia i nomi delle proprietà che i loro valori (tranne che per le funzioni) </span>
+
+var obj = { 
+	0: 'a', 1: 'b', 2: 'c', 
+	fun: function(){return "OK"} 
+};
+
+Object.getOwnPropertyNames(obj).forEach(function(val, idx, array) {
+	console.log(val + ' => ' + obj[val]);			
+});
+
+Output:
+<span class="nota">
+0 => a
+1 => b
+2 => c
+fun => function (){return "OK"}
+</span>
+</pre>
+
+
+<h2>Object.prototype.constructor</h2>
+
+<p>
+Restituisce un riferimento all'oggetto costruttore che ha creato l'istanza dell'oggetto. Il valore di questa proprietà è un riferimento alla funzione stessa di origine ed è di sola lettura.
+</p>
+
+<pre>
+var testo = 'fuk';
+var numero = 45;
+var array = [];
+var funzione = function (){};
+var oggetto = {};
+var boleano = false;
+
+<span class="grigio">I seguenti mostrano come i valori sono riferimenti alla funzione di origine</span>
+<span class="azzurro">
+console.log(testo.constructor);					<span class="nota">function String()</span>
+console.log(numero.constructor);				<span class="nota">function Number()</span>
+console.log(array.constructor);					<span class="nota">function Array()</span>
+console.log(funzione.constructor);				<span class="nota">function Function()</span>
+console.log(oggetto.constructor);				<span class="nota">function Object()</span>		
+console.log(boleano.constructor);				<span class="nota">function Boolean()</span>	
+</span>
+<span class="grigio">Quindi li possiamo usare come test in questo modo</span>
+<span class="azzurro">
+console.log(testo.constructor === String);			<span class="nota">true</span>
+console.log(numero.constructor === Number );			<span class="nota">true</span>
+console.log(array.constructor === Array);			<span class="nota">true</span>
+console.log(funzione.constructor === Function);			<span class="nota">true</span>
+console.log(oggetto.constructor === Object);			<span class="nota">true</span>
+console.log(boleano.constructor === Boolean);			<span class="nota">true</span>
+</span>
+<span class="grigio">Il seguente esempio mostra delle proprietà interne ad un oggetto</span>
+
+var frutti = { 
+	totale: 42,
+	mela: 'deliziosa',
+	alberoCiliege: function(){
+		return 'rosse'
+	},
+	tropicali: ['guanabana', 'mango'],
+	automobile: { modello: 'ford', numeroPezzi: 10, dettagli: { 'fari': 'blu' }, lista:['x', 'z'] },
+	in_vendita: true
+};
+
+<span class="azzurro">
+console.log(frutti.constructor);				<span class="nota">function Object()</span>
+console.log(frutti.totale.constructor);				<span class="nota">function Number()</span>
+console.log(frutti.mela.constructor);				<span class="nota">function String()</span>
+console.log(frutti.alberoCiliege.constructor);			<span class="nota">function Function()</span>
+console.log(frutti.tropicali.constructor);			<span class="nota">function Array()</span>
+console.log(frutti.automobile.constructor);			<span class="nota">function Object()</span>
+console.log(frutti.automobile.modello.constructor);		<span class="nota">function String()</span>
+console.log(frutti.automobile.numeroPezzi.constructor);		<span class="nota">function Number()</span>
+console.log(frutti.automobile.dettagli.constructor);		<span class="nota">function Object()</span>
+console.log(frutti.automobile.dettagli.fari.constructor);	<span class="nota">function String()</span>	
+console.log(frutti.automobile.lista.constructor);		<span class="nota">function Array()</span>
+console.log(frutti.in_vendita.constructor);			<span class="nota">function Boolean()</span>
+</span>
+
+</pre>
+
+
+<br /><br /><br />
+<br /><br /><br />
+
+
+
+<script type="text/javascript">
+
+////##### Polyfill x metodo "Object.is()"  #####
+if (!Object.is) {
+	Object.is = function(v1, v2) {
+		if (v1 === 0 && v2 === 0) {
+			return 1 / v1 === 1 / v2;
+		}
+		if (v1 !== v1) {
+			return v2 !== v2;
+		}
+		return v1 === v2;
+	};
+}
+/*
+var o = Object.is("foo", "foo");					// true
+console.log(o);										// true
+//alert(o);												// funziona in tutti i browser (col polyfill)
+*/
+/*
+var a = "sono a";
+var b = "sono a";
+*/
+
+
+var a = function(){ return 4*4 };
+var b = 16;
+var paragona = Object.is(a(), b);
+//console.log(paragona);			
+
+
+
+/*
+function C(){};
+var o = new C();
+console.log( o instanceof C );							// true
+console.log(o instanceof Object );						// true
+console.log( C.prototype.isPrototypeOf(o));			// true
+console.log( Object.prototype.isPrototypeOf(o));	// true
+*/
+
+
+
+var frutti = { 
+	totale: 42,
+	mela: 'deliziosa',
+	alberoCiliege: function(){
+		return 'rosse'
+	},
+	tropicali: ['guanabana', 'mango' ],
+	automobile: { modello: 'ford', numeroPezzi: 10, dettagli: { fari: 'blu' }, lista:['x', 'z'] },
+	in_vendita: true,
+	listaOggetti:  [ { paese : 'Caraibi'}, {paese: 'Africa' } ]
+};
+
+//console.log(frutti.automobile.dettagli.fari.constructor);	
+
+console.log(frutti.listaOggetti[0].paese.constructor);	
+
+var obj = Object.getOwnPropertyNames(frutti.automobile);
+//console.log(obj);		// 	è un array
+
+var d = Object.getOwnPropertyDescriptor(frutti, 'automobile');
+//console.log(d.value);
+
+
+/*
+3337747521
+WAY COT
+*/
+
+</script>
+
+
+
+
+
+
+
+
+</body>
+</html>

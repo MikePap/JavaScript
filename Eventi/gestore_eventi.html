@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>  gestore di eventi </title>
+<style type="text/css">
+
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);}
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px;  color:rgb(200,20,20);}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+
+</style>
+
+</head>
+
+<body>
+
+<h1> Gestore di eventi </h1>
+<p>
+Il modo più semplice per eseguire del codice JavaScript in risposta ad un evento consiste nell'utilizzare un <b>gestore di eventi</b>o<em>event handler</em> <br /><span class="codice">
+elemento.onevento = eventoHandler; </span>
+</p>
+<p>
+Esempio: <br />
+La prima lettera dell'alfabeto è la <a id="lettera" href="http://www.alfabeto.com">A</a><br />
+<span class="nota">
+var link = document.getElementById("lettera"); <br />
+link.onclick = wiki_link.clickHandler; { <br />
+clickHandler: function() { <br />
+alert("OK"); <br />
+    } </span><br />
+
+Ma c'è un problema da tener conto, che non è possibile assegnare all'elemento un gestore  di eventi finchè l'elemento non è stato caricato<br />
+Il modo per scrivere del codice dopo che è avvenuto il caricamento del documento è : <br />
+<span class="codice">
+var wiki_link = { <br />
+init: function() { <br />
+var link = document.getElementById("lettera"); <br />
+link.onclick = wiki_link.clickHandler; }, <br />
+clickHandler: function() { <br />
+alert("OK");  }<br />
+}; <br />
+Core.start(wiki_link); <br />
+</span>
+Quindi quando si clikkerà sul link A si aprirà una finestra (alert) che darà il messaggio di "OK";    
+</p>
+
+
+<h2> Problema con i gestori di eventi</h2>
+<h3>E' possibile assegnare un gestore di eventi soltanto ad un determinato evento su un determinato elemento </h3>
+
+<p>
+Se per esempio abbiamo: <br />
+<span class="codice"> 
+elemento.onclick = script01.clickHandler; <br />
+elemento.onclick = script02.clickHandler; <br />
+</span>
+quando si verifica un clic su elemento verrà eseguito solo il clickHandler dello script 02. <br />
+Ci sarebbero soluzioni ad aggirare il problema creando funzioni, ma alla fine il lavoro risulterebbe eccessivo. Allora rivolgersi ai <b>Listener per eventi </b> 
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br /> <br /> <br /> <br /> <br /><br /><br />
+
+
+
+</body>
+</html>

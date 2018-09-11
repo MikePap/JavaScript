@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<immagini>
+	<immagine>
+		<srcImg>../img/batuffolo.jpg</srcImg>	
+		<titolo>batuffolo</titolo>
+		<altImg>batuffolo</altImg>
+		<larghezza>100</larghezza>
+		<altezza>100</altezza>
+	</immagine>
+
+	<immagine>
+		<srcImg>../img/epidermide.jpg</srcImg>	
+		<titolo>epidermide</titolo>
+		<altImg>epidermide</altImg>
+		<larghezza>100</larghezza>
+		<altezza>100</altezza>
+	</immagine>
+
+	<immagine>
+		<srcImg>../img/macchie.jpg</srcImg>	
+		<titolo>macchie</titolo>
+		<altImg>macchie</altImg>
+		<larghezza>100</larghezza>
+		<altezza>100</altezza>
+	</immagine>
+
+	<immagine>
+		<srcImg>../img/gocce.jpg</srcImg>	
+		<titolo>gocce</titolo>
+		<altImg>gocce</altImg>
+		<larghezza>100</larghezza>
+		<altezza>100</altezza>
+	</immagine>
+
+	<immagine>
+		<srcImg>../img/frecciaSu2.png</srcImg>	
+		<titolo>freccia</titolo>
+		<altImg>freccia</altImg>
+		<larghezza>100</larghezza>
+		<altezza>100</altezza>
+	</immagine>
+
+</immagini>
+
+
+<!--
+	<immagine>
+		<srcImg></srcImg>	
+		<titolo></titolo>
+		<altImg></altImg>
+		<larghezza></larghezza>
+		<altezza></altezza>
+		<indice></indice>
+	</immagine>
+
+-->
+

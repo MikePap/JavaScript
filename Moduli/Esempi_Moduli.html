@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Esempi import Moduli  </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+<style type="text/css">
+
+#boxElementiCreati{
+padding:10px; margin:10px; border: 1px solid #888; /*background:red;*/
+} 
+
+
+div.box {
+width: 800px; margin:0 auto; padding: 20px; border:1px solid #ccc;
+}
+
+/*	////////////// Cerchio //////////////////////////////////////		*/
+.shape1{
+shape-outside: circle(40%);					
+/*	è come se fosse: 40% at 100px 100px perchè 100 è la metà di 200 che corrisponde a 'width' e 'height'  */		
+-webkit-shape-outside: circle(40%);		
+shape-margin: 10px;
+-webkit-shape-margin: 10px;
+width: 200px;
+height: 200px;
+float: left;
+}
+
+</style>
+
+</head>
+<body>
+
+
+<h1>Esempi di importazione moduli</h1>
+
+
+<button class="pasti">Colazione</button>
+<button class="pasti">Pranzo</button>
+<button class="pasti">Cena</button>
+
+<br /><br />
+
+<div id="colPranzoCena"> 
+	<button>Colazione</button>
+	<button>Pranzo</button>
+	<button>Cena</button>
+</div>
+
+
+
+<script type="module">
+
+
+/*
+import {nodiLiberi, nodiFigli} from "./module/eventiNodo.js";
+nodiLiberi('.pasti', 'click', esecuzione);
+nodiFigli("#colPranzoCena", "click", eseguiCompito);
+
+
+function esecuzione(ev){
+//	console.log('fuk');
+	console.log(ev.textContent);
+	var colore = ev.style['color'] = 'red'; 
+}
+
+function eseguiCompito(){
+	var h1 = document.getElementsByTagName('h1')[0];
+	h1.style['background'] = 'yellow';
+}
+*/
+
+
+/*
+import nuovoElemento from "./module/creaNodi.js";
+var paragrafo = nuovoElemento("p", {title:'sono un par', id:'divvvo'}, {color:'red', background:'yellow'}, 'Paragrafo con stile' );
+document.body.appendChild(paragrafo);
+*/
+
+/*
+import rilevaStile from "./module/rilevaStile.js";
+var larghezza = rilevaStile("h1", 'color');			
+//var sfondo = rilevaStile("#divvvo", "backgroundColor");	
+console.log(larghezza);					// 1340px
+*/
+
+
+/*
+import {getRandom, daZero_A, arrayPari, arrayDispari} from "./module/tips.js";
+var arr = [1,5,8,7,2];
+var uno_a_caso = getRandom(arr);
+console.log(uno_a_caso);
+
+var zero_dieci = daZero_A(10);
+console.log(zero_dieci);					//	[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ] 
+
+var pari = arrayPari(10)
+console.log(pari);
+
+var dispari = arrayDispari(10);
+console.log(dispari);						// [ 1, 3, 5, 7, 9 ]
+*/
+
+
+/*
+// Importazione della libreria jQuery  
+import jk from "./module/jQuery.js";
+$(document).ready(function(){
+	$("h1").css("background","red");	
+}); 
+*/
+
+// Nella seguente basta richiamare il file .js con import; esegue il risultato che è tutto definito nella funzione del file
+//import funzioneAutoInvocativa from "./module/autoInvocativa.js";		
+
+
+/*
+import {nm_giorno_settimana, giorno_mese, weekday, mesi, anno, ore, minuti, secondi, data_oggi, ora_minuti} from "./module/data_ora.js";
+var giorno_ = nm_giorno_settimana();
+console.log(giorno_);
+
+var giornoMese = giorno_mese();
+console.log(giornoMese);
+
+var giornoSettimana = weekday();
+console.log(giornoSettimana);
+
+var mese =  mesi();
+console.log(mese); 
+
+var annoo = anno();
+console.log(annoo); 
+
+var ora = ore();
+console.log(ora);
+
+var minuto = minuti();
+console.log(minuto);
+
+var secondo = secondi();
+console.log(secondo);
+
+let dataOdierna = data_oggi();
+console.log(dataOdierna);
+
+let oraMinuti = ora_minuti();
+console.log(oraMinuti);
+*/
+
+
+</script>
+
+
+
+
+
+<!--
+
+a= 0;	b=1; c=0;						c=a;	a=b;	b=c+b;
+
+c=0;	a=1;	b=1;
+c=1;	a=1;	b=2;
+c=1;	a=2;	b=3;
+c=2;	a=3;	b=5;
+c=3;	a=5;	b=8;
+c=5;	a=8;	b=13
+
+
+
+-->	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

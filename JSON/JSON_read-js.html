@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>JSON read js  </title>
+<style type="text/css">
+body{
+padding:10px; 
+}
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); margin:0 50px;} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150); margin:0 40px;}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20); margin:0 31px;}
+code, pre{ color:rgb(50,150,50);}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+<h1>Leggere dati da un web server </h1>
+
+<p>
+Un'altro uso che si può fare con JSON è quello di leggere dati da un file .js senza far uso di ajax. L'esempio in questo documento legge il file <q>myTutorials.js</q>.    
+</p>
+
+
+<div id="id01"></div>
+
+<br />
+
+<div id="id02"></div>
+
+
+<script type="text/javascript">
+
+function myFunction(arr) {
+	var out = "";
+	var i;
+	for(i = 0; i<arr.length; i++) {
+		out += '<a href="' + arr[i].url + '">' + 
+		arr[i].display + '</a><br>';
+	}
+	document.getElementById("id01").innerHTML = out;
+}
+
+</script>
+
+<script src="myTutorials.js"></script><!-- questo script va posto sempre dopo -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

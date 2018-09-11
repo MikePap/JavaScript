@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>prova ajax  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); }
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+
+#divo{
+width:500px; margin:31px; padding:10px; background:#9F0;  border:1px solid;
+}
+
+#kok{
+width:500px; margin:31px; padding:10px; background:#F90;  border:1px solid;
+}
+
+</style>
+
+<script type="text/javascript">
+function loadDoc(dname,elem)
+{
+var xhttp;
+//var txt,jk;
+
+	if (window.XMLHttpRequest)
+	{
+		xhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		xhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+	xhttp.onreadystatechange=function()
+	{
+		if (xhttp.readyState==4 && xhttp.status==200)
+		{
+//			return xhttp.responseText;
+		document.getElementById(elem).innerHTML=xhttp.responseText;
+/*			xDoc = xhttp.responseXML;
+			txt="";
+			jk = xDoc.getElementsByTagName('h1');
+//			jk = xDoc.querySelector('h1');
+			txt = jk.childNodes[0].nodeValue. 
+			document.getElementById(elem).innerHTML=txt;*/
+		}
+/*		else
+		{
+			alert('fuk');
+		}*/
+	}
+	xhttp.open("GET",dname,true);
+//	xhttp.send("titolo=%MySQL%");				// NON FUNZIONA	
+	xhttp.send();
+//	return xhttp.responseText;
+} 
+//var indirizzo ="../../jQuery/Ajax/some.php";
+var indirizzo = "BarraNav.html";
+var xDoc = loadDoc(indirizzo,"divo");
+
+var indirizzo2 = "books.xml";
+var xDoc2 = loadDoc(indirizzo2,"kok");
+
+
+/*
+var r = new XMLHttpRequest(); 
+r.open("POST", "../../jQuery/Ajax/some.php", true);
+//r.setRequestHeader("Content-type", "text/html; charset=utf-8");
+r.setRequestHeader("Content-type", "text/html");
+
+r.onreadystatechange = function () {
+	if (r.readyState == 4 || r.status == 200)
+	{
+		txt="";
+		var xDoc = r.responseText;
+		var jk = xDoc.getElementsByTagName('h1');
+		txt = jk.childNodes[0].nodeValue; 		
+		var divo = document.getElementById('divo');
+		divo.innerHTML = txt; 
+//		divo.innerHTML = r.responseText; 
+	} 
+//	console.log(r.responseText);
+};
+r.send();
+*/
+
+
+//document.onreadystatechange = function(){
+//if (document.readyState == "complete"){ 
+//xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+
+
+
+
+
+//}} // ready 
+
+
+</script>
+
+</head>
+<body>
+
+<h1>provole</h1>
+
+
+<div id="divo"></div> 
+
+<div id="kok"> </div> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

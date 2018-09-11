@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Menù orizzontale  </title>
+<style type="text/css">
+html,body,div,p,ul,li,h1,h2,h3{ margin:0; padding:0;}
+
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); }
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grassetto{font-weight:bold;}
+
+
+ul{
+/*background:red;*/ margin:10px; width:200px;
+}
+ul h3{
+background:blue; color:#fff; padding:10px; text-align:center;
+}
+
+ul li{
+list-style-type:none; margin-left:5px; background:yellow;		display:none;
+}
+
+ul li a:link, ul li a:visited{
+display:block;	text-decoration:none; 
+}
+ul li a:hover{
+background:red; color:#fff;
+}
+
+
+
+</style>
+<script type="text/javascript" src="../Book/core_min.js"> </script>
+</head>
+<body>
+
+
+<h1>Menù a cascata orizzontale con JavaScript</h1>
+
+<p>
+In questo menù a cascata gli elementi <tt>LI</tt> vengono visualizzati uno alla volta a seguire. <span class="nota">Non funziona in safari</span>
+</p>
+
+
+<ul id="uelle">
+	<h3 id="acca3" >h3 di uelle</h3>
+			
+	<li><a href="#">li uno</a></li>
+	<li><a href="#">li due</a></li>
+	<li><a href="#">li tre</a></li>
+	<li><a href="#">li quattro</a></li>
+	<li><a href="#">li cinque</a></li>
+</ul>
+
+
+
+<script type="text/javascript">
+
+var uelle = document.querySelector('#uelle');
+var uelleLi = document.querySelectorAll('#uelle > li');
+var ulL = uelleLi.length - 1;
+var acca3 = document.getElementById('acca3');
+
+n=0;			// inizializzazione contatore
+
+Core.addEventListener(acca3, 'mouseenter', mostra );
+
+Core.addEventListener(uelle, 'mouseleave', 
+function (){
+	for(var i=0; i< uelleLi.length; i++ ){
+		uelleLi[i].style.display = 'none';		
+	}
+	n=0;	
+});
+
+
+function mostra(){
+
+	if(n > uelleLi.length ){return}
+//	uelleLi[n].style.display = 'block';					
+	uelle.children[n].style.display = 'block';				// uguale al precedente	
+	n++;
+	setTimeout(mostra, 75);
+
+} //
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

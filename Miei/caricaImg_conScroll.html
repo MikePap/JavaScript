@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8"/>
+<title> carica Immagini con Scroll </title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css" /> 
+
+<style type="text/css">
+
+#box{
+position: relative; margin: 0 auto;
+display: -webkit-flex; display: flex;
+-webkit-flex-direction: row; flex-direction: row;
+flex-flow: row wrap;
+}
+#box > div{
+width: 50%;	height: 500px;
+}
+
+#uno{
+background: red;
+
+}
+#due{
+background: green;
+}
+#tre{
+background: blue;	
+}
+#quattro{
+background: purple;	
+}
+#cinque{
+background: yellow;	
+}
+#sei{
+background: sandybrown;	
+}
+#sette{
+background: steelblue;
+}
+#otto{
+background: deeppink;	
+}
+
+</style>
+</head>
+<body>
+
+<h1>Carica Immagini con lo Scroll </h1>
+
+<p>
+Lo script permette il caricamento delle immagini come «background» di ogni elemento &lt;div&gt;. <br> 
+Il caricamento avviene durante l'evento «scroll» ma solo quando il valore dello «scroll» raggiunge il valore di «offsetTop», dell'elemento &lt;div&gt;, in aggiunta del valore della sua altezza. <br>
+</p>
+
+<div id="box">
+	<div id="uno"></div>
+	<div id="due"></div>
+	<div id="tre"></div>
+	<div id="quattro"></div>
+	<div id="cinque"></div>
+	<div id="sei"></div>
+	<div id="sette"></div>
+	<div id="otto"></div>
+</div>
+
+
+<script type="text/javascript">
+
+var box = document.querySelector('#box');
+//console.log(box.offsetTop);					// 131
+var listaElementi = ['#uno','#due','#tre','#quattro','#cinque','#sei','#sette','#otto'];
+var listaImmagini = ['dop.jpg','igp.gif','divieto-luce.png','macina.jpg','Estrazione_01.jpg','Estrazione_03.jpg', 'molitura_01.jpg','molitura_02.jpg' ];
+
+window.addEventListener('scroll', function(){
+
+	var valScroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+	var boxOf = box.offsetTop;
+	var elem = document.getElementById('uno');  // tutti i <div> hanno la stessa altezza (500px)
+	var altezzaDivBox = window.getComputedStyle(elem).height || document.defaultView.getComputedStyle(elem, null)['height'];
+
+	for(i=0; i < listaElementi.length; i++ ){
+		var elemento = document.querySelector(listaElementi[i]);
+		var top = elemento.offsetTop + boxOf;									// margine tra bordo superiore viewport e bordo superiore box 
+//		if( valScroll >= top ){         											// in questo caso il caricamento avviene in ritardo  
+		if( (valScroll + (parseInt(altezzaDivBox) / 2) ) >= top ){		// meno che il precedente
+//		if( (valScroll + parseInt(altezzaDivBox)) >= top ){				// ancora meno
+			elemento.style['backgroundImage'] = 'url(../../Immagini/' + listaImmagini[i] + ')';
+			elemento.style['backgroundRepeat'] = 'no-repeat';
+			elemento.style['backgroundPosition'] = 'center center';	
+			elemento.style['backgroundSize'] = 'contain';	
+//	"contain": scala l'immagine in tutta altezza (contrario di cover); "auto": applica i valori originali dell'immagine  
+		}
+	}
+},false);
+
+
+</script>
+
+
+</body>
+</html>

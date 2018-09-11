@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title> Javascript finestre  </title>
+<style type="text/css">
+
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);}
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+
+</style>
+
+
+</head>
+
+<body>
+
+
+<h1> Finestre di dialogo</h1>
+
+<h3>Vedere anche il file <a href='../window.html'>window.html</a>  </h3>
+
+<h3>JavaScript è in grado di generare tre differenti tiplogie di <span class="nota">"finestre implicite" </span>(dette anche "finestre incorporate", "finestre modali", o "finestre di dialogo")  </h3>
+
+
+
+<p> ALERT da una sola possibilità di scegliere con "ok" <br />
+<span class="codice">var messaggio = "Ecco il messaggio"; <br />
+alert(messaggio); </span>
+</p>
+
+<p>
+CONFIRM da 2 possibilità di scegliere fra "ok" e "annulla" <br />
+<span class="codice">confirm("messaggio");</span>
+</p>
+
+
+<p>
+PROMPT è una finestra che pone una domanda e consente all'utente di dare la risposta che vuole. Può avere anche un valore di risposta predefinito. <br />
+<span class="codice">prompt("domanda","risposta predefinita");</span>
+</p>
+
+<h3>In realtà le finestre modali sono metodi dell'oggetto "window". </h3>
+
+<p> Quindi la sintassi estesa per visualizzare le finestre modali dovrebbe essere: <br />
+<span class="codice"> window.alert("messaggio"); <br />
+window.confirm("messaggio"); <br />
+window.prompt("domanda","risposta predefinita"); <br />
+</span>
+</p>
+
+
+<h1> Le finestre personalizzabili </h1>
+
+<p> Il codice è : <br />
+<span class="codice"> window.open('percorso','nome finestra','caratteristiche separate da virgola', 'cronologia'); </span>
+</p>
+<p><b>Percorso</b> => indica un percorso (relativo o assoluto) di un file html da inserire all'interno della finestra <br />
+<b>nome finestra</b> => indica il nome della finestra che abbiamo creato (opzionale) <br />
+<b>caratteristiche separate da virgola</b> => specifica la forma, la dimensione e la posizione della finestra, possiamo anche far sì che la finestra non sia ridimensionale, o che non ci siano le barre degli strumenti e le barre di scorrimento.
+</p>
+<p>
+<span class="codice"> window.open('','',''); </span> apre una finestra vuota <br>
+<a href="#" onClick="window.open('','finestra-vuota','width=400,height=350,left=0,top=0');" >Apertura di una finestra vuota</a>
+</p>
+
+<p> es: <br />
+<a href="#" onClick="window.open('http://www.html.it','finestra','');">
+  prima finestra</a> Apre una finestra a tutto schermo che visualizza una pagina in internet (http://www.html.it)  <br/>
+
+<a href="#" onClick="window.open('http://www.html.it', '', 'width=400,height=350,left=0,top=0,resizable=no,menubar=yes,toolbar=yes, scrollbars=no,locations=no,status=no');">
+  seconda finestra</a> Apre la stessa pagina di cui sopra ma in una finestrella (misure ridotte)<br/>
+
+<a href="#" onClick="window.open('Array.html', '', 'width=400,height=350,left=0,top=0,resizable=yes,menubar=yes,toolbar=no,scrollbars=yes,locations=yes,status=no');">
+  terza finestra</a> Apre in una finestrella un file della stessa directory<br/>
+
+
+<a href="http://freephp.html.it" target="finestra">
+  ricarica il contenuto</a><br/>
+
+</p>
+
+<p>Le principali caratteristiche che possono essere attribuite alla finestra: </p>
+<table class="tabella" width="450" border="0" cellspacing="0" cellpadding="0" bgcolor="#cccccc" align="center"><tr><td>
+
+<table class="tabella" width="459" border="0" cellpadding="2" cellspacing="1"><tr><th bgcolor="#f4f4f4">caratteristica</th><th bgcolor="#f4f4f4">valore</th><th bgcolor="#f4f4f4">spiegazione</th><th bgcolor="#f4f4f4">esempio</th></tr>
+
+<tr><td bgcolor="#ffffff">width</td><td bgcolor="#ffffff">numerico</td><td bgcolor="#ffffff">la larghezza della finestra in pixel</td><td bgcolor="#ffffff">width=400</td></tr>
+
+<tr><td bgcolor="#ffffff">height</td><td bgcolor="#ffffff">numerico</td><td bgcolor="#ffffff">l'altezza della finestra in pixel</td><td bgcolor="#ffffff">height=200</td></tr>
+
+<tr><td bgcolor="#ffffff">left</td><td bgcolor="#ffffff">numerico</td><td bgcolor="#ffffff">la distanza dalla sinistra del monitor</td><td bgcolor="#ffffff">left=300</td></tr>
+
+<tr><td bgcolor="#ffffff">top</td><td bgcolor="#ffffff">numerico</td><td bgcolor="#ffffff">la distanza dal lato superiore del monitor</td><td bgcolor="#ffffff">top=350</td></tr>
+
+<tr><td bgcolor="#ffffff">resizable</td><td bgcolor="#ffffff">yes / no</td><td bgcolor="#ffffff">indica se la finestra pu&ograve; essere ridimensionata o no</td><td bgcolor="#ffffff">resizable=no</td></tr>
+
+<tr><td bgcolor="#ffffff">fullscreen</td><td bgcolor="#ffffff">yes / no</td><td bgcolor="#ffffff">indica se la finestra va aperta a tutto schermo</td><td bgcolor="#ffffff">fullscreen=no</td></tr>
+
+<tr><td bgcolor="#ffffff">channelmode</td><td bgcolor="#ffffff">yes / no</td><td bgcolor="#ffffff">indica se la finestra deve essere aperta &quot;in modalit&agrave; canale&quot; (solo per ie)</td><td bgcolor="#ffffff">channelmode=no</td></tr>
+
+<tr><td bgcolor="#ffffff">menubar</td><td bgcolor="#ffffff">yes / no</td><td bgcolor="#ffffff">la barra del menu (quella con scritto &quot;file&quot;, &quot;modifica&quot;, ecc.)</td><td bgcolor="#ffffff">menubar=no</td></tr>
+
+<tr><td bgcolor="#ffffff">toolbar </td><td bgcolor="#ffffff">yes / no</td><td bgcolor="#ffffff">la barra degli strumenti del browser (con i pulsanti &quot;indietro&quot;, &quot;avanti&quot;)</td><td bgcolor="#ffffff">toolbar=no</td></tr>
+<tr><td bgcolor="#ffffff">location</td><td bgcolor="#ffffff">yes / no</td><td bgcolor="#ffffff">la barra degli indirizzi del browser</td><td bgcolor="#ffffff">location=no</td></tr>
+<tr><td bgcolor="#ffffff">scrollbars</td><td bgcolor="#ffffff">yes / no</td><td bgcolor="#ffffff">le barre di scorrimento laterali</td><td bgcolor="#ffffff">scrollbars=no</td></tr>
+
+<tr><td bgcolor="#ffffff">status</td><td bgcolor="#ffffff">yes / no</td><td bgcolor="#ffffff">la barra di stato (quella in basso)</td><td bgcolor="#ffffff">status=no</td></tr>
+</table></td></tr>
+</table>
+<br />
+<ul>
+    <li>Quando una caratteristica viene omessa il suo valore: </li>
+        <ul>
+            <li> viene impostato a "0" nel caso di left e top </li>
+            <li> viene impostato sull'intera grandezza dello schermo nel caso di width e left </li>
+            <li> viene automaticamrnte impostato su "no" in tutti gli altri casi </li>
+         </ul>
+    <li> Quando una caratteristica viene impostata su "yes" </li>
+        <ul>
+            <li> la forma "caratteristica=yes" può anche essere scritta semplicemente con "caratteristica". Ad esempio: <br />
+            <span class="codice"> window.open('http://www.html.it','','fullscreen'); </span></li>
+         </ul>
+</ul>
+
+<p> Quindi al posto di: <br />
+<span class="codice"> window.open('sponsor.htm', '', 'width=220,height=220,left=0,top=0,resizable=no,menubar=yes,toolbar=yes, scrollbars=no,locations=no,status=no'); </span><br />
+si puo scrivere: <br />
+<span class="codice"> window.open('sponsor.htm', '', 'width=300,height=300,menubar,toolbar'); </span>
+</p>                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

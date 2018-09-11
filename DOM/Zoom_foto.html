@@ -1,0 +1,190 @@
+	<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Zoom Immagine  </title>
+<style type="text/css">
+html,body,div,p,h1,h2,h3,h4,h5,input,textarea,select,span,ul,li,a,img{
+margin:0;padding:0;
+}
+/* ASSEGNAZIONE DEL "box-sizing:border-box" A TUTTI GLI ELEMENTI DEL DOCUMENTO UTILIZZANDO IL SELETTORE UNIVERSALE * (valido anche in IE 8) */
+* { 
+  -moz-box-sizing: border-box; 
+  -webkit-box-sizing: border-box; 
+   box-sizing: border-box; 
+}
+
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); }
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grassetto{font-weight:bold;}
+
+#boxImg{
+position:relative; margin:80px auto; width:600px; height:450px; padding:50px; text-align:center; border:1px solid; z-index:1;
+}
+#foto{
+/*border:1px solid;*/	position:absolute; top:50px; left:50px;
+}
+
+#lente{
+position:absolute; top:10px; left:10px; width:200px; height:200px; border:10px solid #333; border-radius:100px; z-index:2; 
+background:transparent;	overflow:auto;
+}
+#lente img{
+/*width:100%; height:100%;*/ position:absolute; top:0; left:0;  border:1px solid #333; border-radius:80px;
+}
+
+</style>
+<script type="text/javascript" src="../Book/core.js"> </script>
+</head>
+<body>
+										<div id="lente"></div> 
+
+
+<div id="boxImg"> 
+	<img id="foto" src="../img/ulivo_01.jpg" alt="" title="" />
+</div>
+
+
+<p><b>Page X Coordinate:</b> <span id="myX">0</span></p>
+<p><b>Page Y Coordinate:</b> <span id="myY">0</span></p>
+
+
+
+
+<script type="text/javascript">
+var boxImg = document.getElementById('boxImg');
+var foto = document.getElementById('foto');
+var lente = document.getElementById('lente');
+
+//var kk = boxImg.offsetTop;			// 
+//alert(kk);
+
+
+// mouseenter
+boxImg.addEventListener('click', 
+function (event){
+
+	var topFoto = foto.offsetTop;								// 51 (distanza: bordo superiore boxImg --> bordo superiore foto {padding boxImg})
+	var offsetTopBox = boxImg.offsetTop;					// 80 (distanza: bordo superiore finestra --> bordo superiore boxImg  )
+	var offsetTopFoto = topFoto + offsetTopBox;			// 130 (distanza: bordo superiore finestra --> bordo superiore foto )
+
+	var leftFoto = foto.offsetLeft;							// 51 è uguale a 'topFoto' che è uguale al padding di boxImg
+	var offsetLeftBox = boxImg.offsetLeft;					// 318 (distanza: bordo sinistro finestra --> bordo sinistro boxImg)
+	var offsetLeftFoto = leftFoto + offsetLeftBox;		// 369 (distanza: bordo sinistro finestra --> bordo sinistro foto)
+
+	var latoLente = parseInt(window.getComputedStyle(lente).height);					// altezza o larghezza della lente 
+
+	var widthFoto = parseInt(window.getComputedStyle(foto).width);						// larghezza della foto
+	var mezzaWidthFoto = widthFoto /2; 
+	var widthFotoMas = widthFoto *2;
+
+	var heightFoto = parseInt(window.getComputedStyle(foto).height);					// altezza della foto
+	var mezzaHeightFoto = heightFoto /2;
+	var heightFotoMas = heightFoto *2;
+
+
+//	top, right, bottom, left
+/*	var rectTop = ( (event.pageY - offsetTopFoto) - (latoLente/2) )+'px';
+	var rectRight = ((event.pageX - offsetLeftFoto) + (latoLente/2))+'px'; 
+	var rectBottom = ((event.pageY - offsetTopFoto) + (latoLente/2))+'px';
+	var rectLeft = ( (event.pageX - offsetLeftFoto) - (latoLente/2) ) +'px';
+*/
+
+	var rectTop =		( (event.pageY - (offsetTopFoto - mezzaHeightFoto)) - (latoLente/2))+'px';
+	var rectRight =	( (event.pageX - (offsetLeftFoto - mezzaWidthFoto)) + (latoLente/2))+'px'; 
+	var rectBottom =	( (event.pageY - (offsetTopFoto - mezzaHeightFoto)) + (latoLente/2))+'px';
+	var rectLeft =		( (event.pageX - (offsetLeftFoto - mezzaWidthFoto)) - (latoLente/2))+'px';
+
+	var df = document.createDocumentFragment();					// viene creato un oggetto 'Document Fragment' 
+	var clono = foto.cloneNode(false);
+	clono.style.width = widthFotoMas+'px';
+	clono.style.height = heightFotoMas+'px';
+
+	clono.style.clip = 'rect('+rectTop+','+rectRight+','+rectBottom+','+rectLeft+')';
+//	df.appendChild(clono);
+
+	lente.appendChild(clono);
+	lente.scrollTop = parseInt(rectTop);
+	lente.scrollLeft = parseInt(rectLeft);
+
+
+//alert( foto.offsetLeft );
+//alert(lente.childNodes.length)
+}, false)
+
+boxImg.addEventListener('mouseleave', 
+function (){
+	if(lente.hasChildNodes){
+//		contornoLente.removeChild(contornoLente.firstChild);
+//alert(contornoLente.length);			// undefined
+	}
+
+}, false)
+
+// mousemove
+boxImg.addEventListener('mousemove', 
+function (event){
+	var x = event.pageX - 200;
+	var y = event.pageY - 200; 
+//	contornoLente.style.left = x+'px'; 
+//	contornoLente.style.top = y+'px';
+
+
+
+   document.getElementById("myX").innerHTML = event.pageX;
+   document.getElementById("myY").innerHTML = event.pageY; 
+
+}, false)
+
+
+/*
+
+top, right, bottom, left
+
+top = event.pageY - offsetTopFoto
+
+
+*/
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

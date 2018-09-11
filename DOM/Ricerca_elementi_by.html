@@ -1,0 +1,357 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>   Ricerca degli elementi </title>
+<style type="text/css">
+
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);}
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px;  color:rgb(200,20,20);}
+
+.nota{ color:rgb(250,120,0);}
+.codice, pre{ color:rgb(30,120,30);}
+.blu{color:#00f;}
+.grigio{color: grey;}
+
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+
+</style>
+
+
+</head>
+
+<body>
+<script type="text/javascript">
+/*
+// script per cambiare gli stili del body
+var body = document.getElementsByTagName("body")[0];
+body.style.backgroundColor = "#000000";
+body.style.color = "#FFFFFF";
+*/
+
+</script>
+
+<h2> Ricerca di un elemento per ID  -- getElementById --  </h2>
+
+<p> 
+Il percorso più diretto per raggiungere un elemento è l'<b>id</b>. E' un attributo opzionale che può essere aggiunto a qualsiasi elemento della pagina e deve essere univoco.
+</p>
+
+<p id="elementounivoco"> esempio di paragrafo con id=elementounivoco <br />
+<span class="codice"> var target = document.getElementById("elementounivoco"); </span>
+<span class="nota"> ora la variabile target  fa riferimento all'elemento del documento(document) che ha id = elementounivoco </span>
+</p>
+
+<p>  Per ottenere  informazioni sull'elemento che si appena trovato si puo far uso della proprietà <span class="nota">"nodeName"</span> <br />
+<span class="codice"> var target = document.getElementById("elementounivoco"); <br />
+alert(target.nodeName); </span><span class="nota"> restituisce => <b>p</b></span> <br />
+Se l'elemento che si sta cercando non esiste restituisce NULL (non da risultato).  
+</p> 
+
+<h2> Ricerca di elementi per tag -- getElementsByTagName -- </h2>
+<p> 
+Ricerca gli elementi per <q>tag</q> e restituisce un array.  
+</p>
+<ul>
+    <li> i paragrafi </li>
+    <li> un elenco non ordinato </li>
+    <li> gli elementi dell'elenco </li>
+</ul>
+<p>
+<span class="codice"> var listItems = document.getElementsByTagName("li"); </span> <br />
+<span class="codice"> var secondItem = listItems[1] </span>  fa riferimento al secondo elemento della lista <b>(un elenco non ordinato)</b> <br />
+<span class="codice"> var numItems = listItems.length </span> restituisce il numero degli elementi (3).
+</p>    
+
+<h2>Ricerca elemento per classe -- getElementsByClassName</h2>
+<p>Ricerca gli elementi che abbiano la stessa classe e restituisce un array. <span class="nota">Non è supportato da IE 8</span> </p>
+<p class="myClass">primo paragrafo </p>
+<p class="myClass anotherClass">secondo paragrafo</p>
+<pre>
+var elems = document.getElementsByClassName("myClass");
+elems.style.color = "#f00";				<span class="nota">// non  assegna lo stile a nessuno dei due paragrafi perchè restituisce un array</span> 
+<span class="blu">mentre:</span>
+var elems = document.getElementsByClassName("myClass")[1];
+elems.style.color = "#f00";				<span class="nota">// assegna lo stile al primo paragrafo</span> 
+</pre>
+
+
+<h2>  Ricerca del genitore -- parentNode -- </h2> 
+<p>
+Ogni nodo ha un genitore (tranne document). Quindi con la proprietà <b>parentNode </b> si ricava un riferimento al nodo padre (superiore)<br />
+<pre>
+<span class="blu">&lt;div&gt; 
+	&lt;p&gt; 
+		&lt;a id="oliver" href="#"&gt; Oliver &lt;/a&gt; 
+	&lt;/p&gt;
+&lt;/div&gt; 	</span>
+var oliver = document.getElementById("oliver"); 
+var genitore = oliver.parentNode;				<span class="nota"> // fa riferimento al paragrafo genitore (p) </span>
+var genitoreGenitore = oliver.parentNode.parentNode;		<span class="nota"> // fa riferimento al div   </span>
+</pre>
+</p>
+
+<h2>  Ricerca dei figli   </h2>
+<h3> childNodes - children</h3>
+<p> Le proprietà <q>childNodes</q> e <q>children</q> restituiscono i figli di un elemento. Mentre <q>children</q> individua gli elementi che sono all'interno dell'elemento indicato <q>childNodes</q> individua anche eventuali spazi vuoti (<a href="childNodes.html">vedi qui</a>)
+
+</p>
+
+<ul id="baldwin">
+    <li>Alec</li>
+    <li>Daniel</li>
+    <li>William</li>
+    <li> Stephen </li>
+</ul>    
+<p>
+<pre>
+var baldwinS = document.getElementById("baldwin");
+var william = baldwinS.children[2];				<span class="nota">// accede al secondo elemento della lista (Daniel) </span>						
+console.log(listItems.children.length);				<span class="nota">// restituisce: 4 </span>
+console.log(listItems.childNodes.length);			<span class="nota">// restituisce: 9 (compreso gli spazi vuoti e linee di interruzione)</span>
+</pre>
+</p>
+
+<script type="text/javascript">
+var listItems = document.getElementById("baldwin");
+//var primoItem = listItems.childNodes[1].textContent;							// Alec
+var primoItem = listItems.childNodes[1].childNodes[0].data;					// Alec
+var secondItem = listItems.children[1].textContent;								// Daniel
+var tt =	listItems.firstElementChild.nodeName;
+var yy = listItems.children.length;
+//var terzo = listItems.getChildren(1);
+//alert(secondItem);
+//alert(listItems.children.length);
+//alert(listItems.childNodes.length);
+//alert(yy);
+
+</script>
+
+<h3> firstChild  e  lastChild </h3>
+<p>
+Servono per individuare il primo e l'ultimo figlio compreso però anche spazi vuoti, testi e commenti
+<pre>
+var baldwinS = document.getElementById("baldwin");
+baldwinS.firstChild.nodeName;			<span class="nota">// restituisce: #text (nodo testo che nel caso è uno spazio vuoto o linea break) </span>
+</pre>
+
+<h3>firstElementChild, lastElementChild</h3>
+<p>
+Individuano il primo e l'ultimo elemento ignorando nodi testo, break lines e commenti.
+<pre>
+var baldwinS = document.getElementById("baldwin");
+baldwinS.firstElementChild.nodeName;			<span class="nota">// restituisce: 'LI' (il primo elemento della lista UL) </span>
+</pre>
+</p>
+
+
+<h2> Ricerca dei fratelli  </h2>
+<h3> nextSibling e previousSibling </h3>
+<p> Metodi per individuare i <b>nodi</b> successivi e precedente all'elemento indicato (compreso quindi anche spazi vuoti, testi e commenti
+).</p>
+
+<h3>nextElementSibling e previousElementSibling</h3>
+<p> Metodi per individuare gli <b>elementi</b> successivi e precedente all'elemento indicato. <span class="nota">Non supportati in IE 8</span> </p>
+
+<pre>
+<span class="grigio">In riferimento all'elemento &lt;ul&gt; </span>
+var ul = document.getElementsByTagName('ul')[0];
+var primoLI = ul.firstElementChild;			<span class="nota">// restituisce il primo elemento LI di UL</span>
+var nodotesto = primoLI.nextSibling;			<span class="nota">// restituisce il nodo testo del primo LI e non il LI successivo</span>
+var secondoLI = primoLI.nextElementSibling;		<span class="nota">// restituisce l'elemento successivo al primo LI</span>
+
+var precedente = secondoLI.previousElementSibling;	<span class="nota">// restituisce il LI pecedente</span>
+var nodotesto = secondoLI.previousSibling;		<span class="nota">// restituisce il nodo precedente che è un nodo testo</span>
+</pre>
+
+<h3>contains( )</h3>
+<p>
+Metodo che consente di verificare se un nodo è contenuto in un'altro
+<pre>
+var inside = document.querySelector('html').contains(document.querySelector('body'));
+console.log(inside);			<span class="nota">// restituisce true</span> 
+</pre>
+</p>
+
+<h3>compareDocumentPosition( )</h3>
+<p>
+E' un metodo che fornisce informazioni sulla posizione di un nodo all'interno del DOM
+</p>
+
+
+<h2> Ottenere, impostare, rimuovere attributi</h2>
+<h3>attributes</h3>
+<p> restituisce la lista degli attributi di un elemento
+<pre>
+var atts = document.querySelector('a').attributes;			<span class="nota">// </span>
+for(var i=0; i&lt;atts.length; i++){
+	console.log(atts[i].nodeName +'='+ atts[i].nodeValue);
+}
+</pre>
+</p>
+
+
+<h3>getAttribute</h3>
+
+<p>
+Una volta ottenuto un riferimento ad un elemento è possibile richiedere il valore di uno dei suoi attributi richiamando il metodo <b>getAttribute</b> 
+<pre>
+var ul = document.getElementsByTagName('ul')[0];
+ul.getAttribute('id');		<span class="nota">// restituisce il valore dell'attributo 'id' dell'elemento UL</span>
+<span class="grigio">
+Secondo alcuni (da me no) questo metodo da dei problemi nei browser principali per cui si può utilizzare un metodo diverso ma efficace</span>
+ul.id;				<span class="nota">// come sopra restiuisce il valore dell'attributo </span>
+</pre>
+</p>
+
+<h3>setAttribute</h3>
+<p>
+Tutti gli attributi oltre a poter essere consultati possono anche essere impostati con il metodo <b> setAttribute </b> 
+<pre>
+<span class="grigio">Esempio di aggiunta di un attributo "title" all'elemento 'provole'</span>
+provole.setAttribute("title", "Sito delle mozzarelle di bufala");
+
+<span class="grigio"><b>Esempio interessante è il seguente che aggiunge una cartella ad una directory esistente</b> </span>
+provole.setAttribute("href", "/mozzarelle/" );	<span class="nota">il valore del link cambia da <b>href="http://www.provole.com"</b> a <b>href="http://www.provole.com/mozzarelle/"</b></span>
+</pre>
+</p>
+
+<h3>removeAttribute</h3>
+<p>
+Rimuove un attributo da un elemento. E' meglio usare questo metodo che impostare a 'null' il suo attributo
+<pre>
+var atts = document.querySelector('a');
+atts.removeAttribute('href');			<span class="nota">// rimuove l'attributo 'href' dell'elemento &lt;a&gt;  </span>
+</pre>
+</p>
+
+<h3>hasAttribute</h3>
+<p>
+Restituisce un valore boleano <q>true</q> o <q>false</q>  a seconda se esiste o no un attributo
+<pre>
+var target = document.getElementById("elemento"); 
+if(target.hasAttribute('id')){
+	... 
+}
+</pre>
+</p>
+
+<h2>Gestione delle classi di un elemento</h2>
+
+<h3>className</h3>
+<p class="nota">Supportato in IE 8</p>
+
+<pre>
+<span class="blu">&lt;div class="big brown bear"&gt; &lt;/div&gt;</span>
+var elm = document.querySelector('div');
+
+<span class="grigio">Recuperare i valori delle classi </span>
+<span class="blu">elm.className;</span>					<span class="nota">// restituisce: big brown bear  </span>
+
+<span class="grigio">Assegnare una o più classi</span>
+elm.className = 'bordo';			<span class="nota">assegna la classe 'bordo' all'elemento </span>			
+elm.className = 'distanza colore';		<span class="nota">assegna le classi 'distanza' e 'colore' </span>				
+
+<span class="grigio">Per eliminare classi basta semplicemente assegnare un valore vuoto  </span>
+elm.className = '';				<span class="nota">elimina una o tutte le eventuali classi presenti </span>
+</pre>
+
+<h3>classList</h3>
+
+<p>
+<span class="nota">Non supportato in IE 8</span>
+<pre>
+<span class="blu">&lt;div class="big brown bear"&gt; &lt;/div&gt;</span>
+var elm = document.querySelector('div');
+
+<span class="grigio">Recuperare i valori delle classi </span>
+<span class="blu">elm.classList;</span>					<span class="nota">// restituisce: 0: "big", 1: "brown", 2: "bear", length: 3, ... </span>
+
+<span class="grigio">Il metodo <q>add</q>  permette di assegnare soltanto una classe per volta </span>
+elm.classList.add('cat');			<span class="nota">aggiunge la classe 'cat' all'elemento &lt;div&gt;  </span>
+elm.classList.add('cat dog');			<span class="nota">non aggiunge niente  </span>
+
+<span class="grigio">Il metodo <q>remove</q> permette di eliminare una classe per volta </span>
+elm.classList.remove('cat');			<span class="nota">elimina la classe 'cat' </span>
+elm.classList.remove('dog cat');		<span class="nota">non elimina nulla </span>
+</pre>
+</p>
+
+
+<h3>classList.toggle</h3>
+<p>
+Metodo che permette di intercanbiare un sub-valore di un'attributo di classe. In altre parole permette di aggiungere un valore se mancante o di rimuoverlo se presente.
+<pre>
+<span class="blu">&lt;div class="visible"&gt; &lt;/div&gt;</span>
+var elm = document.querySelector('div');
+
+elm.classList.toggle('visible');		<span class="nota">rimuove la classe 'visible'</span>
+elm.classList.toggle('grow');			<span class="nota">aggiunge la classe 'grow'</span>
+<span class="blu">elm.className;					<span class="nota">// restituisce: grow</span>
+</pre>
+</p>
+
+<h3>classList.contains</h3>
+<p>
+Metodo che permette di determinare se un elemento contiene una specificata classe
+<pre>
+<span class="blu">&lt;div class="big brown bear"&gt; &lt;/div&gt;</span>
+var elm = document.querySelector('div');
+
+<span class="blu">elm.classList.contains('brown');</span>		<span class="nota">// restituisce: true </span> 
+</pre>
+</p>
+
+
+
+<h2>Comparazione nodi -- isEqualNode -- </h2>
+<p>
+E' un metodo che permette di controllare se due nodi sono uguali. La verifica è fatta sul confronto del tipo di elemento e sugli attributi contenuti in ciascuno di essi.
+<pre>
+<span class="grigio">Prendiamo  il caso di un confronto tra le seguenti due immagini  </span>
+<span class="blu">&lt;img src='Immagine-01.jpg' alt='logo sito' /&gt;  
+&lt;img src='Immagine-01.jpg' alt='logo sito' /&gt;  </span>
+var img01 = document.getElementsByTagName('img')[0];
+var img02 = document.getElementsByTagName('img')[1];
+<span class="blu">img01.isEqualNode(img02);</span>				<span class="nota">// restituisce: true</span>
+
+<span class="grigio">Se invece abbiamo  che una delle due ha un attributo in più  </span>
+<span class="blu">&lt;img src='Immagine-01.jpg' alt='logo sito' <b>class='classeImmagine'</b> /&gt;  
+&lt;img src='Immagine-01.jpg' alt='logo sito' /&gt;  </span>
+var img01 = document.getElementsByTagName('img')[0];
+var img02 = document.getElementsByTagName('img')[1];
+<span class="blu">img01.isEqualNode(img02);</span>				<span class="nota">// restituisce: false</span>
+</pre>
+</p>
+
+<h2>document.activeElement</h2>
+<p>
+Metodo che permette di individuare il nodo attualmete attivo nel documento. Non tutti i nodi ottengono il focus; fra questi gli &lt;input&gt;, &lt;textarea&gt; ecc..  
+<pre>
+document.querySelector('textarea').focus();		<span class="nota">// imposta il focus sull'elemento textarea</span>
+<span class="blu">document.activeElement;</span> 				<span class="nota">// restituisce l'elemento &lt;textarea&gt; </span> 
+</pre>
+</p>
+
+
+
+
+
+<br /><br /> <br /> <br /> <br /> <br /><br /><br />
+
+
+<script type="text/javascript">
+
+
+
+
+</script>
+
+<div id='jh' class="big brown bear"> </div>
+
+</body>
+</html>

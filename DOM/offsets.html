@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Posizionamento  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+pre{color:green; background:#e6e6fa; padding:10px; }
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grigio{color: grey;}
+.blu{color:#00f;}
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+
+</style>
+</head>
+<body>
+
+<h1>Dimensioni e Posizionamento  elementi</h1>
+
+
+<h3>offsetTop, offsetLeft </h3>
+<p>
+Sono proprietà che permettono di ottenere le posizioni (in pixel) di elementi all'interno dell'albero del DOM. <br />
+<b>offsetTop</b> restituisce la distanza dal bordo superiore del viewport al bordo superiore dell'elemento; <br />
+<b>offsetLeft</b> restituisce la distanza dal bordo sinistro del viewport al bordo sinistro dell'elemento.  <br />
+<pre>
+<span class="blu">#divo{position:absolute; top:200px; left:350px; margin:31px;}</span>
+var divo = document.querySelector('#divo'); 
+divo.offsetLeft;		<span class="nota">// restituisce: 381 (350+31)</span>
+divo.offsetTop;			<span class="nota">// restituisce: 231 (200+31)</span>
+
+<span class="blu">#divo{position:relative; margin-left:31px; margin-top:80}</span>
+divo.offsetLeft;		<span class="nota">// restituisce: 31</span>
+divo.offsetTop;			<span class="nota">// restituisce: 80 (solo nel caso che non ci siano altri elementi posizionati sopra di esso)</span>
+</pre>
+</p>
+
+
+<h3>getBoundingClientRect</h3>
+<p>
+Metodo che permette di ottenere valori di <tt>left</tt>, <tt>top</tt>, <tt>right</tt>, <tt>bottom</tt>  ed anche il valore di <em>width</em> e <em>height</em> compreso dei valori di <em>border</em> e <em>padding</em>
+<pre>
+<span class="blu">#divo{ height:50px; width:50px; margin:100px; border:10px solid gray; } </span>
+var divo = document.querySelector('#divo').getBoundingClientRect(); 
+divo.top;			<span class="nota">// restituisce: 100 (sempre relativo al fatto che non ci siano altri elementi sopra di esso)</span>
+divo.bottom;			<span class="nota">// restituisce: 170 (100+10+50+10)</span>
+divo.left;			<span class="nota">// restituisce: 100</span>
+divo.right;			<span class="nota">// restituisce: 170 (100+10+50+10)</span>
+</pre>
+<span class="grigio">Analizzando il valore restituito al 'right' di 170 abbiamo: 100 (margine sinistro) + 10 (bordo sinistro) + 50(larghezza) + 10(bordo destro). Simile discorso vale per il 'bottom'.</span> <br />
+Fra i vari browser ci sono delle piccole differenze di valore nel'ordine di qualche pixel. 
+</p>
+<p>
+<pre>
+<span class="blu">#divo{height:25px; width:25px; border:25px solid gray; padding:25px;}</span>
+var divo = document.querySelector('div').getBoundingClientRect(); 
+
+divo.height;			<span class="nota">// restituisce: 125 </span>
+divo.width;			<span class="nota">// restituisce: 125</span>
+</pre>
+<span class="grigio">
+Analizzando il valore restituito alla width abbiamo: 25(bordo sinistro) + 25(padding sinistro) + 25(valore width) + 25(padding destro) + 25(bordo destro) 
+</span>
+</p>
+<p>
+Gli stessi risultati per ottenere <tt>width</tt> e <tt>height</tt>, compreso di <em>bordi</em> e <em>padding</em>, si possono ottenere con i metodi <b>offsetWidth</b> e <b>offsetHeight </b> 
+<pre>
+<span class="blu">#divo{height:25px; width:25px; border:25px solid gray; padding:25px;}</span>
+var divo = document.querySelector('divo'); 
+
+div.offsetHeight;			<span class="nota">// restituisce: 125 </span>
+div.offsetWidth;			<span class="nota">// restituisce: 125 </span>
+</pre>
+</p>
+
+<h3>clientWidth, clientHeight</h3>
+<p>
+Sono proprietà che permettono di ottenere il valore <tt>width</tt> e <tt>height</tt> compreso del <em>padding</em> ed escluso dei <em>bordi</em> 
+<pre>
+<span class="blu">div{ height:25px; width:25px; padding:25px; border:25px solid gray; }</span>
+var div = document.querySelector('div'); 
+
+div.clientHeight;		<span class="nota">// restituisce: 75 => 25(padding top) + 25(height) + 25(padding bottom)</span>
+div.clientWidth;		<span class="nota">// restituisce: 75 => 25(padding sinistro) + 25(width) + 25(padding destro) </span>
+</pre>   
+</p>
+
+<h1>Scrolling</h1>
+
+<h3>scrollHeight, scrollWidth </h3>
+<p>
+Proprietà che restituiscono le dimensioni di <tt>height</tt> e <tt>width</tt> di un elemento in cui compaiono le barre di scorrimento. Le barre di scorrimento laterale e sottostante compaiono quando un elemento contiene al suo interno altri elementi che hanno dimensioni maggiori. Per cui le dimensioni del nostro elemento genitore saranno date dalla somma delle dimensioni degli elementi contenuti. 
+<pre>
+<span class="grigio">div{ height:100px; width:100px; overflow:auto; }
+p{ height:500px; width:1000px; }
+</span><span class="blu">&lt;div&gt;&lt;p&gt;&lt;/p&gt;&lt;/div&gt;</span>
+var div = document.querySelector('div'); 
+
+var H = div.scrollHeight;			<span class="nota">// restituisce: 500</span>	
+var W = div.scrollWidth;			<span class="nota">// restituisce: 1000</span>
+</pre>
+</p>
+
+<h3>scrollTop, scrollLeft </h3>
+<p>
+Sono proprietà che permettono di recuperare i valori correnti di <em>top</em> e <em>left</em> durante la fase di scorrimento. Inoltre è anche possibile impostarli.
+<pre>
+<span class="grigio">div{ height:100px; width:100px; overflow:auto; }
+p{ height:500px; width:1000px; }
+</span><span class="blu">&lt;div&gt;&lt;p&gt;&lt;/p&gt;&lt;/div&gt;</span>
+var div = document.querySelector('div'); 
+
+div.scrollTop = 150;			<span class="nota">// l'elemento &lt;p&gt;(interno di &lt;div&gt;) scorre di 150 pixel verso il basso  </span>
+div.scrollLeft = 750;			<span class="nota">// l'elemento &lt;p&gt; scorre di 750 pixel verso destra  </span>
+</pre>
+</p>
+<p>Al momento questi due metodi non sono supportati da tutti i browser, soprattutto quelli più vecchi. La seguente è una funzione per ottenere lo <tt>srollTop</tt> per tutti i browser compreso IE 8
+</p>
+<pre>
+var getScrollTop = function (){
+	return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+}
+
+document.body.addEventListener('click', function (){
+	alert(getScrollTop());
+}, false);
+</pre>
+<p>
+Si otterrà il valore dello <tt>scroll</tt> della finestra (qualora ci fosse)
+</p>
+
+<h3>Esempio utile</h3>
+
+<pre>
+var titolo2 = document.querySelectorAll('h1')[1];
+var hTop = titolo2.offsetTop; 
+var pulsante = document.getElementById('pulsante');
+
+pulsante.addEventListener('click', function (){
+	document.documentElement.scrollTop = hTop;			<span class="nota">// firefox, IE8</span>						 
+	document.body.scrollTop = hTop;					<span class="nota">// chrome, safari, opera</span> 
+}, false);
+</pre>
+
+
+Cliccando sul pulsante seguente <button id="pulsante">Clik me</button> lo scroll della pagina si fermerà in corrsipondenza del titolo <b>Scrolling</b> 
+
+<h3>scrollIntoView()</h3>
+<p>
+Questo metodo permette di posizionare gli elementi interni (quindi la presunta barra laterale) sfruttando la lista (di tipo array) degli stessi elementi contenuti. 
+<pre>
+<span class="grigio">div{ height:30px; width:30px; overflow:auto;}
+p{ background-color:red; } </span>
+<span class="blu">
+&lt;div&gt;
+	&lt;content&gt; 
+		&lt;p&gt;1&lt;/p&gt;  
+		&lt;p&gt;2&lt;/p&gt;  
+		&lt;p&gt;3&lt;/p&gt;  
+		&lt;p&gt;4&lt;/p&gt;  
+		&lt;p&gt;5&lt;/p&gt;  
+		&lt;p&gt;6&lt;/p&gt;  
+		&lt;p&gt;7&lt;/p&gt;  
+		&lt;p&gt;8&lt;/p&gt;  
+		&lt;p&gt;9&lt;/p&gt;  
+		&lt;p&gt;10&lt;/p&gt;  
+	&lt;/content&gt; 	
+&lt;/div&gt;
+</span>
+document.querySelector('content').children[4].scrollIntoView(true);		
+</pre>
+<span class="grigio">Dato che l'altezza di &lt;div&gt; è solo di 30px  sposterà la barra laterale (che non si vede) verso il basso fino a raggiungerre il quinto figlio dell'elemento &lt;content&gt;. La differenza tra il 'true' (che è anche default) e il 'false', in questo caso, sta nell'alignamento di base del quinto elemento; cioè col 'true' la barra si sposta alla base del 5° elemento, quindi non lo visualizza) e col 'false' si sposta al top e quindi lo visualizza </span>
+</p>
+
+
+
+
+<script type="text/javascript">
+
+var titolo2 = document.querySelectorAll('h1')[1];
+var hTop = titolo2.offsetTop; 
+
+var pulsante = document.getElementById('pulsante');
+pulsante.addEventListener('click', function (){
+	document.documentElement.scrollTop = hTop;						// firefox, IE8 
+	document.body.scrollTop = hTop;										// chrome, safari, opera 
+}, false);
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br />
+
+
+
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Map e WeakMap  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); margin:10px 50px; } 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150); margin:10px 40px; }
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20); margin:10px 31px; }
+code, pre{ color:rgb(20,150,30); font-weight:bold; background:rgb(230,230,230); margin:5px 10px; padding:8px; }
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(100,150,255);}
+.scuro{color:#333;}
+tt, em{color:#6a9999}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-left:10px;}
+dd{ color:#0066FF; margin-left:10px;}
+
+</style>
+</head>
+<body>
+
+
+<h1>Map</h1>
+
+<p>
+Un oggetto <b>Map</b> permette di impostare coppie <em>chiave/valore</em> allo stesso modo di un oggetto <q>Object</q> ma con qualche differenza. <br />
+</p>
+<ol>
+	<li>
+		<tt>Object </tt> ha il <q>prototype</q> allo stesso modo ci sono chiavi di default in <tt>Map</tt>. Ad ogni modo questo può essere bypassato cosi: <b>map = Object.create(null)</b> 
+	</li>
+	<li>Le chiavi in <tt>Object</tt> sono del tipo <tt>String</tt> mentre in <tt>Map</tt> possono essere di qualsiasi tipo </li>
+	<li>Con <tt>Map</tt> è molto più semplice ottenere il <q>size</q> (il numero delle coppie chiave/valore) che con <tt>Object</tt>  </li>
+</ol>
+
+
+<h2>Proprietà di Map</h2>
+
+<dl>
+	<dd><b>prototype</b>: permette di aggiungere proprietà all'oggetto Map </dd>
+	<dd><b>length</b>:  il valore della proprietà è sempre 1</dd>
+</dl>	
+<pre>
+var frutta = new Map();
+<span class="azzurro">
+console.log(Map.length);				<span class="nota">// 1</span>
+</span>
+</pre>
+
+<h2>Instanze di Map</h2>
+
+<p>
+Tutte le instanze di <tt>Map</tt> derivano da <tt>Map.prototype</tt>
+</p>
+<h3>Map.prototype.constructor</h3>
+
+<p>
+Restituisce una funzione che crea una instanza prototype. E' la funzione di default di <tt>Map</tt>
+</p>
+
+<h3>Map.prototype.size</h3>
+
+<p>
+Restituisce il numero di coppie chiave/valore nell'oggetto <tt>Map</tt>
+</p>
+
+
+<h2>Metodi di Map</h2>
+
+<h3>Map.prototype.set()</h3>
+
+<p>
+Permette di aggiungere un nuovo elemento (o aggiornare uno vecchio), formato da una coppia chiave/valore, all'oggetto <tt>Map</tt>.  
+</p>
+<pre>
+var myMap = new Map();
+
+myMap.set("bar", "foo");
+myMap.set(1, "foobar");
+
+myMap.set("bar", "fuuu");				<span class="nota">aggiorna quello definito precedentemente</span>
+</pre>
+
+
+<h3>Map.prototype.get()</h3>
+
+<p>
+Restituisce un preciso elemento dall'oggetto. Si fornisce la chiave per ottenere il suo valore.
+</p>
+<pre>
+var myMap = new Map();
+myMap.set("bar", "foo");
+
+myMap.get("bar");					<span class="nota">// "foo"</span>
+myMap.get("baz");					<span class="nota">// undefined</span>
+</pre>
+
+
+<h3>Map.prototype.has()</h3>
+
+<p>
+Restituisce un valore boleano ad indicare se un elemento con una specificata chiave esiste
+</p>
+<pre>
+var myMap = new Map();
+myMap.set("bar", "foo");
+
+myMap.has("bar");					<span class="nota">// true</span>
+myMap.has("baz");					<span class="nota">// false</span>
+</pre>
+
+
+
+
+<h3>Map.prototype.delete()</h3>
+
+<p>
+Rimuove un elemento specifico dall'oggetto. 
+</p>
+<pre>
+var myMap = new Map();
+myMap.set("bar", "foo");
+
+myMap.delete("bar");					<span class="nota">// true</span>
+myMap.has("bar");					<span class="nota">// false</span>   
+</pre>
+
+
+<h3>Map.prototype.clear()</h3>
+
+<p>
+Rimuove tutte le coppie chiave/valore nell'oggetto <tt>Map</tt>
+</p>
+<pre>
+var myMap = new Map();
+myMap.set("bar", "baz");
+myMap.set(1, "foo");
+
+myMap.size;						<span class="nota">// 2</span>
+myMap.has("bar");					<span class="nota">// true</span>
+
+myMap.clear();
+
+myMap.size;						<span class="nota">// 0</span>
+myMap.has("bar");					<span class="nota">// false</span> 
+</pre>
+
+
+
+<h3>Map.prototype.keys()</h3>
+
+<p>
+Il metodo <b>keys()</b> restituisce  un oggetto iteratore che contiene le chiavi
+</p>
+<pre>
+var myMap = new Map();
+myMap.set("0", "foo");
+myMap.set(1, "bar");
+myMap.set({}, "baz");
+
+var mapIter = myMap.keys();
+
+console.log(mapIter.next().value);			<span class="nota">// 0</span> 
+console.log(mapIter.next().value);			<span class="nota">// 1</span>
+console.log(mapIter.next().value);			<span class="nota">// Object</span>
+</pre>
+
+
+<h3>Map.prototype.values()</h3>
+
+<p>
+Il metodo <b>values()</b> restituisce  un oggetto iteratore che contiene i valori
+</p>
+<pre>
+var myMap = new Map();
+myMap.set("0", "foo");
+myMap.set(1, "bar");
+myMap.set({}, "baz");
+
+var mapIter = myMap.values();
+
+console.log(mapIter.next().value);			<span class="nota">// "foo"</span>
+console.log(mapIter.next().value);			<span class="nota">// "bar"</span>
+console.log(mapIter.next().value);			<span class="nota">// "baz"</span>
+</pre>
+
+
+<h3>Map.prototype.entries()</h3>
+
+<p>
+Il metodo <b>entries()</b> restituisce  un oggetto iteratore che contiene la coppia chiave/valore
+</p>
+<pre>
+var myMap = new Map();
+myMap.set("0", "foo");
+myMap.set(1, "bar");
+myMap.set({}, "baz");
+
+var mapIter = myMap.entries();
+
+console.log(mapIter.next().value);			<span class="nota">// ["0", "foo"]</span>
+console.log(mapIter.next().value);			<span class="nota">// [1, "bar"]</span>
+console.log(mapIter.next().value);			<span class="nota">// [Object, "baz"]</span>
+</pre>
+
+
+<h3>Map.prototype.forEach()</h3>
+
+<p>
+Esegue una funzione fornita per ogni coppia chiave/valore dell'oggetto <tt>Map</tt>. 
+</p>
+
+<pre>
+myMap.forEach(callback[, thisArg])
+</pre>
+<dl>
+	<dd><b>callback</b>: è una funzione eseguita su ogni elemento  </dd>
+	<dd><b>thisArg</b>: valore da usare come <tt>this</tt> nell'esecuzione del <tt>callback</tt> </dd>
+</dl>	
+
+<p>
+ 
+</p>
+
+<pre>
+function logMapElements(value, key, map) {
+	console.log("m[" + key + "] = " + value);
+}
+Map([["foo", 3], ["bar", {}], ["baz", undefined]]).forEach(logMapElements);
+<span class="nota">Resituisce:
+"m[foo] = 3"
+"m[bar] = [object Object]"
+"m[baz] = undefined"
+</span>
+</pre>
+<p>
+Non è eseguita se le chiavi sono state rimosse invece è eseguita anche se i valori sono <tt>undefined</tt>. <br />
+il <tt>callback</tt> è invocato con 3 argomenti:
+<dl>
+	<dt>valore elemento</dt>
+	<dt>chiave elemento</dt>
+	<dt>l'oggetto Map che sta per essere iterato</dt>
+</dl>	
+</p>
+
+
+
+<h2>Esempi</h2>
+
+<h3>Chiavi di tipo diverso</h3>
+<pre>
+var myMap = new Map();
+
+var keyObj = {},
+	keyFunc = function () {},
+	keyString = "a string";
+
+myMap.set(keyString, "valore associato con 'a string'");
+myMap.set(keyObj, "valore associato con keyObj");
+myMap.set(keyFunc, "valore associato con  keyFunc");
+
+myMap.size; 						<span class="nota">// 3</span>
+
+myMap.get(keyString);					<span class="nota">// "valore associato con 'a string'"</span>
+myMap.get(keyObj);					<span class="nota">// "valore associato con keyObj"</span>
+myMap.get(keyFunc);					<span class="nota">// "valore associato con keyFunc"</span>
+
+myMap.get("a string");					<span class="nota">// "valore associato con 'a string'"</span>
+myMap.get({});						<span class="nota">// undefined, perchè keyObj !== {}</span>
+myMap.get(function() {})				<span class="nota">// undefined, perchè keyFunc !== function () {}</span>
+</pre>
+
+
+<h3>Iterazione di Map con "for-of"</h3>
+
+<pre>
+var myMap = new Map();
+myMap.set(0, "zero");
+myMap.set(1, "one");
+
+for (var [key, value] of myMap) {
+	console.log(key + " = " + value);		<span class="nota">// "0 = zero"  e  "1 = one"</span>
+}
+
+
+for (var key of myMap.keys()) {
+	console.log(key);				<span class="nota">// "0"  e  "1"</span>
+}
+
+for (var value of myMap.values()) {
+	console.log(value);				<span class="nota">// "zero"  e  "one"</span>
+}
+
+for (var [key, value] of myMap.entries()) {
+	console.log(key + " = " + value);		<span class="nota">// "0 = zero"  e  "1 = one"</span>
+}
+
+myMap.forEach(function(value, key, myMap) {
+	console.log(key + " = " + value);		<span class="nota">// "0 = zero"  e  "1 = one"</span>
+})
+
+</pre>
+
+
+
+<h1>WeakMap</h1>
+
+<p>
+L'oggetto <b>WeakMap</b> è un collettore di coppie chiave/valore dove la chiave è un oggetto e il valore può essere qualsiasi valore arbitrario. <br />
+I metodi sono simili a <tt>Map</tt>:
+
+<dl>
+	<dd>WeakMap.prototype.clear()</dd>
+	<dd>WeakMap.prototype.delete(key)</dd>
+	<dd>WeakMap.prototype.get(key)</dd>
+	<dd>WeakMap.prototype.has(key)</dd>
+	<dd>WeakMap.prototype.set(key, value)</dd>
+</dl>	
+</p>
+
+<pre>
+var wm1 = new WeakMap(),
+    wm2 = new WeakMap(),
+    wm3 = new WeakMap();
+
+var o1 = {},
+    o2 = function(){},
+    o3 = window;
+
+wm1.set(o1, 37);
+wm1.set(o2, "azerty");
+wm2.set(o1, o2);				<span class="nota">// a value can be anything, including an object or a function</span>
+wm2.set(o3, undefined);
+wm2.set(wm1, wm2);				<span class="nota">// chiavi e valori possono essere oggetti persino WeakMap</span>
+
+wm1.get(o2);					<span class="nota">// "azerty"</span>
+wm2.get(o2);					<span class="nota">// undefined (non c'è valore impostato per wm2)</span>
+wm2.get(o3);					<span class="nota">// undefined, (è proprio il valore definito per o3)</span>
+
+wm1.has(o2);					<span class="nota">// true</span>
+wm2.has(o2);					<span class="nota">// false</span>
+wm2.has(o3);					<span class="nota">// true (anche se il valore è proprio uguale a 'undefined')</span>
+
+wm3.set(o1, 37);
+wm3.get(o1);					<span class="nota">// 37</span>
+wm3.clear();
+wm3.get(o1);					<span class="nota">// undefined (perchè i valori di wm3 sono stati rimossi con 'clear() )</span>
+
+wm1.has(o1);					<span class="nota">// true (sono stati rimossi solo i valori di wm3)</span>
+wm1.delete(o1);
+wm1.has(o1);					<span class="nota">// false</span>
+</pre>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+/*
+var frutta = new Map();
+console.log(Map.length);				
+*/
+
+var myMap = new Map();
+myMap.set("bar", "baz");
+myMap.set(1, "foo");
+
+myMap.size;       // 2
+myMap.has("bar"); // true
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Ingrandire Immagine con Mouse Scroll </title>
+<style type="text/css">
+html,body,div,p,ul,li,h1,h2,h3,span{ margin:0; padding:0;}
+
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); }
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grassetto{font-weight:bold;}
+
+#boxImmagini{
+margin:50px auto; width:600px; text-align:center; border:1px solid; 
+
+}
+
+
+</style>
+<script type="text/javascript" src="../Book/core.js"> </script>
+
+</head>
+
+<head>
+
+<body>
+
+<h1>Ingrandire immagini col mouse scroll</h1>
+
+<div id="boxImmagini"> 
+
+	<img src="../img/box_ap.gif" alt="description" title="description" width="" height="" />
+	<img src="../img/batuffolo.jpg" alt="" title="" />
+	<img src="../img/epidermide.jpg" alt="" title="" />
+	<img src="../img/macchie.jpg" alt="" title="" />
+	<img src="../img/gocce.jpg" alt="" title="" />
+
+</div>
+
+<br /><br />
+
+<script type="text/javascript">
+
+function ingrandireImmagine(event){
+
+	var boxImmagini = document.querySelectorAll('#boxImmagini > img');
+	var h = parseInt(window.getComputedStyle(this).height);
+	var w = parseInt(window.getComputedStyle(this).width);
+	var zoom = 50;
+	var eventMouse = event.wheelDelta || -40 * event.detail;
+
+	if(eventMouse === 120){
+		for(var a=0; a<boxImmagini.length; a++){
+			boxImmagini[a].style.height = '';							// si riportano alle dimensioni originali tutte le immagini
+			boxImmagini[a].style.width = '';
+//			boxImmagini[a].style.display = 'none';						// nasconde tutte le  immagini
+		}
+//		this.style.display = 'block';
+		this.style.height = Math.min(h+zoom,  500)+'px';			// massimo ingrandimento di 500 px
+		this.style.width = Math.min(w+zoom,  500)+'px';
+	}else{
+		for(var a=0; a<boxImmagini.length; a++){
+//			boxImmagini[a].style.display = 'inline';
+		}
+		this.style.height = Math.max(h-zoom,  100)+'px';			// 100 corrisponde alla dimensione originaria delle immagini 
+		this.style.width = Math.max(w-zoom,  100)+'px';
+	}
+	event.preventDefault();	
+
+} // 
+
+//	var box = document.querySelectorAll('#boxImmagini > img');
+//	alert(box.length);
+
+function Init () {
+//	var elem = document.getElementsByTagName('img')[0];
+	var boxImmagini = document.querySelectorAll('#boxImmagini > img');
+	for(var i=0; i< boxImmagini.length; i++){ 
+		if (boxImmagini[i].addEventListener){		// all browsers except IE before version 9 (Internet Explorer, Opera, Google Chrome and Safari)
+			boxImmagini[i].addEventListener ("mousewheel", ingrandireImmagine, false);
+			boxImmagini[i].addEventListener ("DOMMouseScroll", ingrandireImmagine, false);		// Firefox
+		}else{
+			if (boxImmagini[i].attachEvent) { // IE before version 9
+				boxImmagini[i].attachEvent ("onmousewheel", MouseScroll);
+			}
+		}
+	}
+} //
+
+Init();
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

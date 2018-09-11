@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8"/>
+<title> Cambio di colore parole </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css" /> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+<h1>Cambio colore parole</h1>
+
+<p>
+La funzione <span class="nota">cambioColoreParole()</span> permette di cambiare il colore di una determinata parola in uno specificato elemento nodo. <br>
+Purtroppo nel caso del nodo &lt;pre&gt; la funzione non si comporta cosi come per gli altri nodi 
+nel senso che non rispetta i ritorni a capo 
+</p>
+
+
+
+<p class="par">Questo è par che contiene funzione con funzione e niente altro</p>
+
+<di> Io sono il divo </di>
+
+<p class="par">Questo è un'altro par che contiene funzione e funzione et basta</p>
+
+<p class="par"> Io sono un nuovo array con funzione innestata</p>
+
+<pre>
+function jk (pep){
+	var t = pop.join(" - ");
+}
+
+function jk (pop){
+	var t = function ();
+}
+</pre>	
+
+<div>Elemento &lt;div&gt; </div>
+
+<pre>
+function jk (pap){
+	var t = pop.join(" - ");
+}
+
+function jk (pup){
+	var t = pop.join(" - ");
+}
+</pre>	
+<br>
+
+
+<script type="text/javascript">
+
+
+function cambioColoreParole(nodo, parola, colore){
+//nodo:			elemento nodo a cui appplicare le modifiche
+//parola:		parola da cambiare colore nell'elemento nodo
+//colore:		colore da applicare alla parola (deve essere il nome di una classe dichiarata nei CSS)
+
+	var tagSpan = function() {
+		return "<span class="+colore+">" +parola+ "</span>"; 
+	}
+	
+	var applicaCambioColore = function() {
+		var elems = document.querySelectorAll(nodo);
+		for (var i = 0; i < elems.length; i++) {
+			var elemento = elems[i];
+			var tag = elemento.innerHTML;					
+			var parole = tag.split(/\s+/g);					
+			console.log(parole);
+			var nuovoArray = [];		
+			for(var a=0; a< parole.length; a++){
+				var testo = parole[a];
+				if(testo === parola){
+					nuovoArray.push(tagSpan());
+					elemento.innerHTML = nuovoArray.join(" ");	
+				}else{
+					nuovoArray.push(testo);
+					elemento.innerHTML = nuovoArray.join(" ");
+				}				
+			} 
+		}
+	}();
+}// 
+
+cambioColoreParole('.par', 'Questo', 'azzurro');
+cambioColoreParole('.par', 'funzione', 'rosso');
+cambioColoreParole('pre', 'function', 'rosso');
+
+
+
+</script>
+
+
+
+</body>
+</html>

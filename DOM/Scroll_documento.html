@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Scroll pagina  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(50,150,50);}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grigio{color: grey;}
+.blu{color:#00f;}
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+
+p{
+padding:10px;  border:1px solid; background:#eff1b4;
+}
+
+#freccia_sali{
+position:fixed; bottom:0; left:0; width:100%; height:50px;  text-align:center; 
+background:rgb(100,100,100);  background:rgba(0,0,0,0.5); z-index:3; display:none;
+}
+#freccia_sali div{
+position:relative; margin:0 auto; width:0; height:0; 
+border-left: 50px solid transparent; border-right: 50px solid transparent; border-bottom: 50px solid #000; 
+}
+
+</style>
+<!--
+<script type="text/javascript" src="../allegati/core_min.js"></script>
+<script type="text/javascript" src="../allegati/scorrimentoPagina.js"></script>
+-->	
+
+</head>
+<body>
+
+<h1>Animazione Scorrimento documento </h1>
+<h3>
+La classe <em>Scorrimento</em> o la funzione costruttore <em>ScrollPage</em> permettno al documento di scorrere verso l'alto fino a raggiungere il top. Tale animazione viene effettuata a seguito del <tt>click</tt> sulla freccia nera, posta nella parte bassa della finestra, che viene a sua volta visualizzata quando il valore dello <tt>scroll</tt> è superiore a un dato valore attribuito. 
+</h3>
+<div>
+La classe <em>Scorrimento</em> e la funzione costruttore <em>ScrollPage</em> contengono due metodi: <tt>showFreccia()</tt> permette di visualizzare la freccia nera dopo un dato valore impostato nella variabile <q>valShowFreccia</q> e <tt>clickScroll()</tt> che fa scorrere il documento verso l'alto a seguito del <tt>click</tt> sulla freccia nera. <br />
+Le chiamate a questi metodi sono posti alla fine della pagina prima del tag di chiusura &lt;/body&gt; (è chiaro che devono stare dopo l'elemento &lt;div&gt; <b>freccia_sali</b> (la freccia nera) oppure bisogna inserirle all'interno del metodo <tt>document.readyState</tt> ) 
+
+</div> 
+
+
+<br /><br /><br />
+
+
+<p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p><p>
+Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+ Vari studi e ricerche dimostrano come le popolazioni che fanno uso sistematico di alimenti ricchi di grassi saturi (grassi animali come il burro), sono soggette ad un accumulo di colesterolo all'interno delle arterie, causa principale delle malattie cardiache. I popoli che consumano in prevalenza grassi monoinsaturi e polinsaturi, presentano invece una bassa incidenza di infarto del miocardio. L'olio extravergine di oliva è ricco di grassi monoinsaturi (in particolare l'acido oleico) ed è quindi in grado di abbassare i livelli di LDL (colesterolo cattivo) e di alzare quelli di HDL (colesterolo buono). 
+</p>
+
+
+
+
+
+												<div id="freccia_sali"><div></div></div> 
+
+
+
+
+<script type="text/javascript">
+/*
+// Invocazione funzione costruttore "ScrollPage" da file "../allegati/scorrimentoPagina.js"
+var obj = new ScrollPage('1000', 100, 'freccia_sali', 300);
+obj.showFreccia();
+obj.clickScroll();
+/*
+// Invocazione classe "Scorrimento"
+Scorrimento.clickScroll();
+Scorrimento.showFreccia();
+*/
+
+"use strict";
+// Questa funzione sostituisce l'omonima presente in "../allegati/scorrimentoPagina.js"
+function ScrollPage(tempoScroll, frame, freccia, valShowFreccia) {
+
+	var valScorrimentoY;
+	var rp = tempoScroll / frame;	
+	var frecciaNera = document.getElementById(freccia);		
+
+	var vaiSu = function() {
+		var getScrollTop =  window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+		if(getScrollTop <= rp ){ 
+			window.pageYOffset = 0;
+			document.documentElement.scrollTop = 0;
+			document.body.scrollTop = 0;
+		}
+		if(getScrollTop === 0){ return;}
+		valScorrimentoY = getScrollTop - ( getScrollTop / rp); 
+		window.pageYOffset = valScorrimentoY;
+		document.documentElement.scrollTop = valScorrimentoY;
+		document.body.scrollTop = valScorrimentoY;
+		setTimeout(vaiSu, rp);
+	}
+//	vaiSu();
+	var clickScroll = function (){
+		frecciaNera.addEventListener('click', vaiSu, false);
+	}
+	clickScroll();
+
+	var showFreccia = function() {
+		var frecciaNera = document.getElementById(freccia);		
+		window.addEventListener('scroll', function (){
+			var getScrollTop =  window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+			if(getScrollTop > valShowFreccia)
+				frecciaNera.style.display = "block";
+			else
+				frecciaNera.style.display = "none";
+		},false);	
+	}()
+}; 
+
+var obj = ScrollPage('1000', 100, 'freccia_sali', 300);
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

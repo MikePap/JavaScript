@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>querySelectorAll  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(50,150,50); background:rgb(245,245,240); padding:10px; }
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grigio{ color:#666; }
+.blu{color:#00f;}
+
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+
+
+</style>
+</head>
+<body>
+
+
+<h1>document.querySelector</h1>
+<p>
+<span class="codice"> element = document.querySelector(selectors);</span> <br />
+Individua l'elemento specificato dal selettore. <span class="nota">Supportato da IE 8</span>
+<pre>
+var div = document.querySelector('#divo');			<span class="nota">// individua l'elemento div id='divo'</span>
+var box = document.querySelector('div.box');			<span class="nota">// individua l'elemento div class='box'</span>
+var span = document.querySelector('div.box > span');		<span class="nota">// individua l'elemento span all'interno del div di classe box</span>
+
+
+<span class="grigio">Se, per esempio, si hanno due paragrafi che hanno la stessa classe: </span>
+<span class="blu">
+&lt;p class="myclass"&gt;primo paragrafo&lt;/p&gt; 
+&lt;p class="myclass"&gt;secondo paragrafo&lt;/p&gt; 
+</span>
+var el = document.querySelector(".myclass");
+console.log(el.textContent);				<span class="nota">// restituisce: primo paragrafo</span>
+console.log(el.length);					<span class="nota">// restituisce: undefined</span>
+</pre>
+</p>
+
+<h1>document.querySelectorAll</h1>
+<p>
+Ricerca tutti gli elementi specificati dal selettore e restituisce un array. <span class="nota">Supportato da IE 8</span>
+</p>
+
+<h3>sono h3</h3>
+<p id="par">paragrafo</p>
+
+<pre>
+var elems = document.querySelectorAll("#par, h3") 
+document.writeln(elems.length);			<span class="nota">// restituisce il numero degli elementi specificati dal selettore </span> 
+
+<span class="grigio">Individuare un elemento dagli attributi </span>
+<span class="blu">&lt;div class='className' attributo='valoreAttributo' &gt; div con attributi &lt;/div&gt;</span>  
+var a = document.querySelectorAll("div[attributo]")[0];
+var a = document.querySelectorAll("div.className")[0];
+
+<span class="grigio">Individuare un elemento con due classi </span>
+<span class="blu">&lt;div class='classe className' &gt; div con due classi &lt;/div&gt;</span>  
+var elem = document.querySelectorAll("div.classe.classeName")[0];
+
+<span class="grigio">Individuare le pseudo classi </span>
+var vlinks = document.querySelectorAll(':visited');
+for(var i=o; i &lt; vlinks.length; i++)
+{
+	toma(vlinks[i].href);		<span class="nota">// in questo modo si possono acquisire i links che l'utente ha visitato </span>
+}
+
+<span class="grigio">Individuare con i selettori nth </span>
+var lista1 = document.querySelectorAll('li:nth-child(1)');
+var listePari = document.querySelectorAll('li:nth-child(even)');
+var listeDispari = document.querySelectorAll('li:nth-child(odd)');
+<span class="blu">c'è ne sono altri interessanti da tenere in considerazione: <b>firstChild, lastChild, only-child, first-of-type, only-of-type, empty, ecc... </b></span>
+
+<span class="grigio">Individuare i discendenti </span>
+document.querySelectorAll(div p);		<span class="nota">// individua tutti i p che discendono da div </span>
+document.querySelectorAll(div > p);		<span class="nota">// individua solo quelli che sono figli di div</span>
+document.querySelectorAll(p + img);		<span class="nota">// individua la img successiva a p qualora fosse realmente successiva</span>
+document.querySelectorAll(p tilde img);		<span class="nota">// individua tutte le immagini successivi a p (entrambi interni del genitore)</span>
+</pre>
+
+
+<script type="text/javascript">
+
+var elems = document.querySelectorAll("#par, h3") 
+var elem = document.querySelectorAll("#par")[0]; 
+//document.writeln(elems.length); 
+elem.style.color = "green";
+
+</script>
+
+<p id="tblock"> 
+      This is a HTML document <br />
+      
+      <span id="banana">banana</span>, 
+      <span id="apple">mela</span>, 
+      <span id="orange">arancia</span> 
+ </p> 
+
+
+<script type="text/javascript">
+var selElems = document.querySelectorAll("#tblock > span"); 
+//document.writeln(selElems.length); 								// => 3 
+
+for(var i=0; i< selElems.length; i++ )
+{
+	var iddi = selElems[i].id;
+	if(iddi == "banana")
+		selElems[i].style.color = "red";
+	else
+		selElems[i].style.color = "#00f";
+}
+
+</script>
+
+
+<h2>Liste pre-configurate</h2>
+<p>
+Il documento HTML contiene delle liste pre-configurate di tipo array 
+<dl>
+	<dd><b>document.all</b>: tutti gli elementi del documento HTML </dd>
+	<dd><b>document.forms</b>: tutti gli elementi &lt;form&gt;  </dd>
+	<dd><b>document.images</b>: tutti gli elementi &lt;img&gt;  </dd>
+	<dd><b>document.links</b>: tutti gli elementi &lt;a&gt;  </dd>
+	<dd><b>document.scripts</b>: tutti gli elementi &lt;script&gt;  </dd>
+	<dd><b>document.styleSheets</b>: tutti gli oggetti &lt;link&gt; e &lt;style&gt;    </dd>
+
+</dl>	
+</p>
+
+
+
+
+
+</body>
+</html>

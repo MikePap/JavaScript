@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>  Inserimento dati x formato HTML</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+<style type="text/css">
+
+#box{
+position:relative; width:40%; margin:31px auto; padding:2em; text-align: center;  
+background:#ff0; color:#000; cursor:pointer;
+border:1px solid #ccc;
+}
+#box:hover{
+background:#888; color:#ff0;
+}
+
+
+</style>
+</head>
+
+<!--
+http://localhost/JavaScript/Miei/InserimentoDatiHTML.html
+-->
+<body>
+
+<h1>Invio di dati da insereire in file html formattati</h1>
+
+<p>
+Cliccando sul &lt;div&gt; in giallo viene trasmesso il suo contenuto testo al file <span class="azzurro">risultati_tennis-game.php</span> il quale grazie ai metodi del <em>Filesystem</em> di PHP inserisce tale contenuto all'interno del file <span class="azzurro">esultDatiHTML.html</span> formattato con applicati gli stili CSS
+
+
+</p>
+
+
+
+<div id="box">
+	ciao bello
+</div> 
+
+<script type="text/javascript">
+
+function inviadDati(url, dati){
+	var req = new XMLHttpRequest();
+	req.open("POST", url, true);
+	req.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	req.send("testo="+dati);
+}
+
+
+var box = document.getElementById("box"); 
+
+box.addEventListener("click", function(){ 
+	var testo = this.innerHTML;
+
+	inviadDati("risultati_tennis-game.php", testo);
+
+},false);
+
+
+
+	
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
+
+

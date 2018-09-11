@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Ricercare video </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(50,150,50);}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+#divo{position:relative; width:800px; padding:10px; /*height:500px;*/ margin:5px; border:1px solid #0F0; }
+
+</style>
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+
+<script type="text/javascript">
+
+function show_href(){
+document.location.href ="http://gdata.youtube.com/feeds/api/videos?q=skateboarding+dog&start-index=21&max-results=10&v=2";
+}
+
+</script>
+
+</head>
+<body>
+
+<h1>Mostrare video da una ricerca</h1>
+<p class="nota">
+Ho prima creato un file .xml facendo copia incolla dal sorgente che restituisce l'url:<b>http://gdata.youtube.com/feeds/api/videos?q=skateboarding+dog&start-index=21&max-results=10&v=2</b> 
+</p>
+
+
+<div id="divo"></div> 
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+//show_href();
+/*
+$('h1').click(function(){
+show_href();
+}); // click 
+*/
+
+//$('#divo').load("http://gdata.youtube.com/feeds/api/videos?q=skateboarding+dog&start-index=21&max-results=10&v=2");
+//$('#divo').load("http://www.gooogle.com");
+//$('#divo').load("http://www.java2s.com");
+
+/*
+$.ajax({
+  url: 'ricerca-01.xml',
+  success: function(data) {
+//    alert('File OK');
+$("#divo").html(data);
+}
+});
+*/
+
+
+$.ajax({
+type: "GET",
+url: "ricerca-01.xml",
+//url: "http://gdata.youtube.com/feeds/api/videos?q=skateboarding+dog&start-index=21&max-results=10&v=2",  // NON FUNZIONA (ovvio)
+dataType: "xml",
+success: function(xml) {  
+
+$(xml).find('entry').each(function(){
+//var tt = $(this).find('yt:statistics').attr('viewCount');
+var iddi = $(this).find('id').text();	// Recupero valore (testo) all'interno del tag <id>
+var l_iddi = iddi.length;			// lunghezza del valore (stringa) contenuto nel tag <id>
+var pat = l_iddi - 11;				// Recupero indice della lettera che sta in posizione 11 dalla fine 
+var id =  iddi.slice(pat);			// restituzione delle ultime 11 lettere della stringa (valore id video)
+
+
+// Va bene anche così 
+var frame = document.createElement('iframe');
+frame.style.width = "250px";
+frame.style.height = "200px";
+frame.style.paddingLeft = "5px";
+frame.style.paddingTop = "5px";
+frame.src = "http://www.youtube.com/embed/"+id+"?theme=light&color=red&modestbranding=1";
+frame.frameborder = 0;
+frame.allowfullscreen = "true";	// anche senza non cambia niente 
+
+$("#divo").append(frame);
+
+/*
+var obj =  document.createElement('object');
+obj.style.width = "250px";
+obj.style.height = "200px";
+obj.style.paddingLeft = "5px";
+obj.style.paddingTop = "5px";
+var param1 = document.createElement('param');
+param1.name = "movie";
+param1.value = "http://www.youtube.com/v/"+id+"?fs=1&theme=light&border=1"
+var param2 = document.createElement('param');
+param2.name = "allowFullScreen";
+param2.value = "true";
+var param3 = document.createElement('param');
+param3.name = "allowScriptAccess";
+param3.value = "always";
+var embed = document.createElement('embed');
+embed.src = "http://www.youtube.com/v/"+id+"?&fs=1&theme=light&border=1";
+embed.type = "application/x-shockwave-flash";
+embed.allowfullscreen = "true";
+embed.allowscriptaccess = "always";
+embed.width = "250px";
+embed.height = "200px";
+
+obj.appendChild(param1);
+obj.appendChild(param2);
+obj.appendChild(param3);
+obj.appendChild(embed);
+*/
+/*
+// Uguale a sopra 
+$(obj).append(param1);
+$(obj).append(param2);
+$(obj).append(param3);
+$(obj).append(embed);
+*/
+
+//$("#divo").append(obj);
+
+
+
+}); // each
+
+/*
+$(xml).find('entry').each(function(){
+var yy = $(this).find('media:group');
+//var jj = yy.length;
+//alert(jj);
+//var title = yy.find('yt:videoid').text();
+//var title = $(this).find('media:group  yt:videoid').text();
+var title = yy.find('media:content').text();
+//alert(title);
+
+//var title = yy.find('yt:videoid').text();
+$('#divo').append("<p class='codice'>"+title+"</p>");
+}); // each 
+*/
+
+
+} // success
+}); // ajax
+
+
+
+
+}); // chiude ready 
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

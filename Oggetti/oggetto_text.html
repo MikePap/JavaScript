@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>oggetto testo  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(50,150,50);}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+<h1>Oggetto Text</h1>
+<p class="nota">
+Il contenuto testo di un elemento è rappresentato dall'oggetto <b>Text</b> che risulta, comunque, essere l'elemento figlio dell'elemento in questione.
+</p>
+
+
+<div id="divo"> sono io l'unico divo
+<span id="spanna" style="color:red;">sono spanna</span>
+</div><!--divo-->
+ 
+
+<button id="vaijo" onclick="prove();">Vai Jo</button>
+<br /><br />
+<button id="puls" onclick="proprieta();" >Mostra le proprietà dell'oggetto Text</button>
+<br />
+
+<div id="box"></div> 
+
+<script type="text/javascript">
+
+function prove(){
+var spanna = document.getElementById("spanna");
+var figlia = spanna.childNodes[0];
+var d = document.getElementById("divo"); 
+var dcn = d.childNodes[0];			// il testo contenuto nell'elemento 'divo' risulta essere il figlio dell'elemento 'divo' 
+var figlio = d.firstChild;			// è uguale al 'childNodes'
+var dd = dcn.data;				// restituisce il testo dell'elemento 
+var ddd = dcn.textContent;			// è uguale al precedente (restituisce il testo dell'elemento )	
+var dddd = dcn.wholeText;			// è uguale al precedente (restituisce il testo dell'elemento )	
+var dh = dd.length;				// conta il numero dei caratteri che compongono la stringa di testo compreso gli spazi vuoti 
+var tipo = d.nodeType;				// restituisce 1 
+var nome = d.nodeName;				// restituisce DIV 
+var genitore = d.parentNode;			// restituisce [object HTMLBodyElement] (l'lemento body)
+var genitore2 = spanna.parentElement;	//[object HTMLDivElement] è il div='divo' 
+var precedente = d.previousSibling;		// 
+var seguente = d.nextSibling;			// 
+dcn.appendData(" - testo aggiunto con 'appendData' - ");	// agiunta di testo 
+//spanna.firstChild.replaceWholeText("un nuovo spanna");	// NON FUNZIONA e mi blocca l'alert 
+figlia.deleteData(3, 5);						// NON FUNZIONA 
+dcn.insertData(1, 'add');						// NON FUNZIONA 	
+
+// ALTRE PROPRIETA':	deleteData(offset, count) -- replaceData(offset,count, string) -- splitText(number) -- substringData(offset, count) 
+
+alert(dd);				// 
+
+} // chiude la funzione "prove()" 
+
+
+///////////////
+
+function proprieta(){
+var d = document.getElementById("divo"); 
+var dcn = d.childNodes[0];
+var dd = dcn.data;
+var ddd = dcn.textContent;
+var dh = dd.length;			// conta il numero dei caratteri che compongono la stringa di testo compreso gli spazi vuoti 
+
+for(var i in dcn){							// mostra tutte le proprietà dell'oggetto Text 
+//for(var i in dd){							// mostra i valori di length del testo 0,1,2,3  ecc..
+document.getElementById("box").innerHTML += i + "<br>";
+} // for 
+} // chiude la funzione "proprieta()" 
+
+
+</script>
+
+</body>
+</html>

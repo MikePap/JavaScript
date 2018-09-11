@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Cookie in JavaScript</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../baseLocali.css" type="text/css" /> 
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+<h1>Cookie in JavaScript</h1>
+
+<p>
+Per leggere i «cookie» relativi al documento corrente bisogna richiamare il metodo <span class="nota">document.cookie</span>:
+</p>
+<pre>
+allCookies = document.cookie;
+</pre>
+<p>
+<b>allCookies</b> restituisce la lista di tutti i «cookie» relativi al documento nella forma «chiave=valore». 
+</p>
+
+<h3>Impostazione e modifica di un cookie</h3>
+
+<p>
+Per impostare un «cookie» cosi come per modificarlo bisogna usare il metodo <span class="nota">document.cookie</span> e definire un "nome" ed un "valore"
+</p>
+<pre>
+document.cookie = "nome=Mike";
+</pre>
+<p>
+Da tener presente che col metodo «document.cookie» si può impostare/modificare soltanto un cookie per volta; per definire più cookie bisogna ripetere il metodo
+</p>
+<pre>
+document.cookie = "nome=Mike";
+document.cookie = "cognome=Dantes";
+</pre>
+
+<p>
+<span class="nota">I cookie impostati in un documento faranno parte di tutta la directory e sub-directory ma non di altre distinte directory</span>; ciò a dire che saranno accessibili da tutti i documenti che fanno parte della directory corrente e relative sotto cartelle. <br>
+Per esempio, un cookie impostato nella home page (che chiaramente sta nella directory principale) sarà accessibile da ogni documento del sito.
+</p>
+
+<h3>Attributi dei cookie</h3>
+
+<p>
+I seguenti attributi vanno specificati di seguito alla definizione della coppia «chiave=valore» preceduti dal <em>punto e virgola</em>
+</p>
+<dl>
+	<dt><b>path</b>: bisogna impostare il path assoluto; se non specificato, di default, farà riferimento alla directory corrente (<em>pathname</em>) </dt>
+	<dt><b>domain</b>: 'example.com' o 'subdomain.example.com; se non specificato farà riferimento all'host corrente</dd>
+	<dt><b>max-age</b>: imposta la durata del cookie in secondi (60*60*24*365 o 31536000 per un anno) </dt>
+	<dt><b>expires</b>: come "max-age" ma impostando il tempo di vita nel formato "GMTString"	</dt>
+	<dt><b>secure</b>: per cookie trasmessi attraverso un protocollo sicuro come l'HTTPS </dt>
+</dl>
+<pre>
+document.cookie = "frutta_preferita=anguria;path=prova.html";
+document.cookie = "frutta_preferita=anguria;path=http://localhost/prova.html";
+
+document.cookie = "nome=Jhon;domain=example.com" ;
+
+document.cookie = "nome=Jhon;max-age=60*60*24*31"				<span class="nota">** il cookie sarà attivo per 31 giorni</span>
+
+document.cookie = "nome=Jhon;expires=Wed, 14 Jun 2017 07:00:00 GMT"		<span class="nota">** il cookie sarà disattivato il 14/7/2017</span>
+
+document.cookie = 
+</pre>
+<p>
+I cookie definiti senza nessuno dei due attributi «max-age» e «expires» dovrebbero essere validi fino al termine della sessione ma non è cosi almeno per quanto riguarda Firefox. Pare che sia cosi anche per Google-chrome. Quindi pare che ogni browser prenda delle decisioni differenti a riguardo per cui è raccomandato impostare la durata. <br>
+Da notare che nel caso dell'attributo «expires» il valore definito è stato ottenuto col metodo "toUTCString()" che converte una data in una stringa usando l'«UTC time zone». Per esempio:
+</p>
+<pre>
+var data_casuale = new Date('14 Jun 2017 00:00:00 PDT');
+<span class="azzurro">
+console.log(data_casuale.toUTCString());				<span class="nota">// Wed, 14 Jun 2017 07:00:00 GMT</span>
+</span>
+</pre>
+
+<h3>Eliminare i cookie</h3>
+
+<p>
+Per eliminare un cookie è necesssario impostare l'attributo «max-age» a zero
+</p>
+<pre>
+document.cookie = "name=JAKi;max-age=0";
+
+<span class="grigio">Oppure passandogli soltanto la chiave senza il suo valore</span>
+
+document.cookie = "name=;max-age=0";
+</pre>
+
+
+<h3>Cookie framework</h3>
+
+<p>
+All'interno c'è un oggetto con funzioni che permettono di creare, leggere e rimuovere cookie con pieno supporto Unicode. <br>
+L'oggetto «docCookies» contiene i seguenti metodi:
+
+<dl>
+	<dt>docCookies.setItem(name, value[, end[, path[, domain[, secure]]]])</dt>
+	<dd>Crea o modifica un cookie esistente.</dd>
+</dl>
+
+<dl>
+	<dt>docCookies.getItem(name)</dt>
+	<dd>Restituisce il valore del cookie che ha la chiave definita nel parametro "name". Restituisce <em>null</em> in caso contrario</dd>
+</dl>
+
+<dl>
+	<dt>docCookies.removeItem(name[, path[, domain]])</dt>
+	<dd>Elimina un cookie</dd>
+</dl>
+
+<dl>
+	<dt>docCookies.hasItem(name)</dt>
+	<dd>Controlla se esiste il cookie con chiave "name". Restituisce <em>true</em> o <em>false</em> </dd>
+</dl>
+
+<dl>
+	<dt>docCookies.keys()</dt>
+	<dd>Restituisce un array dei cookie (solo le chiavi) </dd>
+</dl>
+
+</p>
+
+
+<pre>
+docCookies.setItem(name, value[, end[, path[, domain[, secure]]]])
+</pre>
+
+
+
+<br><br><br>
+
+<button onclick="alertCookie()">Mostra i cookies</button>
+
+<br><br><br><br><br><br>
+
+
+<script type="text/javascript">
+
+//document.cookie = "name=Jack";
+//document.cookie = "name=;max-age=0";
+
+//document.cookie = "favorite_food=veggie";
+//document.cookie = "favorite_food=;max-age=20";
+
+
+function alertCookie() {
+	alert(document.cookie);
+}
+/*
+var data_odierna = new Date();
+console.log(data_odierna);	
+console.log(data_odierna.toUTCString());	
+*/
+
+// https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie/Simple_document.cookie_framework
+
+var docCookies = {
+	getItem: function (sKey) {
+		if (!sKey) { return null; }
+		return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+	},
+
+	setItem: function (sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+		if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return false; }
+		var sExpires = "";
+		if (vEnd) {
+			switch (vEnd.constructor) {
+				case Number:
+					sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+          /*
+          Note: Despite officially defined in RFC 6265, the use of `max-age` is not compatible with any
+          version of Internet Explorer, Edge and some mobile browsers. Therefore passing a number to
+          the end parameter might not work as expected. A possible solution might be to convert the the
+          relative time to an absolute time. For instance, replacing the previous line with:
+          */
+          /*
+          sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; expires=" + (new Date(vEnd * 1e3 + Date.now())).toUTCString();
+          */
+				break;
+				case String:
+					sExpires = "; expires=" + vEnd;
+				break;
+				case Date:
+					sExpires = "; expires=" + vEnd.toUTCString();
+				break;
+			}
+		}
+		
+		document.cookie = encodeURIComponent(sKey) + "=" + encodeURIComponent(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
+		return true;
+	},
+
+	removeItem: function (sKey, sPath, sDomain) {
+		if (!this.hasItem(sKey)) { return false; }
+		document.cookie = encodeURIComponent(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "");
+		return true;
+	},
+
+	hasItem: function (sKey) {
+		if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return false; }
+		return (new RegExp("(?:^|;\\s*)" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
+	},
+
+	keys: function () {
+		var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
+		for (var nLen = aKeys.length, nIdx = 0; nIdx < nLen; nIdx++) { aKeys[nIdx] = decodeURIComponent(aKeys[nIdx]); }
+		return aKeys;
+	}
+};
+
+/*
+// Esempi di impostazione di cookie con setItem()
+docCookies.setItem("test0", "Hello world!");
+docCookies.setItem("test1", "Unicode test: \u00E0\u00E8\u00EC\u00F2\u00F9", Infinity);
+docCookies.setItem("test2", "Hello world!", new Date(2020, 5, 12));
+docCookies.setItem("test3", "Hello world!", new Date(2027, 2, 3), "/blog");
+docCookies.setItem("test4", "Hello world!", "Wed, 19 Feb 2127 01:04:55 GMT");
+docCookies.setItem("test5", "Hello world!", "Fri, 20 Aug 88354 14:07:15 GMT", "/home");
+docCookies.setItem("test6", "Hello world!", 150);
+docCookies.setItem("test7", "Hello world!", 245, "/content");
+docCookies.setItem("test8", "Hello world!", null, null, "example.com");
+docCookies.setItem("test9", "Hello world!", null, null, null, true);
+docCookies.setItem("test1;=", "Safe character test;=", Infinity);
+
+
+*/
+/*
+docCookies.removeItem("test2");
+alert(docCookies.getItem("test2"));
+docCookies.removeItem("test5", "/home");
+alert(docCookies.getItem("unexistingCookie"));
+
+alert( docCookies.hasItem("test0") );
+
+alert(docCookies.getItem("unexistingCookie"));				// null
+alert(docCookies.getItem());										// null
+
+alert(docCookies.keys().join("\n"));
+
+
+*/
+
+
+</script>
+
+
+
+
+</body>
+</html>
+

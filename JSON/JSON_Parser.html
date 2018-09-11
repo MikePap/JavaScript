@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>JSON parser</title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+<h1>Serializzazione e Parser</h1>
+
+<p>
+L'oggetto JSON ha due metodi: <b> stringify()</b> e  <b>parse()</b>
+</p>
+
+<h2>stringify()</h2>
+<p>
+Il metodo <q>stringify</q> serializza un oggetto JavaScript in una stringa JSON:
+<pre>
+var book =
+{ 
+	title: "JavaScript",
+	authors: ["J" ], 
+	edition: 3, 
+	year: 2011,
+	releaseDate: new Date(2011, 11, 1) 
+}; 
+
+var jsonText = JSON.stringify(book); 
+<span class="blu">document.writeln(jsonText);</span>		<span class="nota">// restituisce: {"title":"JavaScript","authors":["J"],"edition":3,"year":2011}</span> 
+</pre>
+Il metodo <q>stringigy()</q> in aggiunta all'oggetto da serializzare può accettare due argomenti. Il primo può essere un array o una funzione ed il secondo è un opzione per una indentazione della stringa JSON. <br />
+Facendo riferimento all'oggetto 'book' dichiarato sopra richiamiamo questa volta il metodo con un solo argomento (un array): 
+<pre>
+var jsonText = JSON.stringify(book, ["title", "edition"]); 
+<span class="blu">document.writeln(jsonText);</span>			<span class="nota">// restituisce: la stringa {"title":"JavaScript","edition":3} </span>
+</pre>
+Se gli assegnamo come primo argomento una funzione succede che la funzione accetta due argomenti con cui si può gestire il valore attraverso la chiave. 
+<pre> 
+var jsonText = JSON.stringify(book, function(key, value)
+{ 
+	switch(key)
+	{ 
+		case "authors": 
+			return value.join(",")
+		case "year": 
+			return 2012;
+		case "edition": 
+			return undefined;
+		default: 
+			return value; 
+	} 
+}); 
+<span class="blu">document.writeln(jsonText);</span>		<span class="nota">// restituisce: {"title":"JavaScript","authors":"J","year":2012} </span>
+</pre>
+in pratica si può gestire, attraverso la chiave 'key', i valori rispettivi di ogni proprietà. Qui, per esempio, si è deciso di farsi restituire l'array' di 'authors', l'anno 2012 invece che 2011 e valore nullo per 'edition' 
+</p>
+
+<h3>Indentazione</h3>
+<p>
+Il terzo argomento del metodo <q>stringify()</q> controlla l'indentazione e gli spazi vuoti. <br />
+Se gli passiamo come terzo argomento un numero, tale numero rappresenterà il numero di indentazione
+<pre> 
+var jsonText = JSON.stringify(book, null, 4); 
+<span class="blu">document.writeln("&lt;pre&gt; "+jsonText+"&lt;/pre&gt; ");</span>
+<span class="nota">
+// restituisce: 
+{
+	"title": "JavaScript",
+	"authors": [
+		"J"
+	],
+	"edition": 3,
+	"year": 2011,
+	"releaseDate": "2011-11-30T23:00:00.000Z"
+}
+</span>
+</pre>
+se invece di un numero gli passiamo una stringa, tale stringa sarà visualizzata come indentazione:
+<pre>
+var jsonText = JSON.stringify(book, null, "---"); 
+<span class="blu">document.writeln("&lt;pre&gt;"+jsonText+"&lt;/pre&gt;");</span>
+<span class="nota">
+// restituisce:
+{
+---"title": "JavaScript",
+---"authors": [
+------"J"
+---],
+---"edition": 3,
+---"year": 2011,
+---"releaseDate": "2011-11-30T23:00:00.000Z"
+}
+</span>
+</pre>
+</p>
+
+<h3>toJSON() </h3>
+<p>
+Il metodo <q>toJSON()</q> permette il recupero del valore di una proprietà:
+<pre> 
+var book = 
+{ 
+	"title": "JavaScript",
+	"authors": ["J"],
+	edition: 3,
+	year: 2011,
+	<b>toJSON</b>: function()
+	{ 
+		return this.title; 
+	}
+}; 
+            
+var jsonText = JSON.stringify(book); 
+<span class="blu">document.writeln("&lt;pre&gt;"+jsonText+"&lt;/pre&gt; ");</span>		<span class="nota">// restituisce: "JavaScript" (conle virgolette)</span>
+</pre>
+</p>
+
+
+<h2>parse()</h2>
+<p>
+Una stringa JSON può essere passata direttamente al metodo <b>JSON.parse()</b> il quale crea un appropriato valore JavaScript. <br />
+Il metodo <q>JSON.parse()</q> accetta una funzione che è richiamata per ogni copppia di chiave-valore. La funzione riceve due argomenti (key, value) e restituisce un valore; <br />
+riprendendo l'esempio di sopra dell'oggetto <q>book</q>: 
+<pre>
+var jsonText = JSON.stringify(book); 
+
+var bookCopy = JSON.parse(jsonText, function(key, value)
+{ 
+	return value; 
+}); 
+
+<span class="blu">document.writeln(bookCopy.title);</span>		<span class="nota">// restituisce: JavaScript</span>
+<span class="blu">document.writeln(bookCopy.authors);</span>		<span class="nota">// restituisce: J</span>
+<span class="blu">document.writeln(bookCopy.edition);</span>		<span class="nota">// restituisce: 3</span>
+</pre>
+
+altro esempio: 
+<pre>
+var jsonText = JSON.stringify(book); 
+
+var bookCopy = JSON.parse(jsonText, function(key, value)
+{ 
+	if (key == "releaseDate")
+	{ 
+		return new Date(value); 
+	} 
+	else 
+	{ 
+		return value; 
+	} 
+}); 
+
+<span class="blu">document.writeln(bookCopy.releaseDate.getFullYear());</span>		<span class="nota">// resituisce: 2011</span>
+</pre>
+</p>
+
+
+<p>
+Esempio con array con <q>Funzioni Higher-order</q> 
+</p>
+<pre>
+var ANCESTRY_=[
+{"name": "Carolus Haverbeke", "sex": "m", "born": 1832, "died": 1905, "father": "Carel Haverbeke", "mother": "Maria van Brussel"},
+{"name": "Emma de Milliano", "sex": "f", "born": 1876, "died": 1956, "father": "Petrus de Milliano", "mother": "Sophia van Damme"}, 
+{"name": "Maria de Rycke", "sex": "f", "born": 1683, "died": 1724, "father": "Frederik de Rycke", "mother": "Laurentia van Vlaenderen"}, 
+{"name": "Jan van Brussel", "sex": "m", "born": 1714, "died": 1748, "father": "Jacobus van Brussel", "mother": "Joanna van Rooten"}, 
+{"name": "Philibert Haverbeke", "sex": "m", "born": 1907, "died": 1997, "father": "Emile Haverbeke", "mother": "Emma de Milliano"},
+{"name": "Emile Haverbeke", "sex": "m", "born": 1877, "died": 1968, "father": "Carolus Haverbeke", "mother": "Maria Sturm"}
+];
+
+var stringa = JSON.stringify(ANCESTRY_);
+var ancestry = JSON.parse(stringa);
+<span class="azzurro">console.log(ancestry.length);					<span class="nota">// 5</span>	
+</span>
+function filter(array, test) {
+	var passed = [];
+	for (var i = 0; i &lt;  array.length; i++) {
+		if (test(array[i]))
+			passed.push(test(array[i]));
+	}
+	return passed;
+}
+
+var dopo800 = filter(ancestry, function(person) {
+	return person.born &gt;  1800 && person.born &lt; 1900 ? person.born : false;
+})
+<span class="azzurro">
+console.log(dopo800);						<span class="nota">// [1832, 1876] </span>
+</span>
+<span class="grigio">oppure</span>
+
+var padre = filter(ancestry, function(person) {
+	if(person.father == "Frederik de Rycke")
+		return  person.name+ ', ' +person.sex+ ', ' +person.born;
+})
+<span class="azzurro">
+console.log(padre);						<span class="nota">// ["Maria de Rycke, f, 1683"] </span>
+</span>
+<span class="grigio">anche questa è carina</span>
+
+var over90 = filter(ancestry, function(person) {
+	if(person.died - person.born > 90)
+		return  person.name;
+})
+<span class="azzurro">
+console.log(over90);						<span class="nota">// ["Emile Haverbeke"] </span>
+</span>
+</pre>
+
+<p>In quest'altro esempio poniamo di voler trovare la media di vita. Creiamo una nuova funzione: 'reduce' (vista nel file <a href="../Array.html">Array</a>). Tale funzione mi permette di sommare i valori dell'array</p>
+
+<pre>
+function reduce(array, combine, start) {
+var current = start;
+	for (var i = 0; i &lt; array.length; i++)
+		current = combine(current, array[i]);
+	return current;
+}
+<span class="grigio">per cui l'array che otteniamo dalla funzione 'filter' lo inseriamo nella 'reduce' dividendo il risultato finale per la lunghezza dell'array </span>
+var media = reduce(
+	filter(ancestry, function(person) { return person.died - person.born;}),
+	function(a, b){return a + b;},  0
+) / ancestry.length;
+<span class="azzurro">
+console.log(media.toFixed(2));		<span class="nota">// 68.17 </span>
+</span>
+
+<span class="grigio">Ma volendo è molto più semplice la seguente </span>
+
+function mediaVite(){
+	var stringa = JSON.stringify(ANCESTRY_);
+	var ancestry = JSON.parse(stringa);
+	var sommaVite = 0;
+
+	for (var i = 0; i &lt;  ancestry.length; i++){
+		var eredi = ancestry[i];
+		var vita = eredi.died - eredi.born;
+		var sommaVite = sommaVite + vita;					
+	} 
+
+	var media = sommaVite / ancestry.length;
+	return media.toFixed(2);
+} 
+<span class="azzurro">
+console.log(mediaVite());		<span class="nota">// 68.17 </span>
+</span>
+
+</pre>
+
+
+
+
+
+
+<script type="text/javascript">
+var book =
+{ 
+	title: "JavaScript",
+	authors: ["J"], 
+	edition: 3, 
+	year: 2011,
+	releaseDate: new Date(2011, 11, 1) 
+}; 
+
+var jsonText = JSON.stringify(book); 
+
+var bookCopy = JSON.parse(jsonText, function(key, value)
+{ 
+		return value; 
+});        
+//document.writeln(bookCopy.title);
+console.log( JSON.parse(jsonText).title  );
+
+
+var ANCESTRY_=[
+{"name": "Carolus Haverbeke", "sex": "m", "born": 1832, "died": 1905, "father": "Carel Haverbeke", "mother": "Maria van Brussel"},
+{"name": "Emma de Milliano", "sex": "f", "born": 1876, "died": 1956, "father": "Petrus de Milliano", "mother": "Sophia van Damme"}, 
+{"name": "Maria de Rycke", "sex": "f", "born": 1683, "died": 1724, "father": "Frederik de Rycke", "mother": "Laurentia van Vlaenderen"}, 
+{"name": "Jan van Brussel", "sex": "m", "born": 1714, "died": 1748, "father": "Jacobus van Brussel", "mother": "Joanna van Rooten"}, 
+{"name": "Philibert Haverbeke", "sex": "m", "born": 1907, "died": 1997, "father": "Emile Haverbeke", "mother": "Emma de Milliano"}
+];
+
+var stringa = JSON.stringify(ANCESTRY_);
+var ancestry = JSON.parse(stringa);
+console.log( ancestry.length);								// 5
+
+
+function filter(array, test) {
+	var passed = [];
+	for (var i = 0; i < array.length; i++) {
+		if (test(array[i]))
+			passed.push(test(array[i]));
+	}
+	return passed;
+}
+
+var dopo800 = filter(ancestry, function(person) {
+	return person.born > 1800 && person.born < 1900 ? person.born : false ;
+})
+console.log(dopo800);
+
+// [73, 80, 41, 34, 90, 91] -- 68.16666666666667  
+
+</script>
+
+
+
+
+
+<!--
+
+-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br />
+<br />
+<br />
+
+
+
+</body>
+</html>

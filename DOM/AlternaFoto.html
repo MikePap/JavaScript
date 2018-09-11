@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>alterna foto</title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); }
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grassetto{font-weight:bold;}
+
+
+#box_alterna_img{  width:520px; height:520px; margin:0.5em 1.5em 0.5em 0.5em; padding:0; background:transparent; }
+#box_alterna_img img{ /*width:220px; height:220px;*/ margin:0; padding:0; border: none; display:none; }
+
+</style>
+</head>
+<body>
+
+<h1>Visualizzazione alternata di immagini</h1>
+
+<figure id="box_alterna_img">
+	<img src="../../Immagini/ulivo01.jpg" alt="foto di ulivo" />
+	<img src="../../Immagini/ulivo_01.jpg" alt="germogli di fiori di ulivo" />
+	<img src="../../Immagini/ulivo_03.jpg" alt="rametto di olivo" />
+	<img src="../../Immagini/ulivo_05.jpg" alt="immagine di olive" />
+	<img src="../../Immagini/ulivo_07.jpg" alt="immagine di macina antica" />
+</figure>
+
+
+<script type="text/javascript">
+
+var AlternaFoto = function (elemento, ritardo){
+
+	this.tempo = ritardo;							// tempo di attesa fra una immagine e l'altra 
+	this.elemento = elemento;						// elemento contenitore delle immagini
+	var sto = this;
+	var n=5;												// inizializzazione (parte dall'ultima che diventa la prima)
+	//var n = Math.floor(Math.random() * numero Immagini);  // se si vuole far partire una immagine a caso
+
+	this.immagini = function(){
+		return document.querySelectorAll(this.elemento+ ' > img');
+	}
+
+	this.nImg = function (){
+		return this.immagini().length;
+	}
+
+	this.alterna = function (){
+		if(n < (sto.nImg() -1)) 
+			{n=n+1}
+		else 
+			{n=0}
+
+		sto.immagini()[n].style.display = 'block';
+
+		if(n>0)
+			sto.immagini()[n-1].style.display = 'none';
+		else
+			sto.immagini()[sto.nImg() -1].style.display = 'none';			
+
+		setTimeout(sto.alterna, sto.tempo);
+	}
+}; // "Alternafoto"
+
+var obj = new AlternaFoto('#box_alterna_img', 2000);
+obj.alterna();
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+pre{ color:rgb(20,155,30); background:rgb(240,240,240); padding:10px; }
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}		
+.blu{color:blue; }
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+<h1>json_ajax-03</h1>
+
+
+<button id="pulsante" onClick="loadXMLDoc('secondo.json');" >Carica oggetto JSON da file esterno</button>
+
+<div id="divo"></div> 
+
+<script type="text/javascript">
+function loadXMLDoc(dname){
+	if (window.XMLHttpRequest)	{
+		xhttp=new XMLHttpRequest();
+	}else{
+		xhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+	xhttp.onreadystatechange = function(){
+		if (xhttp.readyState == 4 && xhttp.status == 200){
+			var jsonObj = JSON.parse(xhttp.responseText);			// .. in questo modo FUNZIONA e quindi bisogna dichiarare tutto qui giù 
+
+//			var arrayTitle = document.getElementById("divo").innerHTML = jsonObj[1].title;		// 
+			var arrayJson = jsonObj;		// 
+			for(var i=0; i< arrayJson.length; i++ ){
+				document.getElementById("divo").innerHTML += 
+				'<br>{ <br>' +
+				'&nbsp;&nbsp;&nbsp;"title": "'	+arrayJson[i].title+ '",<br>' +
+				'&nbsp;&nbsp;&nbsp;"authors": "' +arrayJson[i].authors+ '",<br>' +
+				'&nbsp;&nbsp;&nbsp;"edition": ' +arrayJson[i].edition+ ',<br>' +
+				'&nbsp;&nbsp;&nbsp;"year": ' +arrayJson[i].year+ 
+				" <br>},";				
+			}
+
+
+		}
+	}
+	xhttp.open("GET",dname,true);
+	xhttp.send();
+} 
+
+</script>
+
+
+
+
+<br />
+<br />
+<br />
+
+
+
+</body>
+</html>

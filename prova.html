@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>prova  </title>
+<meta name="viewport" content="width=device-width, initial-scale=0.5">
+
+<style type="text/css">
+
+html, body, div,ul,h1,h2,h3,h4{
+margin:0; padding:0;
+}
+
+
+#box{
+position: relative; margin: 0 auto;
+display: -webkit-flex; display: flex;
+/*-webkit-flex-direction: row; flex-direction: row;*/
+flex-flow: row wrap; -webkit-flex-flow: row wrap;
+
+}
+#box > div{
+width: 48%;	height: 500px; border: 1px solid #ccc;
+flex: 1 0 auto; 	-webkit-flex: 1 0 auto;
+}
+
+
+
+#uno{
+background: red;
+
+}
+#due{
+background: green;
+}
+#tre{
+background: blue;	
+}
+#quattro{
+background: purple;	
+}
+#cinque{
+background: yellow;	
+}
+#sei{
+background: sandybrown;	
+}
+#sette{
+background: steelblue;
+}
+#otto{
+background: deeppink;	
+}
+#nove{
+background: violet;
+}
+#dieci{
+background: peru;	
+}
+
+</style>
+</head>
+<body>
+
+<br><br><br>
+
+<form method="post" name="form1" id="form1" >
+	<input type="text" name="input0" id="input0" />
+	<input type="text" name="input1" id="" />
+	<input type="button" value="Esegui" />
+</form>
+
+<br><br><br><br><br><br>
+
+<button onclick="alertCookie()">Show cookies</button>
+
+<br><br><br>
+
+
+<p id="urlText">
+  URL:<br/>
+  <span id="url">URL goes here</span>
+</p>
+
+
+<br><br><br>
+
+<script type="text/javascript">
+
+document.getElementById("url").textContent = document.URL;
+
+
+//document.getElementById("input0").addEventListener("blur", function(){ alert('jak')},false);
+
+
+
+//eval	("document.getElementById('pulsante').addEventListener('click', function(){ alert('fuik'); },false);")
+/*
+window.onclose = function() {
+	alert("Load aborted.");
+}
+*/
+/*
+var el = document.createElement('div');
+var testo = document.createTextNode('Hello');
+el.appendChild(testo);
+document.body.appendChild(el);
+*/
+
+/*
+function getPropName(){
+	return obj.a;
+//	console.log(obj.a);
+}
+
+var obj = { a: 20, b: 30 };
+var propName = getPropName();  // returns "a" or "b"
+
+//console.log( eval( 'var result = obj.' + propName ) )
+
+console.log(  eval(  propName) );
+*/
+
+/*
+var x = 5;
+var str = "if (x == 5) {console.log('z is 42'); z = 42;} else z = 0;";
+console.log(eval(str));
+//console.log('z is ', eval(str));
+*/
+//eval (document.form1.input1.value); alert('fik')
+
+//document.cookie = "colore=Rosso"
+//document.cookie = "name=JAKi";
+//document.cookie = "favorite_food=veggie";
+//document.cookie = "favorite_food=;max-age=20";
+
+function alertCookie() {
+	alert(document.cookie);
+}
+
+function run(){
+//	eval (document.form1.input1.value);
+//	alert(document.form1.input1.value)
+//	var t = this.form.input1.value
+//	alert(t)
+//	alert(document.form.input[0].value)
+//	console.log(eval (2+2) ); 
+//	console.log( eval (document.form1.input1.value) );
+
+}
+
+
+
+</script>
+
+<!--
+
+================================================================================================================================
+var elem = document.createElement('div'); elem.style['border'] = '1px solid #blue'; elem.innerHTML = 'Ciao waglion'; document.body.appendChild(elem);
+
+
+<form action="prova.html" method="post" name="form1" id="form1" >
+	<input type="submit" name="" value="Invia" onClick='run()' 
+
+	<input type="button" value="Esegui" onClick='run()'</>
+
+	<input type="button" value="Esegui" />
+	<input type="button" value="Esegui" id="pulsante" />
+
+================================================================================================================================
+
+<script>
+document.getElementById("input1").addEventListener("blur", function(){ alert('jak')},false);
+</script>
+window.onload = function(){eval (document.form1.input1.value)}
+
+eval (document.form1.input1.value);alert('fuk')
+//eval	("document.getElementById('pulsante').addEventListener('click', function(){ alert('fuik'); },false);")
+
+
+<script>
+window.onload = function(){
+eval (document.form1.input1.value);alert('fuk')</script>
+</script>
+
+<script type="text/javascript">alert('fuk')</script>
+
+<script type="text/javascript">
+var el = document.createElement('div');
+var testo = document.createTextNode('Hello');
+el.appendChild(testo);
+document.body.appendChild(el);
+</script>
+
+<script type="text/javascript">document.cookie = "auto=ford"</script>
+
+-->	
+
+<!--
+http://localhost/JavaScript/prova.html
+
+npm install socket.io --save
+-->
+
+
+</body>
+</html>

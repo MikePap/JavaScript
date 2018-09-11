@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>prove </title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+
+#map_canvas{
+position:relative; width:100%; height:100%; 
+}
+
+</style>
+
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<!-- <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=it"></script>-->
+<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">
+
+var colosseo = new google.maps.LatLng(41.891001,12.492313);		// colosseo 
+var trevi = new google.maps.LatLng(41.904162,12.488065);		// fontana di trevi
+var borghese = new google.maps.LatLng(41.914062,12.484331);		// villa borghese 
+var venezia  = new google.maps.LatLng(41.895601,12.482851);		// piazza Venezia
+var bocca = new google.maps.LatLng(41.889467,12.481499);		// bocca della verità 
+var tiberina = new google.maps.LatLng(41.891113,12.477357);		// isola Tiberina
+var spagna = new google.maps.LatLng(41.906222,12.482271);		// piazza di Spagna
+var popolo = new google.maps.LatLng(41.912625,12.475662);		// piazza del popolo 
+var pantheon = new google.maps.LatLng(41.899274,12.476692);		// Pantheon 
+var navona = new google.maps.LatLng(41.900552,12.473087);		// piazza Navona 
+var smda = new google.maps.LatLng(41.903874,12.49609);			// Santa Maria degli Angeli
+var trinita = new google.maps.LatLng(41.907435,12.482958);		// Trinità de Monti 
+var mausoleo = new google.maps.LatLng(41.905934,12.477121);		// Mausoleo d'Augusto
+var fori = new google.maps.LatLng(41.896527,12.486048);		// Fori Imperiali 
+var sanpaolo = new google.maps.LatLng(41.859094,12.476649);		// basilica di San Paolo 
+var marcello = new google.maps.LatLng(41.893381,12.481091);		// Teatro Marcello 
+var piramide = new google.maps.LatLng(41.877182,12.481627);		// Piramide di Caio Cestia 
+var smit = new google.maps.LatLng(41.889755,12.470126);		// Santa Maria in Trastevere 
+var smm = new google.maps.LatLng(41.89739,12.498987);			// Santa Maria Maggiore 
+var circom = new google.maps.LatLng(41.885362,12.485511);		// Circo Massimo 
+var sangiovanni = new google.maps.LatLng(41.88688,12.507741);	// basilica di San Giovanni in Laterano 	
+var campofiori = new google.maps.LatLng(41.902022,12.470856);	// Campo dei Fiori 	
+var foro = new google.maps.LatLng(41.890905,12.489288);		// Foro Romano 
+var palatino = new google.maps.LatLng(41.889116,12.487078);		// Palatino 
+var caracalla = new google.maps.LatLng(41.880106,12.495103);	// Terme di Caracalla
+var corso = new google.maps.LatLng(41.903938,12.479525);		// via del Corso 
+/*
+var  = new google.maps.LatLng();
+*/
+	
+var Ia = "../../Immagini/sfondi/A.png";
+var Ib = "../../Immagini/sfondi/B.png";
+var Ic = "../../Immagini/sfondi/C.png";
+var Id = "../../Immagini/sfondi/D.png";
+var Ie = "../../Immagini/sfondi/E.png";
+var If = "../../Immagini/sfondi/F.png";
+var Ig = "../../Immagini/sfondi/G.png";
+var Ih = "../../Immagini/sfondi/H.png";
+var Ii = "../../Immagini/sfondi/I.png";
+var Ij = "../../Immagini/sfondi/J.png";
+var Ik = "../../Immagini/sfondi/K.png";
+var Il = "../../Immagini/sfondi/L.png";
+var Im = "../../Immagini/sfondi/M.png";
+var In = "../../Immagini/sfondi/N.png";
+var Io = "../../Immagini/sfondi/O.png";
+var Ip = "../../Immagini/sfondi/P.png";
+var Iq = "../../Immagini/sfondi/Q.png";
+var Ir = "../../Immagini/sfondi/R.png";
+var Is = "../../Immagini/sfondi/S.png";
+var It = "../../Immagini/sfondi/T.png";
+var Iu = "../../Immagini/sfondi/U.png";
+var Iv = "../../Immagini/sfondi/V.png";
+var Ix = "../../Immagini/sfondi/X.png";
+var Iw = "../../Immagini/sfondi/W.png";
+var Iy = "../../Immagini/sfondi/Y.png";
+var Iz = "../../Immagini/sfondi/Z.png";
+// 26 
+
+  function initialize() {
+    var myOptions = {
+      zoom: 13,
+      center: colosseo,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+var locationArray =[colosseo,trevi,borghese,venezia,bocca,tiberina,spagna,popolo,pantheon,navona,smda,trinita,mausoleo,fori,sanpaolo,marcello,   piramide,smit,smm,circom,sangiovanni,campofiori,foro,palatino,caracalla,corso];
+var locationIcon = [Ia,Ib,Ic,Id,Ie,If,Ig,Ih,Ii,Ij,Ik,Il,Im,In,Io,Ip,Iq,Ir,Is,It,Iu,Iv,Ix,Iw,Iy,Iz];
+var locationNameArray = ["colosseo","trevi","pzBorghese","pzVenezia", "boccaVerità"];
+
+
+   var coord;
+    for (coord in locationArray) {
+      new google.maps.Marker({
+        position: locationArray[coord],
+        map: map,
+//	  icon: "../../Immagini/sfondi/Japan-Flag-3-icon.png",
+	icon: locationIcon[coord],
+        title: locationNameArray[coord]
+      });
+} // chiude for
+
+} // initialize
+
+
+</script>
+
+</head>
+ <body onload="initialize()">
+<body>
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+
+}); // chiude ready 
+</script>
+
+<div id="map_canvas"></div>
+
+
+</body>
+</html>
+

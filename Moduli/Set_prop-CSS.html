@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Set proprietà CSS  </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css" /> 
+<style type="text/css">
+#divo{
+position:relative; width:200px; background:yellow; 
+}
+
+</style>
+
+</head>
+<body>
+
+
+<h1>Impostazione di proprietà CSS per un elemento  </h1>
+
+<p>
+In questo esempio si è caricato il modulo <q>setProp_CSS.js</q> che permette di definire stili CSS ai vari elementi del DOM. <br>
+Gli elementi sono caricati dinamicamente grazie al modulo <q>creaNodi</q> (importato all'interno del modulo <q>setProp_CSS.js</q>) che permette
+di creare elementi con JavaScript.
+</p>
+
+<br />
+
+<div id="divo">sono un divo</div> 
+
+<br />
+
+<div id="boxElementiCreati"></div> 
+
+
+<script type="module">
+
+//var divo = document.querySelector("#divo");
+//divo.style["height"] = '200px';
+//divo.style["padding"] = '20px'
+
+
+
+/*
+function setCss(nodo, props){
+	var elem = document.querySelector(nodo);
+	if(props){
+		for(var prop in props){
+			if (props.hasOwnProperty(prop)){
+				elem.style[prop] = props[prop];
+			}
+		}
+	}
+}
+*/
+
+//import impostaCss from "module/setProp_CSS.js";
+import {nuovoElemento, setCss} from "./module/setProp_CSS.js";
+
+var paragrafo = nuovoElemento("p", {title:'sono un par', id:'divvvo'}, {color:'red', background:'blue'}, 'Paragrafo con stile' );
+var box = document.getElementById('boxElementiCreati');
+box.appendChild(paragrafo);
+
+
+setCss("#divo", {'height': '100px', 'marginLeft':'31px', 'padding':'20px 0'});
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

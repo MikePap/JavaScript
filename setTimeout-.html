@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title> setTimeout </title>
+<link rel="stylesheet" href="plain.css"  type="text/css" />
+
+<style type="text/css">
+/*
+ h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+
+ body { cursor:pointer; }
+  div { width:50px; height:30px; margin:5px; float:left;
+        background:green; }
+  span { color:red; }
+*/	
+
+#cambioStile{
+position:relative; margin:20px; padding:10px; width:80%; border:1px solid; cursor:pointer; background:#ff0; 
+}
+
+</style>
+
+    <script type="text/javascript" src="Book/core.js" > </script>
+    <script type="text/javascript" src="clear_timeout.js"> </script>
+
+<script type="text/javascript">
+var timeOut;
+
+function startTimer()
+{
+	document.getElementById('myTime').innerHTML = Date();  
+	timeOut = setTimeout("startTimer();",1000);
+}
+
+function stopTimer()
+{
+	clearTimeout(timeOut);
+}
+</script>
+
+
+</head>
+
+<body>
+
+
+<h1> setTimeout </h1>
+
+
+<h3> Imposta un tempo di esecuzione e può essere fermato da "clearTimeout()" </h3>
+
+<p class="codice"> <b> window.setTimeout(param1, param2, param3) </b> <br />
+<b> param1 => Stringa o funzione </b>(che verrà eseguita quando il tempo è terminato) <br />
+<b> param2 => Number </b> (specificato in millesecondi determina la durata del tempo di esecuzione) <br />
+<b> param3 => Opzionale </b> (param1's script language, JScript, vbscript, vbs, javascript, XML.)
+</p>
+
+
+<script type="text/javascript">
+function periscope() {
+	var message = "Preparare emersione";
+	setTimeout(function(){alert(message);}, 2000);
+}
+
+periscope();
+
+</script>
+
+<br /> <br />
+
+
+<h1> clearTimeout </h1>
+
+<h3> Serve a fermare il tempo di esecuzione prima che raggiunga la naturale scadenza   </h3>
+
+
+
+    <h2>Clearing a Timer</h2>
+    <div>
+      <button id="start">Start</button>
+      <button id="stop">Stop</button>
+    </div>  
+
+
+<div id="cambioStile" onClick="callLater('cambioStile', 'backgroundColor', '#00f');">
+fottimi se vuoi che cambi  
+</div> 
+
+
+<script type="text/javascript">
+
+function callLater(paramA, paramB, paramC)
+{
+	var divo = document.getElementById(paramA);
+	var stile = divo.style;
+	stile[paramB] = paramC;
+} // "callLater()" 
+
+function rif()
+{
+//	this.printE = printEmployee;		// collegamento delle funzioni. In questo modo la funzione esterna acquisirà le proprietà dell'oggetto 
+	setTimeout("")
+
+}; // 
+
+
+function tu()
+{
+	var div = document.getElementById("div1");
+	var stile = div.style;
+	stile.backgroundColor ="#00f";					
+}
+
+
+
+//hh = setTimeout("callLater('cambioStile', 'backgroundColor', '#00f');", 1000);			// FUNZIONA 
+//setTimeout(' callLater("cambioStile", "backgroundColor", "#00f"); ' , 1000);			// FUNZIONA 
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

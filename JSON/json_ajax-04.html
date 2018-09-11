@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Json e ajax 04  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+pre{ color:rgb(20,155,30); background:rgb(240,240,240); padding:10px; }
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}		
+.blu{color:blue; }
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+<!--
+<link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
+-->	
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGdgU_LiffVIA7leAWvnyfy_DxUa90O-g" async defer></script>
+
+</head>
+<body>
+
+<h1>Caricamento dati da un file JSON</h1>
+
+<p>
+Questa applicazione ricava per prima cosa la posizione geografica del dispositivo con la <q>geolocalizzazione</q> dove ottiene soltanto la sigla del paese; dopo con questo risultato estrae altri dati, relativi alla posizione, da un file JSON che contiene tutti gli stati del mondo
+</p>
+
+
+<!--
+<button id="pulsante" onClick="loadXMLDoc('allegati/statiMondo.json');" >Carica oggetto JSON da file esterno</button>
+-->
+
+<span id="divo"></span> 
+<span id="davo"></span> 
+
+
+<script type="text/javascript">
+
+navigator.geolocation.getCurrentPosition(function (position){
+	var lat = position.coords.latitude;
+	var lon = position.coords.longitude;
+//	console.log(lat + ' '+ lon);
+	var geocoder = new google.maps.Geocoder();	
+	var latlng = new google.maps.LatLng(lat, lon);	
+
+	geocoder.geocode({'latLng': latlng}, function(results, status){
+//		console.log("STATUS: ", status);
+		if (status == google.maps.GeocoderStatus.OK){
+			if (results[0]){
+				console.log(results[0].formatted_address );							// "Strada Vicinale Montilli, 50A, 70015 Noci BA, Italia"
+//				console.log(results[1].formatted_address );							// 70015 BA, Italia
+//				console.log(results[2].formatted_address );							// "Noci BA, Italia"
+//				console.log(results[0].address_components[3].long_name );		// Barletta
+//				console.log(results[0].address_components[5].long_name );		// Puglia
+//				console.log(results[0].address_components[6].long_name );		// Italia
+//				console.log(results[0].address_components[6].short_name );		// IT					
+//				console.log(results[0].address_components[6].types);				// Array [ "country", "political" ]
+				console.log(results[0].place_id);										// identificativo univoco
+//				console.log(results[0].geometry.);
+
+				var siglaPaese = results[0].address_components[6].short_name;	// IT 
+				loadXMLDoc('../allegati/statiMondo.json', siglaPaese);
+			}	
+		} else {
+			console.log("La richiesta non è andata a buon fine a causa di: ", status);		
+		}
+	})
+});
+
+/*
+
+	####	STATUS (secondo parametro geocode)	####
+
+OK:					tutto è andato bene nel senso che l'indirizzo è stato analizzato e almeno un geocode è stato restituito
+ZERO_RESULTS:		generalmente è il caso di un indirizzo inesistente
+OVER_QUERY_LIMIT:	indica che si è raggiunta la quota (?)
+REQUEST_DENIED:	indica che la richiesta è stata rifiutata
+INVALID_REQUEST:	generalmente accade quando manca la query (address, latlng o components)
+UNKNOWN_ERROR:		indica che la richiesta non è stata processata a causa di un errore del server. Bisogna riprovare
+ERROR:				simile al precedente comunque riguardante i server di Google
+*/
+
+
+///////////////////////////////
+
+function loadXMLDoc(dname, sigla){
+	if (window.XMLHttpRequest)	{
+		xhttp=new XMLHttpRequest();
+	}else{
+		xhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+	xhttp.onreadystatechange = function(){
+		if (xhttp.readyState == 4 && xhttp.status == 200){
+			var jsonObj = JSON.parse(xhttp.responseText);			
+//			var arrayTitle = document.getElementById("divo").innerHTML = jsonObj[1].Paese;		// 
+			for(var i=0; i< jsonObj.length; i++ ){
+				var paese = jsonObj[i];
+				if(paese.sigla === sigla) break; 
+			}
+//			console.log(paese.foto);		
+			var fotoStato = document.createElement('img');	
+			fotoStato['src'] = "../img/macchie.jpg";
+			fotoStato['title'] = paese.foto;
+			fotoStato['width'] = '40';
+			fotoStato['height'] = '40';
+			document.getElementById("divo").appendChild(fotoStato);
+			document.getElementById("davo").innerHTML = paese.Paese;
+		}
+	}
+	xhttp.open("GET",dname,true);
+	xhttp.send();
+} 
+
+
+
+
+</script>
+
+
+
+
+
+</body>
+</html>

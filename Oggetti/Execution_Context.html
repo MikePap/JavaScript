@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>The Execution Context  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(20,150,30); font-weight:bold;}
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(100,150,255);}
+.scuro{color:#333;}
+
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+div.traduzione{
+color:rgb(50,100,220);
+}
+
+</style>
+</head>
+<body>
+
+<h2>The Execution Context </h2>
+
+<p>
+An execution context is an abstract concept used by the ECMSScript specification (ECMA 262 3rd edition) to define the behaviour required of ECMAScript implementations. <br />
+All javascript code is executed in an execution context. Global code (code executed inline, normally as a JS file, or HTML page, loads) gets executed in global execution context, and each invocation of a function (possibly as a constructor) has an associated execution context. <br />
+When a javascript function is called it enters an execution context, if another function is called (or the same function recursively) a new execution context is created and execution enters that context for the duration of the function call. Returning to the original execution context when that called function returns. Thus running javascript code forms a stack of execution contexts.
+</p>
+<p>
+When an execution context is created a number of things happen in a defined order:
+<ul>
+	<li>First, in the execution context of a function, an "Activation" object is created. It can be considered as an object because it ends up having accessible named properties, but it is not a normal object as it has no prototype and it cannot be directly referenced by javascript code. 
+	</li>
+	<li>
+The next step is the creation of an "arguments" object, which is an array-like object with integer indexed members corresponding with the arguments passed to the function call, in order. It also has length and callee. 
+	</li>
+	<li>
+Next, the execution context is assigned a scope. (A scope consists of a list (or chain) of objects. Each function object has an internal [[scope]] property that also consists of a list (or chain) of objects). <br />
+The scope that is assigned to the execution context of a function call consists of the list referred to by the [[scope]] property of the corresponding function object with the Activation object added at the front of the chain (or the top of the list). 
+	</li>
+	<li>
+Then the process of "variable instantiation" takes place using an object (that ECMA 262 refers to as the "Variable" object). However, the Activation object is used as the Variable object.
+		<ul>
+			<li>
+Named properties of the Variable object are created for each of the function's formal parameters (and if arguments to the function call correspond with those parameters the values of those arguments are assigned to the properties (otherwise the assigned value is undefined))
+			</li>
+			<li>
+Inner function definitions are used to create function objects which are assigned to properties of the Variable object with names that correspond to the function name used in the function declaration.
+			</li>
+			<li>
+The last stage of variable instantiation is to create named properties of the Variable object that correspond with all the local variables declared within the function.		
+			</li>
+		</ul><br />
+The properties created on the Variable object that correspond with declared local variables are initially assigned undefined values during variable instantiation, the actual initialisation of local variables does not happen until the evaluation of the corresponding assignment expressions during the execution of the function body code. 
+It is the fact that the Activation object, with its arguments property, and the Variable object, with named properties corresponding with function local variables, are the same object, that allows the identifier arguments to be treated as if it was a function local variable. 
+	</li>
+	<li>
+Finally a value is assigned for use with the this keyword. If the value assigned refers to an object then property accessors prefixed with the this keyword reference properties of that object. If the value assigned (internally) is null then the this keyword will refer to the global object. 
+	</li>
+</ul>
+</p>
+<p>
+The global execution context gets some slightly different handling as it does not have arguments so it does not need a defined Activation object to refer to them. <br />
+The global execution context does need a scope and its scope chain consists of exactly one object, the global object. 
+The global object is used as the Variable object, which is why globally declared functions become properties of the global object. As do globally declared variables. <br />
+The global execution context also uses a reference to the global object for the <q><em>this</em></q> object. 
+</p>
+
+<h2>scope chains and [[scope]]</h2>
+<p>
+The scope chain of the execution context for a function call is constructed by adding the execution context's Activation/Variable object to the front of the scope chain held in the function object's [[scope]] property. <br />
+ Function objects created with the Function constructor always have a [[scope]] property referring to a scope chain that only contains the global object.  Function objects created with function declarations or function expressions have the scope chain of the execution context in which they are created assigned to their internal [[scope]] property. 
+</p>
+
+
+
+<h3>traduzione</h3>
+<div class="traduzione">
+ 
+<p>
+Un <q>execution context</q> (contesto di esecuzione) è un concetto astratto usato nelle specifiche dell'ECMSScript per definire il comportamento richiesto dalle implementazioni ECMAScript. <br />
+Tutto il codice JavaScript è eseguito in un <q>contesto di esecuzione</q>. Il Global code (codice eseguito inline, normalmente un file JS o una pagina HTML) è eseguito in un contesto di esecuzione globale e ogni invocazione a una funzione (possibilmente una funzione costruttore) ha un contesto di esecuzione associato. <br />
+<b>Quando una funzione è invocata subentra un contesto di esecuzione</b>, se un'altra funzione è chiamata (o la stessa ricorsivamente) un nuovo contesto di esecuzione è creato e l'esecuzione entra in quel contesto per la durata della chiamata ritornando al contesto di esecuzione iniziale. Quindi in definitiva l'esecuzione di codice JavaScript produce una serie di contesti di esecuzione. 
+</p>
+<p>
+Quando un contesto di esecuzione  viene creato accadono una serie di cose in modo ordinato:
+<ul>
+	<li>
+Per prima cosa viene creato un <b>oggetto di attivazione</b> (Activation object). Può essere considerato un oggetto perchè, in definitiva, contiene numerose proprietà accessibili però non ha la proprietà prototype e non può essere referenziato. 	
+	</li>
+	<li>
+Il passo successivo è la creazione di un <b>oggetto arguments</b> che è un oggetto di tipo array indicizzato con valori interi corrispondenti agli argomenti passati alla funzione invocata, in ordine. Esso ha anche una <q>length</q> e <q>calle</q>.  
+	</li>
+	<li>
+Successivamente, al contesto viene assegnato uno <b>scope</b>. Uno scope consiste di una lista di oggetti. Ogni oggetto ha una proprietà [[scope]] interna che a sua volta consiste di una lista di oggetti. <br />
+Lo scope che è assegnato al contesto consiste di una lista a cui fa riferimento la proprietà scope della corrispondente funzione oggetto con l'oggetto di attivazione aggiunto al top della catena (lista).
+	</li>
+	<li>
+Allora il processo di istanziazione delle variabili ha inizio usando un oggetto (che l'Ecma lo definisce come <q>oggetto Variabile</q>). Ad ogni modo l'oggetto di attivazione è usato come oggetto variabile. 	
+	</li>
+		<ul>
+			<li>
+Proprietà dell'oggetto Variabile vengono create per ogni parametro della funzione ( e se gli argomenti della funzione invocata corrispondono a quei parametri i valori di quelli argomenti vengono assegnati alle proprietà ( altrimenti viene assegnato il valore <em>undefined</em> )
+			</li>
+			<li>
+Definizioni di funzioni interne sono usate per creare oggetti le quali sono assegnate alle proprietà dell'oggetto Variabile con nomi che corrispondono ai nomi delle funzioni usate nella dichiarazione.
+			</li>
+			<li>
+L'ultimo passo della istanziazione di variabili è quello di creare proprietà dell'oggetto Variabile che corrispondono alle variabili locali dichiarate nelle funzioni.
+			</li>
+		</ul>
+Alle proprietà create per l'oggetto Variabile che corrispondono con le variabili locali dichiarate viene inizialmente assegnato il valore di <em>undefined</em>, l'attuale inizializzazione delle variabili locali non avviene fino a quando non vengono valutate le rispettive espressioni assegnate. Infatti l'oggetto di attivazione con la sua proprietà <q>arguments</q> e <q>l'oggetto Variabile'</q> con le nominate proprietà corrispondenti alle variabili locali  è lo stesso oggetto che permette all'identificatore  arguments a essere trattato come se fosse una variabile locale. 
+	<li>
+Infine un valore è assegnato per l'uso della parola chiave <q><em>this</em></q>. Se il valore assegnato si riferisce a un oggetto allora <q>this</q> farà riferimento proprio a tale oggetto. Se il valore assegnato (internamente) è nullo allora <q>this</q> farà riferimento all'oggetto globale. 
+	</li>
+	
+	
+</ul>
+
+
+
+</p>
+
+
+
+</div><!--traduzione-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br />
+<br />
+<br />
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Parametri di default e parametri Rest  </title>
+<link type="text/css" rel="stylesheet" href="../../baseLocali.css" />
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+<h1>Parametri di default</h1>
+<p>
+ES6 ha introdotto, come altri linguaggi di programmazione, la possibiltà di definire dei parametri di default per le funzioni, sebbene in ES5 si possono definire in un'altro modo
+</p>
+<pre>
+<span class="grigio">ES5</span>
+function sayHi(name, place){
+	name = name || 'Ravi';
+	place = place || 'Tokio';
+	console.log("Hello, " + name +" from " + place + "!");
+}
+
+<span class="grigio">ES6</span>
+function sayHi(name = 'Ravi', place = 'Tokio'){
+	console.log("Hello, " + name +" from " + place + "!");
+}
+</pre>
+
+<p>
+E' inoltre possibile definire un parametro che si basi su un'altro parametro, come nel seguente esempio
+</p>
+<pre>
+function sayHi(name = 'Ravi', place = 'Tokio', message = "No additional message for " + name){
+	console.log("Hello, " + name +" from " + place + "! (" + message + ")");
+}
+</pre>
+<p>Come si può notare il parametro <q>name</q> è usato dal parametro <q>message</q>  </p>
+
+
+<h1>Parametri Rest</h1>
+
+<p>
+Questo metodo da la possibilità di invocare una funzione con svariati parametri ma definendola con un semplice nome preceduto da tre puntini
+</p>
+<pre>
+function addNumbers(...numbers){
+	var total = 0;
+	numbers.forEach(number => {
+		total += number;
+	});
+	console.log(total);
+}
+<span class="azzurro">
+addNumbers(10,25,35,10);			<span class="nota">// 80</span>
+</span>
+</pre>
+
+<p>In verità si possono passare anche altri parametri oltre al <q>rest</q> ma ad ogni modo è consigliabile definirlo come ultimo parametro</p>
+<pre>
+function addEmployeesToDepartment(departmentId, ...employees){
+	var department=getDepartment();
+	employees.forEach(emp => {
+		department.employees.push(emp);
+	});
+}
+</pre>
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+</body>
+</html>
+
+
+
+
+

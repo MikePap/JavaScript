@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Caricare Immagini  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+pre{ color:rgb(20,155,30); background:rgb(240,240,240); padding:10px; }
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}		
+.blu{color:blue; }
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+#box_imm > img{
+margin: 5px;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Caricare immagini da file esterno  .json </h1>
+
+<p>
+I riferimenti alle immagini sono stati definiti nel file  <q>img_ulivo.json</q> (cartella allegati). Attraverso il metodo <tt>parser</tt> di Json si è potuto caricarli nel documento utilizzando <b>XMLHttpRequest</b>. <br />
+Se si osserva il peso dei file  <q>img_ulivo.json</q> e  <q>img_ulivo2.xml</q>, che contengono le stesse informazioni, si nota che il file .json risulta più leggero. 
+</p>
+
+
+<script type="text/javascript">
+
+function loadJSON(dname)
+{
+	if (window.XMLHttpRequest)
+	{
+		xhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		xhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+	xhttp.onreadystatechange = function()
+	{
+		if (xhttp.readyState == 4 && xhttp.status == 200)
+		{
+			var jsonObj = JSON.parse(xhttp.responseText);			
+			
+			for(var i=0; i< jsonObj.length; i++)
+			{
+				var src = jsonObj[i].src;
+				var titolo = jsonObj[i].titolo;
+				var alt = jsonObj[i].alt;
+				var larghezza = jsonObj[i].larghezza;
+				larghezza = larghezza / 4;
+				var altezza = jsonObj[i].altezza;
+				altezza = altezza / 4;
+				var indice = jsonObj[i].indice;
+
+				var imgUlivi = document.createElement("img");
+				imgUlivi.setAttribute('src', src);	
+				imgUlivi.setAttribute('title', titolo);	
+				imgUlivi.setAttribute('alt', alt);	
+				imgUlivi.setAttribute('width', larghezza);	
+				imgUlivi.setAttribute('height', altezza);	
+				imgUlivi.setAttribute('indice', indice);	
+				arrayInterno("imgUlivi", jsonObj[i], "sizes");
+
+				var boxMiniature = document.querySelector('#box_imm');
+				boxMiniature.appendChild(imgUlivi);
+
+////////////////////////////////////////////////////////////////////			
+
+/*				if(jsonObj[i]["sizes"]){
+						if(Array.isArray(jsonObj[i]["sizes"]) === true ){
+						var sizesLength = jsonObj[i]["sizes"].length;
+						for(var a =0; a< sizesLength; a++){
+							console.log(jsonObj[i]["sizes"][a]);
+						} 	
+					}else{
+							console.log(jsonObj[i]["sizes"]);
+					}
+				}
+*/
+//				arrayInterno("imgUlivi" ,jsonObj[i], "sizes");
+//				var t	= arrayInterno(jsonObj[i], "sizes");
+
+
+
+////////////////////////////////////////////////////////////////////			
+
+			}			
+//			console.log(jsonObj.length);						// 5
+//			console.log(jsonObj[2].sizes[0]);
+/*
+			var sizesLength = jsonObj[2].sizes.length;
+			for(var a =0; a< sizesLength; a++){
+				console.log(jsonObj[2].sizes[a]);
+			} 	
+*/
+		}
+	}
+
+	xhttp.open("GET",dname,true);
+	xhttp.send();
+
+} // 
+
+loadJSON('../allegati/img_ulivo.json');
+
+function arrayInterno(json, propArray, immagine) {
+	if(json[propArray]){
+		if(Array.isArray(json[propArray]) === true ){
+			var sizesLength = json[propArray].length;
+			for(var a =0; a< sizesLength; a++){
+				console.log(json[propArray][a]);
+//				console.log( json[propArray].join(", ")  );
+				immagine.setAttribute(propArray, json[propArray].join(", ") );				
+			} 	
+		}else{
+			console.log(json[propArray]);
+			immagine.setAttribute(propArray, json[propArray]);				
+		}
+	}
+}
+
+
+
+
+
+</script>
+
+
+<!-- 
+<button id="pulsante" onClick="loadJSON('../allegati/img_ulivo.json');" >Carica oggetto JSON da file esterno</button>
+-->
+
+
+<figure id="box_imm"></figure> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+http://localhost/abc_locale/prove.html
+-->
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>History</title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(50,150,50);}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}		
+.grigio{color: grey;}
+.blu{color:#00f;}
+tt, em{color:#6a9999}
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+
+<h1>History</h1>
+
+<p class="nota">I browser immagazzinano in una lista (la cosidetta cronologia) gli URL visitati (che sono stati visualizzati dall'utente). <br /> 
+L'oggetto <q>history</q> fornisce delle proprietà e metodi per poter gestire di questa lista ed utilizzarla. 
+</p>
+ 
+<table id="cronologia" width="50%" border="1" cellspacing="0" cellpadding="3">
+<tr>
+	<th>Proprietà</th>
+	<th>Descrizione</th>
+</tr>
+<tr>
+	<td>back()</td>
+	<td>Carica la pagina precedente <br /> Corrisponde al pulsante freccia 'Indietro' del browser </td>
+</tr>
+<tr>
+	<td>forward()</td>
+	<td>Carica la pagina antecedente <br /> Corrisponde al pulsante freccia 'Avanti' del browser</td>
+</tr>
+<tr>
+	<td>go(num)</td>
+	<td>Carica l'URL della cronologia indicato nel parametro 'num' </td>
+</tr>
+<tr>
+	<td>length</td>
+	<td>Restituisce il numero degli URL della cronologia</td>
+</tr>
+</table>
+
+<pre>
+window.history.go(1);			<span class="nota">carica la pagina successiva ( uguale a window.history.forward() ) </span>
+window.history.go(-1);			<span class="nota">carica la pagina precedente ( uguale a window.history.back() )</span>
+window.history.go(0);			<span class="nota">carica la pagina corrente </span>
+
+</pre>
+
+
+<p> <a href="Location.html">Vai alla pagina <q>Location.html</q> </a></p>
+<p> <a href="javascript:history.back()">Ritorna indietro </a> </p>
+<p> <a href="javascript:history.forward()">Vai Avanti </a> </p>
+
+
+<button id="" onClick="window.history.go(0)" >URL corrrente nella cronologia..</button>
+<button id="nm_cronologia" onClick="alert(window.history.length)">Numero di pagine in cronologia</button>
+
+
+<h2>Modificare la cronologia</h2>
+
+<p>
+HTML5 ha introdotto due metodi, <em> history.pushState()</em> e <em>history.replaceState()</em> per modificare la cronologia. Entrambi i metodi funzionano in congiunzione con l'evento <em>popstate</em>. <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history">Vedere qui</a>
+</p>
+
+<h3>history.pushState</h3>
+
+
+<h3>history.replaceState</h3>
+
+
+<h3>window popstate</h3>
+
+
+
+<script type="text/javascript">
+
+
+</script>
+
+
+
+
+
+<br /><br /><br /><br />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

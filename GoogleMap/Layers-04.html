@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>Layers 04 </title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+
+#map_canvas { position:relative; width:100%; height:90%; /*z-index:1;*/ }
+#content_window{position:absolute; top:0; right:0; /*width:250px; height:500px;*/ padding:0 5px; background:#FFF; border:1px solid; /*display:none;*/ }
+#xcw{position:absolute; top:0; right:0; /*width:12px; height:12px; padding:0 5px;*/ background:#FF0; cursor:pointer; border:1px solid; display:none;  }
+
+</style>
+
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=it"></script>
+
+<script type="text/javascript">
+
+var sidediv;
+var chiudi;
+
+function initialize() {
+var roma = new google.maps.LatLng(41.8929,12.4944);
+var stazCapurso = new google.maps.LatLng(41.049332,16.922861);
+var CentroBari = new google.maps.LatLng(41.1268,16.8696);
+map = new google.maps.Map(document.getElementById('map_canvas'), {
+center: CentroBari,
+zoom: 10,
+mapTypeId: google.maps.MapTypeId.ROADMAP,
+mapTypeControl: true,	
+mapTypeControlOptions: {	
+style: google.maps.MapTypeControlStyle.DROPDOWN_MENU, 
+position: google.maps.ControlPosition.TOP_CENTER,
+}, // mapTypeControlOptions
+zoomControl: true,		// è la barra dell zoom 
+zoomControlOptions: {
+style: google.maps.ZoomControlStyle.SMALL,		// SMALL -- LARGE (grandezza della barra dello zoom)
+}, // zoomControlOptions
+});
+ 
+// ## IMPORTANTE: Per far si che la clausola 'where' possa funzionare il nome della colonna in questione deve far parte del file .csv; se la colonna viene aggiunta in 'fusionTable' la clausola non verrà presa in considerazione e il risultato non sarà restituito
+var layer = new google.maps.FusionTablesLayer({
+suppressInfoWindows: true,
+query: {
+select: 'indirizzo',
+from: '2898974', 		// Amici: 2845966  -- Colori:2851394  -- 0livicoltori: 2853001  -- AzPP: 2898974
+where: 'IDaziende > 22'				// OK	
+//where: 'contatto = Ruggero'				// NON FUNZIONA ma su fusionTable SI  
+//where: 'email matches  ruggero@libero.it '	// NON FUNZIONA ma su fusionTable SI 
+//where: 'contatto starts with "D"'			// NON FUNZIONA ma su fusionTable SI 
+
+} // 'query'
+}); // 'layer'
+layer.setMap(map);
+ 
+google.maps.event.addListener(layer, 'click', function(e) {
+var text = e.infoWindowHtml;
+showInContentWindow(text);
+});
+
+function showInContentWindow(text) {
+var sidediv = document.getElementById('content_window');
+chiudi = document.getElementById('xcw');
+sidediv.innerHTML = text;
+//var y = "<div id='content_window'></div>";
+// appendChild
+sidediv.style.display = 'block';	
+sidediv.appendChild(chiudi);
+chiudi.style.display = 'block';
+chiudi.style.padding = '0 5px';
+chiudi.innerHTML = '&times;';
+
+google.maps.event.addDomListener(chiudi, 'click', function() {
+sidediv.style.display = 'none';	
+});
+
+} // "showInContentWindow"
+
+} // "initialize"
+
+// suppressInfoWindows
+</script>
+
+</head>
+<body onload="initialize()">
+<body>
+
+<p class="nota">Per quanto riguarda l'importazione di altri risultati (altre righe) in una stessa tabella per un file .csv (e credo valga la stessa cosa anche per gli altri: excel. ods ...) bisogna creare un altro file .csv con una prima riga avente gli stessi campi del primo file ed inserire i risultati aggiuntivi (altre righe). Poi in <q>fusionTable</q> fare un'altra importazione da: <q>File -> Add More Rows</q> e caricare il nuovo file  </p>
+
+
+
+
+
+<div id="map_canvas"></div>
+<div id="content_window"></div> 
+<div id="xcw"></div>
+
+
+
+
+
+</body>
+</html>
+

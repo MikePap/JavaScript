@@ -1,0 +1,27 @@
+/* animazioni-slideshow.css	Animazioni relative lla slideshow	*/
+
+/* Animazioni		*/
+@keyframes apparizione{
+from{opacity:0.2}
+to{opacity:1}
+}
+
+@keyframes dissolvenza{
+from{opacity:1}
+to{opacity:0.2}
+}
+
+@keyframes effettoIntruso{
+from{width:50px; height:35px; background:#fff;}
+to{width:500px; height:350px; background:transparent;}
+}
+
+
+@keyframes effettoScambio{
+from{width:25px; height:17.5px; }
+to{width:500px; height:350px; }
+}
+
+
+
+

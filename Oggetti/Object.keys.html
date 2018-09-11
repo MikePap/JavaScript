@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Object.keys  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(20,150,30); font-weight:bold;}
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(100,150,255);}
+.scuro{color:#333;}
+tt, em{color:#6a9999}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+<h1>Object.keys</h1>
+
+<p>
+Il metodo <b>Object.keys()</b> restituisce un'array delle chiavi delle proprietà dell'oggetto. <span class="nota">Non supportato in IE 8</span>
+<pre>
+var arr = ["a", "b", "c"];
+<span class="azzurro">console.log(arr[0]);</span>				<span class="nota">// restituisce 'a'</span>
+
+var array = Object.keys(arr);			
+<span class="azzurro">console.log(array)</span>				<span class="nota">// restituisce 0,1,2</span>
+var a =	Object.keys(arr)[0];
+<span class="azzurro">console.log(a);</span>					<span class="nota">// restituisce 0</span>
+
+var obj = { 0 : "a", 1 : "b", 2 : "c"};
+<span class="azzurro">console.log(Object.keys(obj));</span>			<span class="nota">// restituisce ["0", "1", "2"]</span>
+
+var an_obj = { 100: "a", 2: "b", 7: "c"};
+<span class="azzurro">console.log(Object.keys(an_obj));</span>		<span class="nota">// restituisce ["2", "7", "100"]</span>
+var secondo = Object.keys(an_obj)[0];
+<span class="azzurro">console.log(secondo)</span>				<span class="nota">// restituisce 2</span>
+
+<span class="grigio">in questo caso invece i metodi non risultano numerabili</span>
+var my_obj = Object.create({}, { getFoo : { value : function (){ return this.foo } } });
+my_obj.foo = 1;
+<span class="azzurro">console.log(Object.keys(my_obj));</span>		<span class="nota">// restituisce 'foo'</span>
+</pre>
+</p>
+<p>
+All'interno c'è il <em>polyfill</em> per quei browser che non supportano il metodo.
+</p>
+
+<br />
+
+<h1>Object.values</h1>
+
+<p>
+Il metodo <b>Object.values()</b> restituisce un'array dei valori delle proprietà dell'oggetto. 
+</p>
+<pre>
+var obj = { 4: "a", 2: "b", 7: "c"};
+<span class="azzurro">
+console.log(Object.values(obj));			<span class="nota">// Array [ "b", "a", "c" ]</span>
+</span>
+
+var arr = ["Aldo", "Giovanni", "Giacomo"];
+<span class="azzurro">
+console.log(Object.values(arr));			<span class="nota">// Array [ "Aldo", "Giovanni", "Giacomo" ]</span>
+</span>
+</pre>
+
+<br><br><br>
+
+
+
+<script type="text/javascript">
+
+//### Polyfill 'Object.keys()' ###
+
+if (!Object.keys) {
+	Object.keys = (function () {
+		'use strict';
+		var hasOwnProperty = Object.prototype.hasOwnProperty,
+		hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
+		dontEnums = [
+			'toString',
+			'toLocaleString',
+			'valueOf',
+			'hasOwnProperty',
+			'isPrototypeOf',
+			'propertyIsEnumerable',
+			'constructor'
+		],
+		dontEnumsLength = dontEnums.length;
+
+		return function (obj) {
+			if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
+				throw new TypeError('Object.keys called on non-object');
+			}
+
+			var result = [], prop, i;
+	
+			for (prop in obj) {
+				if (hasOwnProperty.call(obj, prop)) {
+					result.push(prop);
+				}
+			}
+
+			if (hasDontEnumBug) {
+				for (i = 0; i < dontEnumsLength; i++) {
+					if (hasOwnProperty.call(obj, dontEnums[i])) {
+						result.push(dontEnums[i]);
+					}
+				}
+			}
+			return result;
+		};
+	}());
+}
+
+
+var obj = { 100: "a", 2: "b", 7: "c"};
+console.log(Object.keys(obj));									// Array [ "2", "7", "100" ]
+
+
+
+var obj2 = { 4: "a", 2: "b", 7: "c"};
+console.log(Object.values(obj2));								// Array [ "b", "a", "c" ]
+console.log('Il secondo è: ', Object.values(obj2)[1] );	// Il secondo è: a 
+
+
+var valori = Object.values(obj);
+
+valori.forEach(function (valore){
+	console.log(valore);
+})
+
+var arr = ["Aldo", "Giovanni", "Giacomo"];
+console.log(Object.values(arr));				// Array [ "Aldo", "Giovanni", "Giacomo" ]
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

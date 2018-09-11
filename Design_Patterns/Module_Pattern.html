@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Module Pattern</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css" /> 
+
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+<h1>Module Pattern</h1>
+
+<p>
+Il <span class="nota">Module Pattern</span> può essere definito come un modo per incapsulare variabili e metodi privati (e pubblici) per  proteggerli nel «global scope» in modo da evitare di creare conflitti con altre proprietà dello script. In Javascript questo incapsulamento avviene tramite le «closure». <br>
+Il seguente è un tipico esempio di modulo «self-contained»:
+</p>
+<pre>
+var testModule = (function () {
+	var counter = 0;
+	
+	return {
+
+		incrementCounter: function () {
+			return counter++;
+		},
+
+		resetCounter: function () {
+			console.log( "counter value prior to reset: " + counter );
+			counter = 0;
+		}
+	};
+
+})();
+ 
+<span class="azzurro">
+testModule.incrementCounter();				<span class="nota">Incremento della variabile "counter"</span>
+testModule.resetCounter();				<span class="nota">// counter value prior to reset: 1</span>
+</span>
+
+</pre>
+
+<p>Vediamo un'altro esempio più complesso</p>
+
+<pre>
+var basketModule = (function () {
+
+	<span class="grigio">Proprietà private</span>
+	var basket = [];
+
+	function doSomethingPrivate() {
+		//...
+	}
+
+	function doSomethingElsePrivate() {
+		//...
+	}
+ 
+	<span class="grigio">Restituzione di oggetto esposto pubblicamente</span>
+	return {
+
+		<span class="grigio">Add items to our basket</span>
+		addItem: function( values ) {
+			basket.push(values);
+		},
+
+		<span class="grigio">Get the count of items in the basket</span>
+		getItemCount: function () {
+			return basket.length;
+		},
+
+		<span class="grigio">Public alias to a private function</span>
+		doSomething: doSomethingPrivate,
+
+		<span class="grigio">Get the total value of items in the basket</span>
+		getTotal: function () {
+			var q = this.getItemCount(),
+			p = 0;
+			while (q--) {
+				p += basket[q].price;
+			}
+			return p;
+		}
+	};
+})();
+
+<span class="grigio">Invochiamo il metodo "addItem()" passandogli due oggetti.
+Se osserviamo "getTotal()" notiamo che vuole restituire la proprietà "price" degli oggetti di "basket"
+</span>
+basketModule.addItem({
+	item: "bread",
+	price: 0.5
+});
+basketModule.addItem({
+	item: "butter",
+	price: 0.3
+});
+<span class="azzurro">
+console.log( basketModule.getItemCount() );			<span class="nota">// 2</span>
+console.log( basketModule.getTotal() );				<span class="nota">// 0.8 (la somma dei "price")</span>
+</span>
+<span class="grigio">Le seguenti chiamate non produrranno nulla o errori perchè sono proprietà private e non esposte pubblicamente</span> 
+<span class="azzurro">
+console.log( basketModule.basket );				<span class="nota">// undefined</span>
+console.log( basket );						<span class="nota">// errore</span>
+</span>
+
+</pre>
+
+<p>
+Da notare che quando si invocano <b>i metodi del nostro modulo bisogna prefissarli con il nome del modulo</b>. Con questo sistema i metodi sono protetti da conflitti che si potrebbero generare all'interno dello script qualora ci fossero altri metodi con lo stesso nome.
+</p>
+
+<p>Il seguente è un'altro esempio di «Module Pattern»</p>
+<pre>
+var myModule = (function () {
+
+	var module = {},
+	privateVariable = "Hello World";
+ 
+	function privateMethod() {
+		// ...
+	}
+ 
+	module.publicProperty = "Foobar";
+
+	module.publicMethod = function () {
+		console.log( privateVariable );
+	};
+ 
+	return module;
+ 
+})();
+<span class="azzurro">
+console.log( myModule.publicProperty );				<span class="nota">// Foobar</span>
+myModule.publicMethod();					<span class="nota">// Hello World</span>
+</span>
+
+</pre>
+
+<h3>Revealing Module Pattern</h3>
+
+<p>
+Un'altro modo inventato da <span class="nota">Christian Heilmann</span> è quello di definire variabili e metodi privatamente e restituire un oggetto che punta alle funzionalità private
+</p>
+<pre>
+var myRevealingModule = (function () {
+ 
+	var privateVar = "Ben Cherry",
+		publicVar = "Hey there!";
+
+	function privateFunction() {
+		console.log( "Name:" + privateVar );
+	}
+
+	function publicSetName( strName ) {
+		privateVar = strName;
+	}
+
+	function publicGetName() {
+		privateFunction();
+	}
+ 
+	return {
+		setName: publicSetName,
+		greeting: publicVar,
+		getName: publicGetName
+	};
+ 
+})();
+<span class="azzurro">
+myRevealingModule.setName( "Paul Kinlan" );
+myRevealingModule.getName();					<span class="nota">// Name:Paul Kinlan</span>
+</span> 
+</pre>
+<p>
+Con questo approcio possiamo assegnare dei nome differenti a variabili e metodi pubblici
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+
+</body>
+</html>
+

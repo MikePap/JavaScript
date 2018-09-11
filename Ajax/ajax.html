@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+<title>ajax  </title>
+
+<style type="text/css">
+
+
+</style>
+</head>
+<body>
+
+<h1>ajax</h1>
+<p>
+<span class="nota">AJAX = Asynchronous JavaScript and XML.</span><br />
+Ajax si basa sull'oggetto <b>XMLHttpRequest</b> per lo scambio di dati fra client e server. Tutti i principali browser supportano quest'oggetto. Per IE il supporto inizia dalla versione 7, per le precedenti versioni era utilizzato <b>ActiveXObject</b>
+<pre>
+variable = new ActiveXObject("Microsoft.XMLHTTP");			<span class="nota">per versioni IE inferiori alla 7 </span>
+variable = <b>new XMLHttpRequest()</b>;					<span class="nota">tutti i principali browser</span>
+
+<span class="grigio">volendo accontentare tutti</span>
+
+if (window.XMLHttpRequest){
+	xhttp = new XMLHttpRequest();
+}else{
+	xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+}
+</pre>
+</p>
+
+<h2>open() - send()</h2>
+<p>
+Per inviare una richiesta al server si utilizzano i metodi <b>open()</b> e <b>send()</b> dell'oggetto <q>XMLHttpRequest </q>.  
+
+<dl>
+	<dt>open(metodo, url, async)</dt>
+	<dd>il primo parametro specifica il tipo di richiesta che può essere di tipo <b>GET</b> o <b>POST</b> </dd>
+	<dd>il secondo parametro specifica la locazione (<b>indirizzo</b>) del file, da richiamare, sul server  </dd>
+	<dd>il terzo parametro specifica se la richiesta deve essere <b>asincrona</b>(true) o <b>sincrona</b>(false) </dd>
+</dl>	
+</p>
+
+<h3>Asincrona e sincrona</h3>
+<p>
+Se il terzo argomento è <tt>false</tt> il risultato ci sarà restituito solo quando la nostra richiesta sarà stata ricevuta. Questo significa che il nostro programma rimarrà sospeso quando browser e server sono in cominicazione. Pertanto se per esempio la connessione è lenta o il server è lento oppure il file è grande il nostro documento sarà sospeso (non rispondente) nel senso che i gestori di eventi, ad esempio, non funzionerebbero. <br />
+Se passiamo come terzo argomento <tt>true</tt> la richiesta sarà <em>asincrona</em>. Ciò vuol dire che il nostro programma non verrà sospeso e il browser si prendeà cura di inviare e ricevere dati in background. 
+ 
+</p>
+
+
+<h3>GET o POST</h3>
+<p>
+Il metodo GET è più semplice e veloce ed è spesso usato nelle richieste di visualizzazione dati però il metodo POST è più sicuro e consistente ed è conveniente usarlo: <br />
+&bull; quando si aggiorna un file o il database <br />
+&bull; quando si invia l'input dell'utente (che può contenere caratteri sconosciuti) <br />
+&bull; quando si invia una grossa quantità di dati al server (POST non ha limiti) <br />
+</p>
+
+<h3>setRequestHeader(header,value)</h3>
+<p>
+Metodo utilizzato quando la richiesta è fatta per uno specificato <q>header</q>. 
+<dl>
+	<dt>Un form HTML può essere inviato in quattro modi impostando l'attributo <tt>enctype</tt> a:</dt>
+	<dd>application/x-www-form-urlencoded (default) </dd>
+	<dd>text/plain</dd>
+	<dd>multipart/form-data</dd>
+	<dd>usando il metodo <tt>GET</tt> (in questo caso l'attributo <tt>enctype</tt> sarà ignorato) </dd>
+</dl>	
+
+Per esempio se si richiede un formato di tipo 'form HTML':
+<pre>
+xmlhttp.open("POST","ajax_test.asp",true);
+xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+xmlhttp.send("fname=Henry&lname=Ford");
+</pre>
+</p>
+
+<h3>Risposta dal server</h3>
+<p>
+Per ottenere la risposta dal server sono usate le proprietà <b>responseText</b> e <b>responseXML</b> dell'ogetto XMLHttpRequest. 
+<dl>
+	<dt>responseText</dt>
+	<dd>restituisce dati in formato di tipo stringa. Se si richiama un file XML restituisce tutti i valori testo </dd>
+	<dt>responseXML</dt>
+	<dd>utilizzato per analizzare un file XML e recuperarne i valori degli oggetti</dd>
+</dl>	
+</p>
+
+<h2>onreadystatechange</h2>
+<p>
+Attraverso questo metodo  è possibile catturare i vari passi del percorso quando viene inviata una richiesta al server. Ciò è fatto con l'impostazione della proprietà <b>readyState</b> e anche con la proprietà <b>status</b>.
+<dl>
+	<dt>readyState</dt>
+	<dd>0: richiesta non inizializzata</dd>
+	<dd>1: connessione al server stabilita</dd>
+	<dd>2: richiesta ricevuta</dd>
+	<dd>3: richiesta in fase di analisi</dd>
+	<dd>4: processo completato e risposta pronta per l'invio</dd>
+
+	<dt>status</dt>
+	<dd>200: OK</dd>
+	<dd>404: pagina non trovata</dd>
+</dl>	
+quando il <q>readyState</q> è 4 e lo <q>status</q> è 200 la risposta è pronta 
+<pre>
+xmlhttp.onreadystatechange=function(){
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+	}
+}   
+</pre>
+</p>
+
+<p>
+Una funzione completa potrebbe essere la seguente:
+<pre>
+function loadDoc(dname,elem){ 		<span class="nota">'dname' è l'indirizzo del file e 'elem' è l'elemento in cui caricare la risposta</span>
+var xhttp;				<span class="nota">* E' IMPORTANTE l'inizializzazione altrimenti da problemi per richiami multipli   </span>
+
+	if (window.XMLHttpRequest){
+		xhttp=new XMLHttpRequest();
+	}else	{
+		xhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+	xhttp.onreadystatechange=function(){
+		if (xhttp.readyState==4 && xhttp.status==200){
+			document.querySelector(elem).innerHTML=xhttp.responseText;
+		}
+	}
+	xhttp.open("GET",dname,true);
+	xhttp.send(null);
+} 
+
+<span class="blu">
+loadDoc("Allegati/barraNav.html", "div");		<span class="nota">// carica il file 'barraNav' dalla cartella 'Allegati' nel 'div' </span>						
+</span>
+</pre>
+</p>
+
+<p>
+Dal sito <a href="http://eloquentjavascript.net/index.html">Eloquent JavaScript</a> di <b>Marijn Haverbeke</b>  il seguente esempio di una funzione 		  <tt>XMLHttpRequest</tt> completa 
+</p>
+<pre>
+function getURL(url, callback) {
+	var req = new XMLHttpRequest();
+	req.open("GET", url, true);
+	req.addEventListener("load", function() {
+		if (req.status &lt; 400)
+			callback(req.responseText);
+		else
+			callback(null, new Error("Request failed: " + req.statusText));
+	});
+
+	req.addEventListener("error", function() {
+		callback(null, new Error("Network error"));
+	});
+
+	req.send(null);
+}
+
+<span class="grigio">Pertanto volendo caricare dei risultati da un file.j.son </span>
+
+function callback(jsonObj){
+	var oggetto = JSON.parse(jsonObj);
+	var result = oggetto.anObject.stringProperty;
+//	console.log(result);
+	document.getElementById('divo').innerHTML = result;
+<span class="azzurro">
+getURL("../JSON/primo.json", callback);				<span class="nota">// An offensive  "is problematic"</span>
+</span>
+</pre>
+
+
+
+<!--
+// esempio dal sito http://eloquentjavascript.net/17_http.html
+
+-->
+
+
+<script type="text/javascript">
+
+function getURL(url, callback) {
+	var req = new XMLHttpRequest();
+	req.open("GET", url, true);
+	req.addEventListener("load", function() {
+		if (req.status < 400)
+			callback(req.responseText);
+		else
+			callback(null, new Error("Request failed: " + req.statusText));
+	});
+
+	req.addEventListener("error", function() {
+		callback(null, new Error("Network error"));
+	});
+
+	req.send(null);
+}
+
+function	callback(jsonObj){
+	var oggetto = JSON.parse(jsonObj);
+	var result = oggetto.anObject.stringProperty;
+	console.log(result);
+//	document.getElementById('divo').innerHTML = result;
+}
+
+
+getURL("../JSON/primo.json", callback);
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br /><br /><br />
+
+
+
+
+</body>
+</html>

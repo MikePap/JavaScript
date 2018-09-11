@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Utilità oggetti </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(20,150,30); font-weight:bold; background:rgb(230,230,230); padding:10px;}
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(100,150,255);}
+.scuro{color:#333;}
+tt, em{color:#6a9999}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+
+<h1>Utilità oggetti</h1>
+
+<h2>this</h2>
+<p>
+Quando viene creata una funzione la parola chiave <em>this</em> è creata automaticamente (di nascosto) ed è disponibile allo scopo della funzione. 
+In altre parole è un riferimento all'oggetto che contiene la funzione. Anche le funzioni contenute in oggetti possono usare <tt>this</tt> per ottenere un riferimento all'oggetto genitore. Quando una funzione è definita in uno scopo globale il valore di <tt>this</tt> è l'oggetto globale  
+</p>
+<pre>
+var mioobj2 = function (){		<span class="nota">funzione definita nel Global scope  </span>
+	return this;		
+}  
+
+<span class="azzurro">mioobj2();</span>				<span class="nota">// restituisce [object Window] (dove "window" è il primo oggetto costruttore)</span> 
+
+var mioobj = {
+	nome: "mik",
+
+	miafunzione: function (){ 
+		return this; 
+	},
+	secondaFunzione: function (){
+		return this.nome;	
+	} 
+}
+<span class="azzurro">mioobj.miafunzione();</span>		<span class="nota">// restituisce l'oggetto 'mioobj' [Object {nome: "mik", miafunzione: function, secondaFunzione: function}] </span>
+<span class="azzurro">mioobj.secondaFunzione();</span>	<span class="nota">// restituisce 'mik'</span>
+
+</pre>
+
+<p>
+Il valore di <q>this</q>, passato alle funzioni,  è basato sul contesto in cui la funzione è chiamata in quel momento.
+<pre>
+var variabile = "foo";				<span class="nota">// qui si instanzia una variabile globale ('variabile') </span>	
+
+var myObject = {
+	variabile: 'I am myObject.foo'		<span class="nota">// qui 'variabile' è invece locale dell'oggetto </span>	
+};
+
+var sayFoo = function(){
+	console.log(this['variabile']);		<span class="grigio">// questo valore cambia a seconda da dove viene chiamata questa funzione (vedi sotto) </span>	
+};
+
+myObject.sayFoo2 = sayFoo;			<span class="nota">// all'oggetto 'myObject' è assegnata una proprietà 'sayFoo2' che punta alla funzione 'sayFoo()'</span>	
+
+<span class="azzurro">sayFoo();</span>					<span class="nota">// restituisce 'foo' (il valore della variabile globale) </span>
+<span class="azzurro">myObject.sayFoo2();</span>				<span class="nota">// restituisce 'I am myObject.foo' </span>
+</pre>
+</p>
+
+<p>
+Nel caso di <tt>funzioni innestate</tt>  per non perdere per strada il valore di <tt>this</tt> (qui la questione è un pò complessa perchè prima della versione ECMAScript 5 il risultato era diverso) è conveniente usare lo <em>scope chain</em>. Nell'esempio seguente è mostrato come tenere traccia del contesto della funzione instanziando <tt>this</tt> nella variabile <tt>that</tt> 
+<pre>
+var myObject = {
+	myProperty: 'I can see the light',
+	myMethod : function(){
+		var that = this;				<span class="nota">// qui si assegna this a that </span> 	
+		var helperFunction = function() {
+			return that.myProperty; 		<span class="nota">// restituisce "I can see the light" (quello che si voleva) </span> 
+			return this.myProperty;			<span class="nota">// restituisce 'undefined' (dimostrazione di come si è perso) </span>  
+			return this;				<span class="nota">// restituisce [object Window] </span> 
+		}();
+	}
+}
+
+<span class="azzurro">myObject.myMethod();</span>		<span class="nota">// restituisce "I can see the light" "undefined" e [object Window]</span>
+</pre>
+</p>
+
+<h3>Utilizzo di this con call() e apply() </h3>
+<p>
+Nell'esempio che segue viene creato un oggetto e una funzione; quindi si invoca la funzione 'myFunction()' con <em>call()</em> passando come primo parametro l'oggetto 'myObject'. In questo modo l'oggetto viene popolato con le stesse proprietà della funzione 
+
+<pre>
+var myObjec	t = {};
+
+var myFunction = function(param1, param2) {
+	this.foo = param1;
+	this.bar = param2;
+	console.log(this) 				
+};
+
+<span class="azzurro">myFunction.call(myObject, 'foo', 'bar');</span>	<span class="nota">// restituisce Object {foo = 'foo', bar = 'bar'} </span>
+<span class="azzurro">console.log(myObject)</span>				<span class="nota">// restituisce Object {foo = 'foo', bar = 'bar'} </span>
+</pre>
+La stessa cosa si può fare utilizzando <tt>apply()</tt>. La differenza fra i due metodi è come vengono passati i parametri. In <tt>call()</tt> i parametri sono separati dalla virgola mentre utilizzando <tt>apply()</tt> i parametri vengono passati in un array 
+<pre>
+<span class="azzurro">myFunction.apply(myObject, ['foo', 'bar']); </span>
+</pre> 
+</p>
+
+<p>Per altri esempi <a href="bind_call_apply.html#callFunction">vedere qui</a> </p>
+
+
+<h3>Utilizzo di this in una funzione costruttore</h3>
+<p>
+L'esempio che segue è interessante. Viene creato una funzione costruttore che usa this per far riferimento a un oggetto che sarà creato. E' importante però che venga creata una istanza con la parola chiave <em>new</em>  
+
+<pre>
+var Person = function(name){
+	this.nome = name || 'john doe';		 	<span class="nota">// this si riferisce ad una istanza che sarà creata </span>
+}
+var cody = new Person('Cody Lindley');			<span class="nota">// si crea l'istanza basata sul costruttore Person </span>
+
+<span class="azzurro">console.log(cody.nome);</span> 				<span class="nota">// restituisce 'Cody Lindley' </span>
+
+</pre>
+se invece non si crea l'istanza con <tt>new</tt> il valore di  <tt>this</tt> rimarrebbe nel contesto in cui 'Person' è invocato cioè l'head object che è l'oggetto window
+<pre>
+var cody = Person('Cody Lindley');	<span class="nota">// non viene usata la parola chiave 'new'</span>
+<span class="azzurro">console.log(cody.nome);			<span class="nota">// restituisce errore (Cannot read property 'nome' of undefined )</span>
+console.log(window.nome); 		<span class="nota">// restituisce 'Cody Lindley' perchè this fa riferimento all'oggetto superiore</span>
+console.log(this.nome);			<span class="nota">// restituisce 'Cody Lindley' (come detto sopra this è window e la proprietà 'nome' fa quindi parte di windows)</span>
+</span>
+</pre>
+</p>
+
+<h3>Utilizzo di this con prototype</h3>
+<p>
+Quando usato in funzioni aggiunte da <em>prototype</em>, <tt>this</tt> fa riferimento all'istanza in cui il metodo è invocato
+<pre>
+var Person = function(x){
+	if(x)	{
+		this.fullName = x
+	};
+};
+
+Person.prototype.whatIsMyFullName = function(){
+	return this.fullName;			<span class="nota">// 'this' fa riferimento all'istanza creata da Person()</span>
+}
+
+var cody = new Person('cody lindley');
+var lisa = new Person('lisa lindley');
+
+<span class="azzurro">console.log(cody.whatIsMyFullName(), lisa.whatIsMyFullName());</span>	<span class="nota">// restituisce 'cody lindley' 'lisa lindley'     </span>
+
+
+Object.prototype.fullName = 'John Doe';			<span class="nota">// si assegna un nuovo valore </span>
+var john = new Person();				<span class="nota">// da notare che qui no viene passato nessun argomento </span>
+
+<span class="azzurro">console.log(john.whatIsMyFullName());</span> 			<span class="nota">// restituisce 'John Doe'</span>
+</span>
+</pre>
+</p>
+
+ 
+<script type="text/javascript">
+
+var Person = function(name) 
+{
+	this.nome = name || 'john doe';		 		// this will refer to the instance created
+}
+var cody = new Person('Cody Lindley'); 		// create an instance, based on Person constructor
+
+//alert(window.nome); 				// logs 'Cody Lindley'
+
+</script>
+
+<br />
+
+
+<h2>arguments</h2>
+<p>
+L'oggetto <em>arguments</em> è un oggetto tipo <tt>array</tt> che contiene i parametri passati alla funzione. La particolarità di quest'oggetto è che ci permette di recuperare i valori dei parametri all'interno della funzione, anche se tali parametri non vengono passati alla funzione quando la si definisce.
+</p>
+<pre>
+var somma = function(){
+	return arguments[0] + arguments[1];
+}
+<span class="azzurro">somma(3,5);</span>		<span class="nota">// restituisce 8 </span>
+<span class="grigio">mentre</span>
+<span class="azzurro">somma(3);</span>		<span class="nota">// restituisce NAN </span>
+<span class="azzurro">somma(3, null);</span>		<span class="nota">// restituisce 3 </span>
+</pre>
+oppure questa un pò più complessa
+<pre>
+function myConcat(separator) {
+	var result = "",		<span class="nota">Inizializzazione lista</span>			
+	i;
+
+	for (i = 1; i &lt; arguments.length; i++){
+		result += arguments[i] + separator;
+	}
+	return result;
+}
+
+<span class="grigio">a questo punto si possono passare alla funzione quanti argomenti si vuole (da notare che il primo argomento rimane 'separator')</span>
+
+<span class="azzurro">myConcat(", ", "red", "orange", "blue");</span>				<span class="nota">// "red, orange, blue, "</span>
+<span class="azzurro">myConcat("; ", "elephant", "giraffe", "lion", "cheetah");</span>		<span class="nota">// "elephant; giraffe; lion; cheetah; "</span>
+<span class="azzurro">myConcat(". ", "sage", "basil", "oregano", "pepper", "parsley");</span>	<span class="nota">// "sage. basil. oregano. pepper. parsley. "</span>
+
+
+</pre>
+
+
+
+<h3>callee</h3>
+<p>
+L'oggetto <em>arguments</em> ha una proprietà chiamata <em>callee</em> che fa riferimento alla funzione che si sta eseguendo 
+</p>
+
+<script type="text/javascript">
+var footer = function foo(){
+	return arguments.callee
+}();
+//document.write(footer() );
+</script>
+
+<h3>arguments.length</h3>
+<p>
+L'oggetto <em>arguments</em> ha una unica proprietà <b>length</b> che restituisce il numero dei parametri passati alla <q>funzione richiamata</q>; se non vengono passati parametri restituisce 0;
+</p>
+<pre>
+var myFunction = function(z, s, d){
+	return arguments.length;
+};
+<span class="azzurro">document.write(myFunction());				<span class="nota">// restituisce 0 (perchè non è dichiarato nessun parametro)</span>
+document.write(myFunction('uno','due', 'tre'));</span>		<span class="nota">// restituisce 3</span>
+</pre>
+
+<p>
+E' possibile invocare funzioni con un numero errato di argomenti; vediamo cosa succede:
+</p>
+<pre>
+function logThreeThings(a, b, c) {
+	console.log(a, b, c)
+}
+<span class="azzurro">
+logThreeThings('grass', 'bucket');			<span class="nota">// "grass" "bucket" undefined</span>
+logThreeThings('grass', 'bucket', 'hat', 'pickle');	<span class="nota">// "grass" "bucket" "hat"</span>
+</span>
+</pre>
+
+<p>Vediamolo con 'arguments' </p>
+
+<pre>
+function insertPotato(a) {
+	console.log(arguments);
+}
+<span class="azzurro">
+insertPotato('potato', 'bonus potato');			<span class="nota">// ["potato", "bonus potato"]</span>		
+</span>
+</pre>
+
+
+
+
+<p>
+Secondo quanto letto in un sito <span class="nota">con la versione 1.4 di JavaScript <q>arguments.length</q> diventa <q>deprecated</q> e per ottenere lo stesso risultato sarà opportuno richiamare <b>arguments.callee.length</b></span> ma a da quanto da me verificato risulta che <b>arguments.callee.length</b> da lo stesso risultato della proprietà <tt>length</tt> di seguito descritta
+</p>
+
+
+<h3>arguments con call() e apply() </h3>
+
+<p>
+Il seguente è un'esempio con il quale grazie ai metodi call() e apply() riusciamo a sfruttare delle funzioni native di un oggetto
+</p>
+
+<pre>
+function unioneArguments(a, b, c) {
+	var unisci = arguments.join('-');				<span class="nota">darà errore perchè 'arguments' non contiene un metodo 'join' </span>	
+	console.log(unisci);
+}
+<span class="azzurro">
+unioneArguments(1, 4, 9);						<span class="nota">// "arguments.join" is not a function</span>	
+</span>	
+<span class="grigio">come sappiamo 'join' è un metodo di 'Array' pertanto  </span>	
+
+function unioneArguments(a, b, c) {
+	var unisci = Array.prototype.join.call(arguments, '-');		<span class="nota">con call() risolviamo il problema</span>
+	console.log(unisci);
+}
+<span class="azzurro">
+unioneArguments(1, 4, 9);						<span class="nota">// 1-4-9</span>	
+</span>
+
+
+</pre>
+
+
+
+<h2>length</h2>
+<p>
+La proprietà <em>length</em> restituisce, invece, il numero totale dei parametri dichiarati nella funzione costruttore. Sicchè non avrà importanza anche se alla funzione richiamata non vengono passati parametri. 
+</p>
+<pre>
+var functione = function(z, s, d) 
+{
+	return functione.length;
+};
+<span class="azzurro">
+document.write(functione('uno','due', 'tre'));		<span class="nota">// restituisce 3</span>
+document.write(functione());</span>				<span class="nota">// restituisce lo stesso 3</span>
+</pre>
+
+
+
+<h2>null e undefined</h2>
+<p>
+<q><b>null</b></q> può essere utilizzato per indicare che una proprietà di un oggetto non contiene un valore. Generalmente si usa quando una proprietà è impostata per avere un valore in un momento successivo <br />
+</p>
+
+<p>
+<q><b>undefined</b></q>  è utilizzato da JavaScript in due casi per avvertirci che: o che ad una variabile (dichiarata) non è stato assegnato nessun valore oppure che  una proprietà di un oggetto non è stata definita e quindi non trovata nella catena di prototype. 
+</p>
+<p class="nota">
+La pratica vuole che sia lasciato a JavaScript l'uso di <q>undefined</q>; non bisogna mai impostare un valore a <q>undefined</q>, mentre bisogna usare <q>null</q> se si vuole specificare che una proprietà non è ancora disponibile. 
+
+<pre>
+var foo = undefined		<span class="nota">// errore, pratica sbagliata</span>
+var foo = null;			<span class="nota">// non è un errore</span>
+</pre>
+Se si cerca di valutare una variabile impostata a null il suo valore è come se fosse 0
+<pre>
+var n = null;
+<span class="azzurro">console.log(n * 32);</span>		<span class='nota'>// restituisce 0</span>
+</pre>
+</p>
+
+
+<h2>Getters e Setters</h2>
+<p>
+Javascript fornisce una tecnica che permette di specificare proprietà che dall'esterno sembrano normali proprietà ma segretamente hanno metodi associati.
+<pre>
+var pile = {
+	elements: ["eggshell", "orange peel", "worm"],
+	get height() {
+		return this.elements.length;
+	},
+	set height(value) {
+		console.log("Ignoring attempt to set height to", value);
+	}
+};
+<span class="azzurro">
+console.log(pile.height);				<span class="nota">// 3</span> </span>
+pile.height = 100;					<span class="nota">// Ignoring attempt to set height to 100 </span>				
+<span class="azzurro">console.log(pile.height);				<span class="nota">// 3</span>	
+</span>
+</pre> 
+In questo modo viene protetto la proprietà 'height' dall'essere aggiornata. <br />
+Se invece  si vuole renderla aggiornabile allora bisogna creare un'altra funzione che restituisca il valore della proprietà 
+
+<pre>
+
+var pile = {
+	elements: ["eggshell", "orange peel", "worm"],
+	get height() {
+		return this.elements.length;
+	},
+	set height(value) {
+		height = value;
+	},
+	getHeight: function (){ return height}
+};
+
+<span class="azzurro">
+console.log(pile.height);				<span class="nota">// 3</span>						
+</span>pile.height = 100; <span class="azzurro">	
+console.log ( pile.height);				<span class="nota">// 3</span>
+console.log(pile.getHeight());				<span class="nota">// 100</span>						
+</span>
+</pre>
+</p>
+
+<p>Il seguente esempio è più semplice ma più esplicativo</p>
+<pre>
+function wrapValue(value) {
+	return {
+		getValue: function () { return value; },
+		setValue: function (newValue) { value = newValue; }
+	};
+}
+
+var x = wrapValue(5);
+<span class="azzurro">console.log(x.getValue());				<span class="nota">// 5</span>
+</span>
+x.setValue(7);
+<span class="azzurro">console.log(x.getValue());				<span class="nota">// 7</span>
+</span>
+</pre>
+
+
+
+<h2>Type Coercion (Imposizione del tipo)</h2>
+<p>
+Nell'esempio seguente notiamo che l'operazione aritmetica (da sinistra a destra) viene svolta fino a quando non si incontra una stringa; dopodichè si ha un concatenamento (type coercion)
+
+<pre>
+7 + 7 + 7;		<span class="nota">// restituisce 21  </span>
+
+7 + 7 + "7"; 		<span class="nota">// restituisce 147</span>
+
+"7" + 7 + 7;		<span class="nota">// restituisce 777</span>
+</pre>
+E' buona norma non utilizzare l'operatore di comparazione del doppio uguale <tt>==</tt> ed utilizzare il triplo uguale <tt>===</tt> . Infatti si ha che
+<pre>
+1 == true;		<span class="nota">// restituisce true </span>
+1 === true;		<span class="nota">// restituisce false</span>
+
+7 == "7";		<span class="nota">// restituisce true</span>
+7 === "7";		<span class="nota">// restituisce false</span>
+
+</pre>
+</p>
+
+<h2>Costanti</h2>
+<p>
+Le costanti possono essere create con la parola chiave <b>const</b> che deve essere sempre messo altrimenti viene scambiato per variabile globale. Può iniziare con una lettera, underscore(_) o segno del dollaro($) e può contenere caratteri alfabetici, numerici o underscore
+<pre>
+const prefix = '212';
+</pre>
+Una costante non può cambiare il suo valore nell'esecuzione dello script come non può essere reimpostata; quindi in altre parole può essere soltanto letta.
+<pre>
+const f = 5;
+<span class="azzurro">console.log(f);</span>			<span class="nota">// restituisce 5</span>
+
+const f = 6;
+<span class="azzurro">console.log(f);</span>			<span class="nota">// restituisce ancora 5</span>
+</pre>
+</p>
+
+
+<h2>Caratteri speciali</h2>
+<h3>Nuova linea</h3>
+
+<p>
+Come ottenere la tanto agognata nuova linea in un alert? Semplicemente con <b>\n</b>. Va bene anche  con il <em>ritorno a capo (carriage return)</em> <b>\r</b>
+<pre>
+var stringa = "prima riga \n seconda riga"
+alert(stringa);
+<span class="nota">prima riga
+seconda riga
+</span>
+</pre>
+</p>
+
+<h3>backslash </h3>
+<pre>
+var quote = "He read \"The Cremation of Sam McGee\" by R.W. Service.";
+<span class="azzurro">console.log(quote);</span>			<span class="nota">He read "The Cremation of Sam McGee" by R.W. Service.</span>
+
+var home = "c:\\temp";
+console.log(home);			<span class="nota">//  c:\temp</span>
+</pre>
+
+
+<br />
+<br />
+<br />
+
+
+<script type="text/javascript">
+
+var pile = {
+	elements: ["eggshell", "orange peel", "worm"],
+	get height() {
+		return this.elements.length;
+	},
+	set height(value) {
+		height = value;
+	},
+		getHeight: function (){ return height}
+};
+
+
+console.log(pile.height);						
+pile.height = 100;	
+console.log ( pile.height)
+console.log(pile.getHeight());				// 100
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

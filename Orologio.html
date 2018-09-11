@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Orologio</title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(50,150,50);}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+#orologio{ width:80px; padding:5px; background:red; color:white; text-align:center;}
+
+</style>
+</head>
+
+<body>
+
+<h1>Orologio ottenuto con una funzione Javascript </h1>
+
+<p class="nota">La funzione <b>"gettime()"</b> fa riferimento al file <b>"orologio.js"</b>. Li c'è anche un'altra funzione che si differenzia per il fatto di visualizzare la numerazione delle ore fino alle 12  visualizzando quindi il PM ed AM </p>
+
+<form name="clockform">
+	<input type="text" name="clock" id="clock" size='10'>
+</form>
+
+<div id="orologio"></div> 
+
+
+<script  type="text/javascript">
+
+!function gettime() {
+    var date= new Date();
+    var hr = date.getHours();
+    var m = date.getMinutes();
+    var s = date.getSeconds();
+
+    if (hr > 24){
+        hr -= 24
+    }
+    if(m < 10){
+        m = "0" + m
+    }
+    if(s < 10){
+        s = "0" + s
+    }
+
+	document.clockform.clock.value = hr + ":" + m + ":" + s ;						// Visualizzazione dell'orologio nel campo input 
+	document.getElementById("orologio").innerHTML = hr + ":" + m + ":" + s;		// Visualizzazione dell'orologio all'interno del div
+
+	setTimeout(function(){ gettime()}, 100)
+}() 
+
+//gettime();
+
+</script>
+
+
+<!--
+<script src="orologio.js"></script>
+-->	
+
+
+</body>
+</html>

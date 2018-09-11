@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title> Finestra Modificabile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+<style type="text/css">
+
+</style>
+
+
+</head>
+<!--
+http://localhost/JavaScript/Moduli/Finestra_Modificabile.html
+-->
+
+<body>
+
+<h1>Finestra Modificabile</h1>
+
+<button id="mostraBox">Mostra il Box</button>
+
+
+<script type="module">
+
+// Importazione della funzioni "creaNodi()" per creare nodi HTML
+import finestrella from "./module/creaFinestra.js";
+
+// Creazione di un elemento box (finestrella) con classe 'div.boxfm'
+var titoloFinestra = 'Titolo Finestra';
+var testoFinestra = 'Contenuto della finestra';
+finestrella(titoloFinestra, '#fff', '#2849e0', '#fff', '#a52a2a',  testoFinestra, '#555', "#f3f3cc");
+
+import finestraModificabile from "./module/FinestraModificabile.js";
+
+//finestraModificabile("div.boxfm", "div.topfm", "div.angolofm", "div.xfm");
+finestraModificabile("div.boxfm", "div.topfm", "div.xfm", "div.angolofm", "div.latodx", "div.latobx");
+
+
+var mostraBox = document.getElementById("mostraBox");				// pulsante per visualizzare l'elemento 'box'
+mostraBox.addEventListener('click', function(){
+//	Visualizzazione della finestrella creata con la funzione creaFinestrella()
+	document.querySelector("div.boxfm").style['display'] = 'block';
+}, false);
+
+
+
+
+</script>
+
+
+
+</body>
+</html>
+

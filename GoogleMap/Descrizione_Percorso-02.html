@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<title>Descrizione percorso 02</title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+#map_canvas { position:relative; width:800px; height:500px;  }
+#directionsPanel{position:relative; width:700px; margin:20px 10px; border:3px double #00F; }
+
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+#jk{position:relative; width:80%; margin:5px 20px; padding:10px; border:1px solid #CCC}
+p{margin:5px;}
+
+</style>
+
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=it"></script>
+<script type="text/javascript">
+  var directionDisplay;
+  var directionsService = new google.maps.DirectionsService();
+  var map;
+//  var geocoder;
+  function initialize() {
+//    geocoder = new google.maps.Geocoder();
+    directionsDisplay = new google.maps.DirectionsRenderer(); // creazione di un oggetto della classe "DirectionsRenderer"
+    var stazione_capurso = new google.maps.LatLng(41.049437,16.922357);	
+    var myOptions = {
+      zoom:16,
+      center: stazione_capurso,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+	map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+	directionsDisplay.setMap(map);	// 'setMap' è un metodo della classe "DirectionsRenderer" (riga 28) e specifica la mappa per la quale le direzioni devono essere restituite
+	directionsDisplay.setPanel(document.getElementById("directionsPanel"));	// descrizione del percorso impostato nel div
+
+// Info window 
+var contentString =
+'<div id="content">'+
+'<p>Stazione di Capurso <br> Ferrovie Sud-Est'
+'</div>'; // fine contentString
+
+
+var infowindow = new google.maps.InfoWindow({
+	content: contentString,
+	maxWidth:100, // è l'unica proprietà dei css possibile. l'height non è possibile impostarlo ed è automatico. In questo caso e con queste opzioni se "maxWidth" è 200 appare la barra di scorrimento laterale se 300 no
+}); // chiude infoWindow
+
+
+// Marker
+var marker = new google.maps.Marker({
+	position: stazione_capurso,
+	map: map,
+	title: 'Stazione'
+});
+    google.maps.event.addListener(marker, 'click', function() {
+      infowindow.open(map,marker);
+    });
+
+}	// chiude initialize()
+
+  function calcRoute() {
+	var testo_inserito = document.getElementById("address").value;
+//	var start = "via Casamassima, Capurso, BA, Italia";
+	var start = "via " + testo_inserito + ", Capurso, BA, Italia";
+	var end = "Via Francesco Lattanzio, 60 Capurso, BA, Italia";
+//    var end =  stazione_capurso; 	// document.getElementById("end").value;
+    var request = {
+        origin:start, 
+        destination:end,
+        travelMode: google.maps.DirectionsTravelMode.DRIVING
+    };
+	// Invio di query a Google server attraverso il metodo "route" a cui vengono passate "request" e una funzione di callback richiesta per delineare che il servizio è stato reso con successo 
+    directionsService.route(request, function(response, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+        directionsDisplay.setDirections(response);
+      }
+    });
+  }
+
+
+</script>
+</head>
+<body>
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+//$("#map_canvas").css('margin','20px');
+
+initialize();
+
+$("#indirizzo").click(function(){
+var indiriz = $("#address").val();
+if(indiriz == "")
+alert("Inserite un indirizzo valido");
+else
+calcRoute();
+}); // chiude click
+
+
+}); // chiude ready 
+</script>
+
+
+<div id="jk">
+<h3>Crea percorso all'interno della città di Capurso</h3>
+<p>Crea il percorso dall'indirizzo specificato alla stazione di Capurso</p>
+	<label>Inserite la via (es: Casamassima) oppure via e numero-civico (es: Casamassima, 43) </label> <br />
+<input id="address" size="60" type="textbox" value="">
+<br />
+<input type="button" id="indirizzo"  value="Calcola Percorso">
+
+</div>
+
+  <div id="map_canvas"></div>
+
+    <div id="directionsPanel"></div>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
+

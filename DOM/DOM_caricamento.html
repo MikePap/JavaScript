@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Caricamento Dom </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);}
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px;  color:rgb(200,20,20);}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grassetto{ font-weight:bold; }
+pre{color:green; background:#e6e6fa; padding:10px; }
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+<h1>Caricamento DOM del documento</h1>
+<h3>document.readyState</h3>
+<p>
+La proprietà <q>readyState</q> restituisce tre differenti valori.
+<dl>
+	<dd><b>loading</b>:il browser sta caricando il documento</dd>
+	<dd><b>interactive</b>: il documento è stato analizzato ma il browser sta ancora caricando delle risorse collegate </dd>
+	<dd><b>complete</b>: il documento è stato analizzato e tutte le risorse sono state caricate</dd>
+</dl>	
+L'evento <b>readystatechange </b> scatta ogni qualvolta il valore di <q>readyState</q> cambia
+<pre>
+document.onreadystatechange = function(){ 
+	if (document.readyState == "complete"){ 
+		alert("Documento caricato!");
+	} 
+}  
+</pre>
+</p>
+
+<h3>DOMContentLoaded</h3>
+<p>
+E' uguale al <q>readyState:interactive</q>  perchè scatta quando una pagina è stata analizzata ma tutte le sue risorse non sono state ancora caricate. <span class="nota">Non Funzione in IE8</span>
+<pre>
+document.addEventListener("DOMContentLoaded", function(){
+	alert("Documento caricato!");
+});
+</pre>
+<p>
+Con jQuery il caricamento del DOM lo si ottiene con la funzione <q>ready</q>: 
+
+<pre>
+$(document).ready(function(){
+	alert("Documento caricato!");
+});
+</pre>
+</p>
+
+<h3>onload </h3>
+<p>L' evento <b>onload</b> equivale al <q>readyState </q> con valore <q>complete</q> ed è supportato da tutti i browser, mentre  <q>document.readyState</q> è supportato in IE 8 ma non in browser di alcuni smartphone (versioni vecchie di <q>Android</q> e altri ) 
+<pre>
+function f1 () {console.log("f1 called");}			<span class="nota">definizione di funzione</span>
+
+window.onload = f1;						<span class="nota">richiamo della funzione</span>
+</pre>
+mentre nel caso di più funzioni 
+<pre>
+function f1 () {console.log(1);}
+function f2 () {console.log(2);}
+
+window.onload = function(){
+    f1();
+    f2();
+};
+</pre>
+</p>
+
+
+<h3>async -- defer</h3>
+<p>
+L' HTML5 ha introdotto altri due <b>attributi</b>  utili che ci permettono di dire al browser quando caricare il nostro codice JavaScript. 
+</p>
+<pre>
+&lt;script src="file.js"&gt;&lt;/script&gt;				<span class="nota">uso normale</span>
+
+&lt;script async  src="file.js"&gt;&lt;/script&gt;			<span class="nota">con l'uso di 'async'</span>
+
+&lt;script defer  src="file.js"&gt;&lt;/script&gt;			<span class="nota">con l'uso di 'defer'</span>  
+</pre>
+<p>
+Nell'uso normale il codice sarà eseguito immediatamente nel momento in cui viene incontrato. Ciò vuol dire che se il codice fa riferimento ad alcuni oggetti che non sono stati ancora caricati produrrà errore. <br />
+Con l'attributo <b>async</b> quando il browser incontra il nostro codice JS lo esegue ma continuando, allo stesso tempo, a caricare gli altri elementi della pagina. <br />
+Con l'attributo <b>defer</b> il codice incontrato sarà eseguito quando la pagina sarà stata analizzata anche se le immagini non sono state ancora caricate.<br>
+I due sono attributi  booleani che danno indicazioni al bowser e <b>non devono essere impostati se l'attributo <q>src</q> non è presente</b>.
+</p>
+<p>
+Per i vecchi browser che non supportano questi due attributi si può utilizzare una tecnica che sfutta il metodo <b>document.createElement()</b> per aggiungere codice JavaScript in modo asincrono
+<pre>
+var ele = document.createElement("script");		<span class="nota">creazione dell'elemento 'script'</span>
+ele.type = "text/javascript";
+ele.src = "xyz.js";					<span class="nota">richiamo del nostro codice (file .js) impostandolo nell'attributo 'src'</span>
+document.body.appendChild(ele);				<span class="nota">inserimento (asincrono) dell'elemento 'script' all'interno del documento</span>
+</pre>
+
+</p>
+
+
+
+
+
+
+
+<script type="text/javascript">
+/*
+//### Non funziona in IE8 ###
+document.addEventListener("DOMContentLoaded", function() 
+{
+	alert("Documento caricato!");
+});
+*/
+
+document.onreadystatechange = function() 
+{ 
+	if (document.readyState == "interactive") { 
+//		alert("Documento caricato!");
+	} 
+}  
+
+var ele = document.createElement("script");
+//ele.src = "xyz.js";
+//ele.innerHTML = 'alert("woot!")';
+document.body.appendChild(ele);
+
+
+</script>
+
+
+
+
+
+
+<br /><br /><br />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

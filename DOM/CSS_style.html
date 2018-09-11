@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Applicazione Stili CSS  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(50,150,50);}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grigio{color: grey;}
+.blu{color:#00f;}
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+
+#div2{ padding:1em; }
+
+#divo{
+width:350px; height:55px; background-color:#0f0; margin-top:11px; padding:10px;
+}
+
+div.nascosto{
+display:none;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Recupero, impostazione e rimozione stili CSS ("style")</h1>
+<p>
+L'oggetto <q>style</q> permette di ottenere, impostare e rimuovere gli <b>stili inline</b>  di elementi. 
+<pre>
+var divStyle = document.querySelector('div').style;
+divStyle.backgroundColor = 'red';				<span class="nota">// imposta il background</span>
+divStyle.border = '1px solid black';				<span class="nota">// imposta il bordo</span>
+divStyle.width = '100px';					<span class="nota">// imposta la larghezza</span>
+
+<span class="blu"> per il recupero </span>
+
+console.log(divStyle.backgroundColor);
+
+<span class="blu"> per la rimozione</span>
+divStyle.backgroundColor = '';
+</pre>
+</p>
+
+<h3>getPropertyValue, setPropertyValue, removeProperty</h3>
+<p>
+Sono metodi (associati all'oggetto <q>style</q>) che fungono allo stesso scopo e cioè al recupero, impostazione e rimozione degli stili inline: <span class="nota">Non supportati in IE 8</span>.     
+<pre>
+var divStyle = document.querySelector('div').style;
+
+divStyle.setProperty('background-color','red');			<span class="nota">// imposta il background al colore 'red'</span>
+divStyle.getPropertyValue('background-color');			<span class="nota">// recupera il background dell'elemento</span>
+divStyle.removeProperty('background-color');			<span class="nota">// rimuove il valore del background</span>
+</pre>
+</p>
+
+<hr />
+
+<script type="text/javascript">
+
+
+
+document.onreadystatechange = function() 
+{ 
+	if (document.readyState == "complete") 
+	{ 
+//		var rt = document.getElementById('divo');
+//	alert(rt.style.getPropertyValue('background-color') );
+
+	} 
+}  
+
+
+function colorchange(e){
+    head2.style.color = "red";
+//	alert(e.target.id);
+}
+
+function colorchangeback(e){
+    head2.style.color = "black";
+}
+//  -->
+</script>
+</head>
+<body>
+<h2 id="head2" onmouseover="colorchange(this.id)" onMouseout="colorchangeback()">
+Please touch me baby!</h2>
+
+
+<script type="text/javascript">
+//document.onclick=changeElement;		// fa scattare l'evento su qualsiasi punto della pagina 
+
+////////////////////////////////////////
+function changeElement() 
+{
+	var div = document.getElementById("div1");
+//  div.style.backgroundColor="#00f";					//
+	var stile = div.style;
+	stile.backgroundColor ="#00f";					//
+	div.style.width="500px";
+	div.style.color="#fff";
+	div.style.height="200px";
+	div.style.paddingLeft="50px";
+	div.style.paddingTop="50px";
+	div.style.fontFamily="Verdana";
+	div.style.fontSize="2em";
+	div.style.border="3px dashed #ff0";
+	div.style.position="absolute";
+	div.style.left="200px";
+	div.style.top="100px";
+	div.style.textDecoration="underline";
+} // chiude "changeElement()"
+
+</script>
+
+<!-- <div id="div1" onclick="callLater('div1', 'backgroundColor', '#00f');" > -->
+
+<div id="div1" onclick="changeElement()" >
+This is a DIV element. Click me to see the change.
+</div>
+
+<br />
+
+<div id="div2" style="background-color:red; height:80px; width:450px" onclick="alert(this.style.cssText)">
+cliccami per scoprire tutte le mie proprietà CSS inline <br />ma non quelle nei CSS 
+</div>
+
+<br />
+
+<script type="text/javascript">
+//### funzione che restituisce il valore della opzione del menù e lo passa come parametro alla funzione "getStile()"   ###
+function selezioneMenu(){
+	var seletta = document.getElementsByTagName('select')[0];
+	return seletta.value;	
+} //
+
+//##### Funzione collegata alla funzione "getStile()" che restituisce l'elemento #####
+function resElemento(elemento)
+{
+	var el = document.querySelectorAll(elemento);
+	if(el.length == 1)
+		return el[0];
+} //
+/////////////////////////////////////////////////////
+function getStile(element, stile)			 
+{	// restituisce in px (es: 20px. Se al selettore è applicato un valore in 'em', trasforma il valore degli 'em' in 'px' e li restituisce )
+//	var elemento = document.getElementById(element);
+	var elemento = resElemento(element);
+	var computedStyle = null;
+	if (typeof elemento.currentStyle != "undefined")
+	{
+		if(stile != "seleziona")
+		{
+			computedStyle = elemento.currentStyle;													// per IE 
+			return computedStyle[stile];
+		}
+		else
+		{
+			return stile+ " uno stile";
+		}
+	}
+	if(typeof elemento.currentStyle == "undefined")
+	{
+		if(stile != "seleziona")
+		{
+		computedStyle = document.defaultView.getComputedStyle(elemento, null);		// altri browser
+		return computedStyle[stile];	
+		}
+		else
+		{
+			return stile+ " uno stile";			
+		}	
+	}
+	if(stile == "seleziona")
+	{
+		computedStyle = "fuk";
+		return computedStyle;	
+	}
+//	return computedStyle[stile];														// restituisce con unità di misura (px, em ..) 
+//	return parseInt(computedStyle[styleProperty]);								// restituisce il valore escluso della unità di misura (es:20)
+} // 
+
+var nascosto = document.getElementById('nascosto');
+var divo = document.getElementById('divo');
+
+// alert(getStile('div2', 'height'))
+
+/*
+//###### con la classe "Core"  #######
+var divo = document.getElementById('divo');
+//var stileW = Core.getComputedStyle(divo, 'width');		// OK => 500
+var stileW = Core.getComputedStylePx(divo, 'width');		// OK => 500px
+alert(stileW);
+*/
+
+</script>
+
+<hr />
+
+<h1>Ottenere uno stile dei CSS  </h1>
+<p>
+Purtroppo nel recupero degli stili dei CSS (<b>non solo inline</b>) i browser si comportano diversamente, o per meglio dire è IE che si comporta diversamente da tutti gli altri
+<pre>
+<span class="grigio">Per IE</span>
+var elem = document.getElementById('elemento');
+var style_elemento = elem.<b>currentStyle</b>;
+style_elemento['width'];				<span class="nota">// restituisce il valore dello stile passato come parametro in px </span>
+
+<span class="grigio">Per gli altri browser</span>
+var style_elemento = <b>window.getComputedStyle</b>(elem).width;		<span class="nota">// restituisce il valore dello stile della 'width' in px </span>
+<span class="grigio">oppure</span>
+var style_elemento = document.defaultView.getComputedStyle(elem, null);
+style_elemento['width'];				<span class="nota">// restituisce il valore dello stile passato come parametro in px </span>
+</pre>
+</p>
+
+<p>
+All'interno del documento ho creato una funzione per il recupero dello stile di un elemento e c'è anche il riferimento ai due metodi della classe <b>Core</b> 
+</p>
+
+<div id="divo">Scegli dal menu uno dei miei stili dei CSS </div> 
+
+<select name="seletta">
+	<option value="seleziona">Seleziona lo stile dei CSS</option>
+	<option value="width">Larghezza</option>
+	<option value="height">Altezza</option>
+	<option value="backgroundColor">Sfondo</option>
+	<option value="marginTop">Margine top</option>
+	<option value="paddingLeft">Padding left</option>
+	<option value="display">Display</option>
+</select>
+
+<input type="button" value="Visualizza lo stile" onclick="alert(getStile('#divo', selezioneMenu() ))" />
+
+<div class="nascosto">div nascosto</div> 
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+
+
+
+
+
+
+</body>
+</html>
+

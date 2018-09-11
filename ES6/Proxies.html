@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Proxies</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="../../baseLocali.css" />
+<style type="text/css">
+table{
+font-size: 0.8em;	
+}
+table th, table tr, table td{
+padding:0.2em 0.5em;	
+}
+td:nth-child(3){
+text-align: center; 
+}
+
+
+</style>
+</head>
+<body>
+
+<h1>Proxies</h1>
+
+<p>
+Un oggetto <em>Proxy</em> è utilizzato per definire comportamenti personalizzati per operazioni fondamentali. <br>
+Si può creare un Proxy da utilizzare al posto di un'altro oggetto, chiamato <em>target</em>; il Proxy virtualizza il target 
+in modo che i due oggetti sembrino gli stessi. <br>
+I Proxies permettono di intercettare operazioni di basso livello (low-level) sull'oggetto target, operazioni che sono interne a Javascript. <br>
+Queste operazioni di basso livello sono intercettate con l'uso di <em>trap</em> che è una funzione che risponde a specifiche operazioni.    	
+</p>
+
+<p> 
+La reflection API, rappresentata dall'oggetto <em>Reflect</em>, è una collezione di metodi chiamati <em>trap</em>	
+</p>
+
+<table border="1" >
+	<tr>
+		<th>Proxies Trap</th>
+		<th>Sostituisce il compotamento di</th>
+		<th>Comportamento di default</th>	
+	</tr>
+	<tr>
+		<td>get</td>
+		<td>lettura del valore di una proprietà</td>
+		<td>Reflect.get()</td>				
+	</tr>		
+	<tr>
+		<td>set</td>
+		<td>scrittura di una proprietà</td>
+		<td>Reflect.set()</td>				
+	</tr>		
+	<tr>
+		<td>has</td>
+		<td>dell'operatore in</td>
+		<td>Reflect.has</td>				
+	</tr>		
+	<tr>
+		<td>deleteProperty</td>
+		<td>delete</td>
+		<td>Reflect.deleteProperty()</td>				
+	</tr>		
+	<tr>
+		<td>getPrototypeOf</td>
+		<td>Object.getPrototypeOf()</td>
+		<td>Reflect.getPrototypeOf()</td>				
+	</tr>		
+	<tr>
+		<td>setPrototypeOf</td>
+		<td>Object.setPrototypeOf()</td>
+		<td>Reflect.setPrototypeOf()</td>				
+	</tr>		
+	<tr>
+		<td>isExtensible</td>
+		<td>Object.isExtensible()</td>
+		<td>Reflect.isExtensible()</td>				
+	</tr>		
+	<tr>
+		<td>preventExtensions</td>
+		<td>Object.preventExtensions()</td>
+		<td>preventExtensions()</td>				
+	</tr>		
+	<tr>
+		<td>getOwnPropertyDescriptor</td>
+		<td>object.getOwnPropertyDescriptor()</td>
+		<td>Reflect.getOwnPropertyDescriptor()</td>
+	</tr>		
+	<tr>
+		<td>defineProperty</td>
+		<td>Object.defineProperty()</td>
+		<td>Reflect.defineProperty()</td>				
+	</tr>		
+	<tr>
+		<td>ownKeys</td>
+		<td>Object.keys, Object.getOwnPropertyNames(), Object.getOwnPropertySymbols()</td>
+		<td>Reflect.ownKeys()</td>				
+	</tr>		
+	<tr>
+		<td>apply</td>
+		<td>chiamata alla funzione</td>
+		<td>Reflect.apply()</td>				
+	</tr>		
+	<tr>
+		<td>construct</td>
+		<td>chiamata a una funzione con new</td>
+		<td>Reflect.construct()</td>				
+	</tr>		
+
+</table>	
+
+<p>
+Ogni trap permette di sostituire i vari comportamenti built-in degli oggetti  	
+</p>	
+
+<h3>Creazione di un semplice Proxy</h3>
+	
+<p>
+Nella creazione di un oggetto Proxi mediante il costruttore bisogna passargli due parametri: il <em>target</em> e l'<em>handler</em> (gestore);
+quest'ultimo è l'oggetto in cui definire uno o più <em>trap</em> 	
+</p>		
+
+<pre>
+let target = {};
+
+let proxy = new Proxy(target, {});
+
+proxy.name = "proxy";
+<span class="azzurro">
+console.log(proxy.name);				<span class="nota">// "proxy"</span>
+console.log(target.name);				<span class="nota">// "proxy"</span>
+</span>
+target.name = "target";
+<span class="azzurro">
+console.log(proxy.name);				<span class="nota">// "target"</span>
+console.log(target.name);				<span class="nota">// "target"</span>
+</span>	
+</pre>	
+
+<p>
+Quello da dire in questo esempio, senza trap, è che il proxy non immagazzina in se stesso la proprietà "name" ma la trasferisce al target 
+il quale a sua volta la può modificare trasferendo la modifica al rispettivo proxy. 	
+</p>	
+
+
+<h3>Trap set</h3> 
+
+<p>
+Il trap <em>set</em> accetta quattro argomenti:
+
+	<dl>
+		<dd><b>trapTarget:</b> l'oggetto che riceverà la proprietà (il target)  </dd>
+		<dd><b>key</b>: la chiave della proprietà (String o Symbol)</dd>
+		<dd><b>value:</b> il valore della proprietà</dd>
+		<dd><b>receiver:</b> l'oggetto su cui avviene l'operazione (il proxy) 
+	</dl>	
+</p>	
+
+<p>Il seguente è un esempio, con l'uso dell'oggetto Reflect, che definisce un trap set che intercetta e valuta ogni proprietà aggiunta al target.
+</p>
+<pre>
+let target = {
+	name: "target"
+};
+
+let proxy = new Proxy(target, {
+	set(trapTarget, key, value, receiver) {
+		if (!trapTarget.hasOwnProperty(key)) {
+			if (isNaN(value)) {
+				throw new TypeError("Property must be a number.");
+			}
+		}
+		return Reflect.set(trapTarget, key, value, receiver); <span class="nota"> aggiunta di proprietà "key" e valore "value"</span>
+	}
+});	
+
+proxy.count = 1;				<span class="nota">aggiunta di una proprietà</span>				
+<span class="azzurro">
+console.log(proxy.count);			<span class="nota">// 1</span>
+console.log(target.count);			<span class="nota">// 1</span>
+</span>
+proxy.name = "proxy";				<span class="nota">"name" può essere assegnata perchè è una proprietà già esistente</span>
+<span class="azzurro">
+console.log(proxy.name);			<span class="nota">// "proxy"</span>
+console.log(target.name);			<span class="nota">// "proxy"</span>
+</span>
+proxy.anotherName = "proxy";			<span class="nota">// restituisce errore: "Property must be a number"</span>
+
+</pre>	
+
+
+<h3>Trap get</h3>
+
+<p>
+Il trap <em>get</em> accetta tre argomenti:
+
+	<dl>
+		<dd><b>trapTarget:</b> l'oggetto da cui la proprietà è letta (il target)  </dd>
+		<dd><b>key</b>: la chiave della proprietà (String o Symbol) da leggere </dd>
+		<dd><b>receiver:</b> l'oggetto su cui avviene l'operazione (il proxy) 
+	</dl>	
+</p>	
+
+<p>Esempio con Reflect</p>
+
+<pre>
+let proxy = new Proxy({}, {
+
+	get(trapTarget, key, receiver) {
+		if (!(key in receiver)) {
+			throw new TypeError("Property " + key + " doesn't exist.");
+		}
+
+		return Reflect.get(trapTarget, key, receiver);
+	}
+});	
+
+<span class="grigio" >con l'aggiunta di una proprietà tutto funziona</span>
+proxy.name = "proxy"; <span class="azzurro">
+console.log(proxy.name);			<span class="nota">// "proxy"</span>
+</span>
+<span class="grigio" >se la proprietà non esiste allora restituisce errore</span><span class="azzurro">
+console.log(proxy.nme);				<span class="nota">// restituisce errore: "Property nme doesn't exist." </span>
+</span>
+</pre>	
+
+<p>Esempio senza Reflect</p>
+<pre>
+var target = {
+	a: 1,
+	b: 2,
+	c: 3
+};	
+
+var handler = {
+	get: function(target, name) {
+		return (
+			name in target ? target[name] : 42
+		);
+	}
+};
+
+var proxy = new Proxy(target, handler);
+<span class="azzurro">
+console.log(proxy.a);				<span class="nota">// 1</span>
+console.log(proxy.b);				<span class="nota">// 2</span>
+console.log(proxy.c);				<span class="nota">// 3</span>
+console.log(proxy.meaningOfLife);		<span class="nota">// 42</span>
+</span>
+</pre>	
+<p>
+Da notare che nell'esempio precedente (senza Reflect) il trap get accetta 2 parametri perchè il terzo parametro (<em>receiver</em>)
+è rappresentato da appunto dall'oggetto "handler". <br>
+Sono due modi differenti di impostazione ma che producono il medesimo risultato
+	
+</p>	
+
+<p>
+<b>Esempio con get e set</b><br>	
+Il seguente è un esempio che definisce i trap get e set (senza l'uso di Reflect)</p>
+<pre>
+var target = {};
+
+var handler = {
+
+	get: function(target, name) {
+		return (name in target ? target[name] : 42);
+	},
+
+	set: function(target, prop, value) {
+		if (prop.length == 1 && prop >= 'a' && prop <= 'z') {
+			target[prop] = value;
+			return true;
+		}else {
+			throw new ReferenceError(prop + ' cannot be set');
+			return false;
+		}
+	}
+};
+
+var proxy = new Proxy(target, handler);
+
+proxy.a = 10;
+proxy.b = 20;
+proxy.ABC = 30;					<span class="nota">// restituisce errore: "ABC cannot be set"</span>
+<span class="azzurro">
+console.log(proxy.a);				<span class="nota">// 10</span>
+console.log(proxy.b);				<span class="nota">// 20</span>
+console.log(proxy.ABC);				<span class="nota">// 42 ("ABC" non essendo aggiunta assume il valore di default assegnatogli) </span>
+</span>
+
+</pre>	 
+
+<p>
+L'esempio precedente ci chiarisce la differenza tra i trap get e set; 
+mentre set ci da la possibilità di intercettare quando le proprietà stanno per essere definite, 
+il trap get intercetta quando le proprietà stanno per essere lette. <br>
+La proprietà "ABC" non può essere impostata altrimenti produce errore (bloccando del resto tutto il codice successivo), 
+però può essere letta perchè il trap get ci dice, che se la proprietà non fa parte del target  
+gli si assegna il valore di 42 (<b>nel momento di lettura</b>)
+</p>	
+
+<h3>Trap has</h3>
+
+<p>
+L'operatore <em>in</em> permette di determinare se una proprietà esiste in un oggetto restituendo true o false. 
+Il Proxi trap <em>has</em> permette di intercettare questa operazione e di restituire differenti valori. <br>
+Accetta due argomenti:
+	<dl>
+		<dd><b>trapTarget</b>: l'oggetto da cui è letta la proprietà</dd>
+		<dd><b>key</b>: la chiave della proprietà (String o Symbol) da controllare</dd>
+	</dl>
+</p>
+
+<pre>
+let target = {
+	name: "target",
+	value: 52
+};
+
+let proxy = new Proxy(target, {
+	has(trapTarget, key) {
+
+		if (key === "value") {
+			return false;
+		}else {
+			return Reflect.has(trapTarget, key);
+		}
+	}
+});
+<span class="azzurro">
+console.log(proxy.value);			<span class="nota">// 52</span>
+console.log(target.value);			<span class="nota">// 52</span>
+console.log("value" in proxy);			<span class="nota">// false</span>
+console.log("name" in proxy);			<span class="nota">// true</span>
+console.log("toString" in proxy);		<span class="nota">// true</span>
+</span>
+</pre>
+
+<p>
+L'esempio precedente ci mostra che, in fase di lettura, il valore della proprietà value ci viene restituito (52); 
+ma se andiamo a verificare, col metodo <em>in</em>, se "value" fa parte dell'oggetto proxy notiamo che ci viene restituito "false"; 
+il che ci dimostra che il trap <em>has</em> ha cambiato il suo comportamento di default.
+</p>	
+
+<h3>Trap deleteProperty</h3>
+
+<p>
+Il trap <em>deleteProperty</em> accetta due argomenti:
+	<dl>
+		<dd><b>trapTarget</b>: l'oggetto da cui la proprietà dovrebbe essere eliminata (proxy) </dd>
+		<dd><b>key</b>: la chiave della proprietà (String o Symbol) da eliminare</dd>
+	</dl>
+</p>
+<p>
+L'operatore <em>delete</em> rimuove un proprietà daq un oggetto restituendo true o false in caso di successo o fallimento;
+in "strict mode" <em>delete</em> restituisce un errore quando si cerca di eliminare una proprietà non-configurabile; 
+in "non-strict mode" semplicemente restituisce false. <br> Per esempio:	
+</p>	
+<pre>
+let target = {
+	name: "target",
+	value: 42
+};
+
+Object.defineProperty(target, "name", { configurable: false });
+<span class="azzurro">
+console.log("value" in target);			<span class="nota">// true</span>
+</span>
+let result1 = delete target.value;
+<span class="azzurro">
+console.log(result1);				<span class="nota">// true (la proprietà è stata eliminata)</span>
+console.log("value" in target);			<span class="nota">// false (dimostrato)</span>
+</span>
+let result2 = delete target.name;		<span class="nota">ciò in "strict mode" da errore</span>
+<span class="azzurro">
+console.log(result2);				<span class="nota">// false (infatti)</span>
+console.log("name" in target);			<span class="nota">// true (dimostrato)</span>
+</span>	
+</pre>	
+<p>
+In "result2" a differenza di "result1" la proprietà non viene elininata se usato lo "strict-mode"; 
+ma con il trap <em>deleteProperty</em> possiamo cambiare questo comportamento: 	
+</p>	
+<pre>
+let target = {
+	name: "target",
+	value: 42
+};
+
+let proxy = new Proxy(target, {
+	deleteProperty(trapTarget, key) {
+	
+		if (key === "value") {
+			return false;
+		} else {
+			return Reflect.deleteProperty(trapTarget, key);
+		}
+	}
+});	
+
+let result1 = delete proxy.value;
+<span class="azzurro">
+console.log(result1);				<span class="nota">// false</span>
+console.log("value" in proxy);			<span class="nota">// true</span>
+console.log("name" in proxy);			<span class="nota">// true</span>
+</span>
+let result2 = delete proxy.name;
+<span class="azzurro">
+console.log(result2);				<span class="nota">// true</span>
+console.log("name" in proxy);			<span class="nota">// false</span>
+</span>
+</pre>	
+<p>
+Il trap <em>deleteProperty</em> è stato definito solo sulla proprietà "value" per cui non sarà possibile eliminarla con <em>delete</em>, 
+mentre la proprietà  "name", cosi come tutte le altre eventuali sarà possibile. 
+L'esempio non è altro che un modo per proteggere una proprietà. 	
+</p>
+
+
+<h3>Revocable Proxies</h3>
+
+<p>
+Normalmente un Proxy, una volta creato, non può essere scollegato dal suo target. Tutti gli esempi visti sopra sono di Proxy non-revocabili.<br />
+Ma comunque c'è la possibilità di scollegarlo dal suo oggetto target e di renderlo pertanto non più utilizzabile. <br />
+Il metodo <em>Proxy.revocable()</em> rende possibile questa operazione ed accetta due parametri:
+	<dl>
+		<dd><b>proxy</b>: l'oggetto proxy che deve essere revocato</dt>
+		<dd><b>revoke</b>: la funzione da richiamare per revocare il proxy</dd>
+	</dl>
+</p>
+
+<pre>
+let target = {
+	name: "target"
+};
+
+let { proxy, revoke } = Proxy.revocable(target, {});
+<span class="azzurro">
+console.log(proxy.name);			<span class="nota">// "target"</span>	
+</span>
+revoke();
+<span class="azzurro">
+console.log(target.name);			<span class="nota">// "target" (revoke non influisce sul target) </span>
+console.log(proxy.name);			<span class="nota">// restituisce errore</span>
+</span>
+</pre>
+
+<p>
+L'esempio precedente usa il <em>destructuring</em> per creare il trap ma solo dopo che si è invocata la funzione "revoke()" il trap ha effetto e quindi il proxy viene annullato senza peraltro influire sull'oggetto target.
+</p>
+
+
+<h3>Esempio: Profiling</h3>
+
+<p>
+In questo esempio sarà creato un "profiling proxy" che conteggia il numero di volte che si accede ad una proprietà. Per l'occasione viene creata una funzione factory (makeProfiler) che restituisce il nostro oggetto proxy
+</p>
+<pre>
+function makeProfiler(target) {
+	var count = {},
+	handler = {
+
+		get: function(target, name) {
+			if (name in target) {
+			 count[name] = (count[name] || 0) + 1;
+			 return target[name];
+			}
+		}
+	};
+
+	return {
+		proxy: new Proxy(target, handler),
+		count: count
+	}
+
+};
+
+var myObject = {
+  h: 'Hello',
+  w: 'World'
+};
+
+var pObj = makeProfiler(myObject);		<span class="nota">creazione dell'oggetto Proxy</span>
+<span class="azzurro">
+console.log(pObj.proxy.h);			<span class="nota">// Hello</span>
+console.log(pObj.proxy.h);			<span class="nota">// Hello</span>
+console.log(pObj.proxy.w);			<span class="nota">/ World</span>
+console.log(pObj.count.h);			<span class="nota">// 2</span>
+console.log(pObj.count.w);			<span class="nota">// 1</span>
+</span>
+</pre>
+
+<h3>Esempio: Two-Way Data Binding</h3>
+
+<p>
+Il "Data binding" sincronizza gli oggetti. E' tipicamente usato nelle librerie MVC di Javascript per aggiornare un oggetto interno quando il DOM cambia e viceversa. <br />
+Per l'occasione creiamo un campo input in cui digitare un nome che sarà visualizzato nella console (dopo aver aggiornato la pagina) 
+</p>
+<p>
+	Inserire un nome <input type="text" id="inputname" value="" />
+</p>
+<pre>
+var myUser = {
+	id: 'inputname',				<span class="nota">la proprietà "id" fa riferimento all'id del campo input</span>
+	name: ''
+};
+
+inputChange(myUser);
+
+<span class="grigio">Collegamento del campo input all'oggetto</span>
+function inputChange(myObject) {
+	if (!myObject || !myObject.id) return;
+	var input = document.getElementById(myObject.id);
+	input.addEventListener('onchange', function(e) {
+		myObject.name = input.value;
+	});
+}
+
+<span class="grigio">Proxy handler</span>
+var inputHandler = {
+
+	set: function(target, prop, newValue) {
+		if (prop == 'name' && target.id) {
+			target[prop] = newValue;					<span class="nota">Aggiornamento della proprietà dell'oggetto Proxy</span>
+			document.getElementById(target.id).value = newValue;		<span class="nota">Aggiornamento valore del campo input</span>
+			return true;
+		}else{ 
+			return false;
+		}
+	}
+}
+
+<span class="grigio">Creazione Proxy</span>
+var myUserProxy = new Proxy(myUser, inputHandler);
+
+<span class="azzurro">
+//myUserProxy.name = 'Craig';
+//console.log(myUserProxy.name);					<span class="nota">// Craig</span>
+
+<span class="grigio">Provare ad inserire un nome nel campo input e ad aggiornare la pagina</span>
+console.log(document.getElementById('inputname').value);		<span class="nota">// sarà restituito il nome digitato nel campo input</span>
+</span>
+
+
+</pre>
+
+
+
+
+
+<script type="text/javascript">
+var myUser = {
+	id: 'inputname',
+	name: ''
+};
+
+inputChange(myUser);
+
+// bind input to object
+function inputChange(myObject) {
+	if (!myObject || !myObject.id) return;
+	var input = document.getElementById(myObject.id);
+	input.addEventListener('onchange', function(e) {
+		myObject.name = input.value;
+	});
+}
+
+// proxy handler
+var inputHandler = {
+
+	set: function(target, prop, newValue) {
+		if (prop == 'name' && target.id) {
+		// update object property
+			target[prop] = newValue;
+		// update input field value
+			document.getElementById(target.id).value = newValue;
+			return true;
+		}else{ 
+			return false;
+		}
+	}
+}
+
+// create proxy
+var myUserProxy = new Proxy(myUser, inputHandler);
+
+
+//myUserProxy.name = 'Craig';
+//console.log(myUserProxy.name); // Craig
+console.log(document.getElementById('inputname').value); // Craig
+
+
+</script>
+
+<br><br><br><br><br><br><br><br><br>
+
+</body>
+</html>
+

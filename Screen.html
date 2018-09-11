@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Oggett screen  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(50,150,50);}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grigio{color: grey;}
+.scuro{color:#333;}
+.blu{color:#00f;}
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+
+</style>
+</head>
+<body>
+
+<h1>Oggetto screen</h1>
+
+<p class="nota">L'oggetto <q>screen</q> fornisce l'accesso a diverse proprietà che danno informazioni relative allo schermo dell'utente</p>
+
+<table id="screen_table" width="60%" border="1" cellspacing="0" cellpadding="3">
+<tr>
+	<th>Elementi</th>
+	<th>Descrizione</th>
+</tr>
+<tr>
+	<td>availHeight</td>
+	<td>Restituisce l'altezza in pixel dello schermo sottratti le dimensioni (altezze) di vari oggetti presenti quali barra degli strumenti, barra degli indirizzi ecc..   </td>
+</tr>
+<tr>
+	<td>availWidth</td>
+	<td>Restituisce la larghezza dello schermo sottratte le dimnensioni (larghezze) dei vari oggetti presenti quali barra degli strumenti, barra degli indirizzi, ecc..  <span class="nota">(vedere dettagli sotto)</span> </td>
+</tr>
+<tr>
+	<td>colorDepth</td>
+	<td>Restituisce il numero massimo di colori che lo schermo dell'utente può visualizzare. In formato BIT </td>
+</tr>
+<tr>
+	<td>pixelDepth</td>
+	<td>Restituisce il numero di BIT per pixel che lo schermo può produrre. Internet Explorer non supporta questa proprietà</td>
+</tr>
+<tr>
+	<td>height</td>
+	<td>Restituisce l'altezza in pixel dello schermo</td>
+</tr>
+<tr>
+	<td>width</td>
+	<td>Restituisce la larghezza in pixel dello schermo</td>
+</tr>
+	
+</table>
+
+
+<pre>
+<span class="scuro">Per la larghezza non ci sono problemi. <tt>window.screen.width</tt> va bene per tutti</span>
+var wIE = window.screen.width;		<span class="nota">// 1366 (x tutti)</span>				
+
+<span class="scuro">mentre la seguente <tt>innerWidth</tt> va bene x tutti tranne che per IE8 </span>
+var W = window.innerWidth;	
+
+<span class="scuro">Osserviamo le differente</span> 
+window.innerHeight;			<span class="nota">// 577(firefox) - *652(chrome) - undefined(IE8) - *631(safari) - *655 (opera)</span>		
+window.screen.height;			<span class="nota">// 704(firefox) - 768(chrome)  - 768 (IE8) - 768(safari) - 768 </span>	
+window.screen.availHeight;		<span class="nota">// 677(firefox) - 738(chrome)  - 738 IE8 - 738(safari) - 738(opera) </span>
+window.screen.innerHeight;		<span class="nota">// undefined x tutti</span>	
+<span class="blu">La formula migliore sarebbe (anche se per IE rimane il dubbio)</span>
+var H = window.innerHeight || window.screen.availHeight;
+</pre>
+<p>
+Facendo una verifica sulle coordinate <tt>pageX</tt> e <tt>pageY</tt>  dal <a href="pageX-pageY.html">seguente file </a> si nota che <em>innerHeight</em> è quello che da il risultato corretto. Ma purtoppo IE 8 non lo supporta. <br />
+* ATTENZIONE: osservando il valore di <tt>screen.availHeight</tt> su chrome si nota che è maggiore (738) rispetto a <tt>innerHeight</tt>(652) il che va a contraddire ciò che è affermato nella tabella di sopra <br />
+Discorso a parte per <em>IE</em> (come al solito). <tt>screen.availHeight</tt> è uguale a chrome (738) che abbiamo visto non rispecchi il <b>valore netto della finestra</b>. Per cui considerando che <tt>innerHeight</tt> non lo supporta, la proprietà che mi restituisca il vero valore per tutti non esiste.  
+</p>
+
+<script type="text/javascript">
+function openWin() {
+	
+	var myWin = open("jk", "finestra-bella","width=450,height=200");
+
+	var OuterHeight = document.createElement('span');
+	var testoOuterHeight = document.createTextNode("OuterHeight: " +window.outerHeight);
+	OuterHeight.appendChild(testoOuterHeight);
+
+	var par = document.createElement('p');
+	var testoPar = document.createTextNode(window.window.name);
+	par.appendChild(testoPar);
+
+	myWin.document.write("The availHeight is: " + screen.availHeight + "<br>");
+	myWin.document.write("The availWidth is: " + screen.availWidth + "<br>");
+	myWin.document.write("The colorDepth is: " + screen.colorDepth + "<br>");
+	myWin.document.write("The pixelDepth is: " + screen.pixelDepth + "<br>");
+	myWin.document.write("The height is: " + screen.height + "<br>");
+	myWin.document.write("The width is: " + screen.width + "<br>");
+	myWin.document.children[0].appendChild(OuterHeight);				
+	myWin.document.children[0].appendChild(par);					
+	myWin.document.close();
+
+}
+
+
+
+
+</script>
+
+<h3>Larghezza e altezza del documento HTML</h3>
+
+<p>
+Per ottenere la larghezza o l'altezza del documento HTML si possono utilizzare 
+<pre>
+document.documentElement.offsetWidth;				<span class="nota">// 1349 (x tutti tranne IE8=>1345)</span>							
+document.documentElement.offsetHeight;				<span class="nota">// dipende da quello che c'è</span>							
+</pre>
+</p>
+
+
+<br />
+<br />
+
+
+
+<button id="screen_btn" onClick="openWin()">Clicca per conoscere le proprietà dello schermo</button>
+
+
+<script type="text/javascript">
+
+var l1 = window.screen.width;									// 1366 (x tutti)
+var l2 = document.documentElement.offsetWidth;			// 1349 (in tutti) 1345 in IE8 
+
+//alert( l2 );
+
+console.log("Inner", window.innerHeight );
+console.log("Outer", window.outerHeight);
+
+
+</script>
+
+
+
+
+</body>
+</html>
+

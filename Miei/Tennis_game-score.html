@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title> Tennis score </title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+<style type="text/css">
+
+
+#boxSetGiocatori{
+position:relative; width:10%; border:1px solid #ccc; text-align:center; margin: 1em 1em 1em auto; cursor: pointer; 
+}
+
+#setGiocatori{
+position:fixed;  width:60%; bottom:1em; left:20%; margin:0 auto; border:1px solid #ccc; display:none;
+}
+#setGiocatori > input{
+width:31%;	
+}
+#setGiocatori > span{
+width:10%; border:1px solid #ccc; padding:0 0.5em; cursor:pointer;
+}
+
+.giocatori{
+width:300px; margin:0.2em 1em ;
+display: -webkit-flex;
+display: flex;
+-webkit-flex-direction: row;
+flex-direction: row;
+
+}
+
+.giocatori > div{
+padding:0.2em 0.5em;	border:1px solid #ccc; text-align:center;
+}
+.giocatori > div:nth-child(1){
+width:40%;	background:#e0e4b4; color:#a12424;
+}
+.giocatori > div:nth-child(2){
+background:#4b6655; color:#fff; 
+}
+.giocatori > div:nth-child(3){
+background:#96b8c7; color:#fff;
+}
+.giocatori > div:nth-child(4){
+
+}
+
+
+#punteggio{
+position:relative; margin:4em auto 0 auto;	width:40%;	/*border:1px solid #ccc; */
+display: flex; display: -webkit-flex;
+justify-content: space-between;
+}
+#punteggio > div{
+padding:1.5em 0; text-align:center; border:1px solid #ccc; 
+width:40%; cursor: pointer;
+}
+#punteggio > div:hover{
+background:#444; color:#fff;
+}
+#punteggio > div:nth-child(1){
+}
+
+#punteggio > div:nth-child(2){
+}
+
+
+
+</style>
+</head>
+<body>
+
+
+<h1>Tennis game</h1>
+
+<div id="boxSetGiocatori">Giocatori</div> 
+
+<div id="setGiocatori">
+	<input type="text" name="giocatore1" id="giocatore1" maxlength="31" value="" />
+	<input type="text" name="giocatore2" id="giocatore2" maxlength="31" value="" />
+	<input type="submit" name="subGiocatori" id="subGiocatori" value="Invia" />
+	<span id="xSetGiocatori">x</span>
+</div> 
+
+
+<div id="gioc1" class="giocatori">
+	<div>Giocatore 1</div>
+	<div>0</div>
+	<div>5</div>
+	<div>0</div> 
+
+</div> 
+
+<div id="gioc2" class="giocatori">
+	<div>Giocatore 2</div>
+	<div>0</div>
+	<div>6</div>
+	<div>0</div> 
+</div> 
+
+
+
+<div id="punteggio">
+	<div id="score1">Giocatore 1</div> 
+	<div id="score2">Giocatore 2</div> 
+</div> 
+
+
+
+
+
+
+<script type="text/javascript">
+
+// Apertura del box per impostare i nomi dei giocatori 
+var boxSetGiocatori = document.getElementById("boxSetGiocatori"); 
+var setGiocatori = document.getElementById("setGiocatori"); 
+var xSetGiocatori = document.getElementById("xSetGiocatori"); 
+boxSetGiocatori.addEventListener("click", function(){
+	setGiocatori.style['display'] = 'block';
+}, false);
+
+// Chiusura del box per impostare i nomi dei giocatori 
+xSetGiocatori.addEventListener("click", function(){
+	setGiocatori.style['display'] = 'none';	
+}, false);
+
+// Impostazione dei nomi dei giocatori
+var subGiocatori = document.getElementById("subGiocatori"); 
+subGiocatori.addEventListener("click", function(){
+	var nome1 = document.getElementById("giocatore1").value;
+	var nome2 = document.getElementById("giocatore2").value;
+
+	document.querySelector("#gioc1 > div:nth-child(1)").innerHTML = nome1;
+	document.querySelector("#gioc2 > div:nth-child(1)").innerHTML = nome2;
+
+	document.querySelector("#punteggio > div:nth-child(1)").innerHTML = nome1;
+	document.querySelector("#punteggio > div:nth-child(2)").innerHTML = nome2;
+
+	sendPartita("risultati_tennis-game.php", nome1, nome2);
+
+}, false);
+
+function sendPartita(url, gioc1, gioc2){
+	var req = new XMLHttpRequest();
+	req.open("POST", url, true);
+	req.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	req.send("name1="+gioc1+"&name2="+gioc2);
+
+}
+
+/////////////####################///////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\#################
+
+// gioc1  - gioc2 - score1 - score2
+
+var set1 = +document.querySelector("#gioc1 > div:nth-child(2)").innerHTML;						// sets 
+var game1 =	+document.querySelector("#gioc1 > div:nth-child(3)").innerHTML;					// giochi 
+var punteggio1 = +document.querySelector("#gioc1 > div:nth-child(4)").innerHTML;				// punteggio del game 
+
+var set2 = +document.querySelector("#gioc2 > div:nth-child(2)").innerHTML;
+var game2 =	+document.querySelector("#gioc2 > div:nth-child(3)").innerHTML;
+var punteggio2 = +document.querySelector("#gioc2 > div:nth-child(4)").innerHTML;
+
+var punto1 = document.getElementById("score1"); 
+var punto2 = document.getElementById("score2"); 
+
+
+
+function sendRisultato(url, gioc){
+	var req = new XMLHttpRequest();
+	req.open("POST", url, true);
+	req.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	var giocatore = document.querySelector("#gioc"+gioc+" > div:nth-child(1)").innerHTML;
+	var set = document.querySelector("#gioc"+gioc+" > div:nth-child(2)").innerHTML;
+	var game = document.querySelector("#gioc"+gioc+" > div:nth-child(3)").innerHTML;
+	var punteggio = document.querySelector("#gioc"+gioc+" > div:nth-child(4)").innerHTML;
+	req.send("player="+giocatore+"&s="+set+"&g="+game+"&p="+punteggio);
+}
+
+function fineSet(url){
+	var req = new XMLHttpRequest();
+	req.open("POST", url, true);
+	req.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	var giocatore1 = document.querySelector("#gioc1 > div:nth-child(1)").innerHTML;
+	var giocatore2 = document.querySelector("#gioc2 > div:nth-child(1)").innerHTML;
+	var game1 = document.querySelector("#gioc1 > div:nth-child(3)").innerHTML;
+	var game2 = document.querySelector("#gioc2 > div:nth-child(3)").innerHTML;
+
+	req.send("player1="+giocatore1+"&player2="+giocatore2+"&valgioco1="+game1+"&valgioco2="+game2);
+}
+
+
+///////#################	punto x il Giocatore 1	####################################################/////////////////////
+
+punto1.addEventListener("click", function(){
+
+	if(set1 < 2 && set2 < 2){
+
+// 1° Condizione 
+		if(game1 < 6 && game2 < 5){
+			if(punteggio1 < 40){
+				if(punteggio1 === 0){
+					punteggio1 = 15;
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;			
+					sendRisultato("risultati_tennis-game.php", 1);
+				}else if(punteggio1 === 15){
+					punteggio1 = 30;
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;			
+					sendRisultato("risultati_tennis-game.php", 1);
+				}else if(punteggio1 === 30){
+					punteggio1 = 40;						
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					sendRisultato("risultati_tennis-game.php", 1);
+				}
+			}else if(punteggio1 === 40){		
+				if(punteggio2 < 40){
+					punteggio1 = 0;		
+					punteggio2 = 0;
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+//					sendRisultato("risultati_tennis-game.php", 1);
+					if(game1 < 5){
+						game1 = game1 + 1;
+						document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;
+						sendRisultato("risultati_tennis-game.php", 1);
+					}else{
+//						Visualizazione risultato di fine set
+						game1 = game1 + 1;
+						document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;	
+						fineSet("risultati_tennis-game.php");
+//						Azzeramento games
+						game1 = 0;
+						game2 = 0;
+						document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;	
+						document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;	
+						set1 = set1 + 1;					
+						document.querySelector("#gioc1 > div:nth-child(2)").innerHTML = set1;
+						sendRisultato("risultati_tennis-game.php", 1);						
+					}
+				}else if (punteggio2 === 40){
+						punteggio1 = "Ad";
+						punteggio2 = 40;
+						document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+						document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+						sendRisultato("risultati_tennis-game.php", 1);
+					}else{ 			// punteggio2 === "Ad"
+						punteggio1 = 40;
+						punteggio2 = 40;			
+						document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+						document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+						sendRisultato("risultati_tennis-game.php", 1);
+					}
+
+			}else{					// ai vantaggi
+				if(game1 < 5){
+					punteggio1 = 0;	
+					punteggio2 = 0;		
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+					game1 = game1 + 1;
+					document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;
+					sendRisultato("risultati_tennis-game.php", 1);
+				}else{
+					punteggio1 = 0;
+					punteggio2 = 0;			
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+//					Visualizazione risultato di fine set
+					game1 = game1 + 1;
+					document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;	
+					fineSet("risultati_tennis-game.php");
+//					Azzeramento games
+					game1 = 0;
+					game2 = 0;
+					document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;	
+					document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;	
+					set1 = set1 + 1;					
+					document.querySelector("#gioc1 > div:nth-child(2)").innerHTML = set1;
+					sendRisultato("risultati_tennis-game.php", 1);						
+				}
+			}
+
+// 2° Condizione 
+		}else if (game1 < 7 && game2 === 5){
+			if(punteggio1 < 40){
+				if(punteggio1 === 0){
+					punteggio1 = 15;
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;			
+					sendRisultato("risultati_tennis-game.php", 1);
+				}else if(punteggio1 === 15){
+					punteggio1 = 30;
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;			
+					sendRisultato("risultati_tennis-game.php", 1);
+				}else if(punteggio1 === 30){
+					punteggio1 = 40;						
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					sendRisultato("risultati_tennis-game.php", 1);
+				}
+			}else if(punteggio1 === 40){		
+				if(punteggio2 < 40){
+					punteggio1 = 0;	
+					punteggio2 = 0;		
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+//					sendRisultato("risultati_tennis-game.php", 1);
+					if(game1 < 6){
+						game1 = game1 + 1;
+						document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;
+						sendRisultato("risultati_tennis-game.php", 1);
+					}else{
+//						Visualizazione risultato di fine set
+						game1 = game1 + 1;
+						document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;	
+						fineSet("risultati_tennis-game.php");
+//						Azzeramento games
+						game1 = 0;
+						game2 = 0;
+						document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;
+						document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;	
+//						document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = 0;
+						set1 = set1 + 1;					
+						document.querySelector("#gioc1 > div:nth-child(2)").innerHTML = set1;
+						sendRisultato("risultati_tennis-game.php", 1);
+					}
+				}else if (punteggio2 === 40){
+						punteggio1 = "Ad";
+						punteggio2 = 40;
+						document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+						document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+						sendRisultato("risultati_tennis-game.php", 1);
+					}else{ 				// punteggio2 === "Ad"
+						punteggio1 = 40;
+						punteggio2 = 40;			
+						document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+						document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+						sendRisultato("risultati_tennis-game.php", 1);
+					}
+
+			}else{					// ai vantaggi
+				if(game1 < 6){
+					punteggio1 = 0;			
+					punteggio2 = 0;
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+					game1 = game1 + 1;
+					document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;
+					sendRisultato("risultati_tennis-game.php", 1);
+				}else{			
+					punteggio1 = 0;	
+					punteggio2 = 0;		
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+//					Visualizazione risultato di fine set
+					game1 = game1 + 1;
+					document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;	
+					fineSet("risultati_tennis-game.php");
+//					Azzeramento games
+					game1 = 0;
+					game2 = 0;
+					document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;
+					document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;
+					set1 = set1 + 1;					
+					document.querySelector("#gioc1 > div:nth-child(2)").innerHTML = set1;
+					sendRisultato("risultati_tennis-game.php", 1);	
+				}
+			}
+
+// 3° Condizione 
+		}else if (game1 < 6 && game2 === 6){			// 5 a 6
+			if(punteggio1 < 40){
+				if(punteggio1 === 0){
+					punteggio1 = 15;
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;			
+					sendRisultato("risultati_tennis-game.php", 1);
+				}else if(punteggio1 === 15){
+					punteggio1 = 30;
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;			
+					sendRisultato("risultati_tennis-game.php", 1);
+				}else if(punteggio1 === 30){
+					punteggio1 = 40;						
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					sendRisultato("risultati_tennis-game.php", 1);
+				}
+			}else if(punteggio1 === 40){		
+				if(punteggio2 < 40){
+					punteggio1 = 0;	
+					punteggio2 = 0;		
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+					game1 = game1 + 1;
+					document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;
+					sendRisultato("risultati_tennis-game.php", 1);
+				}else if (punteggio2 === 40){
+						punteggio1 = "Ad";
+						punteggio2 = 40;
+						document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+						document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+						sendRisultato("risultati_tennis-game.php", 1);
+					}else{ 				// punteggio2 === "Ad"
+						punteggio1 = 40;
+						punteggio2 = 40;			
+						document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+						document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+						sendRisultato("risultati_tennis-game.php", 1);
+					}
+			}else{					// ai vantaggi
+					punteggio1 = 0;			
+					punteggio2 = 0;
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+					game1 = game1 + 1;
+					document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;
+					sendRisultato("risultati_tennis-game.php", 1);
+			}
+
+// 4° Condizione (Tie-break)
+		}else if(game1 < 7 && game2 === 6){			
+			if(punteggio1 < 7 && punteggio2 < 6){
+				if(punteggio1 < 6){
+					punteggio1 = punteggio1 + 1;
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					sendRisultato("risultati_tennis-game.php", 1);		
+				}else{
+					punteggio1 = 0;
+					punteggio2 = 0;
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+//					Visualizazione risultato di fine set
+					game1 = game1 + 1;
+					document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;	
+					fineSet("risultati_tennis-game.php");
+//					Azzeramento games
+					game1 = 0;
+					game2 = 0;
+					document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;
+					document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;
+					set1 = set1 + 1;				
+					document.querySelector("#gioc1 > div:nth-child(2)").innerHTML = set1;	
+					sendRisultato("risultati_tennis-game.php", 1);	
+				}
+			}else{
+				if((punteggio1 - punteggio2) === 1){
+					set1 = set1 + 1;
+					punteggio1 = 0;
+					punteggio2 = 0;
+//					Visualizazione risultato di fine set
+					game1 = game1 + 1;
+					document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;	
+					fineSet("risultati_tennis-game.php");
+//					Azzeramento games
+					game1 = 0;
+					game2 = 0
+					document.querySelector("#gioc1 > div:nth-child(2)").innerHTML = set1;
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+					document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;
+					document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;
+					sendRisultato("risultati_tennis-game.php", 1);
+				}else{
+					punteggio1 = punteggio1 + 1;
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;	
+					sendRisultato("risultati_tennis-game.php", 1);	
+				}
+			}
+		}
+
+	}
+//alert(typeof set1)
+}, false);
+ 
+
+///////#################	punto x il Giocatore 2	####################################################/////////////////////
+
+punto2.addEventListener("click", function(){
+
+	if(set1 < 2 && set2 < 2){
+
+// 1° Condizione 
+		if(game2 < 6 && game1 < 5){
+			if(punteggio2 < 40){
+				if(punteggio2 === 0){
+					punteggio2 = 15;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;			
+					sendRisultato("risultati_tennis-game.php", 2);
+				}else if(punteggio2 === 15){
+					punteggio2 = 30;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;			
+					sendRisultato("risultati_tennis-game.php", 2);
+				}else if(punteggio2 === 30){
+					punteggio2 = 40;						
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+					sendRisultato("risultati_tennis-game.php", 2);
+				}
+			}else if(punteggio2 === 40){		
+				if(punteggio1 < 40){
+					punteggio2 = 0;
+					punteggio1 = 0;			
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+//					sendRisultato("risultati_tennis-game.php", 2);
+					if(game2 < 5){
+						game2 = game2 + 1;
+						document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;
+						sendRisultato("risultati_tennis-game.php", 2);
+					}else{
+//						Visualizazione risultato di fine set
+						game2 = game2 + 1;
+						document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;	
+						fineSet("risultati_tennis-game.php");
+//						Azzeramento games
+						game1 = 0;
+						game2 = 0;
+						document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;	
+						document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;	
+						set2 = set2 + 1;					
+						document.querySelector("#gioc2 > div:nth-child(2)").innerHTML = set2;
+						sendRisultato("risultati_tennis-game.php", 2);						
+					}
+				}else if (punteggio1 === 40){
+						punteggio2 = "Ad";
+						punteggio1 = 40;
+						document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+						document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+						sendRisultato("risultati_tennis-game.php", 2);
+					}else{				//	punteggio1 === "Ad"
+						punteggio2 = 40;
+						punteggio1 = 40;			
+						document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+						document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+						sendRisultato("risultati_tennis-game.php", 2);
+					}
+
+			}else{						// ai vantaggi 
+				if(game2 < 5){
+					punteggio2 = 0;	
+					punteggio1 = 0;		
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					game2 = game2 + 1;
+					document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;
+					sendRisultato("risultati_tennis-game.php", 2);
+				}else{
+					punteggio2 = 0;
+					punteggio1 = 0			
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					game2 = 0;
+					game1 = 0;
+					document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;	
+					document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;	
+					set2 = set2 + 1;					
+					document.querySelector("#gioc2 > div:nth-child(2)").innerHTML = set2;
+					sendRisultato("risultati_tennis-game.php", 2);						
+				}
+			}
+
+// 2° Condizione 
+		}else if (game2 < 7 && game1 === 5){
+			if(punteggio2 < 40){
+				if(punteggio2 === 0){
+					punteggio2 = 15;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;			
+					sendRisultato("risultati_tennis-game.php", 2);
+				}else if(punteggio2 === 15){
+					punteggio2 = 30;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;			
+					sendRisultato("risultati_tennis-game.php", 2);
+				}else if(punteggio2 === 30){
+					punteggio2 = 40;						
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+					sendRisultato("risultati_tennis-game.php", 2);
+				}
+			}else if(punteggio2 === 40){		
+				if(punteggio1 < 40){
+					punteggio2 = 0;
+					punteggio1 = 0;			
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+//					sendRisultato("risultati_tennis-game.php", 2);
+					if(game2 < 6){
+						game2 = game2 + 1;
+						document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;
+						sendRisultato("risultati_tennis-game.php", 2);
+					}else{
+//						Visualizazione risultato di fine set
+						game2 = game2 + 1;
+						document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;	
+						fineSet("risultati_tennis-game.php");
+//						Azzeramento games
+						game1 = 0;
+						game2 = 0;
+						document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;
+						document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;	
+//						document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = 0;
+						set2 = set2 + 1;					
+						document.querySelector("#gioc2 > div:nth-child(2)").innerHTML = set2;
+						sendRisultato("risultati_tennis-game.php", 2);
+					}
+				}else if (punteggio1 === 40){
+						punteggio2 = "Ad";
+						punteggio1 = 40;
+						document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+						document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+						sendRisultato("risultati_tennis-game.php", 2);
+					}else{ 				// punteggio2 === "Ad"
+						punteggio2 = 40;
+						punteggio1 = 40;			
+						document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+						document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+						sendRisultato("risultati_tennis-game.php", 2);
+					}
+
+			}else{					// ai vantaggi
+				if(game2 < 6){
+					punteggio1 = 0;			
+					punteggio2 = 0;
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+					game2 = game2 + 1;
+					document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;
+					sendRisultato("risultati_tennis-game.php", 2);
+				}else{
+					punteggio1 = 0;	
+					punteggio2 = 0;		
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+//					Visualizazione risultato di fine set
+					game2 = game2 + 1;
+					document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;	
+					fineSet("risultati_tennis-game.php");
+//					Azzeramento games
+					game1 = 0;
+					game2 = 0;
+					document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;
+					document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;
+					set2 = set2 + 1;					
+					document.querySelector("#gioc2 > div:nth-child(2)").innerHTML = set2;	
+					sendRisultato("risultati_tennis-game.php", 2);					
+				}
+			}
+
+// 3° Condizione 
+		}else if (game2 < 6 && game1 === 6){			// 5 a 6
+			if(punteggio2 < 40){
+				if(punteggio2 === 0){
+					punteggio2 = 15;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;			
+					sendRisultato("risultati_tennis-game.php", 2);
+				}else if(punteggio2 === 15){
+					punteggio2 = 30;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;			
+					sendRisultato("risultati_tennis-game.php", 2);
+				}else if(punteggio2 === 30){
+					punteggio2 = 40;						
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+					sendRisultato("risultati_tennis-game.php", 2);
+				}
+			}else if(punteggio2 === 40){		
+				if(punteggio1 < 40){
+					punteggio1 = 0;	
+					punteggio2 = 0;		
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+					game2 = game2 + 1;
+					document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;
+					sendRisultato("risultati_tennis-game.php", 2);
+				}else if (punteggio1 === 40){
+						punteggio2 = "Ad";
+						punteggio1 = 40;
+						document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+						document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+						sendRisultato("risultati_tennis-game.php", 2);
+					}else{ 				// punteggio1 === "Ad"
+						punteggio2 = 40;			
+						punteggio1 = 40;
+						document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+						document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+						sendRisultato("risultati_tennis-game.php", 2);
+					}
+			}else{					// ai vantaggi 
+					punteggio1 = 0;			
+					punteggio2 = 0;
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+					game2 = game2 + 1;
+					document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;
+					sendRisultato("risultati_tennis-game.php", 2);
+			}
+
+// 4° Condizione (Tie-break)
+		}else if(game2 < 7 && game1 === 6){			
+			if(punteggio2 < 7 && punteggio1 < 6){
+				if(punteggio2 < 6){
+					punteggio2 = punteggio2 + 1;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+					sendRisultato("risultati_tennis-game.php", 2);
+				}else{
+					punteggio1 = 0;
+					punteggio2 = 0;
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+//					Visualizazione risultato di fine set
+					game2 = game2 + 1;
+					document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;	
+					fineSet("risultati_tennis-game.php");
+//					Azzeramento games
+					game1 = 0;
+					game2 = 0;
+					document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;
+					document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;
+					set2 = set2 + 1;				
+					document.querySelector("#gioc2 > div:nth-child(2)").innerHTML = set2;
+					sendRisultato("risultati_tennis-game.php", 2);
+				}
+			}else{
+				if((punteggio2 - punteggio1) === 1){
+					set2 = set2 + 1;
+					punteggio1 = 0;
+					punteggio2 = 0;
+//					Visualizazione risultato di fine set
+					game2 = game2 + 1;
+					document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;	
+					fineSet("risultati_tennis-game.php");
+//					Azzeramento games
+					game1 = 0;
+					game2 = 0
+					document.querySelector("#gioc2 > div:nth-child(2)").innerHTML = set2;
+					document.querySelector("#gioc1 > div:nth-child(4)").innerHTML = punteggio1;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;
+					document.querySelector("#gioc1 > div:nth-child(3)").innerHTML = game1;
+					document.querySelector("#gioc2 > div:nth-child(3)").innerHTML = game2;
+					sendRisultato("risultati_tennis-game.php", 2);
+				}else{
+					punteggio2 = punteggio2 + 1;
+					document.querySelector("#gioc2 > div:nth-child(4)").innerHTML = punteggio2;	
+					sendRisultato("risultati_tennis-game.php", 2);	
+				}
+			}
+		}
+
+	}
+//alert(typeof set1)
+}, false);
+ 
+
+
+
+//alert(game1); alert(game2);
+//alert(punteggio1); alert(punteggio2);
+//alert(set1); alert(set2);
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+<!--
+
+http://localhost/JavaScript/Miei/Tennis_game-score.html
+-->
+
+
+
+
+</body>
+</html>
+

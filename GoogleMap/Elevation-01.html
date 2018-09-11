@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>Elevation 01  </title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.nota{color:orange;}
+.codice{color:green;} 
+
+#map_canvas{ position:relative; margin:20px; width:80%; height:80%;  }
+
+</style>
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=it"></script>
+
+<script type="text/javascript">
+
+var elevator;
+  var map;
+  var infowindow = new google.maps.InfoWindow();		// creazione oggetto classe "InfoWindow"
+//  var denali = new google.maps.LatLng(63.3333333, -150.5);
+  var casaMIa =  new google.maps.LatLng(41.0449,16.9185);
+
+  function initialize() {
+    var myOptions = {
+      zoom: 11,
+      center: casaMIa,
+      mapTypeId: 'terrain'
+    } // 'myOptions'
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+    // Create an ElevationService
+    elevator = new google.maps.ElevationService();		// creazione oggetto classe "ElevationService"
+
+    // Add a listener for the click event and call getElevation on that location
+    google.maps.event.addListener(map, 'click', getElevation);
+  } // "initialize" 
+
+  function getElevation(event) {
+
+    var locations = [];
+
+	// Retrieve the clicked location and push it on the array
+	// Recupero della posizione in cui si è cliccato e inserimento della stessa in un array su instanziato (riga 45). 
+    var clickedLocation = event.latLng;		// fa riferimento all'evento listener (riga 40)
+    locations.push(clickedLocation);		// 
+
+    // Create a LocationElevationRequest object using the array's one value
+    var positionalRequest = {
+      'locations': locations
+    }
+
+    // Initiate the location request
+    elevator.getElevationForLocations(positionalRequest, function(results, status) {
+      if (status == google.maps.ElevationStatus.OK) {
+
+        // Retrieve the first result
+        if (results[0]) {	// 'result[0]' di 'positionalRequest' fa riferimento alla proprietà 'locations' dell'oggetto "google.maps.LocationElevationRequest " che restituisce la posizione da cui ricavare l'altimetria (vedi riga 53-54 )
+
+          // Open an info window indicating the elevation at the clicked position
+          infowindow.setContent("L'altimetria in questo punto è: <br> " + results[0].elevation + " metri.");
+          infowindow.setPosition(clickedLocation);
+          infowindow.open(map);
+        } else {
+          alert("No results found");
+        }
+      } else {
+        alert("Elevation service failed due to: " + status);
+      }
+    });
+  } // "getElevation(event)"
+
+</script>
+
+</head>
+<!-- <body onload=""> -->
+<body>
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+initialize();
+
+}); // chiude ready 
+</script>
+
+<p>Cliccare all'interno della mappa per rilevare l'altimetria nel punto cliccato</p>
+
+<div id="map_canvas"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

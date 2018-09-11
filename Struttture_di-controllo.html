@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Strumenti di controllo  </title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> Strutture di controllo  </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css" /> 
+<style type="text/css">
+/*
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(100,150,255);}
+.scuro{color:#333;}
+.rosso{color:red;}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+*/
+</style>
+
+</head>
+
+<body>
+
+<h2>while</h2>
+
+<pre>
+var arr = ['a', 'b', 'c'];
+var lArr = arr.length;
+
+while(lArr--){
+	console.log(arr[lArr]);					<span class="nota">// c, b, a</span>
+}
+
+<span class="grigio">Mentre se li si vuole ordinati possiamo usare il metodo "reverse()" </span>
+
+var arr = ['a', 'b', 'c'].reverse();
+var l = arr.length;
+
+while(l--){
+	console.log(arr[l]);					<span class="nota">// a, b, c</span>
+}
+
+</pre>
+
+<h2> if </h2>
+<pre>
+<span class="grigio">Questa espressione produrrà un risultato </span>
+x = 5;
+if (x == 5) {
+	alert("la variabile x è uguale a 5"); 
+} 
+
+<span class="grigio">Questa no: </span>
+x = 5; 
+if (x == 6) {
+	alert("la variabile x è uguale a 5"); 
+} 
+
+</pre>
+
+<p>La seguente espressione risulterà sempre vero, perché all'interno delle parentesi viene assegnato un valore, e non viene invece eseguito un confronto.  </p>
+<pre>
+x=8;
+if (x==8) { 
+	alert("la variabile x è uguale a 8"); 
+} 
+
+</pre>
+
+<p> la seguente produce 2 alert che indicheranno: la prima "false", la seconda "true". E' un modo per verificare </p>
+<pre>
+x = 4;
+alert(x >= 5); 
+alert(x &lt; 5); 
+</pre>
+
+<h2> else - elseif  </h2>
+
+<p> la seguente espressione produrrà solo un alert, cioè quello vero </p>
+<pre>
+x = 9; 
+if (x &lt; 7) {
+	alert("x è minore di 7"); 
+} 
+
+else { 
+	alert("x non è minore di 7"); 
+} 
+</pre>
+
+<p> Questa espressione produce un alert se una delle condizioni è vera altrimenti apre una finestrella "prompt"  </p>
+<pre>
+nome="Gianni";
+
+if (nome === "Mario") { 
+	alert("ciao Mario"); 
+}else if (nome === "Gianni") { 
+	alert("ciao Gianni"); 
+}else { 
+  prompt ("identificati","inserisci il tuo nome"); 
+} 
+</pre>
+
+
+<h3> Individuare il browser  </h3>
+<p> JavaScript ci consente di verificare in un modo molto semplice se una proprietà di un oggetto esiste oppure no<br />
+Questo accorgimento ci è molto utile nei molti casi in cui vogliamo adattare la pagina a seconda del browser: ad esempio per spedire un foglio di stile differente a seconda del browser usato.<br />
+<span class="nota">internet Explorer</span> (qualsiasi versione) viene identificato da <span class="nota">document.all</span>, <span class="nota">Netscape  da document.layers</span>, i browser di nuova generazione da <span class="nota">document.getElmentById</span>.<br />
+</p>
+ 
+<pre> 
+
+if (document.all) { 
+	alert("stai usando Internet Explorer"); 
+} else if (document.layers) { 
+	alert("stai usando Netscape 4"); 
+} else if (document.getElementById) { 
+	alert("stai usando Netscape 6, o un browser di nuova generazione"); 
+} else { 
+	prompt ("stai usando un browser sconosciuto"); 
+}  
+</pre>
+
+
+<h2>  return </h2>
+<p> la funzione restituisce i valori  e, con la restituzione dei valori il flusso del codice viene interrotto. Ovviamente il metodo del return funziona soltanto se ci troviamo all'interno di una funzione.</p>
+
+<p>  Metodo </p>
+<pre>
+
+function checkBrowser(){
+
+// <span class="grigio"> Se il browser non è Internet Explorer</span>
+	if (!document.all) { 
+		alert ("Non stai usando Internet Explorer"); 
+		return;			<span class="nota">// Il codice si interrompe qui </span>
+	} 
+
+// <span class="grigio">Altrimenti continua e processa il seguente</span>
+	alert ("Il tuo browser è Internet Explorer"); 
+	nome = prompt("Scrivi il tuo nome","il tuo nome qui"); 
+} 
+
+checkBrowser();  
+</pre>
+
+<h3>return true / false</h3>
+
+<p>
+Il seguente è un semplice esempio dell'uso di «return» <span class="nota">true</span> e <span class="nota">false</span> all'interno di una funzione
+</p>
+<pre>
+var a = 18;
+function veroFalso() {
+	if(a &lt; 9){ 
+		return true;
+	}else{ 
+		return false
+	}
+}
+
+if(veroFalso()) {			<span class="nota">** Ci basta usare semplicemente l'espressione «if» </span> 
+	console.log('Si è vero'); 
+}else{
+	console.log('No, è falso');
+}
+
+</pre>
+
+
+
+<h2> switch </h2>
+<p> 
+Lo switch non è nient'altro che un particolare caso di «if» ramificato, in cui viene presa in esame un'unica variabile che può assumere differenti valori, e conseguentemente esistono molteplici «else if». In pratica il diagramma di flusso dello switch è il medesimo dell'«else if».
+l'istruzione <span class="nota">break</span>  serve per interrompere lo switch, ogni volta che si rientra nella casistica che ci interessa
+</p>
+
+<pre>
+switch('variabile da valutare') { 
+	case 'valore 1': 
+	// istruzioni 
+	break; 
+
+	case 'valore 2':
+	// istruzioni  
+	break; 
+  
+	case 'valore n': 
+	// istruzioni 
+	break; 
+
+	default:  
+	// istruzioni   
+}
+</pre>
+
+<h2> L'operatore ternario </h2>
+
+<p> L'operatore ternario (detto anche "operatore di selezione") fornisce una sintassi abbreviata per esprimere un particolare tipo di if.</p>
+
+<pre>
+
+&lt;condizione&gt; ? &lt;istruzione1&gt; : &lt;istruzione2&gt;
+
+document.all?alert("stai usando Internet Explorer"):alert("non stai usando Internet Explorer");
+
+</pre>
+
+
+<h2> break e continue  </h2>
+
+<p>
+<b> break </b> è un'istruzione che ci consente di uscire da un costrutto. È utilizzata sovente con il metodo «switch», ma non solo. <br />
+Se utilizzata con for, for... in, while, o do...while serve per interrompere il ciclo delle ripetizioni.<br />
+<b>continue</b> invece serve per forzare l'esecuzione del codice, anche se dovrebbe essere interrotta (per esempio da un if all'interno del ciclo).
+</p>
+
+<pre>
+<span class="grigio">Esempio con "break"</span>
+
+for(var i=0; i &lt; 10; i++){
+	if(i == 2) break;
+	console.log(i);					<span class="nota">// 0 1</span>
+}
+
+
+<span class="grigio">Esempio con "continue"</span>
+
+for(var i=0; i &lt; 10; i++){
+	if(i == 2) continue;
+	console.log(i);					<span class="nota">// 0 1  3 4 5 6 7 8 9</span>
+}
+
+<span class="grigio">In pratica salta il 2.<br>Vediamo altri esempi</span>
+
+for(var i=0; i &lt; 15; i++){
+	if(i &gt; 2 && i &lt; 6) continue;
+	if(i == 12) break;
+	console.log(i);					<span class="nota">// 0 1 2 (stop)  6 7 8 9 10 11(stop) </span>
+}
+
+
+for(var i=0; i &lt; 20; i++){
+	if(i % 2 == 1) continue;
+	console.log(i);					<span class="nota">// 0 2 4 6 8 10 12 14 16 18</span>
+}
+
+
+</pre>
+
+
+
+<h2>with</h2>
+<p>La dichiarazione <q>with</q> prende un oggetto e fa riferimento a tutte le proprietà, metodi, eventi di tale oggetto senza direttamente fare riferimento all'oggetto  </p>
+
+<script type="text/javascript">
+var myNum = 25;
+with (Math) {
+mySqrt = sqrt(myNum); 	// sqrt => restiuisce la radice quadrata di myNum
+document.writeln(mySqrt);
+}
+///////////////////////
+inp1 = 1;
+inp2 = 2;
+inp3 = 3;
+with (Math)
+{
+document.write("<br>The largest number entered was " + max(inp1, inp2, inp3));
+document.write("<br>The smallest number entered was " + min(inp1, inp2, inp3));
+}
+</script>
+
+
+
+
+
+<script type="text/javascript">
+
+
+for(var i=0; i < 20; i++){
+	if(i % 2 == 1) continue;
+	console.log(i);
+}
+
+
+//console.log( 9 % 2 == 1 );
+
+
+</script>
+
+
+
+
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+</body>
+</html>

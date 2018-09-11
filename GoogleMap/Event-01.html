@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+    <title>Eventi 01</title>
+
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+
+h1{ margin-left:31px; font-size:21px; color:#00F;}
+h3{margin-left:10px; font-size:16px; color:#F00;}
+p{margin:10px;}
+.nota{color:orange;}
+.codice{color:green;}
+
+#map_canvas { position:relative; margin:20px; width:90%; height:70%;  }
+
+</style>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript">
+      function initialize() {
+        var myOptions = {
+          zoom: 4,
+          center: new google.maps.LatLng(-25.363882, 131.044922),
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        var map = new google.maps.Map(document.getElementById('map_canvas'),
+            myOptions);
+
+        var marker = new google.maps.Marker({
+          position: map.getCenter(),
+          map: map,
+          title: 'Click to zoom'
+        });
+// addListener
+        google.maps.event.addListener(marker, 'click', function() {
+          if (map.getZoom() == 8) {
+            map.setZoom(4);
+          } else {
+            map.setZoom(8);
+          }
+        });
+      } // "initialize"
+
+// addDomListener
+		google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+
+  </head>
+  <body>
+	
+	<h3>addListener e addDomListener</h3>
+
+<p><span class="nota"><b>addListener</b> fa riferimento a oggetti della <q>Map API</q> (es:marker)  mentre <b>addDomListener</b> fa riferimento agli eventi del DOM (che possono essere elementi del DOM. es: div)' </span> <br />
+Vedere all'interno dello script i due eventi all'opera <br />
+<span class="codice">Cliccare sul marcatore</span>
+</p>
+
+	<div id="map_canvas"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

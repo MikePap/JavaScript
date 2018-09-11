@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Combinazioni di classe  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(50,150,50);}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}	
+.azzurro{color:rgb(50,100,255);}	
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+<h1>Combinazione di classi</h1>
+
+<h3><a name="kk">Combinazione di una classe con una funzione esterna </h3>
+<p class="nota">
+Vedere anche un esempio simile <b><a href="Member_Function.html#jj">Member_Function.html</a></b> 
+</p>
+<script type = "text/javascript">
+// // Vedere anche un esempio simile con qualche differenza nel file "Member_Function.html" 
+// funzione costruttore 
+function Car(make, model, year) 
+{  
+	this.make = make;  
+	this.model = model;  
+	this.year = year;  
+	this.displayAuto = displayCar;		// collegamento della funzione esterna 'displayCar' all'oggetto che permetterà alla funzione di utilizzare le proprietà dell'oggetto 
+} 
+
+// funzione esterna che richiama 'proprietà' della precedente funzione costruttore
+function displayCar() 
+{  
+	var result = "A Beautiful " + this.year + " " + this.make + " " + this.model;  
+	return result;
+}  // chiude la funzione 
+
+var car1 = new Car("Eagle", "Talon TSi", 1993);  
+var car2 = new Car("Nissan", "300ZX", 1992);  
+
+document.write(car1.displayAuto());  
+document.write("<br>" + car2.displayAuto());  
+
+</script>
+
+<h3>Combinazione di classi coi costruttori </h3>
+
+<script type = "text/javascript">
+// Funzione costruttore 
+function companyObj (cname, caddress, cphone) 
+{
+	this.cname = cname;
+	this.caddress = caddress;
+	this.ctelephone = cphone;
+}
+// Creazione oggetto della classe "companyObj" 
+var newComp = new companyObj("ABC", "City, State", "555-555-5555");
+
+// Funzione costruttore
+function EmployeeObj (name, address, phone, email, newComp) 
+{
+	this.name = name;
+	this.address = address;
+	this.telephone = phone;
+	this.emailaddress = email;
+	this.compObj = newComp;	// qui si collegano i due costruttori richiamando l'ggetto creato "newComp" della classe "companyObj"
+}
+// Creazione di un nuovo oggetto classe "EmployeeObj" che eredita metodi e proprietà dalla classe "companyObj" per via del collegamento (riga 72)
+var newCust = new EmployeeObj("J S", "City, State", "555-555-5555","j@s.com", newComp);
+
+document.write("Employee Name:    " + newCust.name + "<br>\n");
+document.write("Address:          " + newCust.address + "<br>\n");
+document.write("Telephone Number: " + newCust.telephone + "<br>\n");
+document.write("Email Address:    " + newCust.emailaddress + "<br>\n");
+
+document.write("Company Name:     " + newCust.compObj.cname + "<br>\n");
+document.write("Company Address:  " + newCust.compObj.caddress + "<br>\n");
+document.write("Telephone Number: " + newCust.compObj.ctelephone);
+</script>
+
+<h3>Combinazione di classi con prototype </h3>
+
+<script type="text/javascript">
+// Funzione costruttore 
+function BaseClass(sColor) 
+{
+	this.color = sColor;
+}
+// Creazione metodo con prototype
+BaseClass.prototype.sayColor = function() 
+{
+// alert(this.color);
+	return this.color;
+};
+// Creazione di una sottoclasse della classe "BaseClass" con "call"
+function SubClass(sColor, sName) 
+{
+	BaseClass.call(this, sColor);			// chiamata della proprietà "sColor" della 'BaseClass' grazie al metodo "call" 
+	this.name = sName;
+}
+
+SubClass.prototype = new BaseClass();		// collegamento delle due classi con "prototype"
+
+// Creazione di metodo 
+SubClass.prototype.sayName = function () 
+{
+	return this.name
+};
+
+
+var objA = new BaseClass("red");
+var objB = new SubClass("blue", "Mik");
+document.write(objA.sayColor());							// restituisce 'red'
+document.write(" - " + objB.sayName());				// restituisce 'Mik'
+document.write(" - " + objB.sayColor());				// restituisce 'blue'
+//objB.sayColor();
+//objB.sayName();
+
+</script>
+
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

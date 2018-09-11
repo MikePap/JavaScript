@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Scope & Closures  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(20,150,30); font-weight:bold;}
+dt{ color:#003399; margin-bottom:5px;}
+tt, em{color:#6a9999}
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(50,100,255);}
+.scuro{color:#333;}
+
+.codice{ color:rgb(30,120,30);}		
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+
+<h1>Scope & Closures</h1>
+<p>
+In JavaScript <b>scope</b> rappresenta il contesto in cui il codice viene eseguito. Ci sono tre tipi di <tt>scope</tt>: <b>global scope</b>, <b>local scope</b> ( a volte indicato come "function scope" ), and <b>eval scope</b>. 
+<pre>
+var foo = 0;					<span class="nota">// global scope</span>
+<span class="azzurro">console.log(foo);</span>				<span class="nota">// restituisce 0</span>
+-----------------------------------------
+var myFunction = function(){
+	var foo = 1;				<span class="nota">// local scope</span>
+<span class="azzurro">	console.log(foo);</span>			<span class="nota">// restituisce 1</span>
+	var myNestedFunction = function(){
+		var foo = 2;			<span class="nota">// local scope</span>
+<span class="azzurro">		console.log(foo);</span>		<span class="nota">// restituisce 2</span>
+	}()<span class="nota"> &lt;--- occhio alla doppia parentesi (è un autoinvocazione della funzione)  </span>
+}()<span class="nota"> &lt;--- doppia parentesi. Anche questa la autoinvochiamo </span>
+</pre>
+Esempi sull'utilizzo della doppia parentesi per l'autoinvocazione delle funzioni sono più avanti nella sezione "catena dello scope" oppure vedere
+il file <a href="Function.html">Function.html</a>	nella sezione "Funzioni anonime che si auto-invocano (IIFE)"
+
+
+</p>
+
+<p>
+<pre>
+<span class="grigio">altro esempio interessante</span>
+var myFunction = function(r){
+	this.rr = r;
+	this.opp = function(){
+		console.log(this.rr)		<span class="nota">// restituisce 8</span> 
+	}
+
+	var foo = 1;			
+	console.log(foo);			<span class="nota">// restituisce 1</span> 
+
+	var myNestedFunction = function(){
+		var foo = 2;		
+		console.log(foo);		<span class="nota">// restituisce 2</span>
+	}
+	myNestedFunction();	<span class="nota">** richiamo della funzione invece che usare le doppia parentesi</span>
+}
+
+<span class="nota">con le seguenti due chiamate avremo come risultato: 1 2 8</span>
+var d = new myFunction(8);
+d.opp();		
+-----------------------------------------
+eval('var foo = 3'); 
+<span class="azzurro">console.log(foo);');</span>				<span class="nota">// eval() scope</span>
+</pre>
+</p>
+
+<h3>Comportamento dell'uilizzo del <q>var</q> per una variabile </h3>
+<p>
+All'interno delle funzioni conviene sempre usare il <em>var</em> per evitare confusione. Nel primo esempio si nota che non dichiarando la variabile con <em>var</em> all'interno della funzione la variabile 'bar' fa parte del global scope, che non è quello che si desidera quando si dichiara una funzione. 
+<pre>
+var foo = function(){
+	var boo = function(){
+		bar = 2;		<span class="nota">** 'var' non è usato, quindi bar sta nel global scope (window.bar)</span>
+	}();
+}();
+<span class="azzurro">console.log(bar);</span>			<span class="nota">// restituisce 2</span>
+
+<span class="scuro">All'opposto</span> 
+
+var foo = function(){
+	var boo = function(){
+		var doo = 2;
+	}();
+}();
+<span class="azzurro">console.log(doo);</span>			<span class="nota">// restituisce errore, perchè 'doo' sta nello scope della funzione boo</span>
+
+<span class="grigio">per ottenere il valore di 'doo' dobbiamo definire in questo modo:</span>
+var foo = function(){
+	var doo = 5;
+	var boo = function(){
+		var doo = 2;
+		console.log(doo);	<span class="nota">** ora possiamo chiamare 'doo' senza problemi</span>
+	}();
+}();
+
+</pre>
+</p>
+
+<h2>La catena dello scope</h2>
+<p>
+<b>Lo <em>scope chain</em> (catena della scope) viene creato nella definizione della funzione e non quando invocata.</b> <br />
+Nell'esempio seguente è mostrato il funzionamento del percorso dello scope. La funzione richiede il valore della variabile 'sayHiText'. Allora, succede che, Javascript guarda prima all'interno della funzione 'func2()'; non trovando niente risale alla funzione genitore 'func1()' e dopo aver verificato che anche li non c'è niente risale ancora arrivando nel global scope e finalmente ...<br />
+<b>*ATTENZIONE, cosi come impostata, la funzione non necessita di essere invocata per la restituzione dei risultati</b>
+<pre>
+var sayHiText = 'howdy';
+
+var func1 = function(){
+	var func2 = function(){
+		console.log(sayHiText);			<span class="nota">// restituisce 'howdy' (trovata nel global scope) </span>
+	}();<span class="nota"> &lt;--- doppia parentesi (autoinvocazione funzione)  </span>
+}();<span class="nota"> &lt;--- doppia parentesi (autoinvocazione funzione)  </span>
+
+<span class="grigio">se non si vogliono usare le parentesi allora bisogna invocare le funzioni</span>
+var func1 = function(){
+	var func2 = function(){
+		console.log(sayHiText);			
+	};
+	func2();
+};
+func1();
+
+<span class="scuro">Un'altro esempio simile è il seguente: </span>
+
+var x = 10;
+var foo = function(){
+	var y = 20;
+	var bar = function(){
+		var z = 30;
+		console.log(z + y + x);		<span class="nota">** z è locale, y & z sono trovate nella catena di scope </span>
+	}();
+}()
+<span class="grigio">Restituisce 60. Utilizzando le parentesi se si dovesse poi invocare le funzioni si avrebbero degli errori:</span>
+<span class="azzurro">var t = new foo();		<span class="nota">// errore: "foo non è un costruttore" </span>
+foo();</span>				<span class="nota">// errore: "foo non è una funzione" (perchè si è già autorichiamata con la doppia parentesi a fine espressione) </span>
+
+<span class="scuro">Vediamo come i successivi due esempi danno lo stesso risultato </span>
+<span class="grigio">Esempio 1</span>
+var x = false;
+
+var foo = function(){
+	var x = false;
+	bar = function(){
+		var x = true;			<span class="nota">// questa variabile è la prima trovata e ... </span> 
+		console.log(x);			<span class="nota">//  ... quindi la restituisce</span>
+	}()
+}()
+
+<span class="grigio">Esempio 2</span>
+var foo = function(){
+	var x = false;
+	bar = function(){
+		var x = true;			<span class="nota">// questa variabile è la prima trovata e ... </span> 
+		console.log(x);			<span class="nota">//  ... quindi la restituisce</span>
+	}()
+}<span class="nota"> <b>&lt;--- ATTENZIONE: qui non c'è la doippia parentesi e perciò c'è bisogno di invocare la funzione 'foo()' </b> </span>
+<span class="azzurro">foo();</span>						<span class="nota">// invocando 'foo' si ottiene il risultato desiderato </span>
+</pre>
+quindi in definitiva, i due esempi danno lo stesso risultato (true) con la differenza che nel secondo esempio si è dovuto invocare la funzione non avendo utilizzato la doppia parentesi.
+</p>
+
+
+<h2>hoisting</h2>
+<p>
+Questa è una caratteristica particolare e allo stesso tempo importante di JavaScript. Gli esempi ci aiutano a capirla meglio delle parole
+<pre>
+var myvar = "my value";				<span class="nota">** variabile definita nel Global Scope</span>
+(function() {
+	console.log(myvar);			<span class="nota">// restituisce 'my value'</span>			
+})();
+
+<span class="grigio">mentre in questo caso</span>
+var myvar = "my value";				<span class="nota">** variabile definita nel Global Scope</span>
+(function() {
+	console.log(myvar);			<span class="nota">// restituisce undefined</span>
+	var myvar = "local value";
+})();
+
+<span class="grigio">la spiegazione all'esempio precedente è presto detto </span>
+(function() {
+	var myvar;				<span class='nota'>** in pratica è come se fosse che la variabile fosse definita in questa posizione ...</span>
+	console.log(myvar);			<span class="nota">// ... e chiaramente restituisce undefined</span>
+	myvar = "local value";
+})();
+
+<span class="grigio">cosa differente è se </span>
+var myvar = "my value";				<span class="nota">** variabile definita nel Global Scope</span>
+(function() {
+	var myvar = "local value";
+	console.log(myvar);			<span class="nota">// restituisce 'local value'</span>
+})();
+</pre>
+Il secondo caso è interessante e ci fa capire che è sempre un buon uso porre le variabili al top delle funzioni
+
+</p>
+
+
+
+<h2>Closures</h2>
+<p>
+<b>Una <em>closure</em> è una funzione innestata in un'altra funzione e per questo ha accesso allo <tt>scope</tt> della funzione genitore</b>. <br />
+L'utilità delle <tt>closure</tt> sta nel fatto che una o più variabili instanziate nella funzione genitore possono essere condivise e utilizzate dalle funzioni interne. <br />
+Sopra abbiamo già visto qualche esempio: 
+<pre>
+var parentFunction = function(){
+	var foo = 'foo';
+	return function(){ 			<span class="nota">// anonymous function </span>
+		console.log(foo);		
+	}
+}
+
+<span class="azzurro">parentFunction();</span>				<span class="nota">** ATTENZIONE: non restituisce nulla</span>
+var nestedFunction = parentFunction();		<span class="nota">** nestedFunction() acquisisce tutto di parentFunction() </span>
+<span class="azzurro">nestedFunction();</span>				<span class="nota">// restituisce foo </span>
+
+<span class="scuro">mentre</span>
+var parentFunction = function(){
+	var foo = 'foo';
+
+	return function(){ 			<span class="nota">// anonymous function </span>
+		console.log(foo);		
+	}
+}() <span class="nota"> &lt;--- qui la sola doppia parentesi non è sufficiente ad ottenere la restituzione della funzione anonima e bisogna invocare: </span>
+<span class="azzurro">
+parentFunction();</span>				<span class="nota">// ora invece restituisce foo </span>
+
+<span class="grigio">mentre in questo modo otteniamo la restituzione della variabile 'foo' della funzione anonima </span>
+var parentFunction = function(){
+	var foo = 'foo';
+
+	return function(){ 			<span class="nota">// anonymous function </span>
+		console.log(foo);		
+	}() <span class="nota">&lt;--- </span>
+}() <span class="nota">&lt;---  </span>
+
+
+<span class="grigio">oppure con argomento</span>
+var parentFunction = function(f){
+	var foo = f;
+	return function(){ 			<span class="nota">// anonymous function </span>
+		console.log(foo);
+	}
+}('fuk')
+
+parentFunction();				<span class="nota">// restituisce 'fuk' </span>
+
+
+<span class="scuro">Un'altro esempio</span>
+
+var countUpFromZero = function(){
+	var count = 0;
+	return function(){ 			<span class="nota">// anonymous function</span>
+		return ++count;			<span class="nota">// count is defined up the scope chain, in parent function</span>
+	};
+}();						<span class="nota">// invoke immediately, return nested function</span>
+<span class="azzurro">
+console.log(countUpFromZero());		<span class="nota">// logs 1</span>
+console.log(countUpFromZero());		<span class="nota">// logs 2</span>
+console.log(countUpFromZero());		<span class="nota">// logs 3</span>
+</span>
+</pre>
+Ogni qualvolta la funzione 'countUpFromZero()' è invocata la funzione anonima ha accesso alla funzione genitore. 
+</p>
+
+<p>
+Il seguente esempio è interessante perchè permette di nascondere le variabili con le closure
+<pre>
+var parentFunction = function(){
+	var foo = 'foo';
+
+	return { 			
+		mik: function (){ console.log(foo)},
+		mak: function (){ console.log('hello')}
+	}
+}()
+parentFunction.mik();		<span class="nota">// restituisce 'foo'</span>	
+parentFunction.mak();		<span class="nota">// restituisce 'hello'</span>		
+</pre>
+</p>
+
+<h3>occhio</h3>
+
+<pre>
+<span class="grigio">invece di questa</span>
+function foo(element, a, b) {
+	element.onclick = function() { /* uses a and b */ };
+}
+
+<span class="grigio">è buon uso scriverla nel seguente modo</span>
+function foo(element, a, b) {
+	element.onclick = bar(a, b);
+}
+
+function bar(a, b) {
+	return function() { /* uses a and b */ };
+}
+</pre>
+
+<span class="grigio">the function closure keeps a reference to element, a, and b even if it never uses element. Since element also keeps a reference to the closure, we have a cycle that won't be cleaned up by garbage collection. </span> <br /> 
+<p>
+Per un approfondimento delle <q>closures</q> <a href="http://jibbering.com/faq/notes/closures/">vedere qui</a>
+</p>
+
+
+
+<br />
+<br />
+<br />
+
+
+
+<script type="text/javascript">
+
+var x = 500;
+
+var cekClosure = function(){
+	var x = 100;
+	return x;
+}
+console.log(cekClosure());			// 100
+	
+
+function CekCostruttore(){
+	var x = 200;
+	this.getX = function (){
+		return x;
+	}
+
+}
+
+var t = new CekCostruttore();
+console.log(t.getX());
+
+///////////////////
+
+
+var parentFunction = function(){
+	var foo = 'foo';
+	var b = 'bibiu';
+
+	var jh = function(){
+		console.log(b)
+	}();
+
+	var hj = function(){ 			// anonymous function 
+		console.log(foo);		
+	}()
+}
+
+parentFunction();
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

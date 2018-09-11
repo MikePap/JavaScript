@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>Layers 04 KML</title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+
+
+/*#map_canvas { position:relative; margin:20px; width:80%; height:80%;  }*/
+
+</style>
+
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=it">
+</script>
+
+<script type="text/javascript">
+
+
+function initialize() {
+// var myLatlng = new google.maps.LatLng(40.65, -73.95);		// originale
+  var myLatlng = new google.maps.LatLng(41.04939, 16.9223);
+  var myOptions = {
+    zoom: 12,
+    center: myLatlng,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+
+  var map = new google.maps.Map(
+      document.getElementById("map_canvas"),
+      myOptions);
+
+
+//var nyLayer = new google.maps.KmlLayer('http://www.searcharoo.net/SearchKml/newyork.kml', {  suppressInfoWindows: true,
+//  var nyLayer = new google.maps.KmlLayer('http://localhost/JavaScript/GoogleMap/capurso.kml', {  suppressInfoWindows: true,
+//  var nyLayer = new google.maps.KmlLayer('capurso.kml', {  suppressInfoWindows: true, 	// NON FUNZIONA 
+    var nyLayer = new google.maps.KmlLayer('http://lnx.abcoliodoliva.com/capurso.kml', {  suppressInfoWindows: true, 
+        map: map});
+ google.maps.event.addListener(nyLayer, 'click', function(kmlEvent) {
+    var text = kmlEvent.featureData.description;
+    showInContentWindow(text);
+  });
+
+  function showInContentWindow(text) {
+    var sidediv = document.getElementById('content_window');
+    sidediv.innerHTML = text;
+  }
+
+
+
+} //"initialize"
+
+
+// http://localhost/JavaScript/GoogleMap/capurso.kml
+// http://lnx.abcoliodoliva.com/capurso.kml
+// http://lnx.abcoliodoliva.com/prove.html
+ 
+// http://lnx.abcoliodoliva.com/Layers-KML.html
+
+</script>
+
+</head>
+<body onload="initialize()">
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+}); // chiude ready 
+</script>
+
+
+
+<div id="map_canvas" style="width:79%; height:100%; float:left"></div>
+<div id="content_window" style="width:19%; height:100%; float:left"></div>
+
+
+
+
+
+
+
+
+</body>
+</html>
+

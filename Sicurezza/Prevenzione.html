@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Prevenzione  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(20,150,30); font-weight:bold; background:rgb(235,245,255); padding:10px;}
+
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(100,150,255);}
+.rosso{color:red;}
+.scuro{color:#333;}
+tt, em{color:#6a9999}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+#infoErrore{
+display:none;		opacity:0;
+}
+
+</style>
+
+<script type="text/javascript" src="../allegati/ConvalidaForm.js"> </script>
+
+</head>
+<body>
+
+
+<h1>Prevenzione</h1>
+
+
+<form id='form_commenti'>
+
+	<label>Inserisci un nome</label>
+	<input type="text"  name="nome" id="nome" size="50" maxlength="" value="" />
+	<input type="submit" name="sub" value="Invia"/>			<span id="infoErrore">errore</span>			
+
+</form>
+
+
+
+<script type="text/javascript">
+
+var boxForm = document.getElementById('form_commenti');
+var nome = document.getElementById('nome');
+//var errore = document.getElementById('infoErrore');
+
+nome.addEventListener('blur', 
+function (){
+	validateInput(nome, 10, '#infoErrore');
+//	validateInput(nome, '', '#infoErrore');
+}, false);
+
+
+function escapeHtml(str) {
+	return String(str)
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/"/g, "&quot;")
+		.replace(/'/g, "&#039;")
+		.replace(/\//g, "&#x2F;")  
+}
+
+/*
+http://benvinegar.github.io/csp-talk-2013/#10
+*/
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

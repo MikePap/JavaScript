@@ -1,0 +1,203 @@
+* { 
+  -moz-box-sizing: border-box; 
+  -webkit-box-sizing: border-box; 
+   box-sizing: border-box; 
+}
+
+/* Classi Comuni */
+html,body,div,p,h1,h2,h3,h4,h5,input,textarea,select,span,ul,li,a,table,tr,th,td{margin:0;padding:0;}
+html{font-size:62.5%;}
+body{ font-family:Geneva, Arial, Helvetica, sans-serif;  text-align:left; } 
+.centro{text-align:center;}
+.sinistra{ text-align:left;}
+/* FINE Classi Comuni */
+
+/*	Box Modifica dati	*/
+#mod_dati{
+position:absolute; top:0; left:0; width:300px; border:1px solid #999; background:#FFF; display:none; z-index:30;
+box-shadow: 6px 6px 8px 2px #999;
+-moz-box-shadow: 6px 6px 8px 2px #999; /* Firefox */  /* '12px' =>blur e spread =>5px */
+-webkit-box-shadow: 6px 6px 8px 2px #999; /* Safari and Chrome */
+}
+#top_mod{
+position:relative; margin:0; padding:0; width:100%; height:31px; font-size:15px; font-weight:bold; text-align:center; 
+}
+div.titolo_mod{
+float:left; width:280px; padding:3px 0; background:#2849e0; color:#FFF;
+}
+#x_mod_dati{float:left; width:18px;  padding:0 1px; background-color:rgb(200,50,50); color:#FFF; font-size:20px;}
+#x_mod_dati:hover{
+cursor:pointer; color:#000; 
+}
+div.mod_bottom{
+position:relative; width:90%; /*height:50px;*/ padding:10px; margin:0 auto 10px auto; background-color:#ffc100;
+}
+div.elimina_record{
+position:relative; width:90%; /*height:50px;*/ padding:10px; margin:0 auto 10px auto; background-color:#f34225;
+}
+div.mod_bottom label, div.elimina_record label{
+font-size:1.3em;
+}
+
+
+/*	tabella di Inserimento ddati		*/ 
+
+#Ins_dati_fattura{
+position:absolute; top:0; left:20%; width:60%; border:2px solid #705d5d; display:none; z-index:20; 
+box-shadow: 6px 6px 8px 2px #999;
+-moz-box-shadow: 6px 6px 8px 2px #999; /* Firefox */  /* '12px' =>blur e spread =>5px */
+-webkit-box-shadow: 6px 6px 8px 2px #333; /* Safari and Chrome */
+}
+#top_inserimenti{
+position:relative; margin:0; padding:0; width:100%; text-align:center; font-weight:bold; border:1px solid #FFF; overflow:auto; 
+}
+div.titolo_inserimenti{
+display: inline-block;	width: calc(100% - 35px); padding:3.5px 0; background:#2849e0; color:#FFF; font-size:1.5rem;  
+}
+#x_inserimenti{
+display: inline-block;	width:28px; padding:0 1px; margin:0; background-color:rgb(200,50,50); color:#FFF; font-size:2rem;  
+}
+#x_inserimenti:hover{ 
+cursor:pointer; color:#000; 
+}
+div.angoloms{ 
+position:absolute; bottom:0; right:0; padding:0; margin:0; cursor: nw-resize; z-index:22;
+}
+
+#table_fattura{
+background-color:#505050; border-collapse: collapse; z-index:21;
+}
+
+#table_fattura tr{
+border:1px solid #CCC;
+}
+#table_fattura td{
+border:1px solid #CCC; color:#fff; font-size:1.4rem; padding:0.2em 0 0.2em 0.3em;
+}
+#table_fattura tr td:nth-child(odd){
+width:31%; 
+}
+#table_fattura tr td:nth-child(even){
+color:#00ff00; font-size:1.6rem;
+}
+
+#table_fattura input{
+margin:0; padding:0.5em 0 0.5em 0.5em; width:15%; background:rgb(230,230,100); /*height:90%;*/ 
+}
+td.td_insert_dati{ 
+text-align:center;
+}
+
+
+/*	box contenitore fattura	*/
+#box_fattura{
+position:relative; font-size:1.2em; margin:10px auto; width:800px; height:560px; border:1px solid #333; z-index:10;
+display: -webkit-flex;
+display: flex;
+-webkit-flex-flow: column nowrap;
+flex-flow: column nowrap;
+}
+
+/*	box contenitore dati */
+#box-record{
+position:relative; margin:0.2em auto; width:99%; height:80%; border:1px solid #ccc;
+display: -webkit-flex;
+display: flex;
+-webkit-flex-flow: column nowrap;
+flex-flow: column nowrap;
+background-image: /*	Sfondo di linee verticali	*/
+linear-gradient(90deg, transparent 45%, #e5e5e5 45%, #e5e5e5 45.05%, transparent 0),
+linear-gradient(90deg, transparent 55%, #e5e5e5 55%, #e5e5e5 55.05%, transparent 0),
+linear-gradient(90deg, transparent 65%, #e5e5e5 65%, #e5e5e5 65.08%, transparent 0),
+linear-gradient(90deg, transparent 75%, #e5e5e5 75%, #e5e5e5 75.06%, transparent 0),
+linear-gradient(90deg, transparent 90%, #e5e5e5 90%, #e5e5e5 90.05%, transparent 0)
+}
+#box-record > div{
+border-bottom:1px solid #ccc;  margin-bottom:1.5em; padding:0.2em 0;
+display: -webkit-flex; 
+display: flex;
+-webkit-flex-flow: row no-wrap;
+flex-flow: row no-wrap;
+}
+
+
+#box-record > div > div{
+/*padding:0.2em 0;*/	/*border-right: 1px solid;*/ 
+display: -webkit-flex;
+display: flex;
+align-items: flex-end; 
+justify-content: center;
+
+}
+
+
+#box-record > div:nth-child(1){
+background:#888; color:#5af85a; font-weight:bold; padding: 0.5em 0; font-size:1.2rem; /*margin-bottom:1em; padding-left:0.5em;*/
+}
+
+
+#box-record > div > div:nth-child(1){
+width:45%; padding-left:0.5em;
+display: -webkit-flex;
+display: flex;
+align-items: flex-end; 
+justify-content: flex-start;
+
+}
+
+#box-record > div > div:nth-child(2), #box-record > div > div:nth-child(3), #box-record > div > div:nth-child(4), #box-record > div > div:nth-child(6){
+width:10%; text-align:center;	 
+}
+#box-record > div > div:nth-child(5){
+width:15%; text-align:center;
+}
+
+#box-importi{
+position:relative; margin:0.2em auto; width:99%; height:20%; border:1px solid #ccc; 
+}
+
+
+
+/*	box importi totali	*/
+#box-totali{
+position:relative; margin:0.2em auto; width:99%; height:20%; padding-right:1em; border:1px solid #ccc;
+display: -webkit-flex;
+display: flex;
+-webkit-flex-flow: row nowrap;
+flex-flow: row nowrap;
+justify-content: flex-end; align-items: center;
+}
+
+#box-totali > div{
+width:20%;	border:1px solid; text-align:center; padding:0.5em 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

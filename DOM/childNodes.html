@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>childNodes  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); }
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+
+.nota{ color:rgb(250,120,0);}
+.codice, pre{ color:rgb(30,120,30);}
+.blu{color: #00f;}
+.grigio{color: grey;}
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+#divo{
+width:500px; margin:10px; padding:10px; background:#9F0;  border:1px solid;
+}
+
+#kok{
+width:500px; margin:31px; padding:10px; background:#F90;  border:1px solid;
+}
+
+</style>
+</head>
+<body>
+
+<h1>childNodes</h1>
+<p class="nota">
+L'interfaccia <b>Node</b> è implementata in JavaScript come <q>Node</q> type. Tutti i node types sono ereditati da <q>Node</q>. Tutti i tipi di Node condividno le stesse proprietà e metodi di base. <br />
+Ogni nodo ha una proprietà <b>nodeType</b> che indica per l'appunto il tipo di nodo rappresentato.
+</p>
+
+<table id="" width="31%" border="1" cellspacing="3" cellpadding="3">
+<tr>
+	<th>Type</th>
+	<th>Value</th>
+</tr>
+<tr>
+	<td>Node.ELEMENT_NODE</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>Node.ATTRIBUTE_NODE</td>
+	<td>2</td>
+</tr>
+<tr>
+	<td>Node.TEXT_NODE</td>
+	<td>3</td>
+</tr>
+<tr>
+	<td>Node.CDATA_SECTION_NODE</td>
+	<td>4</td>
+</tr>
+<tr>
+	<td>Node.ENTITY_REFERENCE_NODE</td>
+	<td>5</td>
+</tr>
+<tr>
+	<td>Node.ENTITY_NODE</td>
+	<td>6</td>
+</tr>
+<tr>
+	<td>Node.PROCESSING_INSTRUCTION_NODE</td>
+	<td>7</td>
+</tr>
+<tr>
+	<td>Node.COMMENT_NODE</td>
+	<td>8</td>
+</tr>
+<tr>
+	<td>Node.DOCUMENT_NODE</td>
+	<td>9</td>
+</tr>
+<tr>
+	<td>Node.DOCUMENT_TYPE_NODE</td>
+	<td>10</td>
+</tr>
+<tr>
+	<td>Node.DOCUMENT_FRAGMENT_NODE</td>
+	<td>11</td>
+</tr>
+<tr>
+	<td>Node.NOTATION_NODE</td>
+	<td>12</td>
+</tr>
+</table>
+
+<p>
+Di seguito è stata eseguita una funzione che restituisce i tutti i nodi di un elemento.
+E' interessante vedere la differenza di risultato tra i vari  browser. IE 8 si comporta differentemente non considerando gli spazi vuoti tra un elemento e l'altro. Cosa che invece fanno tutti gli altri considerando gli spazi vuoti e i rientri a capo (vedi chiusura del div dopo l'ultimo elemento p) come un nodo testo (<b>#text</b>) 
+</p>
+
+<div id="results"></div> 
+
+<div id="divo">testo
+<span></span> <code></code><p></p>
+</div> 
+
+
+<script type="text/javascript">
+
+var resultsElement = document.getElementById("results"); 
+console.log(resultsElement.nodeType);					// => 1 
+console.log(resultsElement.nodeName);					// => DIV
+console.log(resultsElement.nodeValue);					// => null 
+
+////////
+function cn(elem)
+{
+	var Element = document.getElementById(elem); 
+	var figli = Element.childNodes;	
+	for(var i=0; i< figli.length; i++)
+	{
+		document.write(figli.item(i).nodeName+ "<br>");
+	}
+}; 
+/////////////////
+cn("divo");				// è uguale alla successiva funzione "jkk()"
+
+//alert(divo.childNodes.length);
+
+</script>
+
+<br />
+<p>
+Nella funzione di sopra è usato il metodo con <b>item()</b> mentre nella funzione successiva i <q>childNodes</q> sono ottenuti sfruttando l'indice. 
+</p>
+
+<script type="text/javascript">
+function jkk(elem)
+{
+	var Element = document.getElementById(elem); 
+	var primo =	Element.childNodes.item(0); 
+
+	var figli = Element.childNodes;	
+	for(var i=0; i< figli.length; i++)
+	{
+		document.write(figli[i].nodeName+ "<br>");
+	}
+
+}; 
+jkk("divo");			// è uguale alla precedente funzione "cn()"
+
+
+</script>
+
+<br />
+<p>
+Nella funzione seguente vengono considerati solo gli elementi facendo uso del metodo nodeType  1 
+</p>
+
+<script type="text/javascript">
+function senzaVuoti(elem)
+{
+	var Element = document.getElementById(elem); 
+	var figli = Element.childNodes;	
+	
+	for(var i=0; i< figli.length; i++)
+	{
+		if(figli[i].nodeType == 1)	
+		document.write(figli[i].nodeName+ "<br>");
+	}
+}; 
+
+senzaVuoti("divo");
+
+//////////////////////////
+
+var Element = document.getElementById("divo"); 
+var figli = Element.children.length;	
+//alert(Element.childElementCount);
+
+//	alert(figli);
+ 
+/*
+
+
+
+*/
+
+</script>
+
+<h2>hasChildNodes</h2>
+<p class="nota">Metodo che restituisce un valore boleano per la verifica dell'esistenza di nodi interni all'elemento 
+<pre>
+var divo = document.getElementById('divo'); 
+if(divo.hasChildNodes){
+....
+}
+</pre>
+</p>
+
+<h3>Attraversamento nodi </h3>
+<p class='blu'>
+La funzione seguente è interessante per capire la successione di tutti  nodi del documento o di un nodo in particolare. <b>Va fatta eseguire all'interno della console di chrome</b>
+</p>
+<pre>
+function itera(nodo){
+	console.log(nodo);
+	for(nodo=nodo.firstChild; nodo !=null; nodo= nodo.nextSibling){
+		itera(nodo)	
+	}
+} 
+<span class="nota">itera(document)</span> oppure <span class="nota">itera(elemento del documento)</span>
+
+<span class="blu">la seguente funzione restituisce il tipo di nodo incontrato nell'attraversamento </span>
+function itera(nodo){
+	console.log(<b>nodo.nodeType</b>);
+	for(nodo=nodo.firstChild; nodo !=null; nodo= nodo.nextSibling){
+		itera(nodo)	
+	}
+}
+
+<span class="blu">la seguente funzione restituisce il nome di nodo incontrato nell'attraversamento </span>
+function itera(nodo){
+	console.log(<b>nodo.nodeName</b>);
+	for(nodo=nodo.firstChild; nodo !=null; nodo= nodo.nextSibling){
+		itera(nodo)	
+	}
+}
+
+<span class="blu">la seguente funzione restituisce solo gli elementi e non i nodi testo </span>
+function itera(nodo){
+	console.log(nodo);
+	for(nodo=nodo.<b>firstElementChild</b>; nodo !=null; nodo= nodo.<b>nextElementSibling</b>){
+		itera(nodo)	
+	}
+}
+</pre>
+
+<h2>childElementCount</h2>
+<p class="nota">Metodo che restituisce il numero degli elementi presenti all'interno dell'elemento indicato
+<pre>
+var divo = document.getElementById("divo"); 
+alert(divo.childElementCount);			<span class="nota">// restituisce il numero degli elementi figli dell'elemento 'divo'</span>
+
+</pre>
+</p>
+
+
+<script type="text/javascript">
+
+var divo = document.getElementById("divo"); 
+console.log(divo.childElementCount);						// 3 
+
+</script>
+
+
+<br />
+<br />
+<br />
+
+
+
+
+</body>
+</html>

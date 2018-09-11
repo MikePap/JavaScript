@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>Marker Animato  </title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.nota{color:orange;}
+.codice{color:green;}
+
+#map_canvas{ position:relative; margin:20px; width:80%; height:80%;  }
+
+</style>
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=it">
+</script>
+
+<script type="text/javascript">
+
+var stockholm = new google.maps.LatLng(59.32522, 18.07002);
+  var parliament = new google.maps.LatLng(59.327383, 18.06747);
+  var marker;
+  var map;
+
+  function initialize() {
+    var mapOptions = {
+      zoom: 13,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      center: stockholm
+    };
+
+    map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+          
+    marker = new google.maps.Marker({
+      map:map,
+      draggable:true,
+      animation: google.maps.Animation.DROP,
+      position: parliament
+    });
+    google.maps.event.addListener(marker, 'click', toggleBounce);
+  }
+
+  function toggleBounce() {
+// i metodi 'getAnimation' e 'setAnimation' sono della classe "google.maps.Marker class". Se 'setAnimation' viene impostato a 'null' l'animazione si interrompe
+    if (marker.getAnimation() != null) {				// se l'animazione è attiva  
+      marker.setAnimation(null);					// allora la si interrompe
+    } else {
+      marker.setAnimation(google.maps.Animation.BOUNCE);	// altrimenti la si attiva 	
+    }
+  }
+</script>
+
+</head>
+<!-- <body onload=""> -->
+<body>
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+initialize();
+
+}); // chiude ready 
+</script>
+
+
+<div id="map_canvas"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

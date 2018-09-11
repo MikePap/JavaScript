@@ -1,0 +1,44 @@
+[
+	{
+		"src": 			"../img/ulivo_01.jpg",
+		"titolo":		"olivo secolare pugliese 1",
+		"alt":			"immagine di olivo secolare pugliese 1",
+		"larghezza":	500,	
+		"altezza":		350,
+		"indice":		0
+	},
+	{
+		"src": 			"../img/ulivo_02.jpg",
+		"titolo":		"ulivo secolare pugliese 2",
+		"alt":			"immagine di ulivo secolare pugliese 2",
+		"larghezza":	500,	
+		"altezza":		350,
+		"sizes":			44,	
+		"indice":		1
+	},
+	{
+		"src": 			"../img/ulivo_03.jpg",
+		"titolo":		"ulivo secolare pugliese 3",
+		"alt":			"immagine di ulivo secolare pugliese 3",
+		"larghezza":	500,	
+		"altezza":		350,
+		"sizes":			[45, 46],	
+		"indice":		2
+	},
+	{
+		"src": 			"../img/ulivo_05.jpg",
+		"titolo":		"ulivo secolare pugliese 4",
+		"alt":			"immagine di ulivo secolare pugliese 4",
+		"larghezza":	500,	
+		"altezza":		350,
+		"indice":		2
+	},
+	{
+		"src": 			"../img/ulivo_07.jpg",
+		"titolo":		"ulivo secolare pugliese 5",
+		"alt":			"immagine di ulivo secolare pugliese 5",
+		"larghezza":	500,	
+		"altezza":		350,
+		"indice":		2
+	}
+]

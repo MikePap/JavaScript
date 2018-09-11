@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Oggetto Set  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); margin:10px 50px; } 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150); margin:10px 40px; }
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20); margin:10px 31px; }
+code, pre{ color:rgb(20,150,30); font-weight:bold; background:rgb(230,230,230); margin:5px 10px; padding:8px; }
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(100,150,255);}
+.scuro{color:#333;}
+tt, em{color:#6a9999}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-left:10px;}
+dd{ color:#0066FF; margin-left:10px;}
+
+</style>
+</head>
+<body>
+
+<h1>Set</h1>
+
+<p>
+L'oggetto <b>Set</b> permette di immagazzinare valori di ogni tipo siano essi <em>valori primitivi</em> (dati che non sono oggetti e non hanno metodi) siano essi <em>riferimenti a oggetti</em>. <br>
+Non può contenere valori duplicati
+</p>
+
+<h3>Proprietà di Set</h3>
+
+<dl>
+	<dd><b>prototype</b>: permette di aggiungere proprietà all'oggetto Set </dd>
+	<dd><b>length</b>:  il valore della proprietà è sempre 1</dd>
+</dl>	
+<pre>
+var frutta = new Set();
+<span class="azzurro">
+console.log(Set.length);				<span class="nota">// 1</span>
+</span>
+</pre>
+
+
+<p>
+Tutte le istanze di Set sono ereditate da <tt>Set.prototype</tt>
+<dl>
+	<dd><b>Set.prototype.constructor</b>: restituisce la funzione che crea una istanza di prototype. E' in pratica la funzione Set di default </dd>
+	<dd><b>Set.size</b>: restituisce il numero dei valori nell'oggetto Set </dd>
+</dl>	
+</p>
+<pre>
+var frutta = new Set();
+frutta.add('mela');
+frutta.add('pera');
+<span class="azzurro">
+console.log(frutta.size);					<span class="nota">// 2</span>
+</span>
+var languages = new Set(['JavaScript','Java','C','C++']);
+<span class="azzurro">
+console.log(languages.size);					<span class="nota">// 4</span>
+</span>
+</pre>
+
+
+<h2>Metodi di Set</h2>
+
+<h3>Set.prototype.add()</h3>
+<p>
+Aggiunge un nuovo elemento con uno specificato valore alla fine dell'oggetto Set
+</p>
+<pre>
+var mySet = new Set();
+mySet.add(1);
+mySet.add(5).add("some text"); 
+<span class="azzurro">
+console.log(mySet);						<span class="nota">// Set [1, 5, "some text"]</span>
+</span>
+</pre>
+
+<p>
+Come detto su Set non può contenere valori duplicati	
+</p>	
+
+<pre>
+let set = new Set();
+set.add(5);
+set.add("5");
+set.add(5);							<span class="nota"> // è un duplicato e sarà ignorato</span>
+
+console.log(set.size);						<span class="nota">// 2 (infatti) </span>
+</pre>
+
+
+
+
+<h3>Set.prototype.clear()</h3>
+<p>
+Rimuove tutti gli elementi dall'oggetto Set
+</p>
+<pre>
+var frutta = new Set();
+frutta.add('mela');
+frutta.add('pera');
+<span class="azzurro">console.log(frutta.size);					<span class="nota">// 2</span>
+</span>
+frutta.clear();
+<span class="azzurro">console.log(frutta.size);					<span class="nota">// 0</span> 
+</span>	
+</pre>
+
+<h3>Set.prototype.delete()</h3>
+
+<p>
+Rimuove soltanto l'elemento specificato
+</p>
+<pre>
+var frutta = new Set();
+frutta.add('mela');
+frutta.add('pera');
+<span class="azzurro">console.log(frutta.size);					<span class="nota">// 2</span>
+</span>
+frutta.delete('mela');
+<span class="azzurro">console.log(frutta.size);					<span class="nota">// 1</span> 
+</span>
+</pre>
+
+<h3>Set.prototype.has()</h3>
+
+<p>
+Restituisce un valore boleano ad indicare se l'elemento passato fa parte dell'oggetto o meno
+</p>
+<pre>
+var frutta = new Set();
+frutta.add('mela');
+frutta.add('pera');
+<span class="azzurro">
+console.log(frutta.has('mela'));				<span class="nota">// true</span>
+</span>
+</pre>
+
+
+<h3>Set.prototype.values() e Set.prototype.keys()</h3>
+
+<p>
+I due metodi sono uguali
+</p>
+<pre>
+var frutta = new Set();
+frutta.add('mela');
+frutta.add('pera');
+<span class="azzurro">
+for(var f of frutta.values()){
+	console.log(f);						<span class="nota">// 'mela' 'pera' </span>
+}
+
+for(var f of frutta.keys()){
+	console.log(f);						<span class="nota">// 'mela' 'pera' </span>
+}
+</span>
+</pre>
+
+<h3>Set.prototype.forEach()</h3>
+
+<p>
+Metodo che fornisce una funzione per ogni valore dell'oggetto Set
+</p>
+<pre>
+mySet.forEach(callback[, thisArg])
+</pre>
+<dl>
+	<dd><b>callback</b>: funzione da eseguire per ogni elemento </dd>
+	<dd><b>thisArg</b>: valore da utilizzare come <tt>this</tt> nell'esecuzione del callback </dd>
+
+</dl>	
+<p>
+<tt>callback</tt> può essere invocata con tre argomenti di cui i primi due (non essendoci chiavi) sono entrambi valori ed il terzo rappresenta l'oggetto Set che sta per essere attraversato
+</p>
+
+<pre>
+var frutta = new Set();
+frutta.add('mela');
+frutta.add('pera');
+
+frutta.forEach(function(val1, val2, et  ){ 
+	console.log(val1+ ' = ' +val2+ ' => ' +et);
+})
+<span class="nota">
+"mela = mela => [object Set]"
+"pera = pera => [object Set]"
+</span>
+</pre>
+<p>oppure con un solo argomento</p>
+<pre>
+frutta.forEach(function(val){ 
+	console.log(val);					<span class="nota">// 'mela' 'pera' </span>
+})
+</pre>
+
+<h3>Ciclo "for of" </h3>
+
+<p>
+Altro metodo per attraversare gli elementi di un oggetto Set
+</p>
+<pre>
+var frutta = new Set();
+frutta.add('mela');
+frutta.add('pera');
+frutta.add('fragola');
+
+for(var frutto of frutta){
+	console.log(frutto);					<span class="nota">// 'mela' 'pera' 'fragola' </span>
+}
+
+</pre> 
+
+
+<h3>Convertire un Set in un array</h3>
+
+<p>
+E' molto semplice convertire un set di valori in un array. Nell'esempio viene utilizzato l'operatore <em>spread</em>	
+</p>	
+
+<pre>
+let set = new Set([1, 2, 3, 3, 3, 4, 5]),
+	array = [...set];
+<span class="azzurro">
+console.log(array);						<span class="nota">// [1,2,3,4,5]</span>
+</span>
+</pre>	
+
+<p>
+la cosa interessante del precedente esempio è che nel Set abbiamo introdotto dei valori duplicati e siccome, come visto sopra, Set non li considera 
+allora il nuovo array creato sarà privo dei duplicati. Potremmo per esempio creare una funzione apposita che elimina i duplicati: 
+</p>
+<pre>
+function eliminaDuplicati(items) {
+	return [...new Set(items)];
+}
+
+let numbers = [1, 2, 3, 3, 3, 4, 5],
+noDuplicati = eliminaDuplicati(numbers);
+<span class="azzurro">
+console.log(noDuplicati);					<span class="nota">// [1,2,3,4,5]</span>
+</span>	
+</pre>	
+
+<br>
+
+
+
+<h1>WeakSet</h1>
+
+<p>
+L'oggetto <b><q>WeakSet</q> permette di collezionare solo oggetti</b> (non altri valori). Un oggetto in <tt>WeakSet</tt> può starci solo una volta, nel senso che è unico nella collezione di oggetti. <br />
+Ha gli stessi metodi di <tt>Set</tt>:
+<dl>
+	<dd>WeakSet.prototype.add(value)</dd>
+	<dd>WeakSet.prototype.clear()</dd>
+	<dd>WeakSet.prototype.delete(value)</dd>
+	<dd>WeakSet.prototype.has(value)</dd>
+</dl>	
+</p>
+
+<pre>
+let set = new WeakSet(),
+key = {};
+
+set.add(key);
+<span class="azzurro">
+console.log(set.has(key));				<span class="nota">// true</span>
+</span>
+set.delete(key);
+<span class="azzurro">
+console.log(set.has(key));				<span class="nota">// false</span>	
+</span>
+
+</pre>	
+
+
+
+
+
+
+<script type="text/javascript">
+
+
+
+
+var frutta = new Set();
+frutta.add('mela');
+frutta.add('pera');
+frutta.add('fragola');
+frutta.add('pera');
+
+//console.log(frutta.size);
+
+//frutta.has('mela');
+//console.log(frutta.has('mela'));
+
+//console.log( frutta.values()[0] );
+
+
+for(var frutto of frutta){
+	console.log(frutto);
+}
+
+
+/*
+frutta.forEach(function(val){ 
+	console.log(val);
+})
+*/
+
+/*
+var languages = new Set(['JavaScript','Java','C','C++']);
+languages.forEach(function(language, chiave, jk){
+	console.log(language+ ' '+chiave);
+});
+*/
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+
+
+
+
+
+
+</body>
+</html>

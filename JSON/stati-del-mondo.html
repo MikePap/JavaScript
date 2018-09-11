@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Stati del mondo</title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+pre{ color:rgb(20,155,30); background:rgb(240,240,240); padding:10px; }
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}		
+.blu{color:blue; }
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+
+<h1>Esempio di select con tutti gli stati del mondo</h1>
+
+<p>
+La select è stata ricavata (estratta) con ajax dal file <q>statiMondo.json</q> 
+</p>
+
+
+<select id="statiMondo">
+	<option value="seleziona">Seleziona</option>
+	
+</select>
+
+
+<script type="text/javascript">
+function getURL(url, callback) {
+	var req = new XMLHttpRequest();
+	req.open("GET", url, true);
+	req.addEventListener("load", function() {
+		if (req.readyState==4 && req.status < 400 )
+			callback(req.responseText);
+		else
+			callback(null, new Error("Request failed: " + req.statusText));
+	});
+
+	req.addEventListener("error", function() {
+		callback(null, new Error("Network error"));
+	});
+
+	req.send(null);
+}
+
+function	callback(jsonObj){
+	var oggetto = JSON.parse(jsonObj);
+//	var result = oggetto.length;								// 249 (totale stati del mondo)
+	for(var i=0, ogg; ogg=oggetto[i]; i++){
+//		console.log(ogg.Paese)
+//		document.getElementById('divo').innerHTML += ogg.Paese+ "<br>";		
+		document.getElementById('statiMondo').innerHTML += "<option value='"+ogg.sigla+"'>" +ogg.Paese+ "</option>";		
+	}
+}
+
+getURL("../allegati/statiMondo.json", callback);
+
+
+var statiMondo = document.getElementById('statiMondo');
+/*
+statiMondo.addEventListener('click',  function (event){
+	var et = event.target;
+//	if(et.tagName.toLowerCase() === 'option')
+	if(et.tagName === 'OPTION')
+//	console.log(et.value);
+	console.log(et.textContent);
+}, false);
+*/
+
+statiMondo.addEventListener('change',  function (){
+	var indiceOption = this.selectedIndex;											// è l'indice della <option> selezionata
+	console.log("Paese: ", this[indiceOption].textContent );
+	console.log("Sigla: ", this.value );
+});
+
+</script>
+
+
+
+
+
+
+
+
+</body>
+</html>

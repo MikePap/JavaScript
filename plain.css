@@ -1,0 +1,30 @@
+/* Zero default margin & padding around common elements */
+body, dd, dl, dt, fieldset, form, h1, h2, h3, h4, h5, h6, li, ol, p, ul
+{
+	margin: 0;
+	border: 0 none #FFFFFF;
+	padding: 0;
+}
+
+body
+{
+	padding: 20px;
+	font-size: 90%;
+	font-family: "Baskerville", sans-serif;
+}
+
+h1
+{
+	font-size: 225%; color:rgb(100,100,250);
+	font-family: "Univers Light Condensed", "Univers Condensed", sans-serif;
+}
+
+
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+
+
+

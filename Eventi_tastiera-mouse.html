@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>eventi tastiera mouse ...  </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+<style type="text/css">
+
+</style>
+</head>
+
+<body
+>
+<!--
+<body
+ onkeypress="showKeyPress(event);"
+ onkeydown="keyDown(event);"
+>
+-->
+
+<h1>Eventi della tastiera </h1>
+<p>
+L'evento <span class="nota">keydown</span> scatta quando un tasto viene premuto seguito immediatamente dall'evento <span class="nota">keypress</span>; quando il tasto è rilasciato scatta, infine, l'evento <span class="nota">keyup</span>. <br />
+Per capire la differenza tra <tt>keydown</tt> e <tt>keypress</tt> è necessario fare la distinzione fra <em>carattere</em> e <em>tasto</em>. Il <b>tasto</b> è un pulsante (fisicamente parlando) della tastiera mentre il <b>carattere</b> è un simbolo trasmesso dalla pressione sul tasto. Quando si preme sul numero '4' tenendo premuto il tasto <tt>Shift</tt> si produce il simbolo <em>$</em> (ma non su tutte le tastiere): questo risultato è il prodotto dell'evento <tt>keypress</tt>. <br />
+<b>In definitiva gli eventi <tt>keydown</tt> e <tt>keyup</tt> rappresentano rispettivamente le azioni di <em>pressione</em> e <em>rilascio</em> del tasto mentre l'evento  <tt>keypress</tt> rappresenta il carattere risultante</b>. <br />
+La funzione <tt>String.fromCharCode</tt> in combinazione con l'evento <em>keypress</em> permette di recuperare il carattere digitato 
+</p>
+<pre>
+addEventListener("keypress", function(event) {
+	console.log(String.fromCharCode(event.charCode));
+});
+</pre>
+<p>
+Il nodo del DOM dove l'evento <em>key</em> si origina dipende dall'elemento che ha il <em>focus</em>. Molti nodi del DOM non hanno il focus, a meno che non glie lo si attribuisce con l'attributo <tt>tabindex </tt>. Quando niente in particolare ha il focus <tt>document.body</tt> agisce come il nodo target degli eventi <em>key</em>
+</p>
+
+<h3>Combinazioni di tasti</h3>
+
+<p>
+I tasti che permettono di fare le combinazioni sono <tt>shiftKey</tt> (tasto maiuscole), <tt>ctrlKey</tt>, <tt>altKey</tt> e <tt>metaKey </tt>. <br />
+</p>
+<pre>
+<span class="grigio">Se si vuole che vengano eseguite delle operazioni solo dopo che sono premuti la barra spaziatrice(32) in combinazione col tasto Control(ctrlKey):</span>
+addEventListener("keydown", function(event) {
+	if (event.keyCode == 32 && event.ctrlKey)
+		console.log("Continuing!");
+	});
+</pre>
+
+<label>Inserisci un carattere della  tastiera </label>
+<input type="text" id="test"  name="test" size="10" maxlength="" value="" />
+
+<br /><br />
+
+<label>Digita il simbolo del dollaro (Shift + 4)</label>
+<input type="text" id="test2"  name="test2" size="10" maxlength="" value="" />
+
+
+<h1>Eventi del mouse</h1>
+
+<p>
+Il <em>click</em> sul mouse causa diversi eventi che possono essere catturati. Il <span class="nota">mousedown</span> e il <span class="nota">mouseup</span> sono simili al <tt>keydown</tt> e <tt>keyup</tt> che scattano quando un tasto del mouse è premuto. Ciò accade sul nodo che sta appena sotto al <em>pointer</em> del mouse quando l'evento scatta. <br />
+Subito dopo l'evento <tt>mouseup</tt> scatta l'evento <span class="nota">click</span> su uno specificato nodo che ha già precedentemente ricevuto anche il <tt>mousedown</tt>. Se per esempio si preme un tasto del mouse su un paragrafo e poi si sposta (senza rilasciarlo) il puntatore su un altro paragrafo sul quale si rilascia il tasto, l'evento <em>click</em> risulterà sull'elemento che contiene entrambi i paragrafi. 
+</p>
+<p>
+Se due click si susseguono a brevissima distanza scatta l'evento <span class="nota">dblclick</span> (doppio click). 
+</p>
+<p>
+Le proprieta <tt>clientX</tt> e <tt>clientY</tt>  sono simili a <tt>pageX</tt> e <tt>pageY</tt> ma relativi alla parte di documento che sta scorrendo con lo <em>scroll</em>. Queste possono tornare utili quando si confrontano le coordinate del mouse con le coordinate restituite da <tt>getBoundingClientRect</tt> 
+</p>
+<p>
+L'evento <span class="nota">mousemove</span> scatta non appena il mouse si sposta. Con tale evento è possibile seguire tracciare i movimenti del mouse.<br />
+All'interno c'è uno script che mostra un &lt;div&gt; (una barra) a cui può essere modificata la sua larghezza con il movimento del mouse
+</p>
+<p>
+A seconda il mouse entri o esca da un nodo scattano gli eventi <span class="nota">mouseover</span> e <span class="nota">mouseout</span>. 
+</p>
+
+<p>
+L'evento <span class="nota">scroll</span> scatta quando la pagina scorre in altezza o lateralmente. Altre proprietà utili colegate allo <em>scroll</em> sono: 	<span class="nota">scrollHeight</span>, <span class="nota">scrollWidth</span>, <span class="nota">scrollTop</span> e <span class="nota">scrollLeft</span> (vedi <a href="DOM/offsets.html">Posizionamento</a> ). 
+</p>
+
+<h3>Focus e blur</h3>
+
+<p>
+Quando un elemento aquisisce il <tt>focus</tt> il browser fa scattare l'evento <span class="nota">focus</span> su di esso. Quando l'elemento perde il focus scatta l'evento <span class="nota">blur</span>. A differenza degli eventi precedenti questi ultimi due eventi non si propagano. Allì'interno c'è uno script che utilizza i due eventi per una semplice ed utle applicazione
+</p>
+<p>
+Con JavaScript è possibile ottenere in un preciso momento l'elemento su cui corrisponde il <tt>focus</tt> grazie alla proprietà <b>activeElement</b> 
+<pre>
+<span class="azzurro">
+&lt;input type="text"&gt; 
+</span>
+document.querySelector("input").focus();				<span class="nota">viene dato il focus all'elemento 'INPUT'</span>
+<span class="azzurro">
+console.log(document.activeElement.tagName);				<span class="nota">// INPUT</span>
+</span>
+document.querySelector("input").blur();					<span class="nota">viene tolto il focus dall'elemento 'INPUT'</span>
+<span class="azzurro">
+console.log(document.activeElement.tagName);				<span class="nota">// BODY</span>
+</span>
+
+</pre>
+
+</p>
+
+
+
+<h3>Load</h3>
+
+<p>
+L'evento <span class="nota">load</span> scatta nella finestra quando la pagina finisce di essere caricata. Gli elementi <tt>img</tt> o <tt>&lt;script&gt;</tt> hanno anch'essi l'evento <tt>load</tt> che sta ad indicare che il file a cui fanno riferimento è stato caricato. Anche questo evento non si propaga. <br />
+Quando la pagina viene chiusa o si passa ad un'altra per mezzo di <em>link</em> scatta l'evento <span class="nota">beforeunload</span>
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+// funzione da usare col onkeypress sul body
+function showChar(e)				
+{
+	alert("Key Pressed: " + String.fromCharCode(e.charCode) + "\n" + "charCode: " + e.charCode);
+}
+
+///////////////////////////////////////////////////////////////////
+
+//  da usare col onkeydown 
+function showKeyCode(e)			
+{	
+	alert( "keyCode for the key pressed: " + e.keyCode + "\n" );
+}
+///////////////////////////////
+
+
+function showKeyPress(evt)
+{
+alert("onkeypress handler: \n"
+      + "keyCode property: " + evt.keyCode + "\n"
+      + "which property: " + evt.which + "\n"
+      + "charCode property: " + evt.charCode + "\n"
+      + "Character Key Pressed: "
+      + String.fromCharCode(evt.charCode) + "\n"
+     );
+}
+
+///////////////////////////////////////////////////////////////////
+function keyDown(evt)
+{
+alert("onkeydown handler: \n"
+      + "keyCode property: " + evt.keyCode + "\n"
+      + "which property: " + evt.which + "\n"
+     );
+}
+
+///////////////////////////////////////////////////////////////////
+function rilevaTasto()
+{
+	var inp = document.getElementById('test');
+
+	inp.addEventListener("keydown", 
+	function (e)
+	{
+//		var c = e.charCodeAt(0);
+		var k = e.keyCode;
+		var w = e.which;
+//		alert("charCode: " + c);
+		alert("keyCode: " +k);
+		alert("wich: " +w);					// da gli stessi risultati di sopra 
+	}
+	, false);	
+}
+rilevaTasto();
+
+function combinazioniTasti()
+{
+	var inp = document.getElementById('test2');
+
+	inp.addEventListener("keypress", 
+	function (e)
+	{
+		var cc  = e.charCode;
+		if(cc == 36)					// è il simbolo del dollaro ($) prodotto dai tasti [Shift] + [4]
+			alert('OK')				
+		else
+			alert('Non hai composto il simbolo del dollaro')
+	}
+	, false);	
+}
+combinazioniTasti();
+
+/*
+Esempio che mostra un <div> (una barra) a cui può essere modificata la sua larghezza con il movimento del mouse
+
+<p>Drag the bar to change its width:</p>
+<div style="background: orange; width: 60px; height: 20px"></div>
+
+  var lastX; // Tracks the last observed mouse X position
+  var rect = document.querySelector("div");
+  rect.addEventListener("mousedown", function(event) {
+    if (event.which == 1) {
+      lastX = event.pageX;
+      addEventListener("mousemove", moved);
+      event.preventDefault();						// Prevent selection
+    }
+  });
+
+  function moved(event) {
+    if (event.which != 1) {
+      removeEventListener("mousemove", moved);
+    } else {
+      var dist = event.pageX - lastX;
+      var newWidth = Math.max(10, rect.offsetWidth + dist);
+      rect.style.width = newWidth + "px";
+      lastX = event.pageX;
+    }
+  }
+
+//** offsetWidth: è una proprietà (di sola lettura) che restituisce il layout della width. Include i bordi, il padding e lo scorrimento verticale (?) dell'elemento alla sua width. 
+offsetWidth	=> width + bordi + padding + scroll vert
+
+*/
+
+/*
+// Esempio con il focus e blur
+
+<p>Name: <input type="text" data-help="Your full name"></p>
+<p>Age: <input type="text" data-help="Age in years"></p>
+<p id="help"></p>
+
+var help = document.querySelector("#help");
+  var fields = document.querySelectorAll("input");
+  for (var i = 0; i < fields.length; i++) {
+    fields[i].addEventListener("focus", function(event) {
+      var text = event.target.getAttribute("data-help");
+      help.textContent = text;
+    });
+    fields[i].addEventListener("blur", function(event) {
+      help.textContent = "";
+    });
+  }
+
+*/
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+
+
+</body>
+</html>

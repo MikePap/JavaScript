@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8"/>
+<title> Unione di array </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css" /> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+<h1>Concatenazione di array</h1>
+
+<p>La funzione permette di unire (concatenare) più array in un unico array. <br>
+Gli array sono passati come argomenti alla funzione 	
+</p>
+
+<pre>
+function unioneArray(){
+	var nums = [];
+	for (i = 0; i &lt; arguments.length; i++){
+		nums = nums.concat(arguments[i]);
+	}
+	return nums;
+}
+	
+</pre>	
+
+<p>Esempio di invocazione della funzione</p>
+
+<pre>
+var arr1 = ['1', 2, 'tre'];
+var arr2 = ['mela', 'pera', 'cocco'];
+var arr3 = ['verde', 'rosso', 'bianco'];
+
+var nuovoArray = unioneArray(arr1, arr2, arr3);
+<span class="azzurro">
+console.log(nuovoArray);		<span class="nota">// Array [ "1", 2, "tre", "mela", "pera", "cocco", "verde", "rosso", "bianco" ]</span>
+</span>
+
+</pre>
+
+<script type="text/javascript">
+
+function unioneArray(){
+	var nums = [];
+	for (i = 0; i< arguments.length; i++){
+		nums = nums.concat(arguments[i]);
+	}
+	return nums;
+}
+
+var arr1 = ['1', 2, 'tre'];
+var arr2 = ['mela', 'pera', 'cocco'];
+var arr3 = ['verde', 'rosso', 'bianco'];
+
+var nuovoArray = unioneArray(arr1, arr2, arr3);
+console.log(nuovoArray); // Array [ "1", 2, "tre", "mela", "pera", "cocco", "verde", "rosso", "bianco" ]
+
+</script>
+
+
+
+</body>
+</html>

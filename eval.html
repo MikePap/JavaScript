@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>eval</title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(50,150,50);}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+
+</style>
+</head>
+<body>
+
+<h1>eval</h1>
+
+<p class="nota">
+La funzione <q>eval</q> accetta una stringa della dichiarazione Javascript e la valuta come codice Javascript. <br />
+Restituisce il valore della dichiarazione Jaqvascript 
+</p>
+
+<script type="text/javascript">
+    <!--
+    function run(){
+         eval (document.form1.input1.value);
+    }
+    -->
+</script>
+
+<form name="form1">
+    Inserisci nel campo un comando (dichiarazione in codice) JavaScript
+    <br><br>
+    comando (in codice) :<input type="text" name="input1" size=30>
+    <br>
+    <input type="button" value="Esegui" onClick='run()'>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

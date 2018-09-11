@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title> Cambiare gli stili </title>
+
+<script type="text/javascript" src="../Book/core.js"> </script>
+
+<style type="text/css">
+
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);}
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px;  color:rgb(200,20,20);}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grassetto{ font-weight:bold; }
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+
+#divo{
+width:500px; margin:11px; padding:10px; background:#9F0;  border:1px solid;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>  Cambiare gli stili </h2>
+
+<p>
+Tramite il DOM  si può accedere a quasi ogni proprietà della  pagina compresi i suoi vari elementi estetici <br />
+Attracerso la proprietà <b>style</b> si può modificare ogni caratteristica dell'aspetto di un elemento (colore,altezza, testo, bordo ecc..)<span class="nota"> ma questa è una pratica sconsigliata, perchè per lo style è meglio usare i CSS</span>  <br />
+Es: (modifica dello sfondo e del colore del testo di un documento) <br />
+<span class="codice"> var body = document.getElementsByTagName("body")[0]; <br />
+body.style.backgroundColor = "#000000"; <br />  
+body.style.color = "#FFFFFF"; </span> questo script va inserito nel tag body
+</p>
+
+
+<h1> Gestione stili tramite la classe <q>Core</q>   </h1>
+
+<h2> Controllare se un  elemento contiene una determinata classe </h2>
+<p id="classe">
+Per controllare se un  elemento contiene una determinata classe si può fare uso della funzione <b> Core.hasClass </b> della libreria (file) core.js nella cartella book.</p>
+<p><span class="nota" id="classe"> questo è un testo con classe='nota' e id='classe' </span><br />
+<span class="codice">
+ var trova_classe = document.getElementById("classe"); <br />
+if(Core.hasClass(trova_classe, "nota")) <br />
+{ esegui codice } </span> <br />
+Se la classe non esiste restituisce false(non da risultato)
+
+</p>
+
+<h2> Aggiunta di una classe </h2>
+
+<p>
+Per aggiungere una classe ad un elemento si può utilizzare la funzione <b>Core.addClass </b> della libreria (file) core.js nella cartella book <br />
+<p id="ad_classe">
+<span class="nota"> questo è un paragrafo con classe='nota' e id='ad_classe' </span><br />
+<span class="codice"> 
+var paragrafo = document.getElementById("ad_classe"); <br />
+Core.addClass(paragrafo, "grassetto"); </span> ora al paragrafo verrà aggiunta una nuova classe <b>grassetto</b> che naturalmente deve stare nel CSS 
+</p> 
+
+<h2> Eliminazione di una classe  </h2>
+
+<p>
+Per eliminare una classe da un elemento si può uyilizzare la funzione <b> Core.removeClass </b> della libreria (file) core.js nella cartella book <br />
+<p id="remove_classe">
+<span class="nota"> questo è un paragrafo con classe='nota' e id='remove_classe' </span><br />
+<span class="codice">
+var paragrafo = document.getElementById("remove_classe"); <br />
+Core.removeClass(paragrafo, "nota"); </span> così al paragrafo viene rimossa la classe <b>nota</b>
+</p>
+
+
+<br /><br />
+
+<div id="divo" class="nota">
+	testo
+</div> 
+
+<div id="results">sono results</div> 
+
+<script type="text/javascript">
+
+var elemento = document.getElementById("divo"); 
+
+if(Core.hasClass(elemento, "nota"))
+{ 
+//	alert('OK');
+	Core.removeClass(elemento, "nota")
+} 
+else
+{
+	alert('NO');
+}
+
+var elem = document.getElementById("results"); 
+
+Core.addClass(elem, "grassetto nota");
+
+</script>
+
+
+
+
+
+
+<br /><br /> <br /> <br /> <br /> <br /><br /><br />
+
+
+
+</body>
+</html>

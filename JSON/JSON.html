@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>JSON  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+pre{ color:rgb(20,155,30); background:rgb(240,240,240); padding:10px; }
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}		
+.blu{color:blue; }
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+<h1>JSON</h1>
+<p>
+JSON sta per <q>Notazione Oggetti JavaScript</q>. In altre parole esso usa JavaScript per una rappresentazione strutturale dei dati. In definitiva <b>è un formato di dati</b> e non un linguaggio di programmazione.<br />
+La sintassi di JSON permette la rappresentazione di tre tipi di valori: 
+
+<dl>
+	<dt>Simple Values</dt>
+		<dd>stringhe, numeri, boleani, null. La parola 'undefined' non è supportata. </dd>
+	<dt>Objects</dt>
+		<dd>coppie di valori rappresentate da una chiave e un valore corripspondente. Ogni valore può a sua volta essere un <q>object</q> o un oggetto più complesso</dd>
+	<dt>Arrays</dt>
+		<dd>rappresenta un ordinata lista di valori che sono accessibile da un indice numerico. I valori possono essere <q>Simple Values</q>, <q>object</q> o altri  <q>arrays</q>    </dd>
+</dl>	
+</p>
+
+<h3>Simple Values</h3>
+
+<pre>
+<span class="blu">// un qualsiasi numero è espresso cosi com'è senza doppie o singole virgolette </span>
+8
+<span class="blu">// per la rappresentazione di una stringa bisogna usare sempre le virgolette doppie</span>
+"Hello world"
+</pre>
+
+<h3>Objects</h3>
+<p>
+In JavaScript un esempio di rappresentazione di un oggetto  può essere la seguente:
+<pre>
+var tutorial = 
+{ 
+	name: "JavaScript", 
+	page: 9 
+};
+</pre>
+mentre JSON lo stesso oggetto lo rappresenta così:
+<pre>
+{ 
+	"name": "JavaScript", 
+	"page": 9 
+}
+</pre>
+dove le virgolette doppie sono obbligatorie per rappresentare il nome della proprietà; una proprietà è separata dall'altra da una virgola tranne che per l'ultima. Nell'esempio seguente vediamo come un valore può essere rappresentato da un valore semplice oppure complesso: 
+<pre>
+{
+	"name": "JavaScript", 
+	"page": 9, 
+	"topic":{
+			"name":    "Data Type", 
+			"content": "Number" 
+		} 
+}
+</pre>
+</p>
+
+<h3>Arrays</h3>
+<p>
+Gli arrays sono rappresentati in JSON usando lo stesso tipo di sintassi come in JavaScript: <br />
+<pre>
+var values = [1, "JavaScript", true];		<span class="blu">// array in JavaScript</span>
+
+[1, "JavaScript", true]				<span class="blu">// array rappresentato in JSON</span>
+</pre>
+</p>
+
+<p>
+Arrays e Objects possono essere usati insieme per rappresentare una serie più complessa di dati:
+<pre>
+[
+	{ 
+		"title": "JavaScript", 
+		"authors": ["J"],
+		edition: 3,
+		year: 2011
+	}, 
+	{ 
+		"title": "HTML", 
+		"authors": [ "H" ],
+		edition: 2,
+		year: 2009
+	},
+	{ 
+		"title": "Ajax", 
+		"authors": ["X", "Y", "Z" ], 
+		edition: 2, 
+		year: 2008
+	},
+	{ 
+		"title": "CSS", 
+		"authors": ["A", "B", "C" ], 
+		edition: 1, 
+		year: 2007
+	},
+	{ 
+		"title": "Java", 
+		"authors": ["C"],
+		edition: 1,
+		year: 2006
+	} 
+]
+</pre>
+
+</p>
+
+
+
+
+
+
+<br />
+<br />
+<br />
+
+
+</body>
+</html>

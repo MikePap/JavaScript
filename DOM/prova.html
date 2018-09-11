@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="it" >
+<head>
+
+<meta charset="utf-8" />
+<title>provana  </title>
+<link rel="stylesheet" href="../allegati/style.css">
+
+<style type="text/css">
+html,body,div,p,h1,h2,h3,h4,h5,input,textarea,select,span,ul,li,a,img{
+margin:0;padding:0;
+}
+/* ASSEGNAZIONE DEL "box-sizing:border-box" A TUTTI GLI ELEMENTI DEL DOCUMENTO UTILIZZANDO IL SELETTORE UNIVERSALE * (valido anche in IE 8) */
+* { 
+  -moz-box-sizing: border-box; 
+  -webkit-box-sizing: border-box; 
+   box-sizing: border-box; 
+}
+
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); }
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grassetto{font-weight:bold;}
+
+
+#foto{
+position:relative;	width:400px; height:250px; background:#ff0; padding:10px;
+}
+
+#divo{
+margin:auto; 
+position:absolute; top:0; bottom:0; right:0; left:0; width:200px;  height:100px; background:red;
+}
+
+
+
+
+</style>
+<script type="text/javascript" src="../Book/core.js"> </script>
+</head>
+<body>
+
+<div class='className' attributo='valoreAttributo' > div con attributi </div>  
+
+<div id="foto">
+
+			
+</div> 
+
+
+
+
+
+
+<script type="text/javascript">
+//var foto = document.getElementById('foto');
+
+var example = function(){
+//	console.log(arguments);
+	console.log(Array.prototype.slice.call(arguments).reverse() );
+	return Array.prototype.slice.call(arguments);
+};
+
+var arr = example("a", "b", "c");			
+
+for(var i=0, arra; arra=arr[i]; i++){
+	console.log(arra);
+}
+
+
+var tester2 = function() {
+	console.log({
+		'this': this,
+		'arguments': arguments,
+		'length': arguments.length
+	});
+};
+
+//tester2.apply(null, ["a", "b", "c"]);
+
+console.log("Aardvark" < "Zoroaster")
+
+
+</script>
+
+
+
+<!--
+
+http://benvinegar.github.io/csp-talk-2013/#4
+
+http://benvinegar
+
+http://www.abcoliodoliva.com/prove.html
+
+C:\AppServ\www\JSclassesMY\Slide
+
+http://localhost/JSclassesMY/Slide/Slide.html
+
+
+.............
+## box_news.php (riga 175)
+<script  type="text/javascript">
+yepnope([{
+test: Modernizr.cssgradients && Modernizr.borderradius,
+yep:  ['../css/struttura_abc-rd.css', '../css/BarraNav.css', '../css/banner_AdSense.css', '../css/news.css', '../css/struttura_blog.css' ],
+nope: ['../css/struttura_abc-rd_alter.css', '../css/BarraNav.css', '../css/banner_AdSense.css', '../css/news.css', '../css/struttura_blog.css' ], 
+load: ['http://code.jquery.com/jquery-1.8.2.min.js', '../JS/BarraNav.js', '../JS/btn_Condivisione.js', '../JS/selectivizr-min.js', '../JS/respond.min.js', '../JS/box_news-plugin.js' ],
+complete: function (){
+//	$("figure.logo").load("../Olivicoltori/logo_abc.html");		// download logo
+//	$("#pulsante_share").load("../Olivicoltori/Img_Condivisione.html");
+
+// Assegnazione dell'appropriato url con parametri get per l'attributo "data-href" del <div class='fb-liks'> del button "mi piace" di facebbok 
+//	var par = document.location.search;
+//	var par = "http://www.abcoliodoliva.com/News_abc/box_news.php" + par; 
+//	$("div.fb-like").attr('data-href', par);
+}
+</script>
+
+
+304
+-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

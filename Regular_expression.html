@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Regular Expression  </title>
+<style type="text/css">
+h1{ font-size:31px; font-weight:bold; color:rgb(50,50,250); margin-left:50px;} 
+h2{ font-size:25px; font-weight:bold; color:rgb(250,50,150); margin-left:31px;}
+h3{ font-size:20px; font-weight:bold; color:rgb(200,20,20); margin-left:20px;}
+code, pre{ color:rgb(20,150,30); font-weight:bold; background:rgb(230,230,230); margin:0 10px; padding:10px; }
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(50,100,255);}
+.scuro{color:#333;}
+tt, em{color:#6a9999}
+.codice{ color:rgb(30,120,30);}
+dl{
+padding:0 10px
+}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+p{
+padding-left:10px;
+}
+
+th{
+background:#333; color:white;
+}
+td:nth-child(1){
+text-align: center; font-weight:bold; font-size:18px;
+}
+
+
+</style>
+</head>
+<body>
+
+
+<h1>Regular Expression</h1>
+<p>
+Una <b>regular expression</b> è un tipo di oggetto. Può essere creata col costruttore <b>RegExp</b> o semplicemete scritta come un valore letterale racchiusa da due <q>slash in avanti</q> <b>/</b> (forward slash)   
+<pre>
+var re1 = new RegExp("abc", "i");
+var re2 = /abc/i;
+</pre>
+Quando si usa il costruttore <em>RegExp</em> il pattern è scritto come una normale stringa. <br />
+dal momento in cui i forward slash sono utilizzati per aprire e chiudere un <em>pattern</em> se si vuole che un forward slash sia parte del pattern allora bisogna farlo precedere da un <em>back slash (il cosidetto escape)</em> cosi come altri caratteri che hanno un preciso significato come i segni del +, -, * etc ...
+<pre>
+var eighteenPlus = /eighteen\+/;
+</pre>
+Conoscere su quali caratteri fare l'escape non è semplice pertanto nel dubbio è sempre meglio farlo su caratteri che non siano lettere, numeri o spazi vuoti.
+<br />
+I caratteri su cui fare l'escape sono i seguenti:  <b> ( [ { \ ^ $ | ) ] } ? * + . </b>
+</p>
+
+<h3>Le modalità nelle regular expression </h3>
+
+<p>
+Un'espressione regolare completa può comprendere un'altro simbolo, oltre al pattern, da inserire dopo lo slash di chiusura: 
+<pre>
+var expression = /pattern/flags;
+</pre>
+Sono tre le modalità ammesse rappresentanti il <q>flags</q>:
+
+<table width="" border="1" cellspacing="3" cellpadding="3">
+<tr>
+	<td>g</td>
+	<td>global mode</td>
+	<td>Il pattern verrà riscontrato sulla stringa intera anzichè fermarsi al primo riscontro  </td>
+</tr>
+<tr>
+	<td>i</td>
+	<td>case-insensitive mode</td>
+	<td>Insensibile alle maiuscole e minuscole</td>
+</tr>
+<tr>
+	<td>m</td>
+	<td>multiline mode</td>
+	<td>Il pattern continuerà il riscontro anche dopo aver raggiunto la fine di una linea di testo  </td>
+</tr>
+	
+</table>
+
+
+</p>
+
+
+<h2>Il metodo test</h2>
+<p>
+L'oggetto regular expression hanno diversi metodi fra questi, il più semplice è <b>test</b>. Restituisce un valore boleano ad indicare che la stringa passata come argomento contiene il valore del pattern della regular expression
+<pre>
+var pattern = /abc/; 
+<span class="azzurro">
+console.log(pattern.test("abcde"));				<span class="nota">// true</span>
+console.log(pattern.test("abxde"));				<span class="nota">// false</span>
+</span>
+</pre>
+da notare, nell'esempio di sopra, che il pattern richiede la <b>sequenza</b> dei caratteri
+ 
+</p>
+
+<h3>Paragonare un set di caratteri</h3>
+
+<p>
+Quando in una regular expression si mettono dei caratteri <b>tra parentesi quadre</b> in un certo senso si indica di <b>non considerare la sequenza dei caratteri ma ognuno singolarmente</b>. Il risultato è 'true' anche se solo uno dei caratteri fa parte del pattern
+<pre>
+<span class="azzurro">
+console.log(/[0123456789]/.test("in 1992"));			<span class="nota">// true</span>
+console.log(/[348]/.test("in 1992"));				<span class="nota">// false</span>
+console.log(/[8]/.test("in 1992"));				<span class="nota">// false</span>
+console.log(/[1]/.test("in 1992"));				<span class="nota">// true</span>
+console.log(/[1444]/.test("in 1992"));				<span class="nota">// true</span>
+</span>
+</pre>
+</p>
+<p>
+Quando nelle parentesi quadre si utilizza il trattino (<b>-</b>) tra due caratteri si vuole indicare l'intervallo tra quei due caratteri. Per esempio per <q>0-9</q> si intendono tutti  i numeri dallo 0 al 9 e <q>a-z</q> tutte le lettere dalla a alla zeta 
+<pre>
+<span class="azzurro">
+console.log(/[0-9]/.test("in 1992"));				<span class="nota">// true</span>
+console.log(/[4-8]/.test("in 122"));				<span class="nota">// false</span>
+console.log(/[a-z]/.test("in world"));				<span class="nota">// true</span>
+console.log(/[a-c]/.test("in world"));				<span class="nota">// false</span>
+</span>
+</pre>
+</p>
+
+<p>
+Ci sono caratteri che possono far parte di un gruppo quali per esempio i numeri o le lettere etc... Questi gruppi sono contradistinti da scorciatoie
+
+<table id="" width="" border="1" cellspacing="3" cellpadding="3">
+<tr>
+	<td>\d</td>
+	<td>indica tutte le cifre (numeri [0-9])</td>
+</tr>
+<tr>
+	<td>\w</td>
+	<td>indica caratteri alfanumerici { lettere e numeri (compreso underscore) ma non caratteri speciali [A-Za-z0-9_] }</td>
+</tr>
+<tr>
+	<td>\s</td>
+	<td>indica caratteri whitespace (spazi, tab, nuova linea etc..)</td>
+</tr>
+<tr>
+	<td>\D</td>
+	<td>indica caratteri che non siano cifre [^0-9]</td>
+</tr>
+<tr>
+	<td>\W</td>
+	<td>indica caratteri che non siano alfanumerici ([^A-Za-z0-9_])</td>
+</tr>
+<tr>
+	<td>\S</td>
+	<td>indica caratteri che non siano whitespace</td>
+</tr>
+<tr>
+	<td>.</td>
+	<td>indica ogni carattere tranne una nuova linea</td>
+</tr>
+<tr>
+	<td>^</td>
+	<td>indica l'inizio input</td>
+</tr>
+<tr>
+	<td>$</td>
+	<td>indica la fine dell'input</td>
+</tr>
+
+
+</table>
+
+<pre>
+<span class="azzurro">
+console.log(/\d/.test("in world"));				<span class="nota">// false</span>
+console.log(/\d/.test("in 98world"));				<span class="nota">// true</span>
+
+console.log(/\w/.test("in world"));				<span class="nota">// true</span>
+console.log(/\w/.test("125"));					<span class="nota">// true</span>
+console.log(/\w/.test("&%"));					<span class="nota">// false</span>
+console.log(/\w/.test("&% jk"));				<span class="nota">// true</span>
+
+console.log(/\W/.test("in world"));				<span class="nota">// true (per lo spazio che non è alfanumerico)</span>
+console.log(/\W/.test("$%"));					<span class="nota">// true </span>
+console.log(/\W/.test("$% world"));				<span class="nota">// true </span>
+console.log(/\W/.test("inworld"));				<span class="nota">// false</span>
+
+console.log(/\s/.test("in world"));				<span class="nota">// true (per lo spazio bianco)</span>
+console.log(/\s/.test("inworld"));				<span class="nota">// false </span>
+console.log(/\S/.test("in world"));				<span class="nota">// true </span>
+console.log(/\S/.test(""));					<span class="nota">// false</span>
+console.log(/./.test("\n"));					<span class="nota">// false</span>
+console.log(/./.test(""));					<span class="nota">// false</span>
+</span>
+</pre>
+
+Le scorciatoie di gruppi possono essere usate anche all'interno delle parentesi quadre. <br>
+<span class="nota">Da notare che il punto o altri caratteri speciali come il + etc... all'interno delle parentesi quadre perdono il loro significato speciale</span>
+<pre>
+<span class="azzurro">
+console.log(/./.test("1998"));					<span class="nota">// true (perchè il punto accetta ogni carattere)</span>
+console.log(/./.test("hello world"));				<span class="nota">// true (perchè il punto accetta ogni carattere)</span>
+console.log(/[\d.]/.test("1998"));				<span class="nota">// true (per la \d)</span>
+console.log(/[\d.]/.test("in world"));				<span class="nota">// false (infatti la \d accetta solo le cifre)</span>
+console.log(/[.]/.test("1998"));				<span class="nota">// false (qui verifichiamo che il punto perde il suo significato)</span>
+console.log(/[.]/.test("www.google.com"));			<span class="nota">// true (qui invece viene rilevato il punto tra le parole)</span>
+</span>
+<span class="grigio">quindi il punto tra parentesi quadre è considerato semplicemente come un punto cosi come il segno +</span>
+</pre>
+</p>
+
+<h3>Ripetizioni di parti di pattern</h3>
+
+<p>
+Quando si mette il segno <b>+</b> dopo un qualcosa si vuole indicare che quell'elemento può essere ripetuto una o più di una volta
+<pre>
+<span class="azzurro">
+console.log(/\d+/.test("1998"));				<span class="nota">// true</span>
+console.log(/\d+/.test("' '"));					<span class="nota">// false</span>
+</span>
+</pre>
+ATTENZIONE: la ripetizione si intende solo per l'ultimo carattere:
+<pre>
+/48+/			<span class="nota">qui la ripetizione è ammessa solo per 8 e non per 48 </span>
+</pre>
+Per ovviare a questo problema si possono usare le parentesi tonde che considerano come elemento tutto quello contenuto tra le parentesi
+<pre>
+/(48)+/			<span class="nota">qui invece la ripetizione vale per 48</span>
+</pre>
+</p>
+
+<p>
+La stella (*) indica invece anche lo zero volte
+<pre>
+<span class="azzurro">
+console.log(/\d*/.test("' '"));					<span class="nota">// true</span>
+</span>
+</pre>
+</p>
+
+<p>
+Il discorso del punto interrogativo (?) è abbastanza intrigante
+<pre>
+var bar = /bar?ca/;
+<span class="grigio">NB: il ? sta dopo la 'r'. Vuol dire che 'ba' ed 'ca' devono essere uniti o inter-connessi dalla 'r' (può starci o no) </span>
+<span class="azzurro">
+console.log(bar.test("barca"));			<span class="nota">// true (la 'r' inter-connette 'ba' e 'ca')</span>
+console.log(bar.test("baca"));			<span class="nota">// true (tra 'ba' e 'ca' manca la 'r' ma va bene lo stesso)</span>
+console.log(bar.test("barcaccia"));		<span class="nota">// true (dopo 'ca' ci sono altre lettere che sono ammesse)</span>
+console.log(bar.test("barca a vela"));		<span class="nota">// true (come sopra)</span>
+console.log(bar.test("reimbarca"));		<span class="nota">// true (prima di 'ba' ci sono altre lettere che sono ammesse) </span>
+
+console.log(bar.test("arca"));			<span class="nota">// false (manca la 'b' prima della 'a')</span>
+console.log(bar.test("barc"));			<span class="nota">// false (manca la 'a' dopo la 'c') </span>
+console.log(bar.test("bac"));			<span class="nota">// false (come sopra)</span>
+console.log(bar.test("bacca"));			<span class="nota">// false (dopo 'ba' c'è 'cc' e non 'ca') </span>
+console.log(bar.test("barba"));			<span class="nota">// false</span>
+</span>
+</pre>
+</p>
+
+<p>
+Il ? può essere combinato in diversi modi ottenendo dei significati diversi e interessanti. Per esempio <b>x(?=y)</b> indica che x deve essere seguito da y 
+<pre>
+<span class="azzurro">
+console.log(/Jack(?= Sprat)/.test("Jack Sprat"));		<span class="nota">// true (occhio allo spazio dopo l'uguale)</span>
+console.log(/Jack(?= Sprat| Frost)/.test("Jack Frost"));	<span class="nota">// true (occhio allo spazio dopo = e dopo | )</span>
+</span>
+</pre>
+Oppure <b>x(?!y)</b>, al contrariol del precedente, indica che x non deve essere seguito da y 
+<pre>
+<span class="azzurro">
+console.log(/r(?!e)/.test("far"));				<span class="nota">// true</span>
+console.log(/r(?!e)/.test("fare"));				<span class="nota">// false</span>
+</span>
+</pre>
+</p>
+
+<p>
+Per indicare che un pattern debba ripetersi un preciso numero di volte bisogna utilizzare le parentesi graffe. <b>Però bisogna fare ATTENZIONE</b> 
+<pre>
+<span class="azzurro">
+console.log(/8{3}/.test("888"));				<span class="nota">// true</span>
+console.log(/8{3}/.test("8A8T888999"));				<span class="nota">// true (incontra i 3 8 dopo la T)</span>
+<span class="grigio">però anche i seguenti danno true</span>
+console.log(/8{3}/.test("88888"));				<span class="nota">// true (perchè ci sono almeno 3 di otto)</span>
+console.log(/\d{4}/.test("1234"));				<span class="nota">// true</span>
+console.log(/\d{4}/.test("12345"));				<span class="nota">// true (perchè ci sono almeno quattro cifre)</span>
+</span>
+</pre>
+Quindi per ovviare al problema ci sono due caratteri che ci vengono incontro: <b>^</b> e <b>$</b> che rappresentano rispettivamente <q>inizio input</q> e <q>fine input</q>
+<pre>
+<span class="azzurro">console.log(/^8{3}$/.test("8888"));</span>				<span class="nota">// false</span>
+</pre>
+Prendiamo un esempio concreto di un formato data
+
+<pre>
+var pattern = /\d{2}-\d{2}-\d{4}/;				<span class="nota">questo pattern può far produrre le situazioni successive</span>
+<span class="azzurro">
+console.log(pattern.test("25-12-2012"));			<span class="nota">// true</span>
+console.log(pattern.test("225-12-2012"));			<span class="nota">// true (anche se la prima serie è di tre numeri)</span>
+console.log(pattern.test("25-12-20125"));			<span class="nota">// true (anche se l'ultima serie è di 5 numeri)</span>
+</pre>
+Mentre con i nostri <b>^</b> e <b>$</b> il pattern successivo sarà più vicino alle nostre esigenze
+<pre>
+var pattern = /^\d{2}-\d{2}-\d{4}$/;
+<span class="azzurro">
+console.log(pattern.test("25-15-2012"));			<span class="nota">// true</span>
+<span class="grigio">ora i successivi saranno 'false' come lo si voleva</span>
+console.log(pattern.test("255-15-2012"));			<span class="nota">// false (perchè la prima serie è di tre numeri)</span>
+console.log(pattern.test("25-15-20124"));			<span class="nota">// false (perchè l'ultima serie è di 5 numeri)</span>
+</span>
+</pre>
+Si ha anche la possibilità di creare un intervallo impostando due valori nelle parentesi graffe
+<pre>
+var pattern = /\d{2,5}/;					<span class="nota">sono richiesti da 2 a 5 cifre</span>
+</pre>
+</p>
+
+<h3>Marcare i confini</h3>
+<p>
+Un esempio per cosa si intende per <q>marcare i confini</q> lo abbiamo visto sopra quando si è parlato dei caratteri <b>^</b> e <b>$</b>. Infatti sono proprio loro che permettono appunto di forzare il risultato alla stringa intera. Il simbolo <b>^</b> indica l'inizio e <b>$</b> la fine della stringa
+<pre>
+<span class="azzurro">
+console.log(/\d+/.test("444 abc"));				<span class="nota">// true</span>
+console.log(/^\d+$/.test("444 abc"));				<span class="nota">// false</span>				
+</span>
+var pattern = /^!/;						<span class="nota">indica che la stringa inizi con un punto esclamativo (es: !Ohhh ) </span>	
+var pattern = /!$/;						<span class="nota">indica che la stringa finisca con un punto esclamativo (es: fuck you! ) </span>	
+<span class="grigio">se per esempio non vogliamo che il risultato sia una qualsiasi stringa</span>
+var pattern = /x^/;						<span class="nota">dare sempre 'false' perchè non ci può essere una x prima di ogni stringa</span>
+</pre>
+A differenza di <b>^</b> e <b>$</b> che indicano il riscontro per tutta la stringa Il carattere <b>\b</b> lo riferisce ad ogni singola parola della stringa 
+<pre>
+<span class="azzurro">
+console.log(/cat/.test("concatenate"));				<span class="nota">// true</span>
+console.log(/\bcat\b/.test("concatenate"));			<span class="nota">// false</span>
+
+console.log(/\bcat/.test("catmania"));				<span class="nota">// true (vuole 'cat' a inizio parola e lo trova)</span>
+console.log(/cat\b/.test("catmania"));				<span class="nota">// false (vuole 'cat' a fine parola ma non lo trova)</span>
+console.log(/\bcat\b/.test("catmania"));			<span class="nota">// false (vuole una parola che sia semplicemente 'cat' ma invano mentre...)</span>
+console.log(/\bcat\b/.test("catmania is mania of cat"));	<span class="nota">// true (... qui la trova)</span>
+<span class="grigio">quando \b è posto a inzio e fine di una parola vuole che nella intera stringa ci sia almeno una tale parola </span>
+console.log(/\bcat\b/.test("cat is a feline"));			<span class="nota">// true</span>
+<span class="grigio">la cosa ovviamente non cambia se \b è posto soltanto all'inizio o solo alla fine di una tale parola   </span>
+console.log(/\bcat/.test("cat is a feline"));			<span class="nota">// true</span>
+console.log(/cat\b/.test("cat is a feline"));			<span class="nota">// true</span>
+</span>
+</pre> 
+A differenza di \b che indica i riscontri a inizio e fine parola c'è la possilità di avere i riscontri nel mezzo della parola o tra due spazi grazie a <b>\B</b> 
+<pre>
+console.log(/\Bon/.test("Monsier Lambert"));			<span class="nota">// true (riscontra 'on' dopo la M)</span>
+
+console.log(/ye\B/.test("possibly yesterday"));			<span class="nota">// true ('ye' è preceduto da uno spazio)</span>
+</pre>
+
+</p>
+
+<h3>Alternative con il pipe ( | )</h3>
+
+<p>
+Il carattere pipe ( | ) permette di creare delle alternative all'interno di un gruppo. Facciamo l'esempio che si voglia creare un pattern che indichi che la stringa passata contenga un numero seguito da uno di tre nomi differenti siano essi anche plurali
+<pre>
+var animalCount = /\b\d+ (pig|cow|chicken)s?\b/;		<span class="nota">si è usato le parentesi per limitare l'alternativa solo al gruppo di nomi</span>
+<span class="azzurro">
+console.log(animalCount.test("15 pig"));			<span class="nota">// true</span>	
+console.log(animalCount.test("15 pigs"));			<span class="nota">// true</span>	
+console.log(animalCount.test("15 cow"));			<span class="nota">// true</span>	
+console.log(animalCount.test("15 pigchickens"));		<span class="nota">// false</span>	
+</span>
+</pre>
+</p>
+
+
+<h2>Il metodo exec</h2>
+
+<p>
+Oltre al metodo <em>test</em> le regular expression hanno un'altro metodo <b>exec</b> che restituisce <em>null</em> se niente è incontrato oppure restituisce un array con delle informazioni riguardo a quello riscontrato
+<pre>
+var match = /\d+/.exec("one two 100");
+<span class="azzurro">
+console.log(match);						<span class="nota">// [100]</span>
+
+<span class="grigio">inoltre col metodo 'index' si ottiene il punto d'inizio in cui il riscontrato pattern è ottenuto   </span>
+console.log(match.index);					<span class="nota">// 8</span>
+
+<span class="grigio">mentre il metodo 'input' restituisce il testo che si è passato per la verifica  </span>
+console.log(match.input);					<span class="nota">// one two 100</span>
+</span>
+</pre> 
+Il metodo <em>exec</em>, come detto, non fa altro che restituirci un array dove il primo elemento è quello riscontrato del pattern
+<pre>
+var match = /\d+/.exec("one two 100");
+<span class="azzurro">
+console.log(match[0]);						<span class="nota">// 100</span>	
+</span>
+</pre>
+</p>
+
+<p>
+Quando la regular expression contiene subespressioni contenute tra parentesi il testo che si riscontra con quelle espressioni sarà mostrato nell'array
+<pre>
+<span class="azzurro">
+console.log(/d(b+)(d)/ig.exec(cdbBdbsbz));			<span class="nota">// ["dbBd", "bB", "d", index: 1, input: "cdbBdbsbz"]</span>
+console.log(/d(b+)d/ig.exec(cdbBdbsbz));			<span class="nota">// ["dbBd", "bB", ...]</span>
+console.log(/db+d/ig.exec(cdbBdbsbz));		 		<span class="nota">// ["dbBd", ...] </span>
+</span>
+<span class="grigio">infatti</span>
+var re = /d(b+)(d)/ig;
+var arr = re.exec("cdbBdbsbz");
+<span class="azzurro">
+console.log(arr[0]);						<span class="nota">// dbBd (è considerato tutto il pattern)</span>
+console.log(arr[1]);						<span class="nota">// bB (risultato della espressione contenuta nella prima parentesi tonda)</span>
+console.log(arr[2]);						<span class="nota">// d (risultato della espressione contenuta nella seconda parentesi tonda) </span>
+</span>
+</pre>
+
+</p>
+
+<p>
+Quando nella espressione regolare è impostato il simbolo <b>g</b> (global mode), con il metodo <em>exec</em> si possono iterare in un ciclo i vari riscontri della stringa passata. Nell'esempio che segue viene usato anche il metodo <b>lastIndex</b> che restituisce l'indice del successivo riscontro
+<pre>
+var myRe = /ab*/g;
+var str = "abbcdefabh";
+var myArray;
+while ((myArray = myRe.exec(str)) !== null)
+{
+	var msg = "Trovato " + myArray[0] + ".  ";
+	msg += "Next match starts at " + myRe.lastIndex;
+	console.log(msg);
+}
+<span class="nota">
+Trovato abb.  Next match starts at 3 
+Trovato ab.  Next match starts at 9 
+</span>
+</pre>
+
+</p>
+
+
+<p>
+Le stringhe hanno un metodo simile chiamato appunto <b>match</b>
+<pre>
+<span class="azzurro">
+console.log("one two 100".match(/\d+/));			<span class="nota">// [100]</span>	
+</span>
+</pre> 
+</p>
+
+
+<h2>Il metodo replace</h2>
+
+<p>
+L'oggetto <q>String</q> ha un metodo <em>replace</em> per rimpiazzare parte di stringa con un'altra stringa. 
+<pre>
+<span class="azzurro">
+console.log('papa'.replace('p', 'm'));				<span class="nota">// 'mapa' (sostituisce soltanto la prima 'p')</span>
+</span>
+</pre>
+Allo stesso modo le <q>regular expression</q> utilizzano lo stesso metodo rendendolo più potente
+<pre>
+<span class="azzurro">
+console.log('papa'.replace(/p/, 'm'));				<span class="nota">// 'mapa' (come sopra)</span>
+<span class="grigio">mentre aggiungendo l'opzione 'g' alla fine della RegExp  </span>
+console.log('papa'.replace(/p/g, 'm'));				<span class="nota">// 'mama' (sostituisce entrambe le 'p')</span>
+</span>
+</pre>
+Pertanto l'opzione <b>g</b> che sta per <q>global mode</q> indica che il pattern deve essere applicato per tutta la stringa invece di interrompersi dopo aver fatto un  riscontro. <br />
+Altri esempi
+<pre>
+<span class="azzurro">
+console.log("Borobudur".replace(/[ou]/, "a"));			<span class="nota">// Barobudur</span>
+console.log("Borobudur".replace(/[ou]/g, "a"));			<span class="nota">// Barabadar (rimpiazza la 'a' sia per ogni 'o' che per ogni 'u')</span>
+
+console.log("Hopper, Grace\nMcCarthy, John\nRitchie, Dennis"
+	.replace(/([\w ]+), ([\w ]+)/g, "$2 $1"));		<span class="nota">// Grace Hopper John McCarthy Dennis Ritchie</span>
+</span>
+</pre>
+In quest'ultimo esempio $1 e $2 fanno riferimento ai gruppi (fra parentesi tonde) rappresentati all'interno del pattern. Da notare il fatto che i due gruppi sono divisi da una virgola e uno spazio vuoto, pertanto andranno a rappresentare quelle parole che sono divise da una virgola e spazio scambiandosi di posizione. Mentre nell'esempio seguente i gruppi su cui avverrà lo scambio sono separati da un trattino (-)
+<pre>
+<span class="azzurro">
+console.log("20-40\n30-60\n40-80"
+    .replace(/([\d ]+)-([\d ]+)/g, "$2 $1"));			<span class="nota">// 40 20 60 30 80 40</span>
+</span>
+</pre>
+è anche possibile passare una funzione come secondo argomento per <q>replace</q> 
+<pre>
+var s = "the cia and fbi";
+console.log(s.replace(/\b(fbi|cia)\b/g, function(str) {
+	return str.toUpperCase();
+}));								<span class="nota">// the CIA and FBI</span>
+</pre>
+</p>
+
+<h2>Il metodo search</h2>
+
+<p>
+Il metodo <b>indexOf</b> dell'oggetto <q>String</q> non può essere utilizzato nelle regular expression però esiste il metodo <b>search</b>  che restituisce lo stesso risultato
+<pre>
+<span class="azzurro">
+console.log("  word".search(/\S/));				<span class="nota">// 2 (ci sono due spazi prima della parola 'word')</span>
+console.log("    ".search(/\S/));				<span class="nota">// -1 (non essendoci caratteri che non siano whitespace)</span>
+</span>
+</pre>
+Purtroppo per il metodo <em>search</em> non esistono possibilità che il riscontro possa iniziare ad una determinata posizione come per <q>indexOf</q> 
+</p>
+
+<h2>Esempi </h2>
+
+<p>
+			Creare un pattern che consenta parole senza la lettera e 
+<pre>
+var pattern = /^([^e])+$/g;
+<span class="azzurro">console.log(pattern.test('far'));				<span class="nota">// true</span>
+console.log(pattern.test('fare'));				<span class="nota">// false</span>
+console.log(pattern.test('far un cazzo'));			<span class="nota">// true</span>
+</span>
+</pre>
+			Estrarre parti di un URL
+<pre>
+var url = "http://xxx.domain.com";
+<span class="azzurro">console.log(/[^:]+/.exec(url)[0].substr(0));			<span class="nota">// http </span>
+console.log(/[^.]+/.exec(url)[0].substr(7));			<span class="nota">// xxx </span>
+console.log(/[^.]+/.exec(url)[0].substr(0));			<span class="nota">// http://xxx </span>
+console.log(/\/\/\S+/.exec(url)[0].substr(6));			<span class="nota">// domain.com</span>
+</span>
+</pre>
+		Dare un colore differente ad una parola 
+<pre>
+function coloraParole(nodo){
+	var elem = document.querySelectorAll(nodo);
+	for(var a=0; a &lt;  elem.length; a++){
+		var testoNodo = elem[a].firstChild.nodeValue; 	
+		var pattern1 =	new RegExp((arguments[1]), "gm");
+		var pattern2 =	new RegExp(arguments[2], "gm");
+
+		var uno = testoNodo.replace(pattern1, "&lt;span class='nota'&gt; "+arguments[1]+"&lt;/span&gt; ");
+		var primo =	elem[a].innerHTML = uno;
+
+		var due = primo.replace(pattern2, "&lt;span class='azzurro'&gt; "+arguments[2]+"&lt;/span&gt; ");
+		elem[a].innerHTML = due;
+	}
+}
+<span class="azzurro">
+coloraParole("pre", "function", "this");			<span class="nota">// Colora, all'interno delle'elemento 'pre', le parole passate come argomenti 1 e 2 </span>
+</span>
+</pre>
+			Una piccola variante della precedente (assegna un colore diverso ad alcune parole) 
+<pre>
+function coloraTesto(nodo){
+	var elem = document.querySelectorAll(nodo);
+	for(var a=0; a &lt; elem.length; a++){
+		var testoNodo = elem[a].firstChild.nodeValue; 	
+<span class="azzurro">//		var pattern = " ";</span>
+		var pattern = /\s/gm;
+		var splitStringa = testoNodo.split(pattern);
+		elem[a].innerHTML = "";
+
+		for(var i=0; i &lt; splitStringa.length; i++){
+			if(splitStringa[i] === "divo"){
+				elem[a].innerHTML +=	"&lt;span class='nota'&gt;" +splitStringa[i]+ "&lt;/span&gt;  ";
+			}else if(splitStringa[i] === "Jon"){ 
+				elem[a].innerHTML +=	"&lt;span class='azzurro'&gt; " +splitStringa[i]+ "&lt;/span&gt;  ";
+			}else{
+				elem[a].innerHTML += splitStringa[i]+ " ";
+			}
+		}
+	}
+}
+
+</pre>
+
+
+
+</p>
+
+
+
+
+<script type="text/javascript">
+
+
+//var text = "cat, bat, sat, fat, pk, at, hat, gate, jk";
+/*
+var pat = /(48)+/;
+var text = "448";
+console.log(pat.test(text) );
+*/
+
+//var matches = pat.exec(text);
+//console.log(matches);
+
+//console.log("one two 100".match(/\d+/));
+
+/*
+var match = /\d+/.exec("one two 100");
+console.log(match);
+console.log(match.index);
+console.log(match.input);
+console.log(match[0]);
+//console.log(/\d+/.exec("123"));
+*/
+
+/*
+var text = "thhis is a test";
+var pattern = /is/;
+var matches = pattern.exec(text);
+console.log(matches.index);
+console.log(matches.input);
+console.log(matches[0]);
+console.log(matches[1]);
+console.log(matches[2]);
+*/
+
+//var quotedText = /'([^']*)'/;
+//console.log(quotedText.exec("she said 'hello'"));
+
+/*
+var pattern = /^\d{2}-\d{2}-\d{4}$/;
+console.log(pattern.test("25-15-2012"));
+*/
+
+
+//var pattern = /^([a-d]|[f-z])+\s+$/g;
+//var pattern = /\b([a-d]|[f-z])+\b/g;
+
+var pattern = /^([a-d])|([f-z])+$/g;
+var testo = 'farune cazzo';
+//console.log(pattern.test(testo));
+
+
+//var url = "http://xxx.domain.com";
+//var url = "ab:cd:efghi";
+//	(/[^.]+/.exec(url)[0].substr(7));							// "xxx"
+//console.log(url.length -1);
+//var l = url.length -1;
+//console.log(/\/\/\S+/.exec(url)[0].substr(6));					// 
+
+var re = /d(b+)(d)/i;
+var arr = re.exec("cdbBdbsbz");									// dbBd  bB  d 
+//console.log(arr);											// dbBd 
+
+var matches = /hello \S+/.exec('This is a hello world!');
+//console.log(matches[0]);
+
+var myRe = /ab*/g;
+var str = "abbcdefabh";
+var myArray;
+while ((myArray = myRe.exec(str)) !== null)
+{
+  var msg = "Found " + myArray[0] + ".  ";
+  msg += "Next match starts at " + myRe.lastIndex;
+  console.log(msg);
+}
+
+
+</script>
+
+
+
+
+
+<!--
+
+var text = "000-00-0000";
+var pattern = /\d{3}-\d{2}-\d{4}/;
+// ww w . j  a  va2s  .c o m
+if (pattern.test(text)){
+    console.log("The pattern was matched.");
+}
+
+-->
+
+
+
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+
+</body>
+</html>

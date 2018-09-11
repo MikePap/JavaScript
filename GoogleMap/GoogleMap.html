@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>Google Map  </title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+#mappa { position:relative; margin:20px; width:60%; height:60%;  }
+
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.codice{color:green; }
+
+</style>
+
+</script>
+<script type="text/javascript">
+function initialize() {
+	var latlng = new google.maps.LatLng(-34.397, 150.644);
+	var myOptions = {
+		zoom: 8,
+		maxZoom: 12,	// impostazione del valore massimo dello zoom (oltre questo valore non è possibile ingrandire)
+		center: latlng,
+		//mapTypeId: google.maps.MapTypeId.HYBRID,
+		mapTypeId: 'hybrid'					// NO --> HYBRID  SI --> hybrid 
+	}; // myOptions
+	var map = new google.maps.Map(document.getElementById("mappa"), myOptions);
+} // "initialize" 
+
+</script>
+</head>
+
+<body>
+
+
+<div id="mappa"></div>
+
+<h3>Parametro <q>sensor</q> e <q>language</q></h3>
+<p>
+La <b>"Google Maps API Version 3"</b> (<span class="codice">http://maps.googleapis.com/maps/api/js</span>) richiede di specificare il parametro "sensor" per specificare se la tua applicazione stia usando un sensore (tipo un GPS locator) per determinare la posizione. Questo parametro è più che altro importante per i mobile: <br />
+<code class='codice'>
+&lt;script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"&gt;&lt;/script&gt;  
+</code>
+</p>
+<p>
+Il parametro <q>language</q> da passare dopo il parametro <q>sensor</q> è indicativo per la ligua che Google utilizzerà nella mappa. Se omesso sarà il browser che gestirà la lingua. Ma se per la mappa non crea problemi diventa utile quando si vuole ottenere ad esempio la descrizione del percorso (vedi "Descrizione_Percorso.html"); in questo caso se omesso si avrà una descrizione del percorso mista di inglese e italiano, mentre se impostato (language=it) la descrizione sarà perfettamente in Italiano   
+</p>
+
+<h3>meta tag</h3>
+<p>
+Il tag meta: <br /> 
+<code class='codice'>
+	&lt;meta name="viewport" content="initial-scale=1.0, user-scalable=no" /&gt;
+</code><br />
+sta ad indicare che la mappa deve essere visualizzata full-screen e non essere modificabile dall'utente. E' indicato utilizarlo per i dispositivi mobili. In tal caso diventa utile la prprietà <b>navigator.userAgent</b> che permette di intercettare che tipo di dispositivo è collegato --> <a href='http://code.google.com/intl/it-IT/apis/maps/documentation/javascript/basics.html#Mobile'>vedi qui per ulteriori approfondimenti.</a> 
+</p>
+
+<h3>Latitudine e Longitudine</h3>
+<p>
+Le coordinate geografiche di <b>Latitudine s Longitudine</b> sono espresse nella classe <b>"google.maps.LatLng"</b>. La latitudine viene sempre indicata per prima e non sono modificabili. 
+</p>
+
+<h3 >Opzioni</h3>
+<p>
+La variabile <q>myOptions</q> racchiude delle proprietà che è possibile impostare.  
+<a href="http://code.google.com/intl/it-IT/apis/maps/documentation/javascript/reference.html#MapOptions">vedere qui</a>. <br /> 
+Le obbligatorie sono: 
+<ul>
+	<li><b>"zoom"</b>: valore di zoom iniziale (da 1 a 21)</li>
+	<li><b>"center"</b> si specifica che l'indirizzo che si vuole evidenziare sulla mappa attraverso le coordinate di 'Latitudine' e 'Longitudine' siano poste al centro del div contenitore </li>
+	<li>
+		<b>"mapTypeId"</b>: supporta 4 diverse tipologie di visualizzazione:
+		<ul>
+			<li>ROADMAP:  </li>
+			<li>SATELLITE </li>
+			<li>HYBRID </li>
+			<li>TERRAIN </li>
+		</ul>		
+	</li>
+</ul>
+</p>
+
+<h3>Trovare le coordinate di Latitudine e Longitudine</h3>
+<p>
+<ul>
+	<li>Fai clic con il pulsante destro del mouse sul punto desiderato della mappa per visualizzare un menu di opzioni.</li>
+	<li>Nel menu, seleziona <b>Che cosa c'è qui?</b></li>
+	<li>Le coordinate saranno visualizzate nel campo di ricerca di google</li>
+	
+	
+</ul>
+</p>
+
+<!--
+vecchio procedimento
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+-->
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGdgU_LiffVIA7leAWvnyfy_DxUa90O-g&callback=initialize" async defer></script>
+
+
+</body>
+</html>

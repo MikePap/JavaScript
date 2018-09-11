@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title> Result dati formattati con i CSS </title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+<style type="text/css">
+.rosso{
+color:red;
+}
+
+</style>
+</head>
+<!--
+http://localhost/JavaScript/Miei/resultDatiHTML.html
+-->
+
+<body>
+
+<h1>Restituzione di dati formattati in html</h1>
+<p>
+I dati arrivano dal file <span class="azzurro">risultati_tennis-game.php</span> da cui gli sono stati trasmessi dal file <span class="azzurro">InserimentoDatiHTML.html</span>. <br />
+Non c'è bisogno di inserire i tag di chiusura &lt;/body&gt; e &lt;/html&gt; perchè quando il comando <span class="codice">fwrite</span> inserisce il contenuto tronca tutto il testo quello che segue. Questo grazie al fatto che il browser non vedendoli li aggiunge di conseguenza.
+</p>
+
+
+<!--
+Per ottenere il formato in HTML con gli stili appropriati non c'è bisogno di inserire i tag di chiusura </body> e </html> perchè quando il comando 'fwrite' inserisce il contenuto tronca tutto quello che segue il contenuto inserito. 
+-->
+
+
+
+<b>Dato:</b> <span class='nota'>
+	ciao bello
+</span><br>
+<b>Dato:</b> <span class='nota'>
+	ciao bello
+</span><br>
+<b>Dato:</b> <span class='nota'>
+	ciao bello
+</span><br>

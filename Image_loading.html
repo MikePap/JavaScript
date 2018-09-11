@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Caricamento Immagini </title>
+<link rel="stylesheet" href="../baseLocali.css" type="text/css"/>
+<style type="text/css">
+
+.in_caricamento{
+display: block;
+}
+
+.fine_caricamento{
+display: none;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Caricamento immagini</h1>
+
+<p>
+Naturalmente immagini grandi e pesanti impiegano del tempo per essere caricate completamente. Se si va ad eseguire una qualche funzione su di esse, per esempio un'animazione o il rilevamento delle dimensioni di «width», il codice potrebbe restituire un errore dovuto al fatto che l'immagine non è stata caricata del tutto. <br>
+In questo caso ci viene in soccorso l'evento <span class="nota">load</span>, che scatta a fine caricamento e ci permette di creare un gestore dell'evento con una funzione di callback.
+</p>
+
+<div id="js-loading">In Caricamento</div> 
+
+
+<img name="imm_deserto" src="../jQuery/Immagini/high_desert.jpg" >
+
+<!--
+<img name="imm_deserto" src="../jQuery/Immagini/high_desert.jpg" >
+<img name="imm_deserto" src="../jQuery/Immagini/ulivo01-1.png" >
+-->	
+
+
+<script type="text/javascript">
+
+var img = document.querySelector("img");
+
+img.addEventListener("load", removeLoadingClass);
+
+function removeLoadingClass() {
+	document.querySelector('#js-loading').style['display'] = 'none';
+}
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+/*
+function load_img(){
+	if(document.imm_deserto.complete == true)
+		document.write("The image has finished loading.");
+	else
+		document.write("Caricamento ...");
+}; // 
+	 
+load_img();
+*/
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

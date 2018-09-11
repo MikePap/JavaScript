@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>MarkerImage  </title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.nota{color:orange;}
+.codice{color:green;}
+
+#map_canvas{ position:relative; margin:20px; width:80%; height:80%;  }
+
+</style>
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=it">
+</script>
+
+<script type="text/javascript">
+
+function initialize() {
+var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
+var myOptions = {
+zoom: 4,
+center: myLatlng,
+mapTypeId: google.maps.MapTypeId.ROADMAP
+} // 'myOptions'
+
+var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    
+// http://code.google.com/intl/it-IT/apis/maps/documentation/javascript/reference.html#MarkerImage 
+var image = new google.maps.MarkerImage(
+	'../../Immagini/sfondi/Tibetan-Flag.png',		// impostazione proprietà 'url' (url dell'immagine' locale o remota)
+	// This marker is 31 pixels wide by 31 pixels tall.
+	new google.maps.Size(31, 31),				// impostazione proprietà 'size' (l'img si può rimpicciolire ma non ingrandire)
+	// The origin for this image is 0,0.
+	new google.maps.Point(0,0),				// impostazione proprietà 'origin' (???)
+	// The anchor for this image is the base of the flagpole at 0,32.
+	 new google.maps.Point(0, 31)				// impostazione proprietà 'anchor' (posizionamento dell'img')
+
+//	ci sarebbe un altra prprietà: 'scaledSize' => che rappresenta la dimensioni dell'img dopo essere stata scalata se ciò avvenisse  			
+); // 'image' 
+
+/*
+  var shadow = new google.maps.MarkerImage('images/beachflag_shadow.png',
+      // The shadow image is larger in the horizontal dimension
+      // while the position and offset are the same as for the main image.
+      new google.maps.Size(37, 32),
+      new google.maps.Point(0,0),
+      new google.maps.Point(0, 32));
+      // Shapes define the clickable region of the icon.
+      // The type defines an HTML &lt;area&gt; element 'poly' which
+      // traces out a polygon as a series of X,Y points. The final
+      // coordinate closes the poly by connecting to the first
+      // coordinate.
+  var shape = {
+      coord: [1, 1, 1, 20, 18, 20, 18 , 1],
+      type: 'poly'
+  };
+*/
+
+var marker = new google.maps.Marker({
+position: myLatlng, 
+map: map,
+//icon: "../../Immagini/sfondi/Tibetan-Flag.png",
+icon: image,
+//shadow: shadow,  
+title:"Hello World!"
+});   
+
+
+} // "initialize" 
+
+</script>
+
+</head>
+<!-- <body onload=""> -->
+<body>
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+initialize();
+
+}); // chiude ready 
+</script>
+
+
+<div id="map_canvas"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

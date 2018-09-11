@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Animazioni con requestAnimationFrame  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); margin:10px 50px; }
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150); margin:10px 40px;}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20); margin:10px 31px;}
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+code, pre{ color:rgb(20,150,30); font-weight:bold; background:rgb(235,245,255); padding:10px;}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grassetto{font-weight:bold;}
+
+
+#par{
+position:absolute; top:300px; left:100px; text-align:center;	width:250px; background:yellow;		border: 1px solid;
+}
+
+#parAnimato{
+position:absolute; top:350px; /*left:100px;*/ text-align:center;	width:200px; background:red;		border: 1px solid;
+}
+
+
+</style>
+</head>
+<body>
+
+
+<h1>Animazioni con requestAnimationFrame</h1>
+
+<p>
+La funzione <b>requestAnimationFrame</b> non fa altro che dire al browser che si desidera eseguire un'animazione pertanto il browser aggiorna la funzione passata come argomento fino a  portare a compimento l'animazione richiesta. <br />
+La funzione di <em>callback</em> passata come argomento deve anche essa stessa richiamare <q>requestAnimationFrame</q> 
+</p>
+<pre>
+requestAnimationFrame(callback);
+</pre>
+
+<p id="par">elemento statico a left:100px </p>
+<p id="parAnimato">paragrafo animato</p>
+
+
+<h3>cancelAnimationFrame </h3>
+
+<p>
+La funzione <tt>cancelAnimationFrame </tt> cosi come <em>clearTimeout</em> cancella il frame creato da <tt>requestAnimationFrame</tt>
+</p>
+
+
+<script type="text/javascript">
+
+window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                              window.webkitRequestAnimationFrame || window.oRequestAnimationFrame;
+
+
+//var start = -1000;
+var start = null;
+/*
+La variabile 'start' indica il valore dell'inizio dell'animazione. Dato che in questo esempio si vuol animare la proprietà 'left' il valore di 'start' influenza il valore della 'left'. Ponendo 'start' a null o zero è come se ponessimo 'left' uguale a zero. 
+Ora, dato che nell'esempio si vuole portare la 'left' ad un valore massimo di 200px, se si vuole far partire l'elemento da zero si può impostare 'start' a null o zero. Se per esempio si vuol far partire l'elemento da un 100px di 'left' si deve porre 'start' ad un valore che sia la metà di 2000 ma negativo: -1000
+
+	var start = -1000;				// l'animazione parte da una left di 100px
+
+*/
+
+var d = document.getElementById("parAnimato");
+
+function step(timestamp) {
+	var progress;
+	if (start === null) start = timestamp;
+	progress = timestamp - start;
+//	d.style.left = Math.min(progress/10, 200) + "px";
+	d.style.left = Math.min(progress/10, 200) + "px";
+
+	if (progress < 2000) {
+		requestAnimationFrame(step);
+//		return;
+	}
+}
+
+requestAnimationFrame(step);
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

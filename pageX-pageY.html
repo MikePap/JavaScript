@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title> pageX - pageY </title>
+<style type="text/css">
+
+/* h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} */
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+
+code, pre{ color:rgb(50,150,50);}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grigio{color: grey;}
+.blu{color:#00f;}
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+
+div { width:50px; height:70px; float:left; margin:5px;
+        background:rgb(255,140,0); cursor:pointer; }
+		
+		
+</style>
+
+
+<script type="text/javascript">
+
+function function1(myEvent) { 
+   document.getElementById("myX").innerHTML = myEvent.pageX;
+   document.getElementById("myY").innerHTML = myEvent.pageY; 
+} 
+document.onmousemove = function1;
+</script>
+
+</head>
+<body>
+
+<h1> pageX - pageY </h1>
+
+<p class="nota"> <span class="codice"> Proprietà di sola lettura </span><br />
+Ottiene le coordinate X e Y relative alla posizione del cursore (mouse) sulla pagina <br />
+Si applica ad un evento
+</p>
+
+
+
+
+<p><b>Page X Coordinate:</b> <span id="myX">0</span></p>
+<p><b>Page Y Coordinate:</b> <span id="myY">0</span></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

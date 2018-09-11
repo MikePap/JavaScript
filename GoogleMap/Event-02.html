@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>Event 02 </title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.nota{color:orange;}
+.codice{color:green;}
+
+#map_canvas{ position:relative; margin:20px; width:80%; height:80%;  }
+
+</style>
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=it">
+</script>
+
+<script type="text/javascript">
+
+function initialize() {
+        var myOptions = {
+          zoom: 4,
+          center: new google.maps.LatLng(-25.363882,131.044922),
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
+
+        google.maps.event.addListener(map, 'click', function(e) {
+          placeMarker(e.latLng, map);
+        });
+      } // "initialize"
+
+// La funzione aggiunge un marcatore alla mappa però poi ... 
+      function placeMarker(position, map) {
+        var marker = new google.maps.Marker({
+          position: position,
+          map: map
+        });
+        map.panTo(position);	// ... con il metodo 'panTo' della classe "google.maps.Map" si assegna il centro mappa alla posizione passata nel parametro. In questo caso il valore di 'position' è creato dal click del mouse (vedi riga 34)
+      }
+
+// Caricamento della funzione 
+      google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+
+</head>
+<!-- <body onload=""> -->
+<body>
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+//initialize();
+
+}); // chiude ready 
+</script>
+
+<p>Particolare di questo script è il fatto che ogni volta che avviene l'evento 'click' col mouse viene aggiunto un marcatore ed allo stesso tempo il marcatore diventa il punto centrale della mappa. In altre parole sposta la mappa. </p>
+
+
+<div id="map_canvas"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

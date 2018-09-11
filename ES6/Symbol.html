@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title> Symbol  </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css" /> 
+
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+
+<h1>Symbol</h1>
+
+<p>
+<b>Symbol</b> è il nuovo <q>tipo primitivo</q> che ES6 ha introdotto in aggiunta ai vecchi sei: Undefined, Null, Boolean, Number, String e Object.  
+</p>
+<pre>
+let symbol1 = Symbol();
+typeof symbol1						<span class="nota">// symbol</span>
+</pre>
+<p>
+Symbol accetta un parametro in cui è possibile aggiungere una descrizione del simbolo
+</p>
+<pre>
+let symbol2 = Symbol('simbolo 2 ');
+console.log(Symbol(symbol2));				<span class="nota">// simbolo 2</span>	
+</pre>
+
+<p>
+Ogni simbolo restituito da Symbol è unico ed ha la sua propria identità 
+</p>
+<pre>
+symbol1 === symbol2					<span class="nota">// false</span>
+</pre>
+
+<h3>Symbol come chiave di una proprietà</h3>
+
+<p>
+I Symbol possono essere utilizzati come chiave di proprietà di oggetti e messi fra parentesi quadre e non con l'uso del punto.
+</p>
+<pre>
+const MY_KEY = Symbol();
+let obj = {};
+obj[MY_KEY] = 123;
+<span class="azzurro">
+console.log(obj[MY_KEY]);				<span class="nota">// 123</span>
+</span>
+</pre>
+
+<p>
+Oppure lo possiamo specificare attraverso un espressione di questo tipo
+</p>
+<pre>
+const MY_KEY = Symbol();
+
+	let obj = {
+		[MY_KEY]: 123
+	};
+</pre>
+<p>Oppure come una definizione di un metodo</p>
+<pre>
+const FOO = Symbol();
+
+let obj = {
+	[FOO]() {
+		return 'bar';
+	}
+};
+<span class="azzurro">
+console.log(obj[FOO]());				<span class="nota">// bar</span>
+</span>
+</pre>
+
+<h3>Enumerare le chiavi delle proprietà</h3>	
+
+<p>
+Data la nuova presenza di Symbol fra le caratteristiche di JavaScript ora si può benissimo affermare che le chiavi delle proprietà possono essere sia stringhe che simboli mentre i nomi delle proprietà possono essere soltanto stringhe. <br />
+Proviamo ad esaminare il seguente oggetto
+</p>
+<pre>
+let obj = {
+	[Symbol('my_key')]: 1,
+	enum: 2,
+	nonEnum: 3
+};
+
+Object.defineProperty(obj,
+'nonEnum', { enumerable: false });
+</pre>
+
+<p>
+Se utilizziamo il metodo <q>getOwnPropertyNames</q> per verificare che una specificata proprietà appartiene ad un oggetto, notiamo che i simboli vengono ignorati 
+</p>
+<pre>
+Object.getOwnPropertyNames(obj);			<span class="nota">// ['enum', 'nonEnum']</span>			
+</pre>
+<p>
+mentre  utilizzando il metodo <q>getOwnPropertySymbols</q> saranno le stringhe ad essere ignorate e al contrario otterremo Symbol sotto forma di array
+</p>
+<pre>
+Object.getOwnPropertySymbols(obj)			<span class="nota">// [Symbol(my_key)]</span>
+</pre>
+
+<p>
+A soddisfare tutti c'è il metodo <q>Reflect.ownKeys</q> che restituisce sia stringhe che simboli (ma al momento non mi funziona sia in Chrome che in Firefox)
+</p>
+<pre>	
+Reflect.ownKeys(obj);					<span class="nota">// [Symbol(my_key), 'enum', 'nonEnum']</span>
+</pre>
+
+<p>
+Infine a riguardo del metodo <q>Object.keys</q> c'è da ricordare che restituisce soltanto le proprietà enumerabili e quindi nel nostro caso avremo
+</p>
+<pre>
+Object.keys(obj)					<span class="nota">//  ['enum']</span>
+</pre>
+
+<h3>Symbol come chiave di proprietà interne</h3>
+
+<p>
+Symbol non offre una garanzia per privatizzare valori, perchè è oltretutto semplice conoscere il valore della proprietà contrassegnata da 
+Symbol; pertanto se vogliamo evitare l'accesso a proprietà dall'esterno dobbiamo utilizzare <b>WeakMap</b> o le closure
+</p>
+<pre>
+const PASSWORD = new WeakMap();
+
+class Login {
+	constructor(name, password) {
+		this.name = name;
+		PASSWORD.set(this, password);
+	}
+
+	hasPassword(pw) {
+		return PASSWORD.get(this) === pw;
+	}
+}
+</pre>
+<p>
+Questo script può essere riscritto anche con Symbol
+</p>
+<pre>
+const PASSWORD = Symbol();
+
+class Login {
+	constructor(name, password) {
+		this.name = name;
+		this[PASSWORD] = password;
+	}
+
+	hasPassword(pw) {
+		return this[PASSWORD] === pw;
+	}
+}
+</pre>
+
+
+<h3>Oggetti wrapper per Symbol</h3>
+
+<p>
+C'è un modo per creare oggetti wrapper (istanze di <q>Symbol:Object</q>) chiamati come funzioni
+</p>
+
+<pre>
+let sym = Symbol();
+<span class="azzurro">
+typeof sym						<span class="nota">// symbol</span>
+</span>
+let wrapper = Object(sym);						
+<span class="azzurro">
+typeof wrapper						<span class="nota">// object</span>
+wrapper instanceof Symbol				<span class="nota">// true</span>
+</span>
+</pre>
+
+<p>Per accedere alle proprietà di questi oggetti si può usare l'operatore [] (parentesi quadra)  </p>
+<pre>
+const sym = Symbol('yes');
+let obj = {
+	[sym]: 'a',
+	str: 'b',
+};
+
+
+let wrappedSymbol = Object(sym);
+<span class="azzurro">typeof wrappedSymbol					<span class="nota">// object</span>
+obj[wrappedSymbol]					<span class="nota">// a</span>
+</span>
+let wrappedString = new String('str');
+<span class="azzurro">typeof wrappedString					<span class="nota">// object</span>
+obj[wrappedString]					<span class="nota">// b</span>
+</span>
+</pre>
+
+
+
+
+
+
+
+<br /> <br /> <br /><br /> <br /> <br /><br /> <br /> <br />
+
+
+
+</body>
+</html>
+

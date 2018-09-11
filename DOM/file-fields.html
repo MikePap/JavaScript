@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>File field</title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+<style type="text/css">
+
+#form-es-mdn{
+margin:1em;
+}
+
+#label-esempio-mdn{
+padding: 0.5em; 
+cursor: pointer;
+border: 1px solid #ccc;	
+background: rgb(180,20,0);
+}
+
+</style>
+</head>
+<body>
+
+<h1>type file </h1>
+
+<p>
+L'elemento &lt;input&gt; con l'attributo «type="file"» permette all'utente di caricare sul server uno o più file dal proprio sistema.
+</p>
+
+
+<p>
+La proprietà <b>file</b> di un <q>elemento file</q> è un oggetto di tipo array (non un vero è proprio array) contenente i files scelti nel campo. E quindi inizialmente vuoto. Il campo <q>file</q> ha quindi un'attributo <b>multiple</b> che permette di caricare più di un file. 
+<pre>
+&lt;input type="file" multiple&gt; 
+</pre>
+</p>
+<p>
+Gli oggetti del campo <q>file</q> ha proprietà come <q>name, size e type</q> che appunto permette di recuperare rispetteivamente il nome, la grandezza e il tipo del file scelto dal campo. Non ha invece una proprietà che gli permette di ottenere il contenuto del file.  <br />
+A questo provvede Javascript con l'oggetto costruttore <b>FileReader </b>. (vedere l'esempio)
+</p>
+
+
+<input id="primoInput" type="file" multiple>
+
+
+<h2>Limitare l'accesso ai file</h2>
+
+<p>
+L'attributo <span class="nota">accept</span> permette di limitare il caricamento dei file. Ciò a dire che quando l'utente clicca sul pulsante, la finestra del sistema che si aprirà visualizzerà solo i file passati all'attributo. <br>
+Nell'esempio seguente, la finestra di caricamento mostrerà soltanto i file di tipo "jpg", "jpeg" e "png".
+</p>
+<pre>
+&lt;form&gt;
+	&lt;div&gt;
+		&lt;label for="profile_pic"&gt;Seleziona il file&lt;/label&gt;
+		&lt;input type="file" id="profile_pic" name="profile_pic" accept=".jpg, .jpeg, .png" &gt;
+	&lt;/div&gt;
+	&lt;div&gt;
+		&lt;button&gt;Submit&lt;/button&gt;
+	&lt;/div&gt;
+&lt;/form&gt;
+</pre>
+
+<h3>Esempi di impostazione dell'attributo «accept»:</h3>
+
+<dl>
+	<dd>accept="image/png" or accept=".png"</dd>
+	<dd>accept="image/png, image/jpeg" or accept=".png, .jpg, .jpeg"</dd>
+	<dd>accept="image/*"</dd>
+	<dd>accept="video/*"</dd>
+	<dd>accept="audio/*"</dd>
+	<dd>accept="audio/*,video/*,image/*"</dd>
+	<dd>accept=".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"</dd>
+</dl>
+<p>
+Quest'ultimo accetta qualsiasi cosa che riguarda un documento «word» di Microsoft. <br>
+Mentre <b>"image/*"</b>, come è facile intuire, accetta tutti i file immagine. In questo modo molti dispositivi mobile permettono all'utente di  scattare una foto. <br>
+La virgola è utilizzata per separare più valori.
+</p>
+
+<p>
+L'attributo «accept» è ben supportato dai vari browser.
+</p>
+
+<script>
+
+/*
+var input = document.querySelector("input");
+input.addEventListener("change", function() {
+	if (input.files.length > 0) {
+		var file = input.files[0];
+		console.log("You chose", file.name);
+		if (file.type)
+			console.log("It has type", file.type);
+	}
+});
+*/
+
+
+var input = document.querySelector("#primoInput");
+input.addEventListener("change", function() {
+	Array.prototype.forEach.call(input.files, function(file) {
+		var reader = new FileReader();
+		reader.addEventListener("load", function() {
+			console.log(file.type);
+			console.log("File", file.name, "starts with: ", 	reader.result.slice(0, 20));		// caricare solo 20 byte 
+//			console.log("File", file.name, "starts with: ", 	reader.result.slice(0, file.size));			// caricare l'intero file tramite la proprietà 'size'
+//	la proprietà 'size' restituisce i byte del file  che sembrano essere un pò maggiori della sua lunghezza
+		});
+		reader.readAsText(file);
+	});
+});
+
+/*
+// FileReaders also fire an "error" event when reading the file fails for any reason. The error object itself will end up in the reader’s error property
+ 
+function readFile(file) {
+	return new Promise(function(succeed, fail) {
+		var reader = new FileReader();
+		reader.addEventListener("load", function() {
+			succeed(reader.result);
+		});
+		reader.addEventListener("error", function() {
+			fail(reader.error);
+		});
+
+		reader.readAsText(file);
+	});
+}
+*/
+
+</script>
+
+
+
+<h2>Leggere il contenuto di un file immagine </h2>
+
+<p>
+In altre parole si tratta di un caricamento di un immagine dal proprio computer grazie al metodo <b>readAsDataURL</b> 
+</p>
+
+
+
+<input type="file" id="inputImmagine" onchange="previewFile()"><br>
+<img src="" height="400" alt="Image preview...">
+
+
+<script type="text/javascript">
+
+function previewFile() {
+	var preview = document.querySelector('img');
+//var file    = document.querySelector('input[type=file]').files[0];
+	var file    = document.querySelector('#inputImmagine').files[0];
+
+	var reader  = new FileReader();
+
+//	reader.onloadend = function () {					// scatta sia in caso di successo che di fallimento 
+	reader.onload = function () {						// scatta in caso di successo 
+		preview.src = reader.result;
+	}
+
+	if (file) {
+		reader.readAsDataURL(file);
+	} else {
+		preview.src = "";
+	}
+}
+
+
+</script>
+
+
+
+<h2>Ottenere la lunghezza del file </h2>
+
+<p>
+Il metodo <b>readAsArrayBuffer(blob)</b>  può essere utilizato per ottenere la lunghezza in byte del file caricato.
+</p>
+
+
+<input id="inputTerzo" type="file" multiple>
+
+<script type="text/javascript">
+
+
+var input = document.querySelector("#inputTerzo");
+input.addEventListener("change", function() {
+	Array.prototype.forEach.call(input.files, function(file) {
+		var reader = new FileReader();
+		reader.addEventListener("load", function() {
+			console.log("File lungo: "	+reader.result.byteLength+ " bytes");					// restituisce il numero dei byte del file
+//			console.log(reader.result);								// vedere nella console la differenza dal precedente
+		});
+//		reader.readAsText(file);
+		reader.readAsArrayBuffer(file);
+	});
+});
+
+</script>
+
+
+
+<h3>Esempio da MDN </h3>
+
+<p>
+L'esempio seguente mostra, tra l'altro, come oscurare il campo &lt;input type="file"&gt; ed utilizzare il tag &lt;label&gt; per poter aprire la finestra per il caricamento delle immagini. <br>
+
+Da notare che il campo &lt;input&gt; è oscurato con la proprietà dei CSS <b>opacity</b>. Non bisogna invece utilizzare le proprietà «visibility: hidden» o «display: none» perchè in alcuni casi, il campo &lt;input&gt;, potrebbe essere interpretato come non interattivo. <br>
+
+L'input prevede la possibilità di caricare più immagini grazie all'attributo «multiple». Per farlo bisogna selezionarle all'interno della finestra di caricamento. 
+</p>
+
+<form id="form-es-mdn" >
+	<div>
+		<label id="label-esempio-mdn" for="image_uploads">Scegliere una immagine da caricare (PNG, JPG)</label>
+		<input type="file" id="image_uploads" name="image_uploads" accept=".jpg, .jpeg, .png" multiple>
+	</div>
+	<div class="anteprima">
+		<p>Non risultano file selezionati </p>
+	</div>
+	<div>
+		<button>Submit</button>
+	</div>
+</form>
+
+
+<script type="text/javascript">
+
+var input = document.querySelector('#image_uploads');
+var anteprima = document.querySelector('.anteprima');					// preview => anteprima
+input.style.opacity = 0;
+
+input.addEventListener('change', updateImageDisplay);
+
+function updateImageDisplay() {
+	while(anteprima.firstChild) {
+		anteprima.removeChild(anteprima.firstChild);
+	}
+
+	var curFiles = input.files;
+	if(curFiles.length === 0) {
+		var para = document.createElement('p');
+		para.textContent = 'No files currently selected for upload';
+		anteprima.appendChild(para);
+	} else {
+		var list = document.createElement('ol');
+		anteprima.appendChild(list);
+		for(var i = 0; i < curFiles.length; i++) {
+			var listItem = document.createElement('li');
+			var para = document.createElement('p');
+			if(validFileType(curFiles[i])) {
+				para.textContent = 'File name ' + curFiles[i].name + ', file size ' + returnFileSize(curFiles[i].size) + '.';
+				var image = document.createElement('img');
+				image.src = window.URL.createObjectURL(curFiles[i]);		// diverso dal metodo "readAsDataURL" visto su
+				image.style['width'] = "100px";									// impostato da me
+				listItem.appendChild(image);
+				listItem.appendChild(para);
+			} else {
+//				Il seguente non sarà mai restituito perchè l'attributo «accept» non permetterà di visualizzare file di tipo diverso
+//				A meno che il browser non supporta l'attributo «accept»				
+				para.textContent = 'File name ' + curFiles[i].name + ': Not a valid file type. Update your selection.';
+				listItem.appendChild(para);
+			}
+
+			list.appendChild(listItem);
+		}
+	}
+}
+
+var fileTypes = [
+	'image/jpeg',
+	'image/pjpeg',
+	'image/png'
+]
+
+function validFileType(file) {
+	for(var i = 0; i < fileTypes.length; i++) {
+		if(file.type === fileTypes[i]) {
+			return true;
+		}
+	}
+
+  return false;
+}
+
+
+function returnFileSize(number) {
+	if(number < 1024) {
+		return number + 'bytes';
+	} else if(number > 1024 && number < 1048576) {
+		return (number/1024).toFixed(1) + 'KB';
+	} else if(number > 1048576) {
+		return (number/1048576).toFixed(1) + 'MB';
+	}
+}
+
+</script>
+
+
+
+<br />
+<br />
+<br />
+<br />
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

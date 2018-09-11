@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>debugging  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(20,150,30); font-weight:bold;}
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(100,150,255);}
+.scuro{color:#333;}
+.rosso{color:red;}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+<h1>Debugging</h1>
+
+<h3>testing</h3>
+<p>
+Testare un programma consiste nel controllo della giusta esecuzione del codice. <br />
+
+<pre>
+<span class="grigio">
+Come esempio definiamo una funzione costruttore (Vector) e un suo metodo (plus):
+</span>
+function Vector(x, y) {
+	this.x = x;
+	this.y = y;
+}
+
+Vector.prototype.plus = function(other) {
+	return new Vector(this.x + other.x, this.y + other.y);
+};
+
+<span class="grigio">per testarlo possiamo agire in questo modo</span>
+
+function testVector() {
+	var p1 = new Vector(10, 20);
+	var p2 = new Vector(-10, 5);
+	var p3 = p1.plus(p2);
+
+	if (p1.x !== 10) return "fail: x property";
+	if (p1.y !== 20) return "fail: y property";
+	if (p2.x !== -10) return "fail: negative x property";
+	if (p3.x !== 0) return "fail: x from plus";			<span class="nota">// 10 + (-10) ==> 0 </span>
+	if (p3.y !== 25) return "fail: y from plus";			<span class="nota">// 20 + 5     ==> 25</span>
+	return "everything ok";
+}
+<span class="azzurro">
+console.log(testVector());						<span class="nota">// everything ok</span>
+</span>
+</pre>
+In pratica nella funzione di test <q>testVector</q> abbiamo creato degli oggetti con dei valori e dopo abbiamo creato delle verifiche nel caso tali valori vengano cambiati
+
+</p>
+
+
+<h3>Selective catching</h3>
+
+<p>
+
+<pre>
+function InputError(message) {
+	this.message = message;
+	this.stack = (new Error()).stack;
+}
+InputError.prototype = Object.create(Error.prototype);
+InputError.prototype.name = "InputError";
+
+function promptDirection(question) {
+	var result = prompt(question, "");
+	if (result.toLowerCase() == "left") return "L";
+	if (result.toLowerCase() == "right") return "R";
+	throw new Error("Invalid direction: " + result);
+}
+
+for (;;) {
+	try {
+		var dir = promptDirection("Where?");
+		console.log("You chose ", dir);
+		break;
+	}catch (e) {
+		if (e instanceof InputError)
+			console.log("Not a valid direction. Try again.");
+		else
+		throw e;
+	}
+}
+</pre>
+
+</p>
+
+
+<h3>Assertions</h3>
+<p>
+<q>Assertions</q> è uno strumento per fare dei basilari controlli degli errori nei programmi. 
+
+<pre>
+function AssertionFailed(message) {
+  this.message = message;
+}
+AssertionFailed.prototype = Object.create(Error.prototype);
+
+function assert(test, message) {
+  if (!test)
+    throw new AssertionFailed(message);
+}
+
+function lastElement(array) {
+	assert(array.length > 0, "empty array in lastElement");
+	return array[array.length - 1];
+	console.log('jk');	
+}
+<span class="azzurro">
+//lastElement(['a', 'b',]);			<span class="nota">non produce errore</span>
+lastElement([]);				<span class="nota">produce l'errore:  empty array in lastElement </span>
+</span>
+</pre>
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+</body>
+</html>

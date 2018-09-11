@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>ES6 Module  </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+</head>
+<body>
+
+<h1>ES6 Module</h1>
+
+<p>
+I moduli, della nuova versione ES6, possono esportare molteplici oggetti siano essi semplici variabili o funzioni JavaScript. 
+</p>
+
+<h3>Script module</h3>
+<p>
+La prima variazione da sottolineare riguarda il «type» da utilizzare in &lt;script&gt; che nel caso sarà "module". <br />
+Ovviamente questo riguarda quando dobbiamo importare degli scripts nel documento HTML
+</p>
+<pre>
+&lt;script type="module"&gt;
+
+	import { funzione } from 'mymodule';
+//....
+&lt;/script&gt;
+
+</pre>
+
+<h3>export e import</h3>
+
+<p>
+ Per eseguire un esportazione bisogna usare la parola chiave <b>export</b>
+</p>
+<pre>
+export function double(x) {
+	return x + x;
+};
+</pre>
+<p>
+Un modo alternativo a quello visto su potrebbe essere quello di  immagazzinare la funzione in una variabile 	
+</p>
+<pre>
+var double = function(x) {
+	return x + x;
+}
+export { double };
+</pre>
+
+<p>
+Per eseguire l'importazione dobbiamo usare la parola chiave <b>import</b>; pertanto volendo importare la funzione definita <em>double</em>
+</p>
+<pre>
+import { double } from 'mymodule';
+<span class="azzurro">
+double(2);					<span class="nota">// 4</span>			
+</span>
+</pre>
+<p>
+<q>mymodule</q> non è altro che il file .js che contiene la funzione <em>double</em> e non c'è bisogno di usare l'estensione .js (in Firefox è richiesto). <br>
+L'uso delle parentesi graffe intorno al nome della funzione è richiesto perchè potrebbe verificarsi la necessità di importare più funzioni allo stesso tempo. <br>
+Cioè se abbiamo definito le seguenti due funzioni <em>double</em> e <em>square</em>
+</p>
+
+<pre>
+var double = function(x) {
+	return x + x;
+}
+
+var square = function(x) {
+	return x * x;
+}
+
+export { double, square }
+</pre>
+
+<p>
+le possiamo importare nel seguente modo
+</p>
+<pre>
+import { double, square } from 'mymodule';
+<span class="azzurro">
+double(2);					<span class="nota">// 4</span>			
+square(3);					<span class="nota">// 9</span>
+</span>
+</pre>
+
+<p>Oppure un'altro modo per importare tutti i metodi e proprietà è quello dell'uso del simbolo *</p>
+
+<pre>
+import * as lib from 'allegati/module-1.js';		
+<span class="grigio">ATTENZIONE: bisogna utilizzare un parola simbolo che faccia riferimento alle funzioni (in questo caso ho usato 'lib') </span>	
+<span class="azzurro">
+console.log(lib.double(2));			<span class="nota">// 4</span>	
+console.log(lib.square(5));			<span class="nota">// 25</span>	
+</span>	
+</pre>
+
+
+<h3>Default exports</h3>
+
+<p>
+Il <tt>default export</tt> è un altro modo di esportare delle funzioni. Questo metodo può ritornare utile quando si sta lavorando con grandi librerie come per esempio jQuery. 
+</p>
+<pre>
+export default function(x) {
+	return x + x;
+}
+</pre>
+<p>
+per essere successivamente importato nel seguente modo 
+</p>
+<pre>
+import double from 'mymodule';
+<span class="azzurro">
+double(2);					<span class="nota">// 4</span>			
+</span>
+</pre>
+<p>
+Qui è da notare il fatto che non è necessario che l'oggetto da importare sia racchiuso in parentesi graffe. Cosi come è anche utile ricordare che si può <b> nominare la funzione con un nome diverso</b> e personalizzato senza che cambi niente
+</p>
+<pre>
+import christmas from 'mymodule';
+<span class="azzurro">
+christmas(2);					<span class="nota">// 4</span>			
+</span>
+</pre>
+
+<p>
+Nel caso si dovesse importare un modulo al cui interno ci sta una classe, si potrebbe scrivere in questo modo
+</p>
+<pre>
+<span class="grigio">//------ MyClass.js ------</span>
+export default function () { ... };
+</pre>
+<p>Per poi importarla cosi</p>
+<pre>
+<span class="grigio">//------ main.js ------</span>
+import MyClass from 'MyClass';
+let inst = new MyClass();
+</pre>
+
+
+<h3>System.import</h3>
+
+<p>
+<tt>System.import</tt> è un metodo per caricare un modulo in base a delle condizioni. Un utilizzo di questo metodo potrebbe fare al caso quando si vuole importare uno script <em>polyfill</em> 
+</p>
+<pre>
+if(someFeatureNotSupported) {
+	System.import('my-polyfill').then(function(myPolyFill) {
+		// use the module from here
+  });
+}
+</pre>
+<p>
+Il metodo <tt>System.import</tt> restituisce un <tt>promise</tt> che altro non è che una funzione asincrona di callback che sarà restituita quando l'operazione è completa. Dall'esempio di sopra si avrà il caricamento della funzione <tt>my-polyfill</tt> se nel caso non sia avverata una condizione
+</p>
+
+<br /><br />
+<hr>
+
+
+<div id="elementoo">Sono mi</div> 
+
+<div id="pap">
+	<p id="pap1">par 1</p>
+	<p>par 2</p>
+	<span>sono span</span>
+</div> 
+
+<br /><br /><br />
+
+
+<script type="module">
+/*
+///////////////////////////////////		Abilitazione di ES6 Module in Firefox		///////////////////////////////////
+
+Ho aperto la pagina "about:config" in Firefox
+Nella casella di ricerca ho digitato "module"
+Ho fatto doppio click sulla riga che mi è stata restituita
+Ora "dom.moduleScripts.enabled" risulta «true»
+*/
+
+//////////////////----------------------------------------------------------------------------------------------------
+//import { double, square } from './allegati/module-1.js';
+/*
+// Possiamo anche importare una singola funzione (o alcune) da un file
+import { double } from './allegati/module-1.js';								// OK
+import { square } from './allegati/module-1.js';								// OK
+*/
+/*
+var area = square(2);				// 4
+console.log(area);
+
+var somma = double(3);				// 6
+console.log(somma);
+*/
+
+//////////////////----------------------------------------------------------------------------------------------------
+//### Esempi dal file "/var/www/html/JavaScript/Moduli/module/tips.js"
+
+//import { $, ciclo, getRandom, daZero_A, arrayPari, arrayDispari, unioneArray } from '../Moduli/module/tips.js';
+/*
+var ar = ['a', 'b', 'c'];
+ciclo(ar, function(el){
+	console.log(el);
+})
+
+//$('h1').style['color'] = 'red';												// ok
+
+var caso = ['a', 'b', 'c', 'frutti', 58, 'colori', 45 ];
+console.log( getRandom(caso) );													// ok
+
+console.log( daZero_A(8) );														// ok
+
+console.log( arrayPari(20) );														// ok
+
+console.log( arrayDispari(20) );													// ok
+
+var arr1 = ['1', 2, 'tre'];
+var arr2 = ['mela', 'pera', 'cocco'];
+var arr3 = ['verde', 'rosso', 'bianco'];
+console.log( unioneArray(arr1, arr2, arr3) );
+*/
+
+
+//////////////////----------------------------------------------------------------------------------------------------
+//### Esempi dal file "/var/www/html/JavaScript/Moduli/module/data_ora.js"
+/*
+import { nm_giorno_settimana, giorno_mese, weekday, mesi, anno, ore, minuti, secondi, data_oggi, ora_minuti } 
+from '../Moduli/module/data_ora.js'
+
+console.log( nm_giorno_settimana() );											// Domenica => 0 , Lunedi => 1 ... 
+console.log( giorno_mese() );
+console.log( weekday() );
+console.log( mesi() );
+console.log( anno() );
+console.log( ore() );
+console.log( minuti() );
+console.log( secondi() );
+console.log( data_oggi() );
+console.log( ora_minuti() );
+*/
+
+
+//////////////////----------------------------------------------------------------------------------------------------
+//### Esempi dal file "/var/www/html/JavaScript/Moduli/module/utili.js"
+
+import { nuovoElemento, $, ciclo, eliminaNodiInterni, eliminaNodoBox, adProp, nodiLiberi, nodiFigli, stileElemento } 
+from '../Moduli/module/utili.js'
+
+/*
+var paragrafo = nuovoElemento("p", {title:'sono un par', id:'par' }, {color:'red', background:'yellow'}, 'Paragrafo con stile');
+document.body.appendChild(paragrafo);
+*/
+
+//$('h1').style['color'] = 'red';												// ok
+
+/*
+var ar = ['a', 'b', 'c'];
+ciclo(ar, function(el){
+	console.log(el);
+})
+*/
+
+/*
+eliminaNodiInterni('#pap');
+eliminaNodoBox('#pap', 'pap1');												// "pap1" è figlio di "pap"
+eliminaNodoBox('body', 'elementoo');										// "elementoo" ha come genitore il "body"
+*/
+
+/*
+var oggetto = {};
+var a = ['uno', 'due', 'tre'];
+var b = ['rosso', 'verde', 'bianco'];
+adProp(oggetto, a, b);				// {uno: "rosso", due: "verde", tre: "bianco"}
+console.log(oggetto);
+*/
+
+/*
+//nodiLiberi('#elementoo', 'click', eseguiCompito);		// l'evento scatta quando si clicca sull'elemento "#elementoo"
+nodiFigli("#pap", "click", eseguiCompito);					// l'evento scatta quando si clicca sui figli di "#pap"
+
+function eseguiCompito(e){									
+	console.log(e.textContent);									// mostra il contenuto testo del nodo
+}
+*/
+
+var coloreH1 = stileElemento("h1", 'color');								// rgb(50, 50, 250)
+var largH1 = stileElemento("h1", "width");								// 1230px
+console.log(coloreH1);	
+console.log(largH1);	
+
+
+</script>
+
+
+
+
+
+
+</body>
+</html>

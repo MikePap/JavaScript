@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Animazione altezza elemento  </title>
+<style type="text/css">
+html,body,div,p{ margin:0; padding:0;}
+
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); }
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20); }
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grassetto{font-weight:bold;}
+
+div.divo{
+position:relative; width:600px; /*height:100px;*/ margin:10px 0 0 50px;  text-align:center;	 background:rgb(255,0,0);  border:1px solid; 
+}
+div.dettagli{
+position:relative; width:100px; margin:0 auto; padding:10px; text-align:center; background:yellow;  border:1px solid; cursor:pointer; 
+}
+p.par{
+position:relative; width:600px;   margin:0; background:blue; color:white; font-size:31px; /*height:0;*/ display:none;
+}
+
+p.sposta{
+margin: 10px;
+}
+
+
+</style>
+<script type="text/javascript" src="../Book/core.js"> </script>
+</head>
+<body>
+
+<p class="sposta">
+La funzione <b>AnimaAltezza</b> permette di visualizzare l'elemento successivo a quello cliccato con animazione tipo cascata o tendina. <span class="nota">Non funziona in IE 8 </span>. <br />
+Funziona sia se l'elemento nascosto è impostato a <tt>display:none</tt> oppure se l'altezza è impostata a zero. 
+</p>
+
+<div class="divo">
+	<div>
+		cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye 
+	</div> 
+	<div class="dettagli"> dettagli </div>
+	<p class="par">sono un paragrafo <br />sono un cxazzone</p>
+</div> 
+
+<div class="divo">
+	<div>
+		cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye
+	</div> 
+	<div class="dettagli"> dettagli </div>
+	<p class="par">sono un paragrafo <br />sono un cxazzone</p>
+</div> 
+
+<div class="divo">
+	<div>
+		cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da quvaria da qualsiais parte del globo 
+	</div> 
+	<div class="dettagli"> dettagli </div>
+	<p class="par">sono un paragrafo <br />sono un cxazzone</p>
+</div> 
+
+
+<script type="text/javascript">
+
+//@@@ Non funziona in IE 8 @@@
+/*
+!function AnimaAltezza (elemNascosti, elemDettagli){
+
+	var elemento =	null;
+
+	var visualizza = function (){
+		var altezza = window.getComputedStyle(elemento).height;
+		if(altezza === 'auto'){										// vuol dire che l'elemento è nascosto (display:none)
+			elemento.style.display = 'block';		
+			altezza = window.getComputedStyle(elemento).height;			
+			elemento.style.display = 'none';		
+			var vStile = 10;
+		}else{
+			elemento.style.height = 'auto'; 	 
+			var maxaltezza = window.getComputedStyle(elemento).height;			
+			var vStile = parseFloat(altezza) + 10;
+		}
+		if(vStile > parseFloat(maxaltezza) ){return;}	
+		elemento.style.height = vStile+'px';
+		elemento.style.display = 'block';		
+		setTimeout(visualizza, 10);						
+	}; 
+
+	var riduci = function (){
+		var altezza = parseFloat(window.getComputedStyle(this.elemento).height);			
+		if(altezza === 0){ 
+			this.elemento.style.display = 'none';			
+			return;
+		}
+		if(altezza < 10){
+			this.elemento.style.height = 0;
+			this.elemento.style.display = 'none';
+			return;
+		}	
+		altezza = altezza - 10;
+		this.elemento.style.height = altezza+'px';
+		setTimeout(riduci, 10);						
+	};
+
+	var nascondiSimili = function (){
+		var tutti = document.querySelectorAll(elemNascosti);
+		for(var a=0, tutto; tutto = tutti[a]; a++){
+			tutto.style.display = 'none';
+		}
+	};
+
+	var suGiu = function (){
+		var dettagli = document.querySelectorAll(elemDettagli);						
+		for(var i=0, dettaglio; dettaglio = dettagli[i]; i++){
+			dettaglio.addEventListener('click', 
+			function (event){
+				var et = event.target;
+				var successivo = et.nextElementSibling;					// "nextElementSibling" non supportato in IE 8 
+				Object.prototype.elemento = successivo;
+				var d = window.getComputedStyle(successivo).display;		
+				if(d === 'none'){
+					nascondiSimili();
+					visualizza();
+				}else{
+					var altezza = parseFloat(window.getComputedStyle(this.elemento).height);			
+					if(altezza === 0){
+						nascondiSimili();
+						visualizza();
+					}else
+						riduci();
+				}
+			}, false); 
+		}
+	}();  
+
+}('p.par', 'div.dettagli'); 
+*/
+
+
+
+
+!function AnimaAltezza (elemNascosti, elemDettagli){
+
+	Object.prototype.elemento = null;
+
+	var visualizza = function (){
+		var altezza = window.getComputedStyle(this.elemento).height;
+		if(altezza === 'auto'){										// vuol dire che l'elemento è nascosto (display:none)
+			this.elemento.style.display = 'block';		
+			altezza = window.getComputedStyle(this.elemento).height;			
+			this.elemento.style.display = 'none';		
+			var vStile = 10;
+		}else{
+			this.elemento.style.height = 'auto'; 	 
+			var maxaltezza = window.getComputedStyle(this.elemento).height;			
+			var vStile = parseFloat(altezza) + 10;
+		}
+		if(vStile > parseFloat(maxaltezza) ){return;}	
+		this.elemento.style.height = vStile+'px';
+		this.elemento.style.display = 'block';		
+		setTimeout(visualizza, 10);						
+	}; 
+
+	var riduci = function (){
+		var altezza = parseFloat(window.getComputedStyle(this.elemento).height);			
+		if(altezza === 0){ 
+			this.elemento.style.display = 'none';			
+			return;
+		}
+		if(altezza < 10){
+			this.elemento.style.height = 0;
+			this.elemento.style.display = 'none';
+			return;
+		}	
+		altezza = altezza - 10;
+		this.elemento.style.height = altezza+'px';
+		setTimeout(riduci, 10);						
+	};
+
+	var nascondiSimili = function (){
+		var tutti = document.querySelectorAll(elemNascosti);
+		for(var a=0, tutto; tutto = tutti[a]; a++){
+			tutto.style.display = 'none';
+		}
+	};
+
+	var suGiu = function (){
+		var dettagli = document.querySelectorAll(elemDettagli);						
+		for(var i=0, dettaglio; dettaglio = dettagli[i]; i++){
+			dettaglio.addEventListener('click', 
+			function (event){
+				var et = event.target;
+				var successivo = et.nextElementSibling;					// "nextElementSibling" non supportato in IE 8 
+				Object.prototype.elemento = successivo;
+				var d = window.getComputedStyle(successivo).display;		
+				if(d === 'none'){
+					nascondiSimili();
+					visualizza();
+				}else{
+					var altezza = parseFloat(window.getComputedStyle(this.elemento).height);			
+					if(altezza === 0){
+						nascondiSimili();
+						visualizza();
+					}else
+						riduci();
+				}
+			}, false); 
+		}
+	}();  
+
+}('p.par', 'div.dettagli'); 
+
+
+//var t = 	AnimaAltezza('p.par', 'div.dettagli');
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>escape - unescape</title>
+<link rel="stylesheet" href="../baseLocali.css" type="text/css"/>
+<style type="text/css">
+
+</style>
+</head>
+
+<body>
+
+<h1>escape -- unescape</h1>
+
+<p>
+Il metodo <span class="nota"><b>escape</b></span> restituisce un'oggetto in cui i caratteri <q>non-alfanumerici</q> sono convertiti in una forma numerica equivalente a "%XX". La "XX" è un numero esadecimale che rappresenta i caratteri non alfanumerici
+</p>
+<p class="nota">
+Il metodo <span class="nota"><b>unescape</b></span> fa invece l'opposto e restituisce il valore corrispettivo <q>ISO-Latin-1 ASCII</q> del valore esadecimale.
+</p>
+
+
+
+<form name="form1">
+Inserisci un carattere non alfanumerico:
+	<input type="text" name="input1" id="input1" size=30>
+	<input type="button" value="Show Escape Value" onClick='showEscapeVal()'>
+</form>
+
+<div id="valoreDecodificato"></div> 
+
+<br /><br />
+
+
+<h1>encodeURIComponent -- decodeURIComponent</h1>
+
+<p>
+I metodi <span class="nota">encodeURIComponent</span> e <span class="nota">decodeURIComponent</span> sono simili a <tt>escape</tt> e <tt>unescape</tt>
+</p>
+<pre>
+console.log(encodeURIComponent("Hello & goodbye"));				<span class="nota">// Hello%20%26%20goodbye</span>
+
+console.log(decodeURIComponent("Hello%20%26%20goodbye"));			<span class="nota">// Hello & goodbye</span>
+</pre>
+
+
+
+<script type="text/javascript">
+
+function showEscapeVal(){
+	alert("Il valore escape è: " + escape(document.form1.input1.value));
+}
+
+var escapedVal = "%24";
+var unescapedVal = unescape(escapedVal);
+
+var decodificaValore = document.getElementById('valoreDecodificato');
+//var decodifica = document.createTextNode( "Il valore alfanumerico corrispettivo del valore esadecimale " +escapedVal+ " è --> "+unescapedVal);
+//decodificaValore.appendChild(decodifica);
+var testo = "Il valore alfanumerico corrispettivo del valore esadecimale " +escapedVal+ " è --> "+unescapedVal;
+decodificaValore.innerHTML = '<span class="codice">' +testo+ '</span>';
+
+
+
+</script>
+
+
+
+
+</body>
+</html>

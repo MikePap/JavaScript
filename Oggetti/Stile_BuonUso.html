@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Stile e BuonUso</title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css" /> 
+<style type="text/css">
+/*
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(20,150,30); font-weight:bold; background:rgb(235,245,255); padding:10px;}
+
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(100,150,255);}
+.rosso{color:red;}
+.scuro{color:#333;}
+tt, em{color:#6a9999}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+*/
+</style>
+</head>
+<body>
+
+<h1>Stile e Buon uso di scrittura del codice</h1>
+
+<section class="listaArgomenti">
+	<select name="sezioni" class="sezioni">
+		<option value="seleziona">Seleziona l'argomento</option>
+
+		<optgroup label="Buon Uso">	
+			<option value="s1">Controllo dell'esistenza di una proprietà</option>
+			<option value="s2">Semicolon (punto e virgola) quando?</option>
+			<option value="s3">Aggiungere metodi e proprietà ad un oggetto</option>
+			<option value="s4">L'uso di delete </option>
+			<option value="s5">Concatenare stringhe</option>
+			<option value="s6">Virgolette singole (' ') e doppie (" ")</option>
+			<option value="s7">Boleani true e false</option>
+			<option value="s8">Object literals</option>
+			<option value="s9">Operatore ternario</option>
+			<option value="s10">&& and ||</option>
+			<option value="s11">Attraversare una lista</option>
+		</optgroup>
+		<optgroup label="Forzare i type">	
+			<option value="s12">Operatori unari + o -</option>
+			<option value="s13">Convertire i booleani con !! </option>
+			<option value="s14">Esecuzione condizionale</option>
+		</optgroup>
+		<optgroup label="Manipolare gli array">	
+			<option value="s15">Array di oggetti</option>
+			<option value="s16">Esempi oggetti in array e JSON</option>
+			<option value="s17">Ottenere un array reale da un array di oggetti</option>
+		</optgroup>
+		<optgroup label="Nomenclatura">	
+			<option value="s18">Nomenclatura</option>
+		</optgroup>
+
+	</select>
+</section>
+
+<!--
+		<optgroup label="">	
+			<option value="s"></option>
+		</optgroup>
+
+-->	
+
+
+<section id="s1">
+	<h2>Buon Uso</h2>
+	<h3>Controllo dell'esistenza di una proprietà</h3>
+	<pre>
+	<span class="rosso">if (obj.foo)</span>  					<span class="nota">// NO</span>	
+	<span class="rosso">if (obj.foo !== undefined)</span>			<span class="nota">// NO </span>
+	if ('foo' in obj) ... 				<span class="nota">// SI</span>
+
+	if (obj.hasOwnProperty('foo')) ... 				<span class="nota">// OK</span>	
+	if (Object.prototype.hasOwnProperty.call(obj, 'foo')) ... 	<span class="nota">// safe </span>
+
+	<span class="grigio">Abbreviazioni</span>
+	Object.prototype.hasOwnProperty.call(obj, 'foo')
+	{}.hasOwnProperty.call(obj, 'foo')
+
+	Array.prototype.slice.call(arguments)
+	[].slice.call(arguments)
+	</pre>
+</section>
+
+<section id="s2">
+	<h3>Semicolon (punto e virgola) quando?</h3>
+	<p>
+	Il punto e virgola va messo alla fine di una <b>funzione operatore (espressione)</b> ma non alla fine di una funzione di dichiarazione 
+	</p>
+	<pre>
+	var foo = function() {
+		return true;
+	}; <span class="nota">qui c'è bisogno del punto e virgola </span>	
+
+	function foo() {
+		return true;
+	} <span class="nota">qui invece non c'è bisogno del punto e virgola </span>	
+	</pre>
+</section>
+
+<section id="s3">
+	<h3>Aggiungere metodi e proprietà ad un oggetto</h3>
+	<p>
+	Ci sono molti modi per aggiungere metodi e proprietà ad un oggetto ma il più affidabile è <tt>prototype</tt>
+	<pre>
+	Foo.prototype.bar = function() {
+		/* ... */
+	};
+	/** @constructor */
+	function Foo() {
+		this.bar = value;
+	}
+	</pre>
+	</p>
+</section>
+
+<section id="s4">
+	<h3>L'uso di delete </h3>
+	<p>
+	L'uso di <tt>delete</tt> è sconsigliato tranne quando è necessario rimuovere una proprietà da una lista iterata di oggetti o per cambiare il risultato di <tt>if</tt> (key in obj).
+	<pre>
+	<span class="grigio">usare la seguente</span>
+	Foo.prototype.dispose = function() {
+		this.property_ = null;
+	};
+
+	<span class="grigio">invece di</span>
+	<span class="rosso">Foo.prototype.dispose = function() {
+		delete this.property_;
+	};</span>
+	</pre>
+	</p>
+</section>
+
+<section id="s5">
+	<h3>Concatenare stringhe</h3>
+	<pre>
+	<span class="grigio">usare questo metodo del <b>+</b></span>
+	var testo = 'lorem ipsum mater de sord de tru pater' +
+		'lorem ipsum mater de sord de tru pater' +
+		'lorem ipsum mater de sord de tru pater' +
+		'lorem ipsum mater de sord de tru pater';
+
+	<span class="grigio">invece del metodo dello <b>slash</b> </span>
+	<span class="rosso">var testo = 'lorem ipsum mater de sord de tru pater' \
+		'lorem ipsum mater de sord de tru pater' \
+		'lorem ipsum mater de sord de tru pater' \
+		'lorem ipsum mater de sord de tru pater';</span>
+	</pre>
+</section>
+
+<section id="s6">
+	<h3>Virgolette singole (' ') e doppie (" ")</h3>
+	<p>
+	E' preferibile utilizzare le <b>singole</b> sopratutto nella creazione di stringhe.
+	<pre>
+	var msg = 'This is some HTML';
+	</pre>
+	</p>
+</section>
+
+<section id="s7">
+	<h3>Boleani true e false</h3>
+	<p>
+	In una espressione boleana i seguenti sono false:
+	<dl>
+		<dd>null</dd>
+		<dd>undefined</dd>
+		<dd>'' (stringa vuota)</dd>
+		<dd>0 (numero)</dd>
+	</dl>	
+	mentre i seguenti sono true:
+	<dl>
+		<dd>'0' (stringa) </dd>
+		<dd>[ ] (un array vuoto)</dd>
+		<dd>{ }  (un oggetto vuoto)</dd>
+	</dl>	
+	<pre>
+	<span class="grigio">per cui invece che la seguente</span>
+	<span class="rosso">while (x != null) {</span>
+
+	<span class="grigio">è più giusto scrivere la seguente </span>
+	while (x) {
+
+	<span class="grigio">cosi allo stesso modo se si vuole controllare se una stringa è nulla o vuota, invece che la seguente </span>
+	<span class="rosso">if (y != null && y != '') {</span>
+
+	<span class="grigio">la seguente è più efficace</span>
+	if (y) {
+	</pre>
+
+	Occhio ai seguenti
+	<dl>
+		<dd>Boolean('0') == true</dd>
+		<dd>'0' != true</dd>
+		<dd>0 != null</dd>
+		<dd>0 == []</dd>
+		<dd>0 == false</dd>
+		<dd>Boolean(null) == false</dd>
+		<dd>null != true</dd>
+		<dd>null != false</dd>
+		<dd>Boolean(undefined) == false</dd>
+		<dd>undefined != true</dd>
+		<dd>undefined != false</dd>
+		<dd>Boolean([]) == true</dd>
+		<dd>[] != true</dd>
+		<dd>[] == false</dd>
+	</dl>	
+	</p>
+</section>
+
+<section id="s8">
+	<h3>Object literals</h3>
+	Occhio ai seguenti
+	<pre>
+	var foo = {a: "alpha", 2: "two"};
+	<span class="azzurro">
+	console.log(foo.a);		<span class="nota">// alpha</span>  
+	console.log(foo[2]);		<span class="nota">// two</span>
+	console.log(foo.2);		<span class="rosso">// Errore: missing ) after argument list</span>  
+	console.log(foo[a]);		<span class="rosso">// Errore: a is not defined</span> 
+	console.log(foo["a"]);		<span class="nota">// alpha</span> 
+	console.log(foo["2"]);		<span class="nota">// two</span> 
+	</span>
+	</pre>
+</section>
+
+<section id="s9">
+	<h3>Operatore ternario</h3>
+	<pre>
+	<span class="grigio">invece della seguente </span>
+	<span class="rosso">if (val) {
+		return foo();
+	} else {
+		return bar();
+	}</span>
+
+	<span class="grigio">si potrebbe scrivere</span>
+	return val ? foo() : bar();
+	</pre>
+</section>
+
+<section id="s10">
+	<h3>&& and ||</h3>
+	<pre>
+	<span class="grigio">invece della seguente</span>
+	<span class="rosso">function foo(opt_win) {
+		var win;
+		if (opt_win) {
+			win = opt_win;
+		} else {
+			win = window;
+		}
+	}</span>
+
+	<span class="grigio">è più semplice utilizzare l' operatore OR</span>
+	function foo(opt_win) {
+		var win = opt_win || window;			<span class="nota">restituisce 'window' qualora 'opt_win' non fosse definito </span>
+	}
+
+	<span class="scuro">nel caso seguente di una serie di <tt>if</tt> concatenati, l'uso dell'operatore && è oltremodo interressante; invece che</span>
+	<span class="rosso">if (node) {
+		if (node.kids) {
+			if (node.kids[index]) {
+				foo(node.kids[index]);
+			}
+		}
+	}</span>
+
+	<span class="grigio">si potrebbe scrivere</span>
+	if (node && node.kids && node.kids[index]) {
+		foo(node.kids[index]);
+	}
+
+	<span class="grigio">oppure</span>
+	var kid = node && node.kids && node.kids[index];
+	if (kid) {
+		foo(kid);
+	}
+	</pre>
+</section>
+
+<section id="s11">
+<h3>Attraversare una lista</h3>
+
+<pre>
+<span class="grigio">In questo caso anzichè scrivere</span>
+<span class="rosso">var paragraphs = document.getElementsByTagName('p');
+for (var i = 0; i &lt;  paragraphs.length; i++) {
+	doSomething(paragraphs[i]);
+}</span>
+
+<span class="grigio">si potrebbe  scrivere in questo modo</span>
+var paragrafi = document.getElementsByTagName('p');
+for (var i = 0, paragrafo; paragrafo = paragrafi[i]; i++) {
+doSomething(paragrafo);
+}
+
+<span class="scuro">nel caso di attraversare una lista di nodi la seguente è allo stesso modo efficace</span>
+var parentNode = document.getElementById('foo');
+for (var child = parentNode.firstChild; child; child = child.nextSibling) {
+	doSomething(child);
+}
+</pre>
+</section>
+
+<section id="s12">
+	<h2>Forzare i type </h2>
+
+	<h3>operatori unari + o -</h3>
+	<p>
+	Gli operatori unari permettono di convertire una stringa in numero. <br />
+	Dato questo codice HTML 
+	<pre>
+	<span class="azzurro">&lt;input type="text" id="foo-input" value="1"&gt;</span>
+
+	<span class="grigio">si è dichiarato la variabile 'foo' con valore 1 e quindi di tipo 'string'  
+	Successivamente, in qualche altra parte del codice, necessitate di aggiornare 'foo' con un nuovo valore derivato da un elemento input
+	</span>
+	foo = document.getElementById("foo-input").value;
+
+	<span class="grigio">se ora si testa il <tt>typeof</tt> di 'foo' si avrebbe come risultato 'string' e non 'number' come si sperava 
+	Quindi ponendo il caso di definire la seguente condizione </span>
+
+	if ( foo === 1 ) {
+		importantTask();
+	}
+
+	<span class="grigio">importantTask() non verrebbe mai eseguito, anche se 'foo' fosse di valore 1
+	Grazie agli <b>operatori unari</b> <b>+</b> o <b>-</b> si può ovviare al problema forzando la variabile 'foo' ad essere un numero in questo modo</span>
+
+	foo = +document.getElementById("foo-input").value;
+	<span class="grigio">oppure</span>
+	foo = -document.getElementById("foo-input").value;			<span class="nota">uguale al precedente</span>
+
+	<span class="grigio">ora typeof foo sarà number e la funzione importantTask() verrà eseguita </span>
+	</pre>
+	</p>
+</section>
+
+<section id="s13">
+	<h3>Convertire  i booleani  con  !! </h3>
+
+	<p>
+	Per convertire dei valori non-boleani in boleani si può utilizzare il doppio punto esclamativo <b>!!</b> 
+	</p>
+</section>
+
+<section id="s14">
+	<h3>Esecuzione condizionale</h3>
+	<pre>
+	<span class="grigio">invece di questa (anche se alcuni engine la supportano)</span>
+	<span class="rosso">if (x) {
+		function foo() {}		<span class="nota"> funzione statement(declaration) </span>
+	}</span>
+	<span class="grigio">è conveniente usare la seguente</span>
+	if (x) {
+		var foo = function() {};	<span class="nota">funzione expression(operator)</span>
+	}
+
+	<span class="grigio"> Quando si deve solo stabilire se un array ha una dimensione</span>
+	<span class="rosso">if ( array.length > 0 ) ...</span>		<span class="nota">Invece che questa ... </span>
+	if ( array.length ) ...			<span class="nota">si potrebbe usare questa</span>
+
+	<span class="grigio"> Quando si deve solo stabilire che un array è vuoto</span>
+	<span class="rosso">if ( array.length === 0 ) ...</span>
+	if ( !array.length ) ...
+
+	<span class="grigio">verificate la verità condizionale, in questo modo:</span>
+	<span class="rosso">if ( string !== "" ) ...</span>
+	if ( string ) ...
+
+	<span class="grigio">Quando si deve solo stabilire che una stringa è vuota</span>
+	<span class="rosso">if ( string === "" ) ...</span>
+	if ( !string ) ...
+
+	<span class="grigio">Quando si deve solo stabilire che un riferimento è vero</span>
+	<span class="rosso">if ( foo === true ) ...</span>
+	if ( foo ) ...
+
+	<span class="grigio">Quando si deve solo stabilire che un riferimento è falso</span>
+	<span class="rosso">if ( foo === false ) ...</span>
+	if ( !foo ) ...
+
+	<span class="grigio">Ma se  invece si deve testare per un falso booleano, allora usate</span>
+	if ( foo === false ) ...
+
+	<span class="grigio">Quando si deve solo stabilire che un riferimento potrebbe essere null o undefined, ma non falso </span>
+	if ( foo === null || foo === undefined ) ...
+
+	<span class="grigio">l'uso di == farà corrispondere un null sia a null che a undefined ma non a false</span>
+	null == undefined
+
+	<span class="blu">Preferire === a == (a meno che il caso non richieda una valutazione di tipo meno restrittiva)</span>
+
+	"1" === 1:		<span class="nota">// false</span>
+
+	"1" == 1;		<span class="nota">// true</span>
+
+	<span class="grigio">E per ultimo (per ora), piuttosto che il seguente</span>
+	<span class="rosso">function returnLate( foo ) {
+		var ret;
+
+		if ( foo ) {
+			ret = "foo";
+		} 
+		else {
+			ret = "quux";
+		}
+		return ret;
+	}</span>
+
+	<span class="grigio">è da preferire la seguente</span>
+	function returnEarly( foo ) {
+
+		if ( foo ) {
+			return "foo";
+		}
+		return "quux";
+	}
+	<span class="grigio"></span>
+	</pre>
+</section>
+
+<section id="s15">
+	<h2>Manipolare gli array</h2>
+
+	<h3>array di oggetti</h3>
+
+	<pre>
+	var nomi = 
+	[
+		{nome:'paolo', cognome:'mariani'},
+		{nome:'vincenzo', cognome:'mariani'},
+		{nome:'michele', cognome:'prigigallo'},
+		{nome:'gino', cognome:'porcelli'}
+	];
+
+	function estrarreNomi()
+	{
+		for(var i=0; i &lt; nomi.length; i++ )
+		{
+			alert(nomi[i].nome);
+			if(nomi[i].cognome == 'prigigallo' ) {return}
+		}
+	} 
+	</pre>
+	<span class="nota">	Una cosa che va menzionata a proposito dell'esempio di sopra riguarda il <tt>return</tt> che se posto al di fuori della funzione da errore. 
+	Cioè se il ciclo è iterato al di fuori della funzione <q>estrarreNomi()</q>, l'uso di <tt>return</tt> produce errore. 
+	</span>
+</section>
+
+<section id="s16">
+	<h3>Esempi oggetti in array e JSON</h3>
+	<pre>
+	var ob = [
+		{ uno: 1, due:2, tre:3  },
+		{ a:"albero", b: "banana", c: "cocco" }
+	];
+	<span class="azzurro">
+	console.log(ob[1]);					<span class="nota">// Object { a: "albero", b: "banana", c: "cocco" }</span>
+	console.log(ob[1]["a"]);				<span class="nota">// albero</span>
+	</span>
+	for(var i in primo)
+		console.log(primo[i]);				<span class="nota">// 1 2 3</span>
+
+	var jxt = JSON.stringify(ob); 
+
+	var bip = JSON.parse(jxt, function(key, value){ 
+		return value; 
+	}); 
+	<span class="azzurro">
+	console.log(bip[0]["uno"]);				<span class="nota">// 1</span>
+	</span>
+	var t = JSON.parse(jxt);
+	<span class="azzurro">
+	console.log(t[1]["a"]);					<span class="nota">// albero</span>
+	</span>
+	for(var x in ob){
+		var t = ob[x];
+	//	if("ab" in t){
+			for(y in t){
+				console.log( t[y] );		<span class="nota">// 1 2 3  albero banana cocco</span>
+			}
+	//	}
+	}
+
+	</pre>
+
+</section>
+
+<section id="s17">
+	<h3>Ottenere un array reale da un array di oggetti (elementi) </h3>
+	<p>
+	In questo caso gli oggetti sono rapppresentati da elementi HTML. <br />
+	<pre>
+	<span class="scuro">Quindi dati i seguenti tre elementi:</span>
+	<span class="azzurro">
+	&lt;div class="divo"&gt; io sono un div&lt;/div&gt;
+	&lt;p id="par"&gt;io sono un paragrafo&lt;/p&gt;
+	&lt;span id="spanna"&gt;io sono uno span&lt;/span&gt;	
+	</span>
+	var divo = document.querySelector('div.divo');
+	var par = document.getElementById('par');
+	var spanna = document.getElementById('spanna');
+
+	var lista = Array.prototype.slice.call([divo,par,spanna]);
+	<span class="azzurro">
+	console.log(lista[0].firstChild.nodeValue);			<span class="nota">// "io sono un div"</span>
+	</span>
+	for (var i=0; i&lt;lista.length; i++ ){
+		console.log(lista[i].firstChild.nodeValue);		<span class="nota">// "io sono un div", "io sono un paragrafo", "io sono uno span"</span>
+	}
+	</pre>
+	</p>
+	<p>
+
+	Da quanto detto sopra possiamo ricavare una funzione
+	</p>
+	<pre>
+	function arrayReale(){
+		var nuovoArray = [];
+		for (i = 0; i &lt; arguments.length; i++){
+			var oggetti =  document.querySelector(arguments[i]);
+			nuovoArray.push(oggetti);
+		}
+		return nuovoArray;
+	}
+
+	var j = arrayReale("div.divo", "#par", "#spanna");
+	<span class="azzurro">
+	console.log( j[0].firstChild.nodeValue );			<span class="nota">// "io sono un div"</span>
+	</span>
+	</pre>
+</section>
+
+<section id="s18">
+	<h3>Nomenclatura</h3>
+
+	<p>
+	<pre>
+	<span class="grigio">Nominare funzioni, oggetti, istanze, ecc.</span>
+	camelCase; 		<span class="nota">dichiarazioni di funzione e variabile</span>
+
+	<span class="grigio">Nominare costruttori, prototipi, ecc.</span>
+	PascalCase; 		<span class="nota">funzione costruttore</span>
+
+	<span class="grigio">Dalla guida allo stile della libreria di Google Closure</span>
+	functionNamesLikeThis;
+	variableNamesLikeThis;
+	ConstructorNamesLikeThis;
+	ClassNamesLikeThis,
+	EnumNamesLikeThis;
+	methodNamesLikeThis;
+	SYMBOLIC_CONSTANTS_LIKE_THIS;
+
+	</pre>
+	</p>
+</section>
+									<div id="freccia_sali"><div></div> </div> 
+
+
+<script type="text/javascript" src="../../baseLocali.js"></script>
+
+<script type="text/javascript">
+
+// Scorrimento verso la sezione cliccata
+var select = document.querySelector('select.sezioni');
+select.addEventListener("change", function(){ 
+	var valSez = this.value;									// s3
+	var pattern = "#" + valSez;
+	var of = document.querySelector(pattern).offsetTop;
+	window.pageYOffset = of;
+	document.documentElement.scrollTop = of;
+	document.body.scrollTop = of;
+//	Togliere il focus dalla <select> e assegnarlo al documento 
+	window.focus();
+	document.documentElement.focus();
+	document.body.focus();
+},false);
+
+// Per lo scorrimento del documento, verso l'alto
+var obj = new ScrollPage('1000', 100, 'freccia_sali', 300);
+obj.showFreccia();
+obj.clickScroll();
+//bloccaPropagazione();	
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br />
+<br /><br /><br />
+
+
+
+
+
+
+
+</body>
+</html>

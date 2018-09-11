@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Esempio funzione di dissolvenza </title>
+<style type="text/css">
+
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); }
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+tt, em{color:#6a9999}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grassetto{font-weight:bold;}
+
+
+#assoluto{
+position:absolute; top:250px; left:250px; margin-left:20px; width:200px; height:150px; background:purple; border:8px solid; opacity:0.2; display:none;
+}
+
+
+</style>
+
+</head>
+<body>
+
+
+<h1>Dissolvenza</h1>
+<p>
+La funzione crea un effetto di dissolvenza per qualsiasi oggetto a cui è impostato uno stile <em>opacity</em> basso. Prevede anche la visualizzazione dell'oggetto qualora quest'ultimo fosse non visualizzzato (<tt>display:none</tt>)
+</p>
+
+<button id="pulsante">clicca me</button>
+
+<div id="assoluto"></div> 
+
+<script type="module">
+
+
+/*
+// Funzione costruttore 
+function dissolvenza(){
+	var elem = document.querySelector(this.elemento);
+	var visualizzazione =  window.getComputedStyle(elem)["display"];
+	if(visualizzazione === 'none'){
+		elem.style.display = 'block';		
+	}
+	var vStile = window.getComputedStyle(elem)["opacity"];
+	var vFinale = 1;
+	if(vStile > vFinale){return;}
+	var vStile = parseFloat(vStile) + 0.05;				// impostabili  0.1/2=> 0.05  
+	elem.style.opacity = vStile;
+	setTimeout(dissolvenza, 50);								// impostabili 50/0.1=> 500 (millesecondi) 
+
+}; 
+*/
+
+import {dissolvenza} from "./module/fadeElementi.js"
+ 
+pulsante.addEventListener('click', 
+function (){
+//	Object.prototype.elemento = '#assoluto';
+	dissolvenza('#assoluto');
+}, false); 
+
+
+
+</script>
+
+
+
+</body>
+</html>
+

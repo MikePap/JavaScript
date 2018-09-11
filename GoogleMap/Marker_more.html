@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<title>Marker multipli</title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.nota{color:orange;}
+.codice{color:green;}
+
+#map_canvas{ position:relative; margin:20px; width:80%; height:80%;  }
+
+</style>
+<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">
+
+	var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
+	var berlin = new google.maps.LatLng(52.520816, 13.410186);
+	var due = new google.maps.LatLng(52.511467, 13.447179);
+	var tre = new google.maps.LatLng(52.549061, 13.422975);
+	var quattro = new google.maps.LatLng(52.497622, 13.396110);
+
+  function initialize() {
+    var myOptions = {
+      zoom: 10,
+      center: berlin,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+var locationArray = [berlin,due,tre,quattro,];
+var locationNameArray = ["berlino","postazione 2","Postazione 3","Postazione 4",];
+
+   var coord;
+    for (coord in locationArray) {
+      new google.maps.Marker({
+        position: locationArray[coord],
+        map: map,
+	  icon: "../../Immagini/sfondi/Japan-Flag-3-icon.png",
+        title: locationNameArray[coord]
+      });
+} // chiude for
+
+/*    
+
+    var marker = new google.maps.Marker({
+        position: berlin, 
+        map: map,
+        title:"Hello World!"
+    });   
+
+    var marker = new google.maps.Marker({
+        position: due, 
+        map: map,
+        title:"Qui postazione 2!"
+    });   
+    var marker = new google.maps.Marker({
+        position: tre, 
+        map: map,
+        title:"Hello jegoff"
+    });   
+    var marker = new google.maps.Marker({
+        position: quattro, 
+        map: map,
+        title:"Fuck you"
+    });   
+*/
+
+  } // initialize
+</script>
+</head>
+<body onload="initialize()">
+  <div id="map_canvas" style="width: 700px; height: 500px"></div>
+</body>
+
+</html>
+

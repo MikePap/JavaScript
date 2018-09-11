@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title> Object.defineProperty </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); padding-left:31px;} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150); padding-left:25px;  }
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20); padding-left:20px;}
+code, pre{ color:rgb(20,150,30); font-weight:bold; background:rgb(230,230,230); padding:10px; }
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(100,150,255);}
+.scuro{color:#333;}
+tt, em{color:#6a9999}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+th{
+background:#333; color:white;
+}
+
+td:nth-child(1){
+text-align: center; font-weight:bold; font-size:1.1em;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Object.defineProperty</h1>
+<p>
+Il metodo <q>defineProperty</q> permette di definire una proprietà direttamente in un oggetto o di modificarne una esisente 
+<pre>
+Object.defineProperty(obj, prop, descriptor)
+</pre>
+<dl>
+	<dt><b>obj</b>: rappresenta l'oggetto in cui definire la proprietà </dt>
+	<dt><b>prop</b>: il nome della proprietà da definire o da modificare</dt>
+	<dt><b>descriptor</b>: la descrizione per la proprietà da definire o da modificare</dt>
+</dl>	
+</p>
+
+<p>
+Questo metodo permette di poter aggiungere altri parametri opzionali:
+
+<table id="" width="" border="1" cellspacing="3" cellpadding="3">
+<tr>
+	<th>Parametro</th>
+	<th>Descizione</th>
+	<th>Default</th>
+</tr>
+<tr>
+	<td>value</td>
+	<td>Il valore associato alla proprietà</td>
+	<td>undefined</td>
+</tr>
+<tr>
+	<td>configurable</td>
+	<td>'true' solo se il tipo di proprietà può essere eleminata dal corrispondente oggetto e se i suoi parametri possono essere cambiati  </td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>enumerable</td>
+	<td>'true' solo se la la proprietà può essere enumerata dall'oggetto corrispondente</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>writable</td>
+	<td>'true' solo se il valore associato alla proprietà può essere cambiato</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>get</td>
+	<td>una funzione che serve per restituire la proprietà. </td>
+	<td>undefined</td>
+</tr>
+<tr>
+	<td>set</td>
+	<td>una funzione che serve per impostare la proprietà; la funzione avrà come unico argomento il valore da assegnare alla proprietà.  </td>
+	<td>undefined</td>
+</tr>
+</table>
+</p>
+
+<p>
+<pre>
+var o = {};					<span class="nota">creazione oggetto</span>
+
+Object.defineProperty(o, "a", {
+	value : 36,
+	writable : true,
+	enumerable : true,
+	configurable : true
+});
+<span class="azzurro">
+console.log(o.a);				<span class="nota">// 36</span>
+</span>
+o.a = 45;
+<span class="azzurro">
+console.log(o.a);				<span class="nota">// 45</span>
+</span>
+</pre>
+
+Si potrebbe anche configurare i parametri di una proprietà senza indicare la proprietà per poterla definire in un secondo momento
+<pre>
+Object.defineProperty(o, "", {
+	writable : true,
+	enumerable : true,
+	configurable : true
+});
+
+o.a = 45;
+<span class="azzurro">
+console.log(o.a);				<span class="nota">// 45</span>
+</span>
+</pre>
+</p>
+
+<p>
+Utilizzando le funzioni <tt>get</tt> e <tt>set</tt>
+
+<pre>
+var bValue = 38;
+
+Object.defineProperty(o, "b", {
+	get : function(){ return bValue; },
+	set : function(newValue){ bValue = newValue; },
+	enumerable : true,
+	configurable : true
+});
+<span class="azzurro">
+console.log(o.b);				<span class="nota">// 38</span>
+</span>
+
+</pre>
+</p>
+
+<h3>L'atttributo  writable</h3>
+<p>
+Quando questo attributo è false il valore della proprietà non può essere cambiato
+</p>
+
+
+<h3>L'attributo configurable</h3>
+<p>
+Se impostato a <tt>false</tt> (che è il default) non permette di modificare gli altri attributi compreso il medesimo
+<pre>
+var o = {};
+Object.defineProperty(o, "a", { 
+	get : function(){return 1;}, 
+	configurable : false						<span class="nota">a seguito di questa impostazione</span>
+});
+
+Object.defineProperty(o, "a", {configurable : true});			<span class="nota">// restituisce errore</span>
+Object.defineProperty(o, "a", {enumerable : true});			<span class="nota">// restituisce errore</span>
+Object.defineProperty(o, "a", {set : function(){}});			<span class="nota">// restituisce errore</span>
+Object.defineProperty(o, "a", {get : function(){return 1;}});			<span class="nota">// restituisce errore</span>
+Object.defineProperty(o, "a", {value : 12});				<span class="nota">// restituisce errore</span>
+<span class="azzurro">
+console.log(o.a);							<span class="nota">// 1</span>
+</span>
+delete o.a;								<span class="nota">// non accade nulla</span>
+<span class="azzurro">
+console.log(o.a);							<span class="nota">// 1</span>
+</span>
+</pre>
+</p>
+
+<h3>L'attributo enumerable </h3>
+<p>
+Permette di definire se una proprietà può essere enumerata; un esempio può essere quello di mostrare i suoi valori in un ciclo
+<pre>
+var o = {};
+Object.defineProperty(o, "a", { value : 1, enumerable:true });
+Object.defineProperty(o, "b", { value : 2, enumerable:false });
+Object.defineProperty(o, "c", { value : 3 });				<span class="nota">'enumerable' non è specificato ma per default è comunque false </span> 
+o.d = 4;
+
+for (var i in o) {    
+	console.log(i);							<span class="nota">// restituisce 'a' e 'd' </span>
+}
+Object.keys(o);								<span class="nota">// ["a", "d"]	</span> 
+<span class="azzurro">
+o.propertyIsEnumerable('a');						<span class="nota">// true</span> 
+o.propertyIsEnumerable('b');						<span class="nota">// false</span>  
+o.propertyIsEnumerable('c');						<span class="nota">// false</span>  
+</span>
+</pre>
+</p>
+
+<h3>Differenze nell'assegnazione di un valore alle proprietà</h3>
+<p>
+La differenza nell'assegnare un valore ad una proprietà è facilmente intuibile nel seguente esempio
+<pre>
+var o = {};
+o.a = 1;
+<span class="nota"> è equivalente a: </span>
+Object.defineProperty(o, "a", {
+	value : 1,
+	writable : true,
+	configurable : true,
+	enumerable : true
+});
+
+<span class="nota"> mentre: </span>
+Object.defineProperty(o, "a", {value : 1});
+<span class="nota"> è equivalente a: </span>
+Object.defineProperty(o, "a", {
+	value : 1,
+	writable : false,
+	configurable : false,
+	enumerable : false
+});
+</pre>
+</p>
+
+<h3>Personalizzazione con l'uso di Setters e Getters</h3>
+<pre>
+function Archiver() {
+	var temperature = null;
+	var archive = [];
+
+	Object.defineProperty(this, "temperature",{
+		get: function() {
+			console.log("get!"); 
+			return temperature; 
+		},
+		set: function(value) { 
+			temperature = value; 
+			archive.push({val: temperature}); 
+		}
+	});
+
+	this.getArchive = function() {return archive;};
+}
+<span class="azzurro">
+var arc = new Archiver();
+arc.temperature;				<span class="nota">// "get!" </span>
+arc.temperature = 11; 
+arc.temperature = 13; 
+arc.getArchive();				<span class="nota">// [{val: 11}, {val: 13}]</span> 
+</span>
+</pre>
+
+
+<h1>Object.defineProperties()</h1>
+<p>
+Questo metodo permette di definire più proprietà direttamente su un'oggetto o modificarne quelle presenti
+<pre>
+Object.defineProperties(obj, props)
+</pre>
+</p>
+
+<pre>
+var obj = {}; 
+
+Object.defineProperties( obj, {
+	
+	"someKey": {
+		value: "Hello World",
+		writable: true
+	},
+ 
+	"anotherKey": {
+		value: "Foo bar",
+		writable: false
+	}
+	// etc...
+})
+<span class="azzurro">
+console.log(obj.someKey);			<span class="nota">// "Hello World"</span>
+console.log(obj.anotherKey);			<span class="nota">// "Foo bar"</span>
+</span>
+</pre>
+
+<p>
+All'interno c'è il polyfill
+</p>
+
+<script type="text/javascript">
+
+function defineProperties(obj, properties) {
+	function convertToDescriptor(desc) {
+		function hasProperty(obj, prop) {
+			return Object.prototype.hasOwnProperty.call(obj, prop);
+		}
+
+		function isCallable(v) {
+		// NB: modify as necessary if other values than functions are callable.
+		return typeof v === "function";
+		}
+
+		if (typeof desc !== "object" || desc === null)
+			throw new TypeError("bad desc");
+
+		var d = {};
+
+		if (hasProperty(desc, "enumerable"))
+			d.enumerable = !!obj.enumerable;
+		if (hasProperty(desc, "configurable"))
+			d.configurable = !!obj.configurable;
+		if (hasProperty(desc, "value"))
+			d.value = obj.value;
+		if (hasProperty(desc, "writable"))
+			d.writable = !!desc.writable;
+		if ( hasProperty(desc, "get") ) {
+			var g = desc.get;
+
+		if (!isCallable(g) && g !== "undefined")
+			throw new TypeError("bad get");
+			d.get = g;
+		}
+		if ( hasProperty(desc, "set") ) {
+			var s = desc.set;
+			if (!isCallable(s) && s !== "undefined")
+			throw new TypeError("bad set");
+			d.set = s;
+		}
+
+		if (("get" in d || "set" in d) && ("value" in d || "writable" in d))
+			throw new TypeError("identity-confused descriptor");
+
+		return d;
+	}
+
+	if (typeof obj !== "object" || obj === null)
+		throw new TypeError("bad obj");
+
+		properties = Object(properties);
+
+		var keys = Object.keys(properties);
+		var descs = [];
+
+	for (var i = 0; i < keys.length; i++)
+		descs.push([keys[i], convertToDescriptor(properties[keys[i]])]);
+
+	for (var i = 0; i < descs.length; i++)
+		Object.defineProperty(obj, descs[i][0], descs[i][1]);
+
+	return obj;
+}
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br />
+<br /><br /><br />
+
+
+
+
+</body>
+</html>

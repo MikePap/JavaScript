@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Member Function  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(50,150,50);}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}	
+.azzurro{color:rgb(50,100,255);}	
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+
+<h1>Member Function</h1>
+
+<h3>Definizione di metodo fuori dalle funzioni della fattoria </h3>
+<pre>
+function createObject(sColor, iDoors){		<span class="nota">funzione della fattoria </span> 
+	var bufObject = new Object;		<span class="nota">ATTENZIONE: qui viene creato un'altro oggetto</span> 
+	bufObject.color = sColor;
+	bufObject.doors = iDoors;
+	bufObject.showColor = showColor;	<span class="nota">si richiama la funzione esterna (seguente)</span> 
+	return bufObject;
+} 
+
+function showColor(){				<span class="nota">Funzione esterna che punta alle proprietà della funzione della fattoria</span>  
+	document.write(this.color);
+	document.write(" " +this.doors + " -- ");
+} 
+
+var myHourse1 = createObject("red", 4);		<span class="nota">* NON E' STATA USATA LA PAROLA CHIAVE "new". Perchè è stata usata nella creazione var 'bufObject' </span> 
+var myHourse2 = createObject("blue",3);
+<span class="azzurro">	
+myHourse1.showColor();				<span class="nota">// restituisce 'red 4 --' </span>
+myHourse2.showColor();</span>				<span class="nota">//  restituisce 'blue 3 --'</span>
+
+</pre>
+
+<script type = "text/javascript">
+
+function createObject(sColor, iDoors){	// funzione della fattoria 
+	var bufObject = new Object;			// ATTENZIONE: qui viene creato un'altro oggetto (vedi riga 44) 
+	bufObject.color = sColor;
+	bufObject.doors = iDoors;
+	bufObject.showColor = showColor;	// si richiama la funzione esterna 
+	return bufObject;
+} 
+
+
+function showColor(){	// Funzione esterna che punta alle proprietà della funzione della fattoria  
+//	alert(this.color);
+//	alert(this.doors);	
+	document.write(this.color);
+	document.write(" " +this.doors + " -- ");
+} // chiude la funzione "showColor"
+
+var myHourse1 = createObject("red", 4);	// DA NOTARE CHE NON C'è LA PAROLA CHIAVE "New". Ciò è stato possibile creando l'oggetto 'bufObject' ..
+var myHourse2 = createObject("blue",3);	// all'interno dell'oggetto (vedi riga 28)
+myHourse1.showColor();
+myHourse2.showColor();
+
+</script>
+
+
+<h3><a name="jj"></a>Creazione di un oggetto con un metodo di una funzione membro   </h3>
+<p class="nota">
+Vedere anche un esempio simile nel file <b><a href="Class_combination.html#kk">Class_combination.html</a></b> 
+</p>
+<pre>
+function employeeObj (name, address, phone, email){
+	this.name = name;
+	this.address = address;
+	this.telephone = phone;
+	this.emailaddress = email;
+	this.printE = printEmployee;	<span class="nota"> collegamento della funzione membro. In questo modo la funzione esterna acquisirà le proprietà dell'oggetto </span>
+} 
+
+function printEmployee(){
+	document.write("Nome:" + this.name + ", ");
+	document.write("Address:" + this.address + ", ");
+	document.write("Telephone Number:" + this.telephone + ", ");
+	document.write("Email Address:" + this.emailaddress);
+} 
+
+var newEmployee = new employeeObj("Pappalardo", "Napoli, Italia", "555-555-5555", "aaa@website.com");
+<span class="azzurro">newEmployee.printE();</span>		<span class="nota">// restituisce: Nome: Pappalardo, Address: Napoli, Italia, Telephone Number: 555-555-5555, Email Address: aaa@website.com  </span>
+
+
+</pre>
+
+<script type="text/javascript">
+// funzione costruttore 
+function employeeObj (name, address, phone, email){
+	this.name = name;
+	this.address = address;
+	this.telephone = phone;
+	this.emailaddress = email;
+	this.printE = printEmployee;		// collegamento delle funzioni. In questo modo la funzione esterna acquisirà le proprietà dell'oggetto 
+} // chiude l'oggetto 
+// Funzione membro 
+function printEmployee(){
+	document.write("Nome:    " + this.name + "<br>\n");
+	document.write("Address:          " + this.address + "<br>\n");
+	document.write("Telephone Number: " + this.telephone + "<br>\n");
+	document.write("Email Address:    " + this.emailaddress);
+} // chiude la funzione 
+
+var newEmployee = new employeeObj("Pappalardo", "Napoli, Italia", "555-555-5555", "aaa@website.com");
+newEmployee.printE();
+
+</script>
+
+<h3>Aggiunta di una funzione membro </h3>
+
+<script type="text/javascript">
+function myObj() 
+{
+	document.write("Hi");	
+}
+
+// alla classe 'myObj' viene aggiunta la funzione 'alternate'
+myObj.alternate = function() 
+{	
+	document.write(" Jo");
+};
+
+myObj();								// restituisce 'Hi' 
+myObj.alternate();				// restituisce 'Jo' 
+</script>
+
+<h3>Aggiunta di un metodo alla classe con "prototype"  </h3>
+<script type="text/javascript">
+// constructor function
+function Rectangle(height, width)
+{
+	this.height = height;
+	this.width = width;
+}
+
+function getArea () 
+{
+	return this.height * this.width;
+}
+// Grazie a 'prototype' si aggiunge un metodo(calcArea) al costruttore 'Rectangle'. Tale metodo non è altro che la funzione esterna 'getArea' 	
+Rectangle.prototype.calcArea = getArea;
+
+var theRectangle = new Rectangle (3, 5);
+theRectangle.width = 10;	// la 'width' viene cambiata da 5 a 10  
+
+document.write("The rectangle instance height is: " + theRectangle.height + "<br>");
+document.write("The rectangle instance width is: " + theRectangle.width  + "<br>");
+document.write ("The calcArea method returns: " + theRectangle.calcArea());
+</script>
+
+<h3>Simile alla precedente con una variante </h3>
+<script type="text/javascript">
+
+function showProperties (theObject)
+{
+	for (i in theObject) 
+	{	
+		if (theObject[i] != null) 
+		{
+			document.write(i + " : " + theObject[i] + "<br>");
+		}
+		else 
+		{
+			document.write(i + "<br>");
+		}
+	} // for 
+   return;
+}	// chiude la funzione 'showProperties'
+
+// constructor function
+function Rettangolo(height, width)
+{
+	this.altezza = height;
+	this.larghezza = width;
+}
+
+function calcola_Area () 
+{
+	return this.altezza * this.larghezza;
+}
+
+// collegamento della funzione 'calcolaArea' al costruttore 'Rectangle'
+Rettangolo.prototype.calcolaArea = calcola_Area;	
+
+var theRectangle = new Rettangolo (3, 5);
+theRectangle.larghezza = 10;	// la larghezza vine cambiata da 5 a 10 
+document.write("L'Area è " + theRectangle.calcolaArea() + " <br>");
+showProperties (theRectangle);	// restituisce le proprietà dell'oggetto
+</script>
+
+<h3>Utilizzo di "toString()"  </h3>
+
+<script type="text/javascript">
+function Rectangle(height, width)
+{
+	this.height =  height;
+	this.width = width;
+}
+
+function calc_Area () 
+{
+	return this.height * this.width;
+}
+
+function to_String() 
+{
+	return this.height + " by " +this.width;
+}
+
+// Rectangle.prototype.calcArea = calc_Area;	// 
+Rectangle.prototype.toString = to_String;
+
+var theRectangle = new Rectangle (2, 42);
+document.write(theRectangle);
+
+</script>
+
+<h3>Funzione membro con <q>Object</q>  </h3>
+<script type="text/javascript">
+
+function createCar(color, doors, mpg) 
+{
+	var tempcar = new Object;
+	tempcar.color = color;
+	tempcar.doors = doors;
+	tempcar.mpg = mpg;
+	tempcar.showColor = function () 
+	{
+		document.write(this.color + " ");
+		document.write(this.doors + " ");
+		document.write(this.mpg + "<br>");
+	};
+
+	return tempcar;
+}
+
+var car1 = createCar("red", 4, 23);
+var car2 = createCar("blue", 3, 25);
+car1.showColor();
+car2.showColor();
+
+</script>
+
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+
+
+
+
+</body>
+</html>

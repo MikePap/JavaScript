@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Google Maps JavaScript API Example: Simple Custom StreetView</title>
+<meta charset="UTF-8">
+<link href="/apis/maps/documentation/javascript/examples/default.css"         rel="stylesheet" type="text/css">
+
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+
+#pano_canvas{float:left;}
+#imm{float:right; width:700px; height:700px; margin:0 10px; padding:5px; border:1px solid #CCC}
+p{margin:5px;}
+
+</style>
+<script src="//maps.googleapis.com/maps/api/js?sensor=false"type="text/javascript"></script>
+
+<script type="text/javascript">
+function initialize() {
+// Set up Street View and initially set it visible. Register the custom panorama provider function. Set the StreetView to display the custom panorama 'reception' which we check for below.
+var panoOptions = {
+pano: 'receptionn',		//  la proprietà 'pano' deve essere impostata quando si vuole visualizzare un panorama personalizzato
+visible: true,
+panoProvider: getCustomPanorama	// la proprietà 'panoProvider' restituisce un oggetto che definisce il panorama 
+}; // 'myOptions' 
+
+var panorama = new google.maps.StreetViewPanorama(document.getElementById('pano_canvas'), panoOptions);
+}	// chiude initialize
+
+// Return a pano image given the panoID.
+function getCustomPanoramaTileUrl(pano, zoom, tileX, tileY) {
+// Note: robust custom panorama methods would require tiled pano data. Here we're just using a single tile, set to the tile size and equal to the pano "world" size.
+//return 'images/panoReception1024-0.jpg';
+return '../../Immagini/My_Stanza.png';
+// http://code.google.com/intl/it-IT/apis/maps/documentation/javascript/examples/streetview-custom-simple.html
+// Immagine in google http://code.google.com/intl/it-IT/apis/maps/documentation/javascript/examples/images/panoReception1024-0.jpg 
+} //
+
+// Construct the appropriate StreetViewPanoramaData given the passed pano IDs.
+function getCustomPanorama(pano, zoom, tileX, tileY) {
+if (pano == 'receptionn') {
+return {
+location: {
+pano: 'reception',
+description: "Google Sydney - Atrio"
+}, //'location'
+links: [],
+ // The text for the copyright control.
+copyright: 'Imagery (c) 2010 Google',
+// The definition of the tiles for this panorama.
+tiles: {
+// tileSize: new google.maps.Size(1024, 512),	// la larghezza deve essere il doppio dell'altezza
+// worldSize: new google.maps.Size(1024, 512),
+tileSize: new google.maps.Size(1155, 577),
+worldSize: new google.maps.Size(1155, 577),
+// The heading in degrees at the origin of the panorama
+// tile set.
+centerHeading: 100,	// 105
+getTileUrl: getCustomPanoramaTileUrl
+} // 'tiles'
+}; // return
+}  // if
+} // "getCustomPanorama"
+
+//  google.maps.event.addDomListener(window, 'load', initialize);	// Può sostituire --> body onload="initialize()"
+</script>
+
+</head>
+
+<body onload="initialize()">
+
+<div id="pano_canvas" style="width:1155px; height:577px"></div>
+
+
+<!--
+<div id="imm">
+	<img src="../../Immagini/Myroom.png">
+</div> 
+-->
+
+
+
+  </body>
+</html>
+

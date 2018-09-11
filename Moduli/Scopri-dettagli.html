@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Scopri dettagli  </title>
+<style type="text/css">
+html,body,div,p{ margin:0; padding:0;}
+
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); }
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grassetto{font-weight:bold;}
+
+div.divo{
+position:relative; width:600px; /*height:100px;*/ margin:10px 0 0 50px;  text-align:center;	 background:rgb(255,0,0);  border:1px solid; 
+}
+div.dettagli{
+position:relative; width:100px; margin:0 auto; padding:10px; text-align:center; background:yellow;  border:1px solid; cursor:pointer; 
+}
+p.par{
+position:relative; width:600px;   margin:0; background:blue; color:white; font-size:31px; /*height:0;*/ display:none;
+}
+
+p.sposta{
+margin: 10px;
+}
+
+</style>
+
+</head>
+<body>
+
+
+<p class="sposta">
+La funzione <b>AnimaAltezza</b> permette di visualizzare l'elemento successivo a quello cliccato con animazione tipo cascata o tendina. <span class="nota">Non funziona in IE 8 </span>. <br />
+Funziona sia se l'elemento nascosto è impostato a <tt>display:none</tt> oppure se l'altezza è impostata a zero. 
+</p>
+
+<div class="divo">
+	<div>
+		cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye 
+	</div> 
+	<div class="dettagli"> dettagli </div>
+	<p class="par">sono un paragrafo <br />sono un cxazzone</p>
+</div> 
+
+<div class="divo">
+	<div>
+		cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye
+	</div> 
+	<div class="dettagli"> dettagli </div>
+	<p class="par">sono il secondo paragrafo <br> e sono più alto del <br> primo 	</p>
+</div> 
+
+<div class="divo">
+	<div>
+		cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da qualsiais parte del globo cxazaye varia da quvaria da qualsiais parte del globo 
+	</div> 
+	<div class="dettagli"> dettagli </div>
+	<p class="par">sono un paragrafo <br />sono un cxazzone</p>
+</div> 
+
+
+
+<script type="module">
+
+import {AnimaAltezza} from "./module/scopri_dettagli.js";
+
+	AnimaAltezza('p.par', 'div.dettagli');
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

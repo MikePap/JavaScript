@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>Creazione cerchio</title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.nota{color:orange;}
+.codice{color:green;}
+
+#map_canvas{ position:relative; margin:20px; width:80%; height:80%;  }
+
+</style>
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=it">
+</script>
+
+<script type="text/javascript">
+
+var capurso = new google.maps.LatLng(41.049437,16.922357);
+var popolazione = 15000;
+
+function initialize() {
+var myOptions = {
+zoom: 14,
+center: capurso,
+scaleControl: true,
+mapTypeId: google.maps.MapTypeId.ROADMAP
+
+} // myOptions
+
+var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+var populationOptions = {
+        strokeColor: "#0F0",
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: "#FF0000",
+        fillOpacity: 0.35,
+        map: map,
+        center: capurso,
+//        radius: popolazione / 20	// in questo caso avremo 750 considerando una popolazione di 15000
+
+/* Considerando che Capurso ha una superficie quadrata di 14,88 Kmq si può fare un'approssimazione e stabilre che abbia più o meno un raggio di:
+Area cerchio = r x r x 3.14  -- r x r = A /3.14   
+ r = radice quadrata di --> 1 488 000 / 3.14 =>  688  
+*/
+	radius: 688		// dai calcoli di cui sopra ^ 
+      }; // populationOptions
+
+cityCircle = new google.maps.Circle(populationOptions);
+
+} // "initialize" 
+
+</script>
+
+</head>
+<!-- <body onload=""> -->
+<body>
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+initialize();
+
+}); // chiude ready 
+</script>
+
+
+<div id="map_canvas"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

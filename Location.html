@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Location</title>
+<link type="text/css" rel="stylesheet" href="../baseLocali.css" />
+<style type="text/css">
+</style>
+<script src="jQuery-1.6.min.js"> </script>
+</head>
+<body>
+
+<script type="text/javascript">
+function correntPage(){
+	alert(document.location);
+}
+
+function show_hash(){
+	alert(document.location.hash);
+} 
+
+function show_host(){
+	alert(document.location.host);
+	alert(document.location.hostname);
+}
+
+function show_href(){
+	document.location.href ="http://www.java2s.com";
+}
+
+function show_href(){
+	document.location.href ="http://www.abcoliodoliva.com";
+}
+
+function show_pathname(){
+	alert(document.location.pathname);
+}
+
+function show_port(){
+	alert(document.location.port);
+}
+function show_protocol(){
+	alert(document.location.protocol);
+}
+
+function show_search(){
+	alert(document.location.search);
+}
+
+function antenati(){
+	alert(document.location.ancestorOrigins);
+}
+
+</script>
+
+<h1>Location</h1>
+
+<h3>Vedere anche <a href="self_domain.html">self_domain.html</a> nella stessa cartella</h3>
+
+<h2>location</h2>
+<p class="nota">
+Il metodo <q>document.location</q> restituisce l'url della pagina in cui viene richiamato. <br />
+<button id="locazione_semplice" onClick="correntPage()">Url Pagina corrente</button>
+</p>
+
+<h2>location.assign</h2>
+<p class="nota">Il metodo <q>location.assign</q> carica una nuova pagina specificata dall'URL nella finestra corrente </p>
+<button id="assign" onClick='document.location.assign("http://www.java2s.com")'>Carica una pagina nuova</button>
+
+<h2>location.hash</h2>
+<p class="nota">La proprietà <q>hash</q> si riferisce alla parte "anchor" dell'URL. Se l'URL è http://www.abcoliodoliva.com/glossario.html#top l'hash risultante sarà "#top"  </p>
+<button id="hash" onClick='show_hash()'>Ottieni l'hash</button>
+
+<h2>location.host -- location.hostname</h2>
+<p class="nota">Le due proprietà rappresentano il serverhost; la differenza sta che il primo <q>location.host</q> fornisce anche il numero di porta se è disponibile </p>
+<button id="host" onClick='show_host()'>Recupera l'host</button>
+
+<h2>location.href</h2>
+<p class="nota">La proprietà <q>href</q> permette di creare un collegamento all'URL specificato. E' simile alla proprietà <q>assign</q> </p>
+<button id="href" onClick="show_href()" >Vai a abc</button>
+
+<h2>location.pathname</h2>
+<p class="nota">La proprietà <q>pathname</q> fornisce la parte relativa al percorso del file all'interno dell'URL. </p>
+<button id="percorso" onClick='show_pathname()'>Ottieni la directory</button>
+
+<h2>location.port</h2>
+<p class="nota">La proprietà <q>port</q> fornisce il numnero di porta ma non è sempre disponibile.  </p>
+<button id="porta" onClick='show_port()'>Ottieni il numero di porta</button>
+
+<h2>location.protocol</h2>
+
+<p class="nota">La proprietà <q>protocol</q> fornisce il protocollo dell'URL </p>
+<button id="protocol" onClick='show_protocol()'>Ottieni il protocollo</button>
+
+
+<h2>location.reload</h2>
+<p class="nota">Il metodo <q>reload</q> permette di ricaricare la pagina corrente </p>
+<button id="ricarica">Ricarica la pagina</button>
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+$('#ricarica').click(function(){
+setTimeout(document.location.reload(), 2000);	// ricarica la pagina dopo 2 secondi 
+//setTimeout(document.location.reload(), 2000);	// ### Funziona anche in Chrome ma NON dopo 2 secondi
+}); // chiude click 
+}); // chiude ready 
+</script>
+
+
+<h2>location.replace</h2>
+<p class="nota">Il metodo <q>replace</q> carica un'altra pagina specificata nella stringa passata. La nuova pagina rimpiazza(la sostituisce e la elimina) la pagina corrente (questa documento)nella cronologia. Se dalla nuova pagina caricata si ritorna indietro ... provare per capire è più semplice che spiegare   </p>
+<button id="replace" onClick='document.location.replace("http://www.java2s.com")'>Carica un'altra pagina</button>
+
+<h2>location.search</h2>
+<p class="nota">La proprietà <q>search</q> rappresenta la porzione query(la/le variabili get) dell'URL (compreso il punto interrogativo '?'). Se per esempio l'URL è http://www.abcoliodoliva.com?regioni=Puglia si otterrà "?regioni=Puglia" </p>
+<button id="search" onClick='show_search()'>Ottieni le variabili get</button>
+
+
+<h2>Location.ancestorOrigins</h2>
+<p>
+Restituisce un array 	
+</p>	
+<button id='antenati' onclick="antenati()" >Ottieni gli Antenati</button>
+
+
+<h3>Ottenere il nome della pagina corrente</h3>
+
+<p>
+Come visto su <span class="codice">document.location</span> restituisce tutto l'URL della pagina ma se vogliamo ottenere soltanto il nome della pagina (in questo caso <q>Location.html</q>) possiamo utilizzare la seguente funzione visto che non ci sono delle funzioni built.in per ottenerlo:
+</p>
+<pre>
+function nomePagina(){
+	var urlPagina = String(document.location);			<span class="nota">http://localhost/JavaScript/Location.html</span>
+	var diviso = urlPagina.split('/');
+	var lungh = diviso.length - 1; 
+	return diviso[lungh];
+}
+<span class="azzurro">
+console.log(nomePagina());						<span class="nota">// Location.html</span>	
+</span>
+</pre>
+
+
+<h3>Cambiare location.href  con l'aggiunta di una variabile GET </h3>
+<p>Cliccando sul pulsante si fa in modo di cambiare l'URL della pagina. In pratica viene aggiunta una variabile get che oltremodo permette poi anche di verificare il metodo <q>locaton.search</q>  cliccando sul pusante "Ottieni le variabili get"  </p>
+<button id="cambio_href" onClick="">Cambia l'URL </button>
+
+<h3>Metodi applicati sui link</h3>
+
+<p>
+I metodi <q>host</q>, <q>hostname</q>, <q>pathname</q> possono essere applicati anche ad un link qualsiasi presente nel documento
+</p>
+<pre>
+&lt;a id="joe" href="http://joelcalifa.com/blog/revisiting-visited/"&gt; Link &lt;/a&gt;
+
+var joe = document.getElementById("joe"); 
+
+console.log(joe.host);
+console.log(joe.pathname);
+</pre>
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+$("#cambio_href").click(function(){
+//var main_frame = "http://www.java2s.com";
+var cur_url = self.location.href;
+var var_get = "top=Su";
+var nuovo_url = cur_url + "?" + var_get;
+location.href = nuovo_url; 
+
+}); // chiude click 
+
+}); // chiude ready 
+
+
+// Restituisce il nome del documento corrente
+function nomePagina(){
+	var urlPagina = String(document.location);				// http://localhost/JavaScript/Location.html
+	var diviso = urlPagina.split('/');
+	var lungh = diviso.length - 1; 
+	return diviso[lungh];
+}
+//alert(nomePagina());												// Location.html
+
+
+</script>
+
+<br />
+<br />
+<br />
+
+
+
+
+</body>
+</html>

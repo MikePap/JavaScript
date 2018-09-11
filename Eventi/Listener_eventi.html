@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title> Listener per eventi </title>
+<script type="text/javascript" src="linklistener.js"> </script>
+<script type="text/javascript" src="../Book/core.js" > </script>
+<script type="text/javascript" src="strayclickcatcher.js"> </script>
+
+
+<style type="text/css">
+
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);}
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px;  color:rgb(200,20,20);}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+
+</style>
+ 
+</head>
+
+<body>
+
+
+<h1> Listener per eventi  </h1>
+<p>
+I listener per eventi sono come i gestori di eventi tranne che per il fatto che ad un determinato evento è possibile assegnare il numero di listener desiderati. 
+<br /> C'è un problema con I Explorer che usa una sua versione  molto differente (ed è afflitta da bug); quindi bisogna eseguire due codici separati
+
+</p>
+
+<p>
+The first captain of the USS Enterprise NCC-1701 was <a id="wikipedia" href="http://en.wikipedia.org/wiki/Christopher_Pike">Christopher Pike</a>
+<br /> <span class="nota"> La funzione sta sul file <b> linklistener.js </b></span>
+</p>
+
+
+<h1>  Propagazione degli eventi  </h1>
+
+<p>
+Se ci si limita al listener per l'evento click su un link basta fare click sul link e verrà eseguito il listener corrispondente. Ma se invece si assegna il listener di click al paragrafo che contiene il link oppure al nodo del documento che si trova in cima all'albero del DOM, facendo click sul documento si attiverà comunque il listener. <br />
+Per evitare questo effetto di <b>propagazione dell'evento</b> bisogna richiamare il metodo <b>stopPropagation</b>. In internet explorer invece bisogna impostare a "true" la proprietà <b> cancelBubble </b>. <br />
+</p>
+<p>
+Esempio: <br />
+The first captain of the USS Enterprise NCC-1701 was <a id="wikipedia" href="http://en.wikipedia.org/wiki/Christopher_Pike">Christopher Pike</a>. <br />     
+<span class="nota"> La funzione sta nel file <b> strayclickcather.js </b> 
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+

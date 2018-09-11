@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Oggetto Function  </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css" /> 
+
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+<h1>Function()</h1>
+
+
+<section class="listaArgomenti">
+	<select name="sezioni" class="sezioni">
+		<option value="seleziona">Seleziona l'argomento</option>
+		
+
+		<optgroup label="In Generale">
+			<option value="s1">L'oggetto function</option>
+			<option value="s2">Definire una funzione</option>
+			<option value="s3">Invocare una funzione</option>
+			<option value="s4">Funzioni Anonime</option>
+		</optgroup>
+		<optgroup label="Funzioni Higher-Order">
+			<option value="s5">Funzioni Higher-Order</option>
+			<option value="s6">Funzioni che creano nuove funzioni</option>
+			<option value="s7">Funzioni che cambiano altre funzioni</option>
+			<option value="s8">Funzioni che creano un nuovo flusso di controllo</option>
+		</optgroup>	
+		<optgroup label="Funzioni anonime che si atuo-invocano">
+			<option value="s9">Funzioni anonime che si auto-invocano (IIFE)</option>
+		</optgroup>
+		<optgroup label="Funzioni innestate">
+			<option value="s10">Funzioni innestate</option>
+		</optgroup>		
+		<optgroup label="Oggetti come argomenti di funzioni">
+			<option value="s11">Assegnazione di oggetti come argomenti di funzioni</option>
+			<option value="s12">Oggetto che manipola una variabile interna</option>
+			<option value="s13">Funzioni e variabili private e pubbliche</option>
+		</optgroup>
+			
+
+	</select>
+</section>
+
+
+
+<section id="s1">
+<h3>L'oggetto function</h3>
+
+<p>
+In JavaScript <tt>Function()</tt> è un oggetto  speciale. Innanzitutto è un contenitore di dichiarazioni di codice che può essere invocato utilizzando l'operatore parentesi <b>( )</b>.<br />
+ Le funzioni sono oggetti. Questo significa che una funzione può essere immagazzinata in una variabile in un'array o in un oggetto. Inoltre una funzione può essere passata o restituita da un'altra funzione. Una funzione ha proprietà perchè è un oggetto e può essere cancellata in un qualsiasi momento utilizzando la parola chiave <b>return</b>. 
+</p> 
+</section>
+
+<section id="s2" >
+	<h3>Definire una funzione</h3>
+	<p><span class="grigio">Una funzione può essere definita in tre modi differenti:</span> <b>constructor, statement(declaration), expression(operator)</b> 
+	</p>
+	<pre>
+<span class="nota">constructor</span>
+var addConstructor = new Function('x', 'y', 'return x + y');
+
+<span class="nota">statement (declaration) </span>
+function addStatement(x, y){ 
+	return x + y;
+}
+<span class="nota">expression (operator)</span>
+var addExpression = function(x, y){
+	return x + y;
+};
+</pre>
+	
+	<p>
+I due metodi più utilizzati sono <tt>statement(declaration)</tt> e <tt>expression(operator)</tt>. La differenza più considerevole nel dover utilizzare uno o l'altro metodo sta nella creazione della stessa. Cioè una funzione definita con <tt>declaration</tt> viene fatta risalire al top del codice. E questo spiega perchè può essere invocata prima della sua creazione. 
+	</p>
+	<pre>
+<span class="nota">se si invoca una funzione (declaration) prima della sua definizione  </span>
+<span class="azzurro">destroyDeathStar();</span>
+function destroyDeathStar(){
+	alert("Stay on target, stay on target");
+}
+
+<span class="nota">è come se si scrivesse il seguente</span>
+var destroyDeathStar = function destroyDeathStar(){
+	alert("Stay on target, stay on target");
+}
+<span class="azzurro">destroyDeathStar();</span>
+</pre>
+	<p>
+Mentre una funzione definita con <tt>operator</tt> è valutata nel posto dove viene inserita seguendo il flusso normale del codice. <br />
+Se si inserisce una funzione con <tt>declaration</tt> all'interno di una dichiarazione <tt>if</tt> essa verrà sollevata dallo scopo interno (tranne che in Firefox) e inserita nel <em> global scope</em>. Mentre utilizzando una funzione con <tt>operator</tt> si rimarrà all'interno dello <tt>scope</tt> della dichiarazione <tt>if</tt>  
+	</p>
+	<pre>
+var destroyDeathStar;
+ 
+if(pilot == "Luke Skywalker"){
+	destroyDeathStar = function(){
+		alert("May the force be with you");
+	}
+}else{
+	destroyDeathStar = function(){
+		alert("Gold Five to Red leader, lost Tiree, lost Dutch");
+	}
+}
+<span class="azzurro">destroyDeathStar();</span>			<span class="nota"> il risultato dipenderà dal valore di 'pilot' </span>
+</pre>
+	<p>
+Dal momento in cui le funzioni <tt>operator</tt> non sono aggiunte allo <tt>scope</tt> non c'è la necessità di assegnargli un nome per cui possono essere anche <em>anonime</em>. 
+La funzione operatore è utile perchè è più flessibile e in realtà è una espressione. 
+	</p>
+	<pre>
+elemento.addEventListener("click", 
+function(){ 
+	alert('hello') 
+});
+
+<span class="grigio">oppure in un ciclo</span>
+for(var x=0; x<=900; x++){
+	var myFunction = function(){
+		alert("When " + x + " years old you reach, look as good you will not.");
+	}
+	myFunction();
+}
+</pre>
+
+	<p> <span class="nota">Quindi quali dei due usare?</span>  <br />
+Se si intende utilizzarla all'interno di una dichiarazione <tt>if</tt> o in un <tt>ciclo</tt> è conveniente usare <em>operator(expression)</em>. Nella costruzione di oggetti vale la stessa cosa. In tutti i casi anche se la funzione <em>statement (declaration)</em> è più intuibile perchè è simile al tipo di funzione usata negli altri linguaggi per evitare che si commettano errori nel riutilizzo è conveniente fare affidamento su la <em>operator (expression)</em>
+	</p>
+</section> 
+
+
+<section id="s3"> 
+	<h3>Invocare una funzione</h3>
+	<p>
+		<span class="grigio">Le funzioni possono esere invocate in quattro differenti modi:</span> come <b>funzione, metodo, costruttore</b> o utilizzando i metodi <b>call</b> o <b>apply </b>
+	</p>
+	<pre>
+<span class="scuro">come funzione</span>
+var myFunction = function(){
+	return 'foo'
+};
+<span class="azzurro">console.log(myFunction());</span> 		<span class="nota">// restituisce 'foo'</span>
+
+<span class="scuro">come metodo</span>
+var myObject ={
+	myFunction: function(){
+		return 'bar';
+	}
+}
+<span class="azzurro">console.log(myObject.myFunction());</span>	<span class="nota">// restituisce 'bar'</span>
+
+<span class="scuro">come costruttore</span>
+var Cody = function(){
+	this.living = true;
+	this.age = 33;
+	this.gender = 'male';
+	this.getGender = function() {return this.gender;};
+}
+<span class="azzurro">var cody = new Cody();</span> 		<span class="grigio">// invocato via Cody constructor</span>
+<span class="azzurro">console.log(cody);</span>		<span class="nota">// restituisce  cody object and properties</span>
+
+<span class="scuro">metodi <b>call</b> e <b>apply</b></span>  
+var greet = {
+	runGreet: function(){
+		console.log(this.name, arguments[0], arguments[1]);
+	}
+}
+<span class="azzurro">
+var cody = {name:'cody'};
+var lisa = {name:'lisa'};</span>
+
+<span class="grigio">//Invocare "runGreet" come se fosse dentro l'oggetto "cody" </span>
+<span class="azzurro">greet.runGreet.call(cody,'foo','bar');</span>			<span class="nota">// restituisce 'cody foo bar'</span>
+
+<span class="grigio">// Invocare la funzione "runGreet" come se fosse dentro l'oggetto "lisa" </span>
+<span class="azzurro">greet.runGreet.apply(lisa, ['foo','bar']);</span>		<span class="nota">// restituisce 'lisa foo bar'</span>
+</pre>
+	<p>Esempi dei metodi <em>call</em> e <em>apply</em> sono nel file: <a href="Ereditare.html">Ereditare.html</a> </p> 
+
+
+
+
+</section>
+
+<section id="s4"> 
+	<h3>Funzioni anonime</h3	>
+	<p>
+Una funzione anonima è una funzione a cui non è assegnato un identificatore. Sono utilizzate per passare funzioni come parametro per altre funzioni e quindi dichiarate nell'esecuzione del codice(<tt>runtime</tt>). Sono create utilizzando la funzione <em>operator (expression)</em> 
+	</p>
+	<pre>
+function flyToTheMoon(){ 			<span class="nota">funzione con un nome</span>
+	alert("Zoom! Zoom! Zoom!");
+}
+<span class="azzurro">flyToTheMoon();</span>
+.............................
+var flyToTheMoon = function(){ 		<span class="nota">stessa funzione creata come 'anonima' </span>
+	alert("Zoom! Zoom! Zoom!");
+}
+<span class="azzurro">flyToTheMoon();</span>
+</pre>
+	<p>
+Siccome in JavaScript <b>le funzioni sono oggetti speciali</b> fa si che possano essere immagazzinati nelle variabili, passsati ad altre funzioni come parametri o restituiti da una funzione con <tt>return</tt>. Le funzioni sono sempre degli oggetti in qualsiasi modo vengano create. 
+	</p>
+	<pre>
+<span class="nota">il seguente è il classico modo di definire una funzione anonima è assegnarla ad una variabile</span>
+var flyToTheMoon = function()	{
+	alert("Zoom! Zoom! Zoom!");
+}
+</pre>
+	<p><b>E' utile dare un nome alle funzioni</b> qualora vengano richiamate all'interno di se stesse (funzioni ricorsive)</p>
+	<pre>
+var countDown = function countDown(num){
+	console.log(num);
+	num--;				
+	if(num &lt;  0){
+		return false;
+	} 				
+	countDown(num);		<span class="nota">// richiamo di se stessa</span>
+};
+<span class="azzurro">countDown(5);</span>			<span class="nota">// restituisce 5 4 3 2 1 </span>
+</pre>
+	<p>
+E' perfettamente legittimo che una funzione possa richiamare se stessa in modo da poter ottenere, per esempio, una ripetizione del risultato (si pensi alla ripetizione di un'animazione) oppure a un <q>count-down</q> come mostrato nell'esempio precedente
+	</p>
+
+<p>Altro esempio <pre>
+var sayHi = function(f){
+	f(); 				<span class="nota">// si invoca la funzione anonima </span>
+}
+..................
+
+sayHi(function(){
+	console.log('hi');		<span class="nota">// restituisce 'hi'</span>
+});			
+</pre>
+</section>
+
+
+
+<section id="s5">  
+	<h2>Funzioni Higher-order</h2>
+	<p>
+Tenendo presente che le funzioni sono valori regolari, le <b>higher-order</b> sono funzioni che operano su altre funzioni. Possono essere di diverso tipo
+	</p>
+</section>
+
+<section id="s6"> 
+	<h3>Funzioni che creano nuove funzioni</h3>
+
+	<pre>
+function somma(primoOperatore){
+	console.log(primoOperatore);
+	return function (secondoOperatore){
+		console.log(primoOperatore + secondoOperatore)
+		return function (terzoOperatore){
+			console.log(primoOperatore + secondoOperatore + terzoOperatore);
+		}
+	}
+}
+<span class="azzurro">
+somma(5)(4)(6);				<span class="nota">// 5 9 15</span>
+</span>
+</pre>
+
+</section>
+
+
+<section id="s7">
+	<h3>Funzioni che cambiano altre funzioni</h3>
+	<pre>
+function noisy(f) {
+	return function(arg) {
+		console.log("calling with", arg);
+		var val = f(arg);
+		console.log("called with", arg, "- got", val);
+		return val;
+	};
+}
+<span class="azzurro">
+noisy(Boolean)(0);				<span class="nota">// calling with 0   called with 0 - got false </span>
+noisy(Boolean)(1);				<span class="nota">// calling with 1   called with 1 - got true </span>
+</span>
+</pre>
+
+	<p>L'esempio seguente è più reale </p>
+	<pre>
+<span class="azzurro">
+&lt;div id="colPranzoCena"&gt; 
+	&lt;button&gt; Colazione &lt;/button&gt;
+	&lt;button&gt; Pranzo &lt;/button&gt;
+	&lt;button&gt; Cena &lt;/button&gt;
+&lt;/div&gt;
+</span>
+
+function nodiFigli(nodoGenitore, evento, funzione){
+	var genitore = document.querySelector(nodoGenitore);
+	genitore.addEventListener(evento, function (e){
+		funzione(e.target);
+	},false);
+}
+
+function esecuzione(ev){
+	console.log(ev.textContent);
+}
+<span class="azzurro">
+nodiFigli("#colPranzoCena", "click", esecuzione);
+</span><span class="nota">Ora quando si clicchera su un pulsante sarà restituito il suo valore testuale ("Colazione", "Pranzo", "Cena")</span>
+</pre>
+
+</section> 
+
+
+<section id="s8"> 
+	<h3>Funzioni che creano un nuovo flusso di controllo</h3>
+	<pre>
+function unless(test, then) {
+	if (!test) then();
+}
+function repeat(times, body) {
+	for (var i = 0; i &lt;  times; i++) body(i);
+}
+<span class="azzurro">
+repeat(3, function(n) {
+	unless(n % 2, function() {
+		console.log(n, "is even");
+	});
+});
+</span>
+<span class="grigio">
+Quindi chiamando la funzione <q>repeat()</q> si ha il seguente risultato: 0 "is even"   2 "is even".
+In altre parole sarebbe uguale alla seguente:
+</span>
+function pari (times){
+	for (var i = 0; i &lt times; i++){
+		if(i % 2 == 0){
+			console.log(i + " è pari");
+		}
+	}
+}
+<span class="azzurro">
+pari(3);					<span class="nota">// 0 è pari   2 è pari </span>	
+</span>
+</pre>
+
+</section>
+
+<section id="s9">
+	<h2>Dichiarare funzioni anonime che si auto-invocano (IIFE) </h2>
+	<p>
+Le <span class="nota">Immediately Invoked Function Expression (IIFE)</span> sono funzioni anonime che vengono invocate immediatamente appena create
+	</p>
+
+
+
+	<pre>
+<span class="grigio">tipo plugin di jQuery</span>
+(function (msg){
+	console.log(msg);			<span class="nota">// restituisce 'Hi' </span>
+})('Hi');
+
+<span class="grigio">appena più esplicativa</span>
+(function (divo){
+	var d = document.getElementById(divo);
+	console.log(d.textContent)		<span class="nota">// restituisce il contenuto dell'elemento 'par' </span>
+}
+)('par');  
+
+<span class="grigio">leggermente differente dalla precedente ma con lo stesso risultato (osservare l'ultima parentesi tonda)</span>
+(function (msg){
+	console.log(msg)
+}('Hi'));
+
+<span class="grigio">La soluzione più corta possibile</span>
+!function sayHi(msg){
+	console.log(msg);
+}('Hi');
+</pre>
+
+</section> 
+
+<section id="s10">
+	<h2>Funzioni innestate</h2>
+	<p>Le funzioni possono essere innestate una nell'altra </p>
+	<pre>
+var foo = function(){
+	var bar = function(){
+		var goo = function(){
+			console.log(this);	<span class="nota">// fa riferimento all'oggetto window </span>
+		}();
+	}();
+}();
+</pre>
+
+	<p>E' importante tener presente che le funzioni innestate vengono eseguite in successione. Quella più interna verrà eseguita per ultima </p>
+
+<pre>
+var foo = function(){
+	console.log('uno');
+	var bar = function(){
+		console.log('due');
+		var goo = function(){
+			console.log('ultima');			 
+		}();
+	}();
+};
+
+foo();			<span class="nota">// uno, due, ultima </span>
+
+</pre>
+
+
+	<p>Oppure usando «return» con le «Immediately Invoked Function Expression (IIFE)» </p>
+	<pre>
+var foo = function(){
+	console.log('uno');
+	return function (){
+		console.log('due');
+		return function () {
+			console.log('tre');
+		}()
+	}();
+}()
+</pre>
+
+</section> 
+
+<section id="s11">
+	<h2>Assegnazione di oggetti come argomenti di funzioni</h2>
+	<pre>
+function FooBar( options ){
+	this.opzioni = options;
+}
+
+var fooBar = new FooBar({a: "alpha", b:'beta'});
+<span class="azzurro">
+console.log(fooBar.opzioni);				<span class="nota">// restituisce l'oggetto passato come argomento {a: "alpha", b: "beta"} '</span>
+console.log(fooBar.opzioni.a);				<span class="nota">// restituisce 'alpha'</span>
+console.log(fooBar.opzioni.b);				<span class="nota">// restituisce 'beta'</span>
+</span>
+</pre>
+<p>Oppure con l'uso di una funzione normale, invece che di quella costruttore, avremo:</p>
+<pre>
+function FooBar( options ){
+	var opzioni = options;
+	return { opzioni };
+}
+
+var fooBar = FooBar({a: "alpha", b:'beta'});
+<span class="azzurro">
+console.log(fooBar.opzioni);				<span class="nota">// Object { a: "alpha", b: "beta" } </span>
+console.log(fooBar.opzioni.a);				<span class="nota">// alpha</span>
+</span>
+
+</pre>
+
+
+</section>
+
+
+<section id="s12">
+	<h3>Oggetto contenente metodi che manipolano una variabile interna (interna alla funzione genitore e	esterna alle funzioni interne)</h3>
+<pre>
+var createPet = function(name) {
+	var sex;
+  
+	return{
+		setName: function(newName){
+			name = newName;
+		},
+    
+		getName: function(){
+			return name;
+		},
+    
+		getSex: function(){
+			return sex;
+		},
+    
+		setSex: function(newSex){
+			if(typeof newSex == "string" && (newSex.toLowerCase() == "male" || newSex.toLowerCase() == "female")){
+				sex = newSex;
+			}
+		}
+	}
+}
+
+var pet = createPet("Vivie");
+<span class="azzurro">pet.getName();</span>				<span class="nota">// restituisce Vivie</span>                 
+pet.setName("Oliver");
+pet.setSex("male");
+<span class="azzurro">pet.getSex();</span>				<span class="nota">// restituisce male </span>          
+<span class="azzurro">pet.getName();</span>				<span class="nota">// restituisce Oliver</span>          
+</pre>
+
+</section>
+
+<section id="s13">
+	<h3>Funzioni e variabili private e pubbliche</h3>
+	<p>Nell'esempio seguente la variabile <q>counter</q> viene dichiarata privatamente</p>
+
+	<pre>
+var testModule = (function () {
+	var counter = 0;					<span class="nota">qui 'counter' è privata</span>
+ 
+	return {
+ 
+		incrementCounter: function () {
+			return counter++;
+		},
+ 
+		valoreCounter: function () {
+			console.log( "Valore di counter: " + counter );
+		}
+	};
+})();
+<span class="azzurro">
+testModule.incrementCounter();
+testModule.valoreCounter();					<span class="nota">Valore di counter: 1</span>
+
+testModule.incrementCounter();
+testModule.valoreCounter();					<span class="nota">Valore di counter: 2</span>
+</span>
+</pre>
+	<p>
+La funzione pubblica <tt>incrementCounter</tt>  ogni volta che viene richiamata la incrementa anche se è impostato a zero ad inizio funzione. Pertanto se vogliamo resettare il suo valore la dobbiamo rendere pubblica:
+	</p>
+	<pre>
+var testModule = (function () {
+	var counter = 0;					<span class="nota">qui 'counter' è privata</span>
+ 
+	return {
+ 
+		incrementCounter: function () {
+			return counter++;
+		},
+ 
+		resetCounter: function () {
+			console.log( "Valore di counter prima del reset:: " + counter );
+			counter = 0;				<span class="nota">qui 'counter' è resa pubblica</span>
+		}
+	};
+})();
+<span class="azzurro">
+testModule.incrementCounter();
+testModule.resetCounter();					<span class="nota">Valore di counter prima del reset: 1</span>
+
+testModule.incrementCounter();
+testModule.resetCounter();					<span class="nota">Valore di counter prima del reset: 1</span>
+</span>
+</pre>
+	<p>
+In questo secondo esempio reimposto la variabile 'counter' nella funzione pubblica <tt>resetCounter</tt> rendendola in questo modo pubblica. Ciò mi permette di resettare il suo valore 
+	</p>
+
+	<p>
+Il seguente è un esempio completo che fa uso di funzioni e variabili private e pubbliche con restituzione di oggetto
+	</p>
+	<pre>
+function createCounter(counterName) {
+	var counter = 0;
+
+	function display() {
+		console.log("Number of " + counterName + ": " + counter);
+	}
+
+	function increment() {
+		counter = counter + 1;
+		display();
+	};
+
+	function decrement() {
+		counter = counter - 1;
+		if(counter >= 0)			<span class="nota">se si vuole evitare che 'counter' scenda a valori negativi</span>
+			display();
+	};
+
+	return {
+		increment : increment,
+		decrement : decrement
+	};
+}
+
+<span class="azzurro">
+var dogsCounter = createCounter("dogs");
+
+dogsCounter.increment();				<span class="nota">// Number of dogs: 1</span>
+dogsCounter.increment();				<span class="nota">// Number of dogs: 2</span>
+dogsCounter.decrement();				<span class="nota">// Number of dogs: 1</span>
+dogsCounter.decrement();				<span class="nota">// Number of dogs: 0</span>
+dogsCounter.decrement();				<span class="nota">non restituisce nulla</span>
+</span>
+	</pre>
+
+
+</section> 
+
+
+									<div id="freccia_sali"><div></div> </div> 
+
+
+
+<script type="text/javascript">
+
+(function (msg){
+	console.log(msg)
+}('Hi'));
+
+</script>
+
+
+
+
+
+
+
+
+<br /><br /> <br /><br /> 
+
+
+
+<script type="text/javascript" src="../../baseLocali.js"></script>
+
+<script type="text/javascript">
+// Scorrimento verso la sezione cliccata
+var select = document.querySelector('select.sezioni');
+select.addEventListener("change", function(){ 
+	var valSez = this.value;									// s3
+	var pattern = "#" + valSez;
+	var of = document.querySelector(pattern).offsetTop;
+	window.pageYOffset = of;
+	document.documentElement.scrollTop = of;
+	document.body.scrollTop = of;
+//	Togliere il focus dalla <select> e assegnarlo al documento 
+	window.focus();
+	document.documentElement.focus();
+	document.body.focus();
+},false);
+
+// Per lo scorrimento del documento, verso l'alto
+var obj = new ScrollPage('1000', 100, 'freccia_sali', 300);
+obj.showFreccia();
+obj.clickScroll();
+//bloccaPropagazione();	
+
+</script>
+
+</body>
+</html>

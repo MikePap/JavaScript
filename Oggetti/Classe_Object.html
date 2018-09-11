@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>La classe Object  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(50,150,50);}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+<h1>La classe Object</h1>
+
+<p class="nota">La classe <q>Object</q> è la classe base per per tutte le classi JavaScript da cui tutti gli oggetti JavaScript derivano. <br /> 
+Tutte le proprietà e metodi della classe <b>Object</b> sono presenti in tutte le altre classi. <br />
+La classe <q>Object</q> ha le seguenti proprietà:  <br />
+
+<ul>
+	<li><b>constructor</b>: per la classe <q>Object</q>, punta alla funzione nativa <q>Object</q>  </li>
+	<li><b>prototype</b>: per tutte le classi, restituisce un'istanza di Object per default </li>
+	
+</ul>
+
+<code class='codice'>
+var myObj = new Object("foo");	<br />
+</code>		
+Crea l'oggetto 'foo'
+</p>
+
+
+<table id="tab_Object" width="60%" border="1" cellspacing="0" cellpadding="3">
+<tr>
+	<th>Proprietà</th>
+	<th>Descrizione</th>
+	
+</tr>
+<tr>
+	<td>constructor</td>
+	<td>Funzione che crea un oggetto</td>
+</tr>
+<tr>
+	<td>eval()</td>
+	<td>Valuta una stringa del codiced JS in riferimento all'oggetto </td>
+</tr>
+<tr>
+	<td>prototype</td>
+	<td>Permette di aggiungere proprietà e metodi alla classe <q>Object</q></td>
+</tr>
+<tr>
+	<td>toSource()</td>
+	<td>Restituisce una stringa che rappresenta l'oggetto (stringa del codice)</td>
+</tr>
+<tr>
+	<td>toString()</td>
+	<td>Restituisce una stringa che rappresenta l'oggetto <q>Number</q></td>
+</tr>
+<tr>
+	<td>valueOf()</td>
+	<td>Metodo che restituisce il valore dell'oggetto specificato </td>
+</tr>
+<tr>
+	<td>watch</td>
+	<td></td>
+</tr>
+<tr>
+	<td>unwatch</td>
+	<td></td>
+</tr>
+</table>
+
+<h3>constructor (costruttore)</h3>
+
+<p class="nota">Il nome del <q>constructor</q> è il nome della classe. Il costruttore agisce come una funzione della fattoria. Non si possono creare oggetti all'interno del costruttore. La parola chiave utilizzata dal costruttore è <b>this</b>. Quando il costruttore è chiamato con l'operatore <b>new</b> viene creato un oggetto (davanti la prima linea del costruttore ???)'      </p>
+
+
+<script type = "text/javascript">
+// Funzione costruttore 
+function EmployeeObj (name, address, phone, email) {
+    this.name = name;
+    this.address = address;
+    this.telephone = phone;
+    this.emailaddress = email;
+}
+// Creazione oggetto 
+var newCust = new EmployeeObj("Michele Prigigallo", "Capurso, Italia", "555-555-5555", "fl@website.com");
+//alert("Hello " + newCust.name);
+document.write("I am " + newCust.name);
+document.write(" I live in " + newCust.address);
+document.write(" my tel is " + newCust.telephone);
+document.write(" my website is " + newCust.emailaddress);
+
+</script>
+
+<h3>eval</h3>
+<script type = "text/javascript">
+    <!--
+    var x = 9;
+    var y = 8;
+    document.write("The result of x * y is: " + eval(x * y));
+    -->
+    </script>
+
+<h3>Constructor prototype</h3>
+<script type="text/javascript">
+/*
+function Car(sColor, iDoors, iMpg) {
+    this.color = sColor;
+    this.doors = iDoors;
+    this.mpg = iMpg;
+    this.owners = new Array("A", "B");
+}
+
+Car.prototype.showColor = function () {	// Non ha nessu effetto 
+    alert(this.color);
+};
+
+var oCar1 = new Car("red", 4, 23);
+var oCar2 = new Car("blue", 3, 25);
+
+oCar1.owners.push("C");
+
+document.write(oCar1.owners);
+document.write("<br>" + oCar2.owners);
+*/
+/*
+Object.prototype.newProperty = 2;
+document.write(document.object.newProperty.value);	// NON FUNZIONA ???
+*/
+Object.prototype.showValue = function () {
+//	alert(this.valueOf());
+	document.write(this.valueOf());
+};
+
+var str = "hello ";
+var iNum = 25;
+str.showValue();			// Restituisce il valore di "str" riferito alla funzione prototype
+iNum.showValue();			// Restituisce il valore di "iNum" riferito alla funzione prototype
+//document.write(object.showValue());
+//alert(object.isPrototypeOf(object));
+</script>
+
+<h3>toSource()</h3>
+<script type = "text/javascript">
+var aNum = Number(21);
+document.write(aNum.toSource());
+</script>
+
+<h3>toString()</h3>
+<script type = "text/javascript">
+var aNum = Number(21);
+document.write(aNum.toString());
+</script>
+
+<h3>valueOf()</h3>
+<script type = "text/javascript">
+var age = Number(30);
+document.write(age.valueOf());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>try - catch - finally</title>
+<link rel="stylesheet" href="../baseLocali.css" type="text/css"/>
+
+<style type="text/css">
+
+</style>
+</head>
+
+<body>
+
+<h2>try - catch - finally</h2>
+
+<p>
+La <span class="nota">dichiarazione <b>try</b></span> è formata da un blocco <em>try</em>, che contiene una o più dichiarazioni, (le parentesi graffe vanno sempre utilizzate anche in caso di una sola dichiarazione) e almeno una clausola «catch» o «finally» o entrambe: 
+</p>
+<p>
+- try...catch				<br>
+- try...finally			<br>
+- try...catch...finally	<br>
+
+</p>
+
+<p>
+La clausola <em>catch</em> contiene dichiarazioni che sono eseguite se una eccezione scaturisce dal blocco «try». Ciò a dire, se la/le dichiarazioni nel blocco «try» non hanno successo allora la dichiarazione nel blocco «catch» viene eseguita altrimenti non viene considerata e quindi saltata.
+</p>
+
+<p>
+Il blocco <em>finally</em> viene eseguito appena dopo l'esecuzione del blocco «try» o del blocco «catch» senza preoccuparsi di cosa accade prima, cioè se è stato rilevato un errore o meno. 
+Se per esempio c'è una funzione che resetta dei valori allora tale funzione la si può benissimo inserire nel blocco <q>finally</q> 
+</p>
+<p>
+Vediamo il seguente esempio dove dichiariamo nel blocco «try» una eccezzione già di partenza:
+</p>
+<pre>
+
+try {
+	throw 'myException';			<span class="nota">** questa dichiarazione genera un eccezione</span>	
+}
+catch (e) {
+	logMyErrors(e);				<span class="nota">** qui si passa l'oggetto eccezione ad una funzione che lo gestisce</span>
+}
+
+function logMyErrors (e) {
+	console.log('errore', e);		<span class="nota">// myException</span>
+}
+</pre>
+
+<p>
+Notiamo che il blocco «catch» specifica un "identificatore" (nel nostro caso "e"); questo identificatore contiene il valore specificato nella dichiarazione «throw». Il blocco «catch» è unico ed indipendente ed JavaScript crea questo identificatore nel momento in cui il blocco «catch» entra in scena e lo aggiunge allo «scope» corrente. Dopo che il blocco «catch» viene eseguito l'identificatore scompare dalla scope.
+</p>
+
+<p>
+Osserviamo il seguente esempio con «finally» dove utilizziamo una funzione per aprire un file (openMyFile) e nel blocco «try» facciamo eseguire del codice che usa il file: 
+</p>
+<pre>
+openMyFile();
+try {
+<span class="grigio">// Inserire codice che usa la risorsa </span>
+	writeMyFile(theData);
+}
+finally {
+	closeMyFile();				<span class="nota">** chiude il file a fine esecuzione del blocco try</span> 
+}
+</pre>
+<p>
+In questo caso se una qualche eccezione (errore) dovesse capitare, la clausola «finally» chiude il file prima che lo script fallisca. In ogni caso, la dichiarazione in «finally» verrà sempre eseguita sia se si verifica un errore sia se lo script in «try» si completa con successo.
+</p>
+
+<h3>Blocchi try innestati</h3>
+
+<p>
+Vediamo cosa accade nei seguenti esempi:
+</p>
+
+<pre>
+try {
+	try {
+		throw new Error('oops');
+	}
+	finally {
+		console.log('Esegue finally');
+	}
+}
+catch (ex) {
+	console.error('outer: ', ex.message);			<span class="nota">** da notare che richiama la proprietà "message" dell'identificatore </span>
+}
+<span class="azzurro">Output:</span><span class="nota">
+Esegue finally
+outer: oops
+</span>
+</pre>
+
+<p>
+Nell'esempio precedente il blocco «finally» viene eseguito prima perchè sta nello scope del blocco «try» interno. <br>
+Mentre nell'esempio seguente prima del blocco «finally» c'è un blocco «catch» che rileva l'errore, che sta nel blocco «try», e viene eseguito prima:
+</p>
+
+<pre>
+try {
+	try {
+		throw new Error('oops');
+	}
+	catch (ex) {
+		console.error('inner: ', ex.message);		<span class="nota"></span>
+	}
+	finally {
+		console.log('Esegue finally');
+	}
+}
+catch (ex) {
+	console.error('outer :', ex.message);
+}
+<span class="azzurro">Output:</span><span class="nota">
+inner: oops
+Esegue finally
+</span>
+</pre>
+
+<p>
+Nell'esempio seguente il blocco interno «catch» rilancia l'eccezione che verrà catturata e restituita dal blocco «catch» più esterno:
+</p>
+
+<pre>
+try {
+	try {
+		throw new Error('oops');
+	}
+	catch (ex) {
+		console.error('inner: ', ex.message);
+		throw ex;					<span class="nota">** qui rilancia l'errore al blocco esterno</span>
+	}
+	finally {
+		console.log('Esegue finally');
+	}
+}
+catch (ex) {
+	console.error('outer: ', ex.message);
+}
+<span class="azzurro">Output:</span><span class="nota">
+inner: oops
+Esegue finally
+outer: oops
+</span>
+</pre>
+
+<p>
+Se il blocco «finally» restituisce un valore, con «return», come nell'esempio seguente, questo valore diventa il valore finale dell'intero blocco «try-catch-finally» e quindi blocca tutto il resto:
+</p>
+
+<pre>
+(function() {
+	try {
+		try {
+			throw new Error('oops');
+		}
+		catch (ex) {
+			console.error('inner: ', ex.message);
+			throw ex;
+		}
+		finally {
+			console.log('Esegue finally');
+			return;					<span class="nota">** </span>
+		}
+	}
+	catch (ex) {
+		console.error('outer', ex.message);
+	}
+})();
+<span class="azzurro">Output:</span><span class="nota">
+inner: oops
+Esegue finally
+</span>
+</pre>
+
+
+<br><br><br>
+
+
+<h3>Esempio reale di controllo input </h3>
+
+<p>
+Lo script esegue un controllo sul tipo di input immesso dall'utente. Le eccezioni sono rilevate dai blocchi «catch»
+</p>
+
+<br>
+
+<form name="myForm">
+	Please enter a number:
+	<input type=TEXT size=10 value="" name="myText">
+	<input type=BUTTON value="Process" name="myButton" onClick='processData(this.form)'>
+</form>
+
+<script type="text/javascript">
+<!--
+function myErrorHandler(data){
+	try{
+		try{
+			if(data === "string"){
+				throw "E0";
+			}else{
+				throw "E1";
+			} 
+		} 
+		catch(e){
+			if(e == "E0"){
+				return("Error (" + e + "): Entry must be numeric.");
+			}else{
+				throw e;
+			} 
+		} 
+	} 
+	catch (e){
+		return("Error (" + e + "): Entry was invalid.");
+	} 
+} 
+
+function processData(form){
+	if(isNaN(parseInt(form.myText.value))){
+		alert(myErrorHandler("string"));
+	}else{
+		alert("You have correctly entered a number");
+	}
+}
+
+
+</script>
+
+<h3>Altri esempi</h3>
+
+<p>
+Il seguente è un'altro esempio
+</p>
+
+<pre>
+var context = null;
+
+function withContext(newContext, body) {
+	var oldContext = context;
+	context = newContext;
+	try{
+		return body();
+	}finally{
+		context = oldContext;				<span class="nota">** qui il valore di 'context' viene riportato al suo valore originale (null) </span>
+	}
+}
+
+try {
+	withContext(15, function() {
+		if (context &gt 10)
+			throw new Error("Not enough context!");
+		else
+			console.log('kopk');
+	});
+}catch(e) {
+	console.log("Ignoring: " + e);				<span class="nota"> // Ignoring: Error: Not enough context! </span>
+}
+
+console.log(context);						<span class="nota">// null </span>
+</pre>
+
+
+<script type="text/javascript">
+
+var context = null;
+
+function withContext(newContext, body) {
+	var oldContext = context;
+	context = newContext;
+	try{
+		return body();
+	}finally{
+		context = oldContext;
+
+	}
+}
+
+try {
+	withContext(15, function() {
+		if (context < 10)
+			throw new Error("Not enough context!");
+		else
+			console.log('context è maggiore di 10');
+	});
+} catch (e) {
+  console.log("Ignoring: " + e);
+}
+// → Ignoring: Error: Not enough context!
+
+console.log(context);
+// → null
+
+</script>
+
+
+
+
+
+<br /><br /><br /><br /><br /><br /><br />
+
+
+
+</body>
+</html>

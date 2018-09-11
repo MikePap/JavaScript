@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<title>Polyline Simple</title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.nota{color:orange;}
+.codice{color:green;}
+
+#map_canvas{ position:relative; margin:20px; width:80%; height:80%;  }
+
+</style>
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">
+
+  function initialize() {
+    var myLatLng = new google.maps.LatLng(0, -180);
+    var myOptions = {
+      zoom: 3,
+      center: myLatLng,
+      mapTypeId: google.maps.MapTypeId.TERRAIN
+    }; // 'myOptions'
+
+    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+// Costituzione di un array di coordinate che andrà a formare la linea 
+    var flightPlanCoordinates = [
+        new google.maps.LatLng(37.772323, -122.214897),
+        new google.maps.LatLng(21.291982, -157.821856),
+        new google.maps.LatLng(-18.142599, 178.431),
+        new google.maps.LatLng(-27.46758, 153.027892)
+    ]; // array 'flightPlanCoordinates'
+
+    var flightPath = new google.maps.Polyline({
+      path: flightPlanCoordinates,
+	// Tutte le proprietà dei CSS sono valide tranne i nomi 
+      strokeColor: "rgb(0,250,0)",	//"#F00"  proprietà colore della linea. 
+      strokeOpacity: 1.0,		// opacità 
+      strokeWeight: 3,			// spessore 
+	visible: true, 			// visibilità della linea.  di default è 'true'
+	editable: false,			// permette di spostare la linea e di modificarla. default è 'false'
+//	geodesic:true,			// ???
+//	zIndex: 1,				// eventualmente impostabile nel caso di presenza di altre forme
+	}); // "flightPath"
+
+   flightPath.setMap(map);	// il metodo 'setMap' della classe "google.maps.Polyline" permette di visualizzare la forma creata sulla mappa 
+
+// Aggiunta handler (pulsante "Alterna Visualizzazione Linea") per l'alternanza visualizzazione della linea 
+var vis = document.getElementById('altVis');
+google.maps.event.addDomListener(vis, 'click', function(){
+if(flightPath.getVisible() == true)
+flightPath.setVisible(false);
+else
+flightPath.setVisible(true);
+} // function 
+); // listener 
+
+
+
+// Aggiunta handler (pulsante "Permesso Modica Linea") per l'alternanza del permesso di modifica della linea'
+var mod = document.getElementById('modifica');
+google.maps.event.addDomListener(mod, 'click', function(){
+if(flightPath.getEditable() == true)
+flightPath.setEditable(false);
+else
+flightPath.setEditable(true);
+} // function 
+); // listener
+}  // initialize
+
+
+
+
+
+</script>
+</head>
+<body>
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+initialize();
+
+}); // chiude ready 
+</script>
+
+
+
+<button id="altVis" onclick="">Alterna Visualizzazione Linea</button>
+<button id="modifica">Permesso Modica Linea</button>
+
+
+<div id="map_canvas"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

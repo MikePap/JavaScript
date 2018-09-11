@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>window</title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(20,150,30); font-weight:bold;}
+dt{ color:#003399; margin-bottom:5px;}
+
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(50,100,255);}
+.scuro{color:#333;}
+
+.codice{ color:rgb(30,120,30);}		
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+<h1>window</h1>
+
+<h3>Vedere anche il file <a href='finestre.html'>finestre.html</a>  </h3>
+
+<p id="">
+L'oggetto <q>window()</q> è considerato l'oggetto principale, quello che sta al di sopra di tutti e che in altre in sostanza contiene tutti gli altri oggetti. E'  anche detto <b>head object</b> (oggetto globale) da non confondersi però con le <q>variabili globali</q> o con le <q>proprietà globali</q> che sono utilizzate per definire valori contenuti nell'<q>Head object</q> e non sono oggetti specifici. Questi valori sono definiti globali perchè, indipendentemente da dove dichiarato, il codice può avere accesso ad esse. 
+<pre>
+var foo = 'bar';			<span class="nota">// qui 'foo' è una variabile globale e una proprietà dell'Head object </span> 
+var myApp = function()
+{
+	var run = function()
+	{
+		console.log(foo);		<span class="nota">// richiama la variabile globale </span>	
+	}();
+}
+<span class="azzurro">myApp(); </span>			<span class="nota">// restituisce 'bar'</span>
+</pre>
+<span class="scuro">C'è una leggera differenza nell'utilizzare il <b>var</b> nello scope globale; <a href="http://stackoverflow.com/questions/1470488/difference-between-using-var-and-not-using-var-in-javascript/1471738%231471738">vedere qui</a>  </span>
+</p>
+
+<h3>Riferimento all'head object</h3>
+<p>
+Generalmente il riferimento all'head object non è utilizzato perchè implicito. Per esempio se scriviamo <span class="codice">alert('fuk')</span> sarebbe come scrivere <span class="codice">window.alert('fuk')</span>. <br />
+Ci sono due modi per riferirsi all'oggetto principale window(). Il primo è utilizzare il suo nome e l'altro è utilizzare la parola chiave <b>this</b> nel global scope
+<pre>
+var foo = 'bar';
+windowRef1 = window;
+windowRef2 = this;
+<span class="azzurro">console.log(windowRef1.foo, windowRef2.foo);</span>		<span class="nota">// restituisce bar bar</span>
+</pre>
+</p>
+
+<h2>window e document</h2>
+<p>
+L'oggetto <q>window</q>, come visto sopra, sta ad un livello superiore all'oggetto <q>document</q> nella gerarchia degli oggetti di Javascript. <br />
+Può manipolare la finestra (documento) corrente così come creare altre finestre. Se ad esempio "finestra B" viene creata da "finestra A", la prima viene considerata figlia di "finestra A". <br />
+La finestra genitore ha controllo totale sulla finestra figlia e conseguenti figlie (e nipoti) tanto che se la finestra genitore viene eliminata fanno la stessa fine anche tutte le altre. <br /> 
+La finestra figlia può conoscere il suo genitore con il metodo <b><q>opener</q></b>: <br />
+
+<code class='codice'>
+var name_genitore = window.opener.document.name_figlio;
+</code> <br />
+La variabile <q>name_genitore</q> conserva il nome del genitore  della finestra (documento) figlio che ha come nome <q>name_figlio</q>. <br />  
+Se cè una finestra figlia creata da <q>name_figlio</q> che vuole riferirsi alla prima finestra genitore che in questo caso è il nonno bisogna raddoppiare opener: <br >
+<code class='codice'>
+window.opener.opener.
+</code> <br />
+Se una finestra vuole riferirsi alle sue proprietà si può utilizzare il metodo <q><b>self</b></q>: <br />
+Supponendo che si vuole creare un valore testo all'interno di un campo di un form della finestra(figlia): <br /> 
+<code class='codice'>
+self.document.formName.textbox.value = "JavaScript is cool";
+</code> <br />
+</p>
+
+<br />
+
+<script type="text/javascript">
+
+function apri_proprieta()
+{
+	var figlia = window.open("", "All_proprieta", "scrollbars,innerwidth=750,innerheight=450,left=100, top=50");  
+//for (var i in window) {
+	for (var i in figlia) 
+	{
+		figlia.document.write ("Window property(" + i +  "): " +
+		window[i] + "<BR>");
+	} 
+
+} // 
+
+</script>
+
+
+
+<button id="window_proprieta" onClick="apri_proprieta()">Scopri tutte le proprietà di 'window' </button>
+
+
+<br /><br /><br /><br />
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

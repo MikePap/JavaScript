@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Coordinate_visualizza  </title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.verde{color:green;}
+
+#map_canvas{ float:left; position:relative; width:69%; height:100%; }
+#content{float:left; width:31%; height:100;}
+
+</style>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=it"></script>
+
+<script type="text/javascript">
+
+function initialize() {
+var roma = new google.maps.LatLng(41.8929,12.4944);
+
+map = new google.maps.Map(document.getElementById('map_canvas'), {
+center: roma,
+zoom: 6,
+mapTypeId: google.maps.MapTypeId.ROADMAP,
+mapTypeControl: true,	
+mapTypeControlOptions: {	
+style: google.maps.MapTypeControlStyle.DROPDOWN_MENU, 
+position: google.maps.ControlPosition.TOP_CENTER,
+}, // mapTypeControlOptions
+zoomControl: true,		// è la barra dell zoom 
+zoomControlOptions: {
+style: google.maps.ZoomControlStyle.SMALL,		// SMALL -- LARGE (grandezza della barra dello zoom)
+}, // zoomControlOptions
+}); // 'map'
+
+
+var cont = document.getElementById('content');
+google.maps.event.addListener(map, 'click', function(event){
+//alert(event.latLng);
+//cont.innerHTML = event.latLng;
+//var coordinate = innerHTML(event.latLng);
+var divo = document.createElement('DIV');
+divo.innerHTML = event.latLng;
+cont.appendChild(divo);
+}); // 'listener' 
+
+
+} // "initialize"
+
+
+</script>
+
+</head>
+<body onload="initialize()">
+
+<div id="map_canvas"></div>
+<div id="content"> <span class="verde">Clicca sulla mappa per visualizzare le relative coordinate</span></div> 
+
+
+
+
+
+
+
+
+</body>
+</html>

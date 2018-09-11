@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Oggetti e classi</title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+<style type="text/css">
+
+</style>
+<script src="../jQuery-1.6.min.js"> </script>
+</head>
+<body>
+
+<h1>Classi e Oggetti</h1>
+
+<p>
+Un oggetto è un associazione di proprietà e una proprietà è un'associazione di un <em>nome</em> e un <em>valore</em>. Una proprietà può essere una funzione e in tal caso viene detto <em>metodo</em>. <br />
+Gli oggetti vengono creati con l'utilizzo della parola chiave <b>new</b> davanti al nome della <em>classe</em>. Anche se parliamo di classe effettivamente non si tratta di una classe vera e propria come in uso in altri linguaggi ma di un propriamente detto <tt>costruttore</tt>  <br /> 
+<pre>
+var oObject = new Object();  		
+var oStringObject = new String(); 
+</pre>
+<q>var oObject</q> è un'istanza della classe <q>Object</q> e <q>oStringObject</q> è un'istanza della classe <q>String</q>. <br /> 
+Le parentesi sono richieste nel momento in cui il costruttore richiede degli argomenti (parametri) altrimenti si possono evitare e scrivere cosi:<br />
+<pre>
+var oObject = new Object;  	
+var oStringObject = new String; 
+</pre>
+Quando non ci sono riferimenti ad un oggetto, tale oggetto è detto <q>deferenziato</q>. E' comunque possibile deferenziarlo volutamente: <br />
+<pre>
+var oObject = new Object;  
+oObject = null;			
+</pre>
+Il modo migliore per creare un oggeto vuoto è il seguente 
+<pre>
+var obj = {};
+</pre>
+</p>
+
+<p>Le proprietà di un oggetto possono essere aggiunte dopo dinamicamente o con l'uso del punto ( . ) oppure con l'utilizzo delle <q>parentesi quadre</q>. <b>Il nome di una proprietà può essere una qualsiasi valida stringa</b>, o qualsiasi cosa che può essere convertito a stringa (incluso una stringa vuota). Ad ogni modo <b>un qualsiasi nome di proprietà che non è un valido identificatore (per  esempio un nome con un trattino o che incomincia con un numero) può essere accessibile soltanto col metodo della parentesi quadra</b> 
+<pre>
+var myHourse = {};
+myHourse.color = "red";				<span class='nota'>Assegnazione di proprietà 'color' (con valore) all'oggetto 'myHourse'  </span>
+myHourse.doors = 4;				<span class='nota'>Assegnazione di proprietà 'doors' (con valore) all'oggetto 'myHourse' </span>
+myHourse.showColor = function (){	
+	document.write(this.color + this.doors);
+};
+<span class="azzurro">myHourse.showColor();</span>				<span class='nota'>// restituisce 'red4'  </span> 
+
+<span class='scuro'>Oppure si possono utilizzare le parentesi quadre</span> 
+
+myHourse["color"] = "red";
+myHourse["doors"] = 4;
+</pre>
+<b>L'uso delle parentesi quadre in alcuni casi può diventare importante, per esempio</b>
+<pre>
+obj.for = "Simon";			<span class='nota'>restituisce un Errore di sintassi, perchè 'for' è una parola riservata</span>
+obj["for"] = "Simon";			<span class='nota'>così funziona</span>
+
+<span class="scuro">Oppure per impostare uno stile con <tt>style</tt> di riferimento ad una funzione </span>
+function setAltezza(h){
+//	foto.style.h = '100px';			<span class="nota">NON funziona</span>
+	foto.style[h] = '100px';		<span class="nota">così funziona</span>
+}
+<span class="azzurro">setAltezza('height');</span>
+
+<span class="scuro">esempio di oggetto innestato  </span>
+var obj = {
+	name: "Carrot",
+	"for": "Max",
+	details:{
+		color: "orange",
+		size: 12
+	}
+}
+<span class="azzurro">obj.details.color</span>			<span class="nota">// restituisce 'orange'</span>
+<span class="azzurro">obj["details"]["size"]</span>			<span class="nota">// restituisce 12</span>
+
+</pre>
+</p>
+
+<h3>Utilizzo dell'oggetto inizializzatore</h3>
+
+<code class='codice'><pre>
+var obj = { 
+	property_1:   value_1,		<span class='nota'>// property_# may be an identifier... </span> 
+	2:            value_2,		<span class='nota'>// or a number...  </span>
+                // ...,  
+	"property_n": value_n		<span class='nota'>// or a string  </span>
+}; 
+
+</pre></code>
+
+<p>Si può inoltre creare un'oggetto in base ad una condizione</p>
+<code class='codice'>
+<pre>
+if (cond) var x = {hi: "there"}; 
+</pre>
+</code>
+
+<p>Un'altro modo è quello di creare un oggetto che ha al suo interno un'altro oggetto. Nell'esempio seguente la proprietà 'engine' è un'oggetto con all'interno le sue proprietà</p>
+<code class='codice'><pre>
+var myHonda = {color: "red", wheels: 4, engine: {cylinders: 4, size: 2.2}};  
+</pre></code>
+
+<h3>Oggetti Javascript e valori primitivi </h3>
+<p>
+I valori <q>number</q>, <q>string</q>, <q>true</q>, <q>false</q> cosi come <q>null</q> e <q>undefined</q> sono detti primitivi perchè sono rimangono tali e quali; per esempio un numero è un numero e rimane tale cosi come una stringa di testo rimane tale, ecc.. 	     
+</p>
+<pre>
+var testo = "stringa di testo";				<span class="nota">// una semplice variabile (valore primitivo)</span>
+<span class="azzurro">console.log(testo);</span>					<span class="nota">// restituisce "stringa di testo" </span>
+
+var ob_testo = new String("stringa");			<span class="nota">// un oggetto nativo  String() </span>
+<span class="azzurro">console.log(ob_testo);</span>					<span class="nota">// restituisce String {0: "s", 1: "t", 2: "r", 3: "i", 4: "n", 5: "g", 6: "a"}</span>
+</pre>
+
+
+
+<h3>Eliminazione di proprietà (delete)</h3>
+
+<p>Per rimuovere proprietà si utilizza il metodo <q>delete</q> </p>
+
+<code class='codice'><pre>
+<span class='nota'>// Creazione di oggetto, myobj, con due proprietà, a e b.  </span>
+var myobj = new Object;  
+myobj.a = 5;  
+myobj.b = 12;  
+      
+delete myobj.a;			<span class="nota">// Rimozione della proprietà 'a' </span>  
+</pre></code>
+
+<p class="nota">Si può utilizzare il metodo <q>delete</q> per eliminare una variabile globale, cioè quando non viene dichiarata la parola chiave "var" </p>
+
+<code class='codice'><pre>
+    g = 17;  
+    delete g;  
+</pre></code>
+
+<h3>Getters e Setters</h3>
+<p>
+Javascript fornisce una tecnica che permette di specificare proprietà che dall'esterno sembrano normali proprietà ma segretamente hanno metodi associati.
+<pre>
+var pile = {
+	elements: ["eggshell", "orange peel", "worm"],
+	get height() {
+		return this.elements.length;
+	},
+	set height(value) {
+		console.log("Ignoring attempt to set height to", value);
+	}
+};
+<span class="azzurro">
+console.log(pile.height);				<span class="nota">// 3</span>				
+pile.height = 100;					<span class="nota">// Ignoring attempt to set height to 100 </span>				
+console.log(pile.height);				<span class="nota">// 3</span>	
+</span>
+</pre> 
+Nonostante si sia cercato di assegnare all'oggetto <q>pile</q> la proprietà <q>height:100</q>, dopo aver definito i metodi <em>get</em> e <em>set</em>, il tentativo non ha funzionato. 
+
+</p>
+
+
+<h3>Mutabilità</h3>
+<p>
+Con gli oggetti c'è differenza fra l'avere due referenze allo stesso oggetto e avere due oggetti che contengono le stesse proprietà:
+<pre>
+var object1 = {value: 10};
+var object2 = object1;
+var object3 = {value: 10};
+<span class="azzurro">
+console.log(object1 == object2);			<span class="nota">// true</span>
+console.log(object1 == object3);			<span class="nota">// false</span>
+</span>
+object1.value = 15;
+<span class="azzurro">
+console.log(object2.value);				<span class="nota">// 15</span>
+console.log(object3.value);				<span class="nota">// 10</span>
+</span>
+</pre>
+L'operatore == ,quando confronta gli oggetti, restituisce 'true' solo se entrambi gli oggetti sono precisamente uguali nel valore (var object2 = object1). Se si confrontano due aggetti differenti (di nome diverso) che contengono lo stesso contenuto (proprietà e metodi) sarà restituito 'false'. 
+
+</p>
+
+<h2>Oggetti nativi</h2>
+
+<p>
+ECMA-262 definisce <b>oggetti nativi</b> quegli oggetti forniti da l'implentazione Javascript indipendente dall'ambiente host. 
+</p>
+
+<ul>
+	<li>Object</li>
+	<li>Function</li>
+	<li>Array</li>
+	<li>String</li>
+		<li></li>
+	
+	<li>Boolean</li>
+	<li>Number</li>
+	<li>Date</li>
+	<li>RegExp</li>
+		<li></li>
+	
+	<li>Error</li>
+	<li>EvalError</li>
+	<li>RangeError</li>
+	<li>ReferenceError</li>
+		<li></li>
+		
+	<li>SyntaxError</li>
+	<li>TypeError     </li>
+	<li>URIError</li>
+	
+</ul>
+
+
+
+
+</body>
+</html>

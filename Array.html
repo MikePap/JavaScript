@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Array ES5  </title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../baseLocali.css" type="text/css" /> 
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+<script type="text/javascript" src="jQuery-1.6.min.js"></script>
+</head>
+<body>
+
+<h1> Array </h1>
+
+<section class="listaArgomenti">
+	<select name="sezioni" class="sezioni">
+		<option value="seleziona">Seleziona l'argomento</option>
+		<option value="s1">Array Object in generale</option>
+		<option value="s2">Metodo join</option>
+		<option value="s3">Array length</option>
+		<option value="s4">for in</option>		
+		<option value="s5">Array con for e while</option>
+		<option value="s6">Eliminare elementi di array</option>
+		<option value="s7">Array multidimensionale</option>
+		<option value="s8">Indicizzare array con lettere</option>
+		<option value="s9">Array.prototype.toString()</option>
+		<option value="s10">Array.prototype.toLocaleString() </option>
+		<option value="s11">Array.prototype.concat()</option>
+		<option value="s12">Array.prototype.sort()</option>
+		<option value="s13">Array con localeCompare</option>
+		<option value="s14">Array.prototype.push()</option>
+		<option value="s15">Array.prototype.pop()</option>
+		<option value="s16">Array.prototype.unshift()</option>
+		<option value="s17">Array.prototype.shift()</option>
+		<option value="s18">Array.prototype.reverse()</option>
+		<option value="s19">Array.prototype.slice()</option>
+		<option value="s20">Array.prototype.splice()</option>
+	</select>
+</section>
+
+<section id="s1">
+	<h2>Array Object</h2>
+	<p>
+L'array è un tipo speciale dell'oggetto <q>Object()</q> contenente una lista ordinata di valori. Ogni valore può essere di qualsiasi tipo ed a ognuno di questi  è collegato una chiave numerica (non ordinata). La prima chiave ha valore 0
+	</p>
+	<pre>
+var variable = new Array()
+var variable = new Array(int)
+var variable = new Array("arg1", ..., "argN")
+var variable = ["elemento1", "elemento2", "elemneto3"]; 
+	</pre>
+<p>JavaScript non ha array associativi, come per esempio PHP, ma per tale uso si possono utilizzare gli oggetti</p>
+	<pre>
+var myObject = { 
+	'blue': 'blue',
+	'green': 'green',
+	'orange': 'orange',
+	'red': 'red'
+};
+	</pre>
+<p>Se all'array viene passato un solo valore numerico tale valore verrà usato per impostare la lunghezza dell'array: </p>
+	<pre>
+var arrayL = new Array(20); 
+<span class="azzurro">console.log(arrayL.length);</span>		<span class="nota">// restituisce 20 (è la nuova lunghezza dell'array)</span>
+
+		<span class="grigio">però con le parentesi quadre le cose cambiano</span>
+
+var arrayL = [20];			
+<span class="azzurro">console.log(arrayL.length);</span>		<span class="nota">// restituisce 1 </span>
+</span>
+	</pre>
+<p>Occhio ai seguenti </p>
+	<pre>
+var foo = {a: "alpha", 2: "two"};
+<span class="azzurro">
+console.log(foo.a);		<span class="nota">// alpha</span>  
+console.log(foo[2]);		<span class="nota">// two</span>
+console.log(foo.2);		<span class="rosso">// Errore: missing ) after argument list</span>  
+console.log(foo[a]);		<span class="rosso">// Errore: a is not defined</span> 
+console.log(foo["a"]);		<span class="nota">// alpha</span> 
+console.log(foo["2"]);		<span class="nota">// two</span> 
+</span>
+	</pre>
+</section>
+
+<section id="s2">
+<h2> Scorrere un array con il metodo join</h2>
+
+<pre>
+var arr = [ 4, 9, 6 ];
+var unisci = arr.join(" - ");
+<span class="azzurro">
+console.log(unisci);					<span class="nota">// 4 - 9 - 6</span>
+</span>
+</pre>
+</section>
+
+<section id="s3">
+<h2>Array length</h2>
+<p class="nota">
+La proprietà <q>length</q> degli array è read/write e quindi può essere cambiata in qualsiasi momento. <br />
+Se <q>length</q> viene aumentato dinamicamente un numero di elementi viene aggiunto alla fine dell'array a cui è assegnato un valore indefinito. Se la <q>length</q> viene ridotta elementi alla fine dell'array vengono persi (vedere l'esempio)
+</p>
+
+<pre>
+var cats = [];  
+cats[30] = ['Dusty'];  
+alert(cats.length);					<span class="nota"> // 31</span> 
+
+var cats = ['Dusty', 'Misty', 'Twiggy'];  
+alert(cats.length);					<span class="nota"> // 3</span>
+      
+cats.length = 2;  
+alert(cats.length);					<span class="nota">// "Dusty,Misty" (Twiggy è stato rimosso) </span>
+      
+cats.length = 0;  
+alert(cats.length);					<span class="nota">// 0 (l'array è di nuovo vuoto)</span>
+
+</pre>
+
+<script type="text/javascript">
+coins = new Array("A","B","C","D","E");
+x = coins.length;  	// qui l'array ha una lunghezza di 5 (l'indice 0 corrisponde al primo elemento dell'array)
+//alert(x);
+coins.length = 3 // si riduce la lunghezza impostandola ad un valore più basso e quindi si perdono gli ultimi due elementi   
+document.write("The coins array contains: ", coins.join(','));	// output ABC  
+</script>
+
+<h3>Utilizzare la proprietà <q>length</q> per aggiungere elementi all'array</h3>
+
+<pre>	
+var someArray = new Array();				<span class="nota">// si instanzia un array </span>				
+someArray.length;					<span class="nota">// la lunghezza dell'array è 0 </span>
+
+someArray[0] = "A";
+someArray.length;					<span class="nota">// ora la lunghezza dell'array è 1 </span>
+
+someArray[1] = "B";
+someArray.length;					<span class="nota">// la lunghezza dell'array è 2 </span>
+<span class="azzurro">
+console.log("Gli elementi dell'array sono: " + someArray.join(" - ") );	<span class="nota">// Gli elementi dell'array sono: A - B</span>
+</span>
+</pre>
+</section>
+
+
+
+<section id="s4">
+<h2> Metodo for in </h2>
+
+<pre>
+var a = ["Alba", "E", "I", "O", "U"];
+
+for (indice in a){
+	console.log(indice);				<span class="nota">// '0', '1', '2', '3', '4'  </span>
+	console.log(a[indice]);				<span class="nota">// "Alba", "E", "I", "O", "U"</span>
+}
+</pre>
+
+<p>
+ATTENZIONE al seguente
+</p>
+<pre>
+Array.prototype.voice = "James Earl Jones";
+
+var tMinus = ["Two", "One", "Blast off!"];
+
+var countdown = "";
+
+for (var step in tMinus) {
+	countdown += tMinus[step] + "\n";
+}
+
+console.log(countdown);					<span class="nota">// "Two One Blast off! James Earl Jones" </span>	
+</pre>
+<p>
+Per evitare quest'errore dobbiamo usare la proprietà <tt>hasOwnProperty</tt>
+</p>
+<pre>
+for (var step in tMinus) {
+	if (tMinus.hasOwnProperty(step)) {
+		countdown += tMinus[step] + "\n";
+	}
+}
+console.log(countdown);					<span class="nota">// "Two One Blast off!" </span>	
+</pre>
+</section>
+
+
+<section id="s5">
+<h2>Uso del ciclo for e while per scorrere gli array </h2>
+<pre>
+var myarray = new Array("banana", "mela", "pera");
+for(i=0; i &lt;  myarray.length; i++)
+{
+<span class="azzurro">	console.log(myarray[i]);</span>		<span class="nota">// restituisce 'banana' 'mela', 'pera'</span>		
+}
+
+var myArray = ['blue', 'green', 'orange', 'red'];
+var myArrayLength = myArray.length;
+var counter = 0;			
+while (counter &lt;  myArrayLength)		<span class="nota">// prosegue fino a quando 'counter' raggiunge il valore della lunghezza dell'array </span>
+{			
+<span class="azzurro">	console.log(myArray[counter]);</span>		<span class="nota">// restituisce 'blue', 'green', 'orange', 'red'</span>		
+	counter++; 
+}
+
+</pre>
+
+<p>Più breve ed efficace è la seguente con l'uso del metodo "reverse()" </p>
+<pre>
+var arr = ['a', 'b', 'c'].reverse();
+var l = arr.length;
+
+while(l--){
+	console.log(arr[l]);					<span class="nota">// a, b, c</span>
+}
+
+</pre>
+
+</section>
+
+<h3>Aumentare il valore degli elementi dell'array</h3>
+
+<pre>
+myarray = [5,8,10,18,179];
+for (x in myarray){
+	myarray[x] = ++myarray[x];		
+}
+
+console.log(myarray);				<span class="nota">// Array [ 6, 9, 11, 19, 180 ]</span>
+
+console.log(x);					<span class="nota">// 4 (corrisponde all'ultimo indice)</span>	
+</pre>
+
+
+<section id="s6">
+	<h2>Eliminare elementi dell'array</h2>
+<h3>Eliminare elementi dell'array con <q>delete</q> e con <q>splice</q> </h3>
+<p>Quando si elimina un elemento dall'array con <q>delete</q> in pratica tale elemento scompare ma comunque il numero degli elementi rimane lo stesso in quanto l'elemento rimosso non viene eliminato completamentte ma gli viene assegnato il valore <b>undefined</b></p>
+<script type="text/javascript">
+var myArray = ["A", "B", "C", "D", "E"];
+delete myArray[1];		// si elemina il secondo valore dell'array 
+//alert(myArray.length);	// restituisce comunque 5 nonostante sia stato rimosso un elemento 
+	for (var i = 0; i < myArray.length; i++){
+       if (myArray[i])
+        document.write("myArray[" + i + "] = " + myArray[i] + "<br>");
+     }     
+</script>
+
+<p>
+Esiste però un metodo che permette di eliminare un elemento da un'array ed è il metodo <tt>splice</tt> 
+</p>
+<pre>
+var array1 = [12 , "foo", 2458, 'alba dorata', 'fuk'];
+alert(array1.length);				<span class="nota">// restituisce 5</span>
+array1.splice(3,1) ;				<span class="nota">elimina 1 elemento a partire dal 4° (quindi elimina il quarto elemento )</span>
+alert(array1.length);				<span class="nota">// restituisce 4</span>
+<span class="azzurro">
+console.log(array1.join(", ") );		<span class="nota">// restituisce 12, foo, 2458, fuk </span>
+</span>
+</pre>
+<p>Vediamo un esempio più concreto </p>
+<pre>
+var utenti = [ { nome: 'Mik', iddiutente: 'Mik354' },  { nome: 'Frank', iddiutente: 'Frank224'} ]
+
+for(var i=0; i &lt; utenti.length; i++){
+	var oggetto = utenti[i];
+	if(oggetto['iddiutente'] === 'Mik354')
+		utenti.splice(i, 1);
+}
+<span class="azzurro">
+console.log(utenti);				<span class="nota">// [ { nome: 'Frank', iddiutente: 'Frank224' } ] </span>				
+</span>
+
+</pre>
+
+
+
+</section>
+
+<section id="s7">
+<h3>Arrray multidimensionale</h3>
+<p>
+Nel momento in cui un array può contenere qualsiasi valore può quindi contenere uno o più array:
+<pre>
+var myArray = [[[['4th dimension']]]];
+<span class="azzurro">console.log(myArray[0][0][0][0]);</span>			<span class="nota">// restituisce '4th dimension'</span>
+</pre> 
+</p>
+
+<script type="text/javascript">
+var matrix = new Array(4);
+    matrix[0] = new Array(4);
+    matrix[1] = new Array(4);
+    matrix[2] = new Array(4);
+    matrix[3] = new Array(4);
+
+    matrix[0][0] = "A1";
+    matrix[0][1] = "A2";
+    matrix[0][2] = "A3";
+    matrix[0][3] = "A4";
+    
+    matrix[1][0] = "B1";
+    matrix[1][1] = "B2";
+    matrix[1][3] = "B3";
+
+    matrix[2][0] = "C1";
+    matrix[2][1] = "C2";
+    matrix[2][3] = "C3";
+
+
+    matrix[3][0] = "D1";
+    matrix[3][1] = "D2";
+    matrix[3][3] = "D3";
+
+    for (var i = 0; i < matrix.length; i++){
+     for (var j = 0; j < matrix.length; j++){
+        document.write ("Element (" + i + ", " + j + ") is " + matrix[i][j] + " -- ");
+       }
+       document.write("<br>");
+	}
+</script>
+</section>
+
+<section id="s8">
+<h3>Utilizzo di stringhe (o semplici lettere) per indicizzare un array  </h3>
+
+<script type="text/javascript">
+function populateArray(myArray) {
+      myArray["A"]=4;
+      myArray["B"]=2;
+      myArray["C"]=1;
+      myArray["D"]=5;
+    }
+    function displayArray(myArray){
+      document.write(myArray['A']," A.<BR>");
+      document.write(myArray['B']," B.<BR>");
+      document.write(myArray['C']," C.<BR>");
+      document.write(myArray['D']," pairs of D.");
+    }
+    var myArray = new Array();
+    populateArray(myArray);
+    displayArray(myArray);
+// senza funzioni 
+document.write("<br>")
+document.write(myArray['A']);
+</script>
+</section>
+
+<section id="s9">
+<h2>Array.prototype.toString()</h2>
+
+<p>Il metodo <q>toString</q> restituisce una stringa contenente tutti gli elemnti dell'array separati dalla virgola  </p>
+
+<pre>
+colors = new Array("Blue","Green","Red");
+<span class="azzurro">
+console.log(colors.toString());				<span class="nota">// "Blue,Green,Red"</span>
+</span>
+</pre>
+
+
+<h3>Ottenere un valore casuale da un array</h3>
+<pre>
+var items = [12, 548 , 'a' , 2 , 5478 , 'foo' , 8852, , 'Doe' , 2145 , 119];
+var  randomItem = items[Math.floor(Math.random() * items.length)];
+</pre>
+
+<h3>Ottenere un array da zero ad uno specificato numero</h3>
+<pre>
+var numbersArray = [] , max = 10;
+for( var i=1; numbersArray.push(i++) &lt; max;)
+<span class="azzurro">console.log(numbersArray);</span>			<span class="nota">// restituisce  [1,2,3, ... 9]</span>
+</pre>
+
+<h3>la funzione simulata trim</h3>
+<p>
+La classica funzione <tt>trim</tt> che c'è in tanti linguaggi non esiste in JavaScript però la si può creare in questo modo. 
+</p>
+<pre>
+String.prototype.trim = function(){return this.replace(/^\s+|\s+$/g, "");};  
+</pre>
+</section>
+
+<section id="s10">
+<h2>Array.prototype.toLocaleString() </h2>
+
+<p>
+Metodo che restituisce una stringa (string) dagli elementi dell'array
+</p>
+<pre>
+var number = 1337;
+var date = new Date();
+var myArr = [number, date, 'foo'];
+var stringa = myArr.toLocaleString(); 
+<span class="azzurro">
+console.log(stringa);							<span class="nota">// "1.337,24/12/2014 20:13:13,foo"</span>
+</span>
+<span class="grigio">il seguente potrebbe ritornare utile come formattazione</span>
+
+var numero = 1.337;
+var numeroConVirgola = numero.toLocaleString(); 
+<span class="azzurro">
+console.log(numeroConVirgola);						<span class="nota">// 1,337 (sostituisce il punto con la virgola)</span>
+</span>
+</pre>
+</section>
+
+<section id="s11">
+<h2>Array.prototype.concat()</h2>
+
+<p>
+Metodo che permette di unire due o più array in un unico array.
+</p>
+<pre>
+var alpha = ['a', 'b', 'c'], numeric = [1, 2, 3];
+var alphaNumeric = alpha.concat(numeric);
+<span class="azzurro">
+console.log(alphaNumeric);						<span class="nota">// ['a', 'b', 'c', 1, 2, 3]</span>
+</span>
+
+var num1 = [1, 2, 3], num2 = [4, 5, 6], num3 = [7, 8, 9];
+var nums = num1.concat(num2, num3);
+<span class="azzurro">
+console.log(nums);							<span class="nota">// [1, 2, 3, 4, 5, 6, 7, 8, 9]</span>				
+</span>
+<span class="grigio">Unire dei valori ad un array</span>
+var alpha = ['a', 'b', 'c'];
+var alphaNumeric = alpha.concat(1, [2, 3]);
+<span class="azzurro">
+console.log(alphaNumeric);						<span class="nota">// ['a', 'b', 'c', 1, 2, 3]</span>
+</span>
+</pre>
+</section>
+
+<section id="s12">
+<h2 id="sort" >Array.prototype.sort()</h2>
+
+<p>
+Metodo che permette di ordinare gli elementi di un array. Il tipo di ordinamento è in base alla string Unicode.
+</p>
+<pre>
+arr.sort([compareFunction])
+</pre>
+<p>
+Dove <b>compareFunction</b> è una funzione opzionale che se definita decide l'ordinamento dell'array altrimenti l'array è ordinato secondo L'Unicode. Gli esempi chiariscono l'arcano
+</p>
+
+<pre>
+var numeri = ["Tre", "Quattro", "Cinque", "Uno", "sette", "due"];
+var ordinaArray = numeri.sort();
+<span class="azzurro">
+console.log(ordinaArray);				<span class="nota">// Array [ "Cinque", "Quattro", "Tre", "Uno", "due", "sette" ]</span>
+</span>
+<span class="grigio">se invece vogliamo ottenere il senso inverso dobbiamo utilizzare il metodo "reverse"</span>
+var ordinaArray = numeri.reverse();
+<span class="azzurro">
+console.log(ordinaArray);				<span class="nota">// Array [ "sette", "due", "Uno", "Tre", "Quattro", "Cinque" ]</span>
+</span>
+
+
+var numeri = [1, 2, 10, 21]; 
+var ordinaNumeri = numeri.sort();			<span class="nota">// Array[1, 10, 2, 21]</span>
+<span class="azzurro">
+console.log(ordinaNumeri);
+</span>
+
+var parole = ['word', 'Word', '1 Word', '2 Words'];
+var ordinaParole = parole.sort();
+<span class="azzurro">
+console.log(ordinaParole);				<span class="nota">// Array [ "1 Word", "2 Words", "Word", "word" ]</span>
+</span>
+</pre>
+<p>
+Dagli esempi visti i numeri non li elenca a seconda del valore. In tal caso si può utilizzare il parametro opzionale <em>compareFunction</em>  
+</p>
+<pre>
+function compareNumbers(a, b) {
+	return a - b;
+}
+
+var numeri = [34, 22, 5, 11, 23];
+numeri.sort(compareNumbers);
+<span class="azzurro">
+console.log( numeri);					<span class="nota">// Array [ 5, 11, 22, 23, 34 ]</span>
+</span>
+<span class="grigio">se invece vogliamo ottenere il senso inverso non dobbiamo far altro che invertire i parametri</span>
+numeri.sort(function(a, b){return b-a});
+<span class="azzurro">
+console.log(points);					<span class="nota">// Array[ 34, 23, 22, 11, 5 ]	</span>	
+</span>
+</pre>
+</section>
+
+<section id="s13">
+<h2>Array con localCompare</h2>
+<h3>Ordinamento di caratteri non-ASCII col metodo localeCompare </h3>
+
+<p>
+In caso di ordinamento di caratteri <tt>non-ASCII</tt> tipo caretteri accentati (e, é, è, a, ä,  ecc.. ) bisogna usare il metodo <b> String.localeCompare</b> 
+</p>
+<pre>
+var paroleAccentate = ['réservé', 'premier', 'cliché', 'communiqué', 'café', 'adieu'];
+
+paroleAccentate.sort(function (a, b) {
+	return a.localeCompare(b);
+});
+
+for(var i=0; i &lt; paroleAccentate.length; i++){
+	console.log(paroleAccentate[i]);				<span class="nota">// adieu café cliché communiqué premier réservé </span>
+}
+</pre>
+<p>
+Altrimenti, senza il metodo <tt>localeCompare</tt> l'ordinamento non avrebbe effetto
+</p>
+
+<p>
+Se si intende fare un ordinamento per oggetti, in base alle proprietà:  <a href="tips.html#sortOggetti">vedere qui</a>
+</p>
+</section>
+
+<section id="s14">
+<h2>Array.prototype.push()</h2>
+
+<p>
+Aggiunge elementi in coda all'array e restituisce la nuova lunghezza
+</p>
+<pre>
+var sports = ['soccer', 'baseball'];
+var total = sports.push('football', 'swimming');
+<span class="azzurro">
+console.log(sports);					<span class="nota">// Array [ "soccer", "baseball", "football", "swimming" ]</span>
+console.log(total);					<span class="nota">// 4 (nuova lunghezza dell'array)</span>
+</span>
+</pre>
+</section>
+
+<section id="s15">
+<h2>Array.prototype.pop()</h2>
+
+<p>
+Elimina un elemento dalla fine dell'array e restituisce il nome dell'elemento eliminato
+</p>
+<pre>
+var myFish = ['angel', 'clown', 'mandarin', 'sturgeon'];
+<span class="azzurro">
+console.log(myFish);					<span class="nota">// ['angel', 'clown', 'mandarin', 'sturgeon']</span>
+</span>
+var popped = myFish.pop();
+<span class="azzurro">
+console.log(myFish);					<span class="nota">// ['angel', 'clown', 'mandarin' ] </span>
+console.log(popped);					<span class="nota">// 'sturgeon'</span>
+</span>
+</pre>
+</section>
+
+<section id="s16">
+<h2>Array.prototype.unshift()</h2>
+
+<p>
+Aggiunge elementi all'inizio dell'array e restituisce la nuova lunghezza dell'array
+</p>
+<pre>
+var array = [4, 5];
+var nuovoArray = array.unshift(1);
+<span class="azzurro">
+console.log(array);					<span class="nota">// Array [ 1, 4, 5 ]</span>
+console.log(nuovoArray);				<span class="nota">// 3 (nuova lunghezza dell'array)</span>
+</span>
+</pre>
+</section>
+
+<section id="s17">
+<h2>Array.prototype.shift()</h2>
+
+<p>
+Elimina un elemento dall'inizio dell'array e restituisce il nome dell'elemento eliminato
+</p>
+<pre>
+var frutta = ['mela', 'pera', 'banana', 'mango'];
+<span class="azzurro">
+console.log(frutta);					<span class="nota">// Array ["mela", "pera", "banana", "mango" ]</span>
+</span>
+var rimuoviPrimo = frutta.shift();
+<span class="azzurro">
+console.log(frutta);					<span class="nota">// Array [ "pera", "banana", "mango" ]</span>
+console.log(rimuoviPrimo);				<span class="nota">// "mela"</span>
+</span>
+</pre>
+</section>
+
+<section id="s18">
+<h2>Array.prototype.reverse()</h2>
+
+<p>
+Metodo che inverte la posizione degli elementi di un'array. 
+</p>
+<pre>
+var numeri = ['primo', 'secondo', 'terzo', 'quarto'];
+<span class="azzurro">
+console.log(numeri.reverse());				<span class="nota">// Array [ "quarto", "terzo", "secondo", "primo" ]</span>
+</span>
+</pre>
+</section>
+
+<section id="s19">
+<h2>Array.prototype.slice()</h2>
+
+<p>
+Metodo che permette di estrarre elementi da un array. In altre parole crea un nuovo array. 
+</p>
+<pre>
+arr.slice([begin[, end]])
+</pre>
+<p>
+Il parametro 'begin' indica l'inizio dell'estrazione e 'end' dove finisce. Se 'begin' è omesso l'estrazione parte dall'indice zero; 
+</p>
+<pre>
+var frutta = ['mela', 'pera', 'banana', 'mango', 'melone'];
+var rimuoviFrutti = frutta.slice(1, 3);
+<span class="azzurro">
+console.log(frutta);					<span class="nota">// Array [ "mela", "pera", "banana", "mango", "melone" ]</span>
+console.log(rimuoviFrutti);				<span class="nota">// ["pera", "banana"]</span>
+console.log(frutta.length);				<span class="nota">// 5 (non altera la 'lenght' dell'array iniziale perchè crea un nuovo array ...)</span>
+console.log(rimuoviFrutti.length);			<span class="nota">// 2 (... ecco dimostrato che 'rimuoviFrutti' è un nuovo array)</span>
+var dalTerzo = frutta.slice(2);				<span class="nota">// ["banana", "mango", "melone"] (senza secondo parametro l'estrazione si potrae fino alla fine) </span>
+var primiDue = frutta.slice(null, 2);			<span class="nota">// ["mela", "pera"] (senza primo parametro l'estrazione parte da zero)</span>
+</span>
+</pre>
+<p>
+Il metodo <tt>slice</tt> permette di convertire oggetti di tipo array in veri array. E' il caso, ad esempio, di elementi del DOM (tags). La funzione potrebbe essere la seguente 
+</p>
+<pre>
+function lista() {
+	return Array.prototype.slice.call(arguments, 0);
+}
+var lista1 = lista(1, 2, 3);
+<span class="azzurro">
+console.log(lista1);						<span class="nota">// [1, 2, 3]</span>
+</span>
+</pre>
+<p class="nota">All'interno c'è un polyfill che risolve una incompatilità dei browser sull'uso di <b>Array.prototype.slice</b> con oggetti del DOM
+</p>
+</section>
+
+<section id="s20">
+<h2>Array.prototype.splice()</h2>
+
+<p>
+Il metodo può far cambiare il contenuto di un'array sia permettendo l'aggiunta che la rimozione di elementi
+</p>
+<pre>
+splice(start, delete, arg1..argN)
+</pre>
+<p>
+Il parametro <em>delete</em> rappresenta il numero di valori da eliminare; <em>start</em> rappresenta la partenza; <em>arg1</em> e <em>argN</em> sono nuovi elementi (valori) da  aggiungere all'array partendo dalla posizione indicata in <em>start</em>. Se <em>delete</em> è uguale a 0 nessun elemento viene eliminato; se <em>delete</em> non viene specificato tutti gli elementi dell'array vengono eliminati. <br />
+La <tt>length</tt> finale viene influenzata dai cambiamenti. 
+</p>
+<pre>
+var frutta = [ "mela", "pera", "banana", "mango", "melone" ];
+<span class="azzurro">
+var t1 = frutta.splice(2, 0, 'ciliege');	<span class="nota"> dopo il secondo elemento aggiunge  'ciliege' senza eliminare nulla</span>	 
+console.log(frutta);				<span class="nota">// ["mela", "pera", "ciliege", "banana", "mango", "melone"] </span>
+console.log(t1);				<span class="nota">// [] </span>
+console.log(frutta.length);			<span class="nota">// 6 (è stata modificata e non è più 5) </span>
+
+var t2 = frutta.splice(2, 2);			<span class="nota">dopo il secondo ne elimina due</span>
+console.log(frutta);				<span class="nota">// ["mela", "pera", "mango", "melone"] </span>
+console.log(t2);				<span class="nota">// ["ciliege", "banana"] </span>
+console.log(frutta.length);			<span class="nota">// 4 (la length viene ulteriormente modificata) </span>
+
+var t3 = frutta.splice(2, 2, 'pesca');		<span class="nota">ne elimina 2 dopo il secondo e aggiunge "pesca"</span>		
+console.log(frutta);				<span class="nota">// [ "mela", "pera", "pesca"</span>
+console.log(t3);				<span class="nota">// [ "mango", "melone" ] </span>
+console.log(frutta.length);			<span class="nota">// 3 (la length viene ulteriormente modificata) </span>
+
+var t4 = frutta.splice(2);			<span class="nota">senza il parametro 'delete' vengono eliminati tutti a partire dal secondo</span>
+console.log(frutta);				<span class="nota">// [ "mela", "pera"]</span>
+console.log(t4);				<span class="nota">// [ "pesca" ] </span>
+console.log(frutta.length);			<span class="nota">// 2 </span>
+
+
+</span>
+</pre>
+</section>
+
+									<div id="freccia_sali"><div></div> </div> 
+
+<script type="text/javascript">
+
+
+//### 	Polyfill che risolve una incompatilità dei browser sull'uso di <b>Array.prototype.slice</b> con oggetti del DOM 	###
+(function () {
+	'use strict';
+	var _slice = Array.prototype.slice;
+
+	try {
+//		Can't be used with DOM elements in IE < 9
+		_slice.call(document.documentElement);
+	} catch (e) { // Fails in IE < 9
+//		This will work for genuine arrays, array-like objects, 
+//		NodeList (getElementsByTagName), HTMLCollection (childNodes), and will not fail on other DOM objects (as do DOM elements in IE < 9)
+		Array.prototype.slice = function(begin, end) {
+		// IE < 9 gets unhappy with an undefined end argument
+			end = (typeof end !== 'undefined') ? end : this.length;
+
+      // For native Array objects, we use the native slice function
+			if (Object.prototype.toString.call(this) === '[object Array]'){
+				return _slice.call(this, begin, end); 
+			}
+      // For array like object we handle it ourselves.
+			var i, cloned = [],
+			size, len = this.length;
+//			Handle negative value for "begin"
+			var start = begin || 0;
+			start = (start >= 0) ? start: len + start;
+//			Handle negative value for "end"
+			var upTo = (end) ? end : len;
+			if (end < 0) {
+				upTo = len + end;
+			}
+//			Actual expected size of the slice
+			size = upTo - start;
+			if (size > 0) {
+				cloned = new Array(size);
+				if (this.charAt) {
+					for (i = 0; i < size; i++) {
+						cloned[i] = this.charAt(start + i);
+					}
+				} else {
+					for (i = 0; i < size; i++) {
+						cloned[i] = this[start + i];
+					}
+				}
+			}
+      	return cloned;
+		};
+	}
+}());
+
+
+
+var numeri = ["Tre", "Quattro", "Cinque", "Uno", "sette", "due"];
+var ordinaArray = numeri.sort();
+ordinaArray = numeri.reverse();
+
+console.log(ordinaArray);	
+
+</script>
+
+
+<script type="text/javascript" src="../baseLocali.js"></script>
+<script type="text/javascript">
+
+// Scorrimento verso la sezione cliccata
+var select = document.querySelector('select.sezioni');
+select.addEventListener("change", function(){ 
+	var valSez = this.value;									// s3
+	var pattern = "#" + valSez;
+	var of = document.querySelector(pattern).offsetTop;
+	window.pageYOffset = of;
+	document.documentElement.scrollTop = of;
+	document.body.scrollTop = of;
+//	Togliere il focus dalla <select> e assegnarlo al documento 
+	window.focus();
+	document.documentElement.focus();
+	document.body.focus();
+},false);
+
+// Per lo scorrimento del documento, verso l'alto
+var obj = new ScrollPage('1000', 100, 'freccia_sali', 300);
+obj.showFreccia();
+obj.clickScroll();
+//bloccaPropagazione();	
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br />
+<br /><br /><br />
+
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>Vista Strada 05  </title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.nota{color:orange;}
+.codice{color:green;}
+
+#map_canvas{ position:relative; margin:20px; width:80%; height:80%;  }
+
+</style>
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=it"></script>
+
+<script type="text/javascript">
+
+function initialize() {
+  var fenway = new google.maps.LatLng(42.345573,-71.098326);
+
+  // Note: constructed panorama objects have visible: true
+  // set by default.
+	var panoOptions = {
+	position: fenway,
+//	addressControl: false,		// è la proprietà che gestisce la visualizzazione "stringa indirizzo". Defalut è 'true'
+	addressControlOptions: {		
+	position: google.maps.ControlPosition.BOTTOM	// posizionamento "stringa indirizzo" (	BOTTOM è uguale a BOTTOM_CENTER)
+	},
+	linksControl: false,			// "freccette"  strada che al cui click permettono l'avanzamento 
+	panControl: false,				// il cerchietto con freccette e la N
+//	zoomControl: false,			// lo zoom. Default è 'true'
+	zoomControlOptions: {
+	style: google.maps.ZoomControlStyle.SMALL
+	},
+//	enableCloseButton: true			// la 'x' di chiusura delllo StreetView. Default è 'false' 
+	scrollwheel: false,				// la possibilità di cambiare lo zoon con la rotella del mouse. Default è 'true'
+
+	};  // 'panoOptions'
+
+  var panorama = new google.maps.StreetViewPanorama(
+      document.getElementById("map_canvas"), panoOptions);
+}
+
+</script>
+
+</head>
+<!-- <body onload=""> -->
+<body>
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+initialize();
+
+}); // chiude ready 
+</script>
+
+<h3>Personalizzare i Controlli dello StreetView </h3>
+
+<div id="map_canvas"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

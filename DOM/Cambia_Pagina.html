@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Cambia pagina   </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); }
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grassetto{font-weight:bold;}
+
+/*		*/
+.red{ color:#FF0000;}
+
+.sfondo{ 
+	background:#9F3; 
+}
+
+#ciclo span, #ciclo em{ 
+	border:1px solid #0099CC; padding:2px 5px; cursor:pointer; 
+}
+#ciclo span:hover, #ciclo em:hover{
+	background-color:#CCC;
+}
+
+
+
+</style>
+</head>
+<body>
+
+
+<h1>Cambia Pagine</h1>
+
+<p>
+Funzione che può essere utilizzata per cambiare la visualizzazione di dati estratti da un database. 
+</p>
+
+<p id="ciclo"></p><!--elemento che conterrà gli elementi <em> e <span> per lo scorrimento delle pagine  -->
+
+<script type="text/javascript">
+/*
+- boxPagine:		elemento genitore che contiene gli elementi <em> e <span>					
+- sfondo:			classe, da impostare nei CSS, che mostra il numero di pagina attiva
+- pages:				numero di pagine da visualizzate (nell'elemento genitore 'ciclo')
+- stopp:				numero totale di pagine che DEVE ESSERE MULTIPLO di var 'pages' (es: pages=4; stopp=8,12,16,20 ... )
+*/
+
+function cambiaPagine (boxPagine,sfondo,pages,stopp){
+
+	var ciclo = document.getElementById(boxPagine);					// elemento genitore che contiene gli elementi <em> e <span>
+
+	var n = 0;				// Inizializzazione contatore  
+	var piumeno = 1;		// variabile speciale che permette di gestire il numero pagina se tutto a destra o a sinistra
+
+
+//////### Creazione elementi da inserire nell'elemento genitore 'ciclo' ###//////
+
+	// Creazione <em> Prima 
+	var emPrimo = document.createElement('em');
+	emPrimo.className = 'cpPrimo';
+	var inizio = document.createTextNode('Prima');
+	emPrimo.appendChild(inizio);
+
+	// Creazione <em> Indietro (<<)
+	var emIndietro = document.createElement('em');
+	emIndietro.className = 'cpIndietro'; 
+	var indietro = document.createTextNode('<<');
+	emIndietro.appendChild(indietro);
+
+	// Creazione <em> Avanti (>>)
+	var emAvanti = document.createElement('em');
+	emAvanti.className = 'cpAvanti';
+	var avanti = document.createTextNode('>>');
+	emAvanti.appendChild(avanti);
+
+	// Creazione <em> Ultima
+	var emUltimo = document.createElement('em');
+	emUltimo.className = 'cpUltimo';
+	var ultimo = document.createTextNode('Ultima');
+	emUltimo.appendChild(ultimo);
+
+	ciclo.appendChild(emPrimo);										// aggiunta <em> Prima al genitore 'ciclo'
+	ciclo.appendChild(emIndietro);									// aggiunta <em> Indietro
+	emPrimo.style.display = 'none';									// a apertura documento
+	emIndietro.style.display = 'none';								// a apertura documento
+
+
+	// Aggiunta degli <span> (che contengono il numero delle pagine) alll'elemento genitore 'ciclo'
+	for(var i=1; i<=stopp; i++){
+		var span = document.createElement('span');
+		var numero = document.createTextNode(i); 
+		span.appendChild(numero);
+		ciclo.appendChild(span);
+	}
+	// Visualizzazione numero <span> in base alla var 'pages'
+	var spans = document.querySelectorAll('#'+boxPagine+' > span'); 
+	for(var i=0, span; span = spans[i]; i++){ 
+		if(i > pages-1)
+			span.style.display = 'none';		
+	}
+
+	// Assegnazione classe 'sfondo' al primo <span> ad apertura pagina	
+	document.querySelectorAll('#'+boxPagine+' > span')[0].className = sfondo;
+
+	ciclo.appendChild(emAvanti);										// aggiunta <em> Avanti
+	ciclo.appendChild(emUltimo);										// aggiunta <em> Ultimo  
+
+//////### Funzioni interne richiamate ###////// 
+
+	// Visualizzazione pagine in base al valore di var 'n' e della var speciale 'piumeno' 	
+	var visualizzati = function (){
+		var spans = document.querySelectorAll('#'+boxPagine+' > span'); 		
+		for(var i=0, span; span = spans[i]; i++){
+			span.style.display = 'none';
+		}
+		if(piumeno === 1){
+			if(emPrimo.style.display === 'none');
+				emPrimo.style.display = 'inline';
+			if(emIndietro.style.display === 'none');
+				emIndietro.style.display = 'inline';
+			for(var a=0; a < pages; a++){										//    
+				spans[n+a].style.display = 'inline';
+			}
+			for(var i=0; i< spans.length; i++){
+				spans[i].className = '';
+				spans[n].className = sfondo;
+			}
+		}else{
+			for(var a=0; a< pages; a++){
+				spans[n-a].style.display = 'inline';
+			}
+			for(var i=0; i< spans.length; i++){
+				spans[i].className = '';
+				spans[n].className = sfondo;				
+			}
+		}
+	};
+
+	// Visualizzazione delle prime pagine, dove l'ultima di queste è rappresentata dal valore di 'pages'  
+	var primePagine = function (){
+		var spans = document.querySelectorAll('#'+boxPagine+' > span'); 		
+		for(var i=0; i< spans.length; i++){
+			spans[i].style.display = 'none';
+			spans[i].className = '';
+		}
+		for(var a=0; a< pages; a++){
+			spans[a].style.display = 'inline';
+		}
+		spans[n].className = sfondo;
+	};
+
+	// Visualizzazione delle ultime pagine, dove l'ultima di queste è rappresentata dalla differenza tra 'stopp' meno 'pages' 
+	var ultimePagine = function (){
+		var spans = document.querySelectorAll('#'+boxPagine+' > span'); 		
+		for(var i=0; i< spans.length; i++){
+			spans[i].style.display = 'none';
+			spans[i].className = '';
+		}
+		for(var a=1; a<= pages; a++ ){								// 1,2,3,4    
+			spans[stopp-a].style.display = 'inline';
+		}
+		spans[n].className = sfondo; 			
+	};
+
+//////### Funzioni autorichiamate ###	////////	Considerando la visualizzazione di 10 pagine 	////////
+	// Scorrimento in avanti del numero delle pagine 
+	var avantiUna = function (){
+		var spans = document.querySelectorAll('#'+boxPagine+' > span'); 		
+		var elemento = document.querySelector('em.cpAvanti');
+		elemento.addEventListener('click',
+		function (){
+			n++; 
+			switch(n){
+/*
+*** NOTA BENE ***: A seconda del numero di pagine (valore di 'pages') bisogna regolare il numero dei 'case'; questo va fatto anche nelle successive funzioni "indietroUna()" e "clickNumero()". Sono stato costretto ad agire in questo modo perchè non posso usare il ciclo for per soddisfare le condizioni in base al valore della var n, sia all'interno dello 'switch' o anche fuori dello switch. 
+*/
+				case stopp-10:	
+				case stopp-9:
+				case stopp-8:
+				case stopp-7:
+				case stopp-6:												// sestultima 11
+				case stopp-5:												// 12
+				case stopp-4:												// 13
+				case stopp-3:												// terzultima (14)
+				case stopp-2:												// penultima (15)
+					ultimePagine();
+				break;
+				case stopp-1:												// ultima
+					ultimePagine();
+					emAvanti.style.display = 'none';
+					emUltimo.style.display = 'none';
+					piumeno=0;
+				break;
+				case 9:														// decima
+				case 8:
+				case 7:
+				case 6:
+				case 5:														// sesta
+				case 4:
+				case 3:
+				case 2:
+				case 1:														// seconda
+					if(emPrimo.style.display === 'none');
+						emPrimo.style.display = 'inline';
+					if(emIndietro.style.display === 'none');
+						emIndietro.style.display = 'inline';
+					primePagine();
+				break;
+				default:
+					visualizzati();
+					piumeno=1;
+			}
+console.log(n);
+console.log(piumeno);
+		},false);
+	}();
+
+	// Scorrimento all'indietro del numero delle pagine  
+	var indietroUna = function (){
+		var spans = document.querySelectorAll('#'+boxPagine+' > span'); 
+		var elemento = document.querySelector('em.cpIndietro');
+		elemento.addEventListener('click',
+		function (){
+			n--; 
+			switch(n){
+				case 9:														// decima
+				case 8:
+				case 7:
+				case 6:
+				case 5:														// sesta 
+				case 4:
+				case 3:
+				case 2:														// terza
+				case 1:														// seconda
+					primePagine();
+				break;	
+				case 0:														// prima  
+					emPrimo.style.display = 'none';
+					emIndietro.style.display = 'none';
+					primePagine();
+					piumeno=1;
+				break;
+				case stopp-2:												// penultima  (15)
+				case stopp-3:												// terzultima (14)
+				case stopp-4:												// quartultima (13)
+				case stopp-5:
+				case stopp-6:												// sestultima (11) 
+				case stopp-7:	
+				case stopp-8:
+				case stopp-9:
+				case stopp-10:
+					ultimePagine();
+					if(emAvanti.style.display === 'none');
+						emAvanti.style.display = 'inline';
+					if(emUltimo.style.display === 'none');
+						emUltimo.style.display = 'inline';
+				break;
+				default:
+					visualizzati();
+					piumeno=0;
+			}
+console.log(n);
+console.log(piumeno);
+		},false);
+	}();
+
+	// Visualizzazione delle prime pagine 
+	var vaiPrima = function (){
+		var elemento = document.querySelector('em.cpPrimo');
+		elemento.addEventListener('click', 
+		function (){
+			n=0;
+			var spans = document.querySelectorAll('#'+boxPagine+' > span');			
+			emPrimo.style.display = 'none';
+			emIndietro.style.display = 'none';
+			if(emAvanti.style.display === 'none');
+				emAvanti.style.display = 'inline';
+			if(emUltimo.style.display === 'none');
+				emUltimo.style.display = 'inline';
+			primePagine();
+			piumeno=1;
+console.log(n);	
+console.log(piumeno);	
+		},false);
+	}();
+
+	// Visualizzazione delle ultime pagine 
+	var vaiUltima = function (){
+		var elemento = document.querySelector('em.cpUltimo');
+		elemento.addEventListener('click', 
+		function (){
+			n=stopp-1;
+			var spans = document.querySelectorAll('#'+boxPagine+' > span');			
+			emAvanti.style.display = 'none';
+			emUltimo.style.display = 'none';
+			if(emPrimo.style.display === 'none');
+				emPrimo.style.display = 'inline';
+			if(emIndietro.style.display === 'none');
+				emIndietro.style.display = 'inline';
+			ultimePagine();
+			piumeno=0;	
+console.log(n);	
+console.log(piumeno);
+		},false);
+	}();
+
+	// Visualizzazione numero pagine (valore di 'pages') a partire da quella su cui si clicca  
+	var clickNumero = function (){
+		var spans = document.querySelectorAll('#'+boxPagine+' > span');
+		for(var i=0, span; span = spans[i]; i++){
+			span.addEventListener('click', 			
+			function(){
+				var numero = this.firstChild.nodeValue;
+				n= (parseFloat(numero) - 1);								
+				switch(n){
+					case stopp-10:	
+					case stopp-9:
+					case stopp-8:
+					case stopp-7:
+					case stopp-6:														// sestultima (11)	
+					case stopp-5:
+					case stopp-4:														// quartultima (13)
+					case stopp-3:														// terzultima (14)
+					case stopp-2:														// penultima (15)
+						ultimePagine();
+						if(emAvanti.style.display === 'none');
+							emAvanti.style.display = 'inline';
+						if(emUltimo.style.display === 'none');
+							emUltimo.style.display = 'inline';
+					break;
+					case stopp-1:														// ultima 
+						ultimePagine();
+						emAvanti.style.display = 'none';
+						emUltimo.style.display = 'none';
+						piumeno=0;
+					break;				
+					case 9:														// decima
+					case 8:
+					case 7:
+					case 6:
+					case 5:																// sesta 
+					case 4:
+					case 3:
+					case 2:
+					case 1:																// seconda
+						if(emPrimo.style.display === 'none');
+							emPrimo.style.display = 'inline';
+						if(emIndietro.style.display === 'none');
+							emIndietro.style.display = 'inline';
+						primePagine();
+					break;	
+					case 0:																// prima pagina 
+						emPrimo.style.display = 'none';
+						emIndietro.style.display = 'none';
+						primePagine();
+						piumeno=1;
+					break;
+					default:
+						visualizzati();
+				}
+console.log(n);
+console.log(piumeno);
+			},false);
+		}
+	}();
+
+};
+
+cambiaPagine('ciclo','sfondo',10,80);
+
+</script>
+
+
+<!--
+
+/////////////////////////////////////////***********************************************
+
+
+		//*** Le seguenti sono Considerando la visualizzazione di 4 pagine ***
+
+//////### Funzioni autorichiamate ###//////
+
+	var avantiUna = function (){
+		var spans = document.querySelectorAll('#'+boxPagine+' > span'); 		
+		var elemento = document.querySelector('em.cpAvanti');
+		elemento.addEventListener('click',
+		function (){
+			n++; 
+			switch(n){
+				case stopp-4:												// quartultima (13)
+				case stopp-3:												// terzultima (14) 
+				case stopp-2:												// penultima (15)
+					ultimePagine();
+				break;
+				case stopp-1:												// ultima
+					ultimePagine();
+					emAvanti.style.display = 'none';
+					emUltimo.style.display = 'none';
+					piumeno=0;
+				break;
+				case 1:														// seconda pagina 
+				case 2:														// terza
+				case 3:														// quarta 
+					if(emPrimo.style.display === 'none');
+						emPrimo.style.display = 'inline';
+					if(emIndietro.style.display === 'none');
+						emIndietro.style.display = 'inline';
+					primePagine();
+				break;
+				default:
+					visualizzati();
+					piumeno=1;
+			}
+console.log(n);
+console.log(piumeno);
+		},false);
+	}();
+
+///
+
+	var indietroUna = function (){
+		var spans = document.querySelectorAll('#'+boxPagine+' > span'); 
+		var elemento = document.querySelector('em.cpIndietro');
+		elemento.addEventListener('click',
+		function (){
+			n--; 
+			switch(n){
+				case 3:														// quarta 
+				case 2:														// terza
+				case 1:														// seconda
+					primePagine();
+				break;	
+				case 0:														// prima  
+					emPrimo.style.display = 'none';
+					emIndietro.style.display = 'none';
+					primePagine();
+					piumeno=1;
+				break;
+				case stopp-2:												// penultima  (15)
+				case stopp-3:												// terzultima (14)
+				case stopp-4:												// quartultima (13)
+					ultimePagine();
+					if(emAvanti.style.display === 'none');
+						emAvanti.style.display = 'inline';
+					if(emUltimo.style.display === 'none');
+						emUltimo.style.display = 'inline';
+				break;
+				default:
+					visualizzati();
+					piumeno=0;
+			}
+			
+console.log(n);
+console.log(piumeno);
+		},false);
+	}();
+
+///
+
+	var vaiPrima = function (){
+		var elemento = document.querySelector('em.cpPrimo');
+		elemento.addEventListener('click', 
+		function (){
+			n=0;
+			var spans = document.querySelectorAll('#'+boxPagine+' > span');			
+			emPrimo.style.display = 'none';
+			emIndietro.style.display = 'none';
+			if(emAvanti.style.display === 'none');
+				emAvanti.style.display = 'inline';
+			if(emUltimo.style.display === 'none');
+				emUltimo.style.display = 'inline';
+
+			primePagine();
+			piumeno=1;
+console.log(n);	
+console.log(piumeno);	
+		},false);
+	}();
+
+///
+
+	var vaiUltima = function (){
+		var elemento = document.querySelector('em.cpUltimo');
+		elemento.addEventListener('click', 
+		function (){
+			n=stopp-1;
+			var spans = document.querySelectorAll('#'+boxPagine+' > span');			
+			emAvanti.style.display = 'none';
+			emUltimo.style.display = 'none';
+			if(emPrimo.style.display === 'none');
+				emPrimo.style.display = 'inline';
+			if(emIndietro.style.display === 'none');
+				emIndietro.style.display = 'inline';
+			ultimePagine();
+			piumeno=0;	
+console.log(n);	
+console.log(piumeno);
+		},false);
+	}();
+
+///
+
+	var clickNumero = function (){
+		var spans = document.querySelectorAll('#'+boxPagine+' > span');
+		for(var i=0, span; span = spans[i]; i++){
+			span.addEventListener('click', 			
+			function(){
+				var numero = this.firstChild.nodeValue;
+				n= (parseFloat(numero) - 1);								// nuovo valore per n
+				switch(n){
+					case stopp-4:														// quartultima (13)
+					case stopp-3:														// terzultima (14)
+					case stopp-2:														// penultima (15)
+						ultimePagine();
+						if(emAvanti.style.display === 'none');
+							emAvanti.style.display = 'inline';
+						if(emUltimo.style.display === 'none');
+							emUltimo.style.display = 'inline';
+					break;
+					case stopp-1:														// ultima 
+						ultimePagine();
+						emAvanti.style.display = 'none';
+						emUltimo.style.display = 'none';
+						piumeno=0;
+					break;				
+					case 3:																// quarta pagina
+					case 2:																// terza
+					case 1:																// seconda
+						if(emPrimo.style.display === 'none');
+							emPrimo.style.display = 'inline';
+						if(emIndietro.style.display === 'none');
+							emIndietro.style.display = 'inline';
+						primePagine();
+					break;	
+					case 0:																// prima pagina 
+						emPrimo.style.display = 'none';
+						emIndietro.style.display = 'none';
+						primePagine();
+						piumeno=1;
+					break;
+					default:
+						visualizzati();
+				}
+console.log(n);
+console.log(piumeno);
+			},false);
+		}
+	}();
+
+
+
+
+//////////////////////  ###############  ///////////////////////
+
+	var primePagine = function (){
+		var spans = document.querySelectorAll('#'+boxPagine+' > span'); 		
+		for(var i=0; i< spans.length; i++){
+			spans[i].style.display = 'none';
+			spans[i].className = '';
+		}
+		spans[0].style.display = 'inline';
+		spans[1].style.display = 'inline';
+		spans[2].style.display = 'inline';
+		spans[3].style.display = 'inline';
+		spans[n-1].className = sfondo;
+	};
+
+
+	var ultimePagine = function (){
+		var spans = document.querySelectorAll('#'+boxPagine+' > span'); 		
+		for(var i=0; i< spans.length; i++){
+			spans[i].style.display = 'none';
+			spans[i].className = '';
+		}
+		spans[stopp-4].style.display = 'inline';
+		spans[stopp-3].style.display = 'inline';
+		spans[stopp-2].style.display = 'inline';
+		spans[stopp-1].style.display = 'inline';
+		spans[n-1].className = sfondo; 			
+	};
+
+
+	var visualizzati = function (){
+		var spans = document.querySelectorAll('#'+boxPagine+' > span'); 		
+		for(var i=0; i< spans.length; i++){
+			spans[i].style.display = 'none';
+		}
+		if(piumeno === 1){
+			if(emPrimo.style.display === 'none');
+				emPrimo.style.display = 'inline';
+			if(emIndietro.style.display === 'none');
+				emIndietro.style.display = 'inline';
+			spans[n-1].style.display = 'inline';
+			spans[n].style.display = 'inline';
+			spans[n+1].style.display = 'inline';
+			spans[n+2].style.display = 'inline';
+			for(var i=0; i< spans.length; i++){
+				spans[i].className = '';
+				spans[n-1].className = sfondo;
+			}
+		}else{
+			spans[n-1].style.display = 'inline';
+			spans[n-2].style.display = 'inline';
+			spans[n-3].style.display = 'inline';
+			spans[n-4].style.display = 'inline';
+			for(var i=0; i< spans.length; i++){
+				spans[i].className = '';
+				spans[n-1].className = sfondo;				
+			}
+		}
+	};
+
+//cambiaPagine('ciclo','sfondo',4,16);						// 
+
+//////////////////////  ###############  ///////////////////////
+
+/////////////////////////////////////////***********************************************
+
+-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

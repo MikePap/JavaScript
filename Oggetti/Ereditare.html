@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Ereditarietà</title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(20,150,30); font-weight:bold;}
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(100,150,255);}
+.scuro{color:#333;}
+
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+<h1>Ereditarietà  </h1>
+
+<p>Vedere il <a href="https://developer.mozilla.org/en/JavaScript/Guide/Details_of_the_Object_Model">seguente file</a>   </p>
+
+<p>L'ereditarietà fra due classi può attuarsi inserendo il costruttore della classe base dentro un metodo della sottoclasse. Dopo la chiamata tutte le proprietà e metodi della classe base vengono erditati dalla subclass </p>
+
+<code class='codice'>
+<pre>
+function BaseClass(sColor)			<span class='nota'>// funzione costruttore classe base (principale)  </span> 
+{
+	this.color = sColor;
+	this.sayColor = function()
+	{
+		return this.color;
+	};
+}
+
+function SubClass(sColor)			<span class='nota'>// funzione costruttore sottoclasse  </span>
+{ 
+	this.newMethod = BaseClass;		<span class='nota'>// inserimento del costruttore classe base nel metodo della sottoclasse </span>
+	this.newMethod(sColor);			<span class='nota'>// chiamata del metodo che passa l'argomento richiesto </span>
+	delete this.newMethod;			<span class='nota'>// qui si elimina il riferimento alla classe base in modo che non possa essere più invocata </span>
+}
+
+var objA = new BaseClass("red");		
+var objB = new SubClass("blue");
+<span class="azzurro">
+document.write(objA.sayColor());		<span class="nota">// restituisce 'red'</span>
+document.write(" " +objB.sayColor());		<span class="nota">// restituisce 'blue' </span> 
+</span>
+</pre>
+</code>
+
+<script type="text/javascript">
+
+function BaseClass(sColor) 
+{
+	this.color = sColor;
+	this.sayColor = function() 
+	{
+		return this.color;
+	};
+} 
+
+function SubClass(sColor) 
+{
+	this.newMethod = BaseClass;					// collegamento alla classe base e ... 
+	this.newMethod(sColor);							// ... chiamata con passaggio di argomento 
+	delete this.newMethod;							// eliminazione del riferimento alla classe base 
+} 
+
+var objA = new BaseClass("red");
+var objB = new SubClass("blue");t
+document.write(objA.sayColor());
+document.write(" " +objB.sayColor());
+
+</script>
+
+<h3>Aggiunta di proprietà e metodi alla subclass  </h3>
+<p class="nota">Proprietà e metodi possono essere aggiunti alla sottoclasse dopo la regola che elimina il riferimento alla classe principale </p>
+
+<script type="text/javascript">
+// Funzione costruttore classe principale 
+function BaseClass(sColor) 
+{
+	this.color = sColor;
+	this.sayColor = function () 
+	{
+		return this.color;
+	};
+}
+// Funzione costruttore della subclass che riporta 2 argomenti 
+function SubClass(sColor, sName)
+{
+	this.newMethod = BaseClass;			// collegamento alla classe base e ...  
+	this.newMethod(sColor);					// ... chiamata con passaggio di argomento 
+	delete this.newMethod;					// eliminazione del riferimento alla classe base 
+
+// ora che è stato annullato il riferimento alla classe principale si possono aggiungere proprietà e metodi alla subclass ()
+	this.name = sName;			// aggiunta di proprietà   
+	this.sayName = function()
+	{	
+		return this.name;
+	};
+}
+
+var objA = new BaseClass("red");
+var objB = new SubClass("blue", "Mike");
+document.write(objA.sayColor()+ "<br>");
+document.write(objB.sayColor() + " ");
+document.write(objB.sayName());
+//objA.sayColor();
+//objB.sayColor();
+//objB.sayName();
+
+</script>
+
+<h2>Il metodo <q>call()</q>  </h2>
+
+<p class="nota">Il metodo <q>call()</q> può ricevere più argomenti. Il primo argomento deve essere l'oggetto usato per <q>this</q>; gli altri sono opzionali  </p>
+
+<script type="text/javascript">
+
+function sayColor(sPrefix, sSuffix) 
+{
+	return (sPrefix + this.color + sSuffix);
+};
+
+var obj = new Object();
+obj.color = "red";
+var jk = sayColor.call(obj, "The color is ", ", a very nice color indeed. ")
+document.write(jk);
+//var jk = sayColor.call(obj, "");
+//document.write("Il colore è " ,jk, ": è infatti un bel colore");
+
+</script>
+
+<h3>Utilizzo del metodo <q>call()</q> per chiamare il costruttore della classe base </h3>
+
+<script type="text/javascript">
+// costruttore classe base 
+function BaseClass(sColor) 
+{
+	this.color = sColor;
+	this.sayColor = function () 
+	{
+		return this.color 
+	};
+}
+
+function SubClass(sColor, sName) 
+{
+	BaseClass.call(this, sColor);				// Utilizzo del metodo call per collegarsi alla classe base 
+	this.name = sName;							// apporto di una seconda proprietà   
+	this.sayName = function()
+	{	
+		return this.name; 
+	};
+}
+
+var objA = new BaseClass("rosso");		// oggetto 
+var objB = new SubClass("blu", "Jhon");
+document.write(objA.sayColor() + "<br>" );
+document.write(objB.sayColor() + " ");
+document.write(objB.sayName());
+
+</script>
+
+
+<h2>Il metodo <q>apply()</q></h2>
+
+<p class="nota">IL metodo <q>apply</q> riceve due argomenti. Il primo è l'oggetto da usare per this il secondo è un'array di argomenti da passare alla funzione</p>
+
+<script type="text/javascript">
+// costruttore classe base 
+function sayColor(sPrefix, sSuffix) 
+{
+	return (sPrefix + this.color + sSuffix);
+};
+
+var obj = new Object();
+obj.color = "rouge";
+var kk = sayColor.apply(obj, new Array("The color is ",", a very nice color indeed."));
+document.write(kk)	
+
+</script>
+
+
+<h3>Utilizzo del metodo <q>apply()</q> per chiamare il costruttore della classe base  </h3>
+
+<script type="text/javascript">
+// costruttore classe base 
+function BaseClass(sColor) 
+	{
+		this.color = sColor;
+		this.sayColor = function () 
+											{
+												return this.color;
+											};
+	}
+// costruttore subclass con 2 argomenti 
+function SubClass(sColor, sName) 
+{
+	BaseClass.apply(this, new Array(sColor));	// utilizzo di apply()
+	this.name = sName;
+	this.sayName = function () 
+	{
+		return this.name;
+	};
+}
+
+var objA = new BaseClass("Orange");
+var objB = new SubClass("Silver", "Frank");
+document.write(objA.sayColor() + "<br>" );
+document.write(objB.sayColor() + " ");
+document.write(objB.sayName());
+</script>
+
+
+<h2>Collegamento con <q>prototype</q></h2>
+
+<p class="nota">E' possibile impostare una proprietà prototype per la subclass che sia una istanza della classe base per poter ereditare tutte le proprietà e metodi </p>
+
+<script type="text/javascript">
+function BaseClass() { }									// crea una classe vuota senza metodi e proprietà 
+
+BaseClass.prototype.color = "verde";					// aggiunta di proprietà alla classe BaseClass
+BaseClass.prototype.sayColor = function () 
+{	
+	return this.color;
+};
+
+function SubClass() { }
+
+SubClass.prototype = new BaseClass;			// collegamento delle due classi (SubClass eredita proprietà e metodi di BaseClass)
+
+var jk = new BaseClass;					// creazione di oggetto della classe base 
+var kk = new SubClass;					// creazione di oggetto della subclass 
+//alert(jk.sayColor());
+document.write(jk.sayColor());	// (output: verde)
+document.write(" " +kk.sayColor());	// (output: verde) l'oggetto 'kk' può quindi utilizzare il metodo 'sayColor' della BaseClass  
+
+</script>
+
+<h3>Tutte le nuove proprietà e metodi della subclass devono venire dopo l'impostazione della proprietà <q>prototype</q> </h3>
+
+<script type="text/javascript">
+
+function BaseClass() { }
+
+function SubClass() { }
+
+SubClass.prototype = new BaseClass();		// collegamento delle due classi (SubClass eredita proprietà e metodi di BaseClass)
+
+SubClass.prototype.name = "";							// aggiunta di una proprietà alla SubClass
+SubClass.prototype.sayName = function () 
+{	
+	return this.name;
+};
+
+var objA = new BaseClass();
+var objB = new SubClass();
+objA.color = "red";
+objB.color = "blue";
+objB.name = "Michele";
+//objA.sayColor();
+//objB.sayColor();
+document.write(objB.sayName());
+document.write(" " + objA.color);
+document.write(" " + objB.color);
+</script>
+
+<h3>Ereditarietà di terzo livello </h3>
+
+<script type="text/javascript">
+
+function Shape(iSides) 
+{
+	this.sides  = iSides;
+	if (typeof Shape._initialized == "undefined") 
+	{
+		Shape.prototype.getArea = function () 
+		{
+			return 0;
+		};
+		Shape._initialized = true;
+	}
+}
+
+function Triangle(iBase, iHeight) 
+{
+	Shape.call(this, 3);
+	this.base = iBase;
+	this.height = iHeight;
+
+	if (typeof Triangle._initialized == "undefined") 
+	{
+		Triangle.prototype.getArea = function () 
+		{
+			return 0.5 * this.base * this.height;
+		};
+	Triangle._initialized = true;
+}
+
+Triangle.prototype = new Shape();
+
+function Rectangle(iLength, iWidth) 
+{
+	Shape.call(this, 4);
+	this.length = iLength;
+	this.width = iWidth;
+
+	if (typeof Rectangle._initialized == "undefined") 
+	{
+		Rectangle.prototype.getArea = function () 
+		{
+			return this.length * this.width;
+		};
+		Rectangle._initialized = true;
+	}
+}
+
+Rectangle.prototype = new Shape();
+
+
+var triangle = new Triangle(12, 4);
+var rectangle = new Rectangle(22, 10);
+
+document.write("triangle.sides:"+triangle.sides);
+document.write("<BR>");
+document.write("triangle.getArea():"+triangle.getArea());
+document.write("<BR>");
+document.write("rectangle.sides:"+rectangle.sides);
+document.write("<BR>");
+document.write("rectangle.getArea():"+rectangle.getArea());
+
+</script>
+
+<h3>Altro esempio </h3>
+
+<script type="text/javascript">
+function Song(title,type) 
+	{
+	this.title = title;
+	this.type = type;
+	this.getTitle=function() 
+	{
+		return "Song: " + this.title + " Type: " + this.type;
+	}
+}
+
+function SubSong(title,type,artist) 
+{
+	this.artist = artist;
+	this.toString("Artist is " + artist);
+	Song.apply(this,arguments);
+	this.toString = function () 
+	{
+		return "Artist: " + this.artist + " " + this.getTitle();
+	}
+}
+
+SubSong.prototype = new Song();
+
+var song = new SubSong("Volare", "LoveSong", "Pavarotti");
+//alert(song.toString());
+document.write(song.toString())
+</script>
+
+
+
+
+
+
+
+
+</body>
+</html>

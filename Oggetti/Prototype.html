@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Prototype </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+<h1> Prototype </h1>
+
+<p>Vedere il <a href="https://developer.mozilla.org/en/JavaScript/Guide/Details_of_the_Object_Model">seguente file</a>   </p>
+
+<p>
+Ogni oggetto ha un suo <b>prototype</b> che è a sua volta un oggetto. Una funzione, cosi come un'array sono oggetti anche loro ed hanno un proprio prototype. Per esempio «Function» ha nel suo prototype metodi come <em>bind, call, aplly</em>, ecc... «Array» ha metodi come <em>push, pop, slice</em>, ecc... Mentre «Object», che sta in cima alla catena, ha metodi come <em>toString, hasOwnProperty</em>, ecc..  <br>
+Possiamo ottenerlo nei seguenti modi:
+</p>
+
+  
+<pre>
+function Costruttore (){};
+var istanza = new Costruttore;
+<span class="azzurro">
+console.log(Object.getPrototypeOf(Costruttore));		<span class="nota">// function () </span>
+console.log(Costruttore.__proto__)				<span class="nota">// uguale al precedente</span>
+console.log(Costruttore.prototype);				<span class="nota">// Costruttore {}</span>
+console.log(Costruttore.hasOwnProperty("prototype"))		<span class="nota">// true</span>
+console.log(typeof Costruttore.prototype);			<span class="nota">// object  </span>
+
+console.log(Object.getPrototypeOf(istanza));			<span class="nota">// Costruttore {}</span>
+</span>
+</span><span class="grigio">mentre</span>
+
+var oggetto = {};
+<span class="azzurro">
+console.log(Object.getPrototypeOf(oggetto));			<span class="nota">// Object {}</span>
+console.log(oggetto.__proto__)					<span class="nota">// uguale al precedente</span>
+console.log(oggetto.prototype);					<span class="nota">// undefined</span>
+console.log(typeof oggetto.prototype);				<span class="nota">// undefined</span>
+</span>
+</pre>
+
+<p>
+Mentre, la <b>proprietà prototype</b> viene instanziata in un oggetto creato da una funzione costruttore con la parola chiave <em>new</em>. <br>
+Nel seguente esempio aggiungiamo un metodo alla funzione Costruttore secondo quanto descritto più avanti nella sezione "Aggiunta di proprietà e metodi"
+</p>
+<pre>
+function Costruttore (){
+};
+
+Costruttore.prototype.saluti = function () {
+	return 'Ciao';
+}
+
+var istanza = new Costruttore;					<span class="nota">// creazione di oggetto</span>
+<span class="azzurro">
+console.log(Costruttore.prototype);				<span class="nota">// Object { saluti: Costruttore.prototype.saluti(), 1 altro… }</span>
+console.log(Costruttore.__proto__);				<span class="nota">// function ()</span>
+
+console.log(istanza.prototype);					<span class="nota">// undefined</span>
+console.log(istanza.__proto__);					<span class="nota">// Object { saluti: Costruttore.prototype.saluti(), 1 altro… }</span>
+console.log(Object.getPrototypeOf(istanza));			<span class="nota">// uguale al precedente</span>
+</span>
+</pre>
+
+<p>
+Osserviamo che l'oggetto "istanza" non ha una sua «proprietà prototype». Comunque, nel momento della sua creazione, grazie alla parola chiave «new», gli viene assegnato un oggetto prototype che corrisponde alla «proprietà prototype» di "Costruttore". In pratica eredita metodi e proprietà definiti nella funzione Costruttore; infatti se diamo:
+</p>
+<pre>
+console.log(istanza.saluti());					<span class="nota">// Ciao</span>
+</pre>
+<p>
+Cosi come l'oggetto "istanza", una volta creato, eredita metodi e proprietà dalla funzione Costruttore, a sua volta quest'ultimo, che è una funzione, una volta creato, eredita metodi e proprietà da «function» che a sua volta erdedita da «Object» in quanto  <b>function è un oggetto</b>. Pertanto l'oggetto "istanza" eredita sia i metodi e proprietà di Costruttore che quelli di <em>function</em> e infine quelli di <em>Object</em> in modo da formare la famosa <span class="nota">catena del prototype</span>
+</p>
+<pre>
+<span class="grigio">"hasOwnProperty()" è un metodo di Object che ora lo può usare anche l'oggetto "istanza" </span>
+
+console.log(istanza.hasOwnProperty());				<span class="nota">// false</span>
+</pre>
+
+
+
+<h3>La catena prototype</h3>
+<pre>
+var myArray = new Array('foo', 'bar');
+<span class="azzurro">console.log(myArray.join());</span>					<span class="nota">// 'foo, bar'</span>
+</pre>
+<p>
+Il metodo <b>join()</b> non è definito come una proprietà dell'istanza del nostro oggetto creato <q>myArray</q> però nonostante ciò abbiamo accesso come se lo fosse. Ciò vuol dire che questo metodo è stato definito da qualche parte, ma dove? Bene, è definito come <b>proprietà della proprietà prototype del costruttore <em>Array()</em></b>; nel momento in cui <tt>join()</tt> non viene trovato nell'istanza dell'oggetto 'myArray' , JavaScript risale la catena fino ad incontrarlo.  
+</p>
+
+
+<p>
+Tutti gli oggetti possono avere <tt>prototype</tt> e siccome <tt>prototype</tt> è allo stesso tempo un oggetto si viene a formare una catena detta appunto la catena di <tt>prototype</tt>. Questa catena ha fine quando uno degli oggetti, di questa catena, ha un <tt>prototype</tt> nullo. <b>Il <q>prototype</q> del costruttore <q>Object</q> ha valore <q>null</q></b>: 
+</p>       
+<pre>
+function Employee () {
+	this.dept = "generale";
+	this.nome = "Franco";
+}
+
+function Manager () {
+	this.dept = "colonnello";
+}
+
+Manager.prototype = new Employee;
+var istanzaManager = new Manager();
+
+<span class="azzurro">istanzaManager.constructor === Manager</span>			<span class="nota">// false</span>
+<span class="azzurro">istanzaManager.constructor === Employee</span>			<span class="nota">// true</span>
+<span class="scuro">
+In pratica è successo che la proprietà prototype dell'istanza <em>istanzaManager</em> è stata sostituita ed è ora <tt>Employee</tt> invece che <tt>Manager</tt>. 
+ATTENZIONE però che se andiamo ad estrarre il valore di <tt>dept</tt></span>
+<span class="azzurro">istanzaManager.dept</span>					<span class="nota">// 'colonnello' </span>
+
+<span class="scuro">ma allo stesso tempo, grazie all'ereditarietà acquisita col prototype, se proviamo ad estrarre il valore di <tt>nome</tt> </span>
+<span class="azzurro">istanzaManager.nome</span>					<span class="nota">// 'Franco'</span>
+
+<span class="scuro">Vediamo quest'altro esempio:</span>
+
+Object.prototype.foo = 'object-foo';			<span class="nota">si definisce una proprietà 'foo' per Object (che sta al top della catena)</span>
+Array.prototype.foo = 'array-foo';			<span class="nota">si definisce la stessa proprietà per l'oggetto 'Array()' ma con altro valore</span>
+var myArray = [];					<span class="nota">si crean un array vuoto </span>
+<span class="azzurro">myArray.foo;</span>						<span class="nota">// 'array-foo'</span>
+</pre>
+<p>
+Se non fosse stata definita la proprietà 'foo' con il prototype dell'Array il valore restituito sarebbe stato 'object-foo', cioè quello definito dal prototype di Object; in altre parole viene restituito il primo valore incontrato.
+</p>
+
+<h3>Aggiunta di proprietà e metodi </h3>
+<p>
+Si possono aggiungere proprietà ad un oggetto precedentemente definito attraverso la <tt>proprietà prototype</tt>. Con ciò si definisce una proprietà che può essere condivisa da tutti gli oggetti dello stesso tipo, piuttosto che da una istanza dell'ogetto in questione. <br />
+Nel seguente esempio viene aggiunta una proprietà di nome 'colore' a tutti gli oggetti del tipo 'Car'. L'oggetto 'car1' modifica il valore di tale proprietà; questo cambiamento ha influenza soltanto su se stesso e non sugli altri oggetti
+</p>
+<pre>
+function Car(){};
+Car.prototype.colore = bianca;
+var car1 = new Car;
+var car2 = new Car;
+car1.colore = "nera";					<span class="nota">car1 cambia la proprietà 'colore' che influenza solo se stesso e non gli altri oggetti</span>
+<span class="azzurro">
+console.log(car1.colore);				<span class="nota">// nera</span>
+console.log(car2.colore );				<span class="nota">// bianca</span>
+</span>
+</pre>
+<p>
+Un'altro metodo di applicazione è quello di creare una proprietà assegnandogli un valore 'null'. A sua volta ogni oggetto creato dal costruttore potrà modificarsi tale propriètà 
+</p>
+<pre>
+Car.prototype.colore = null;
+var car1 = new Car;
+var car2 = new Car;
+
+car1.colore = "nera";	
+car2.colore = "gialla";	
+<span class="azzurro">
+console.log(car1.colore);				<span class="nota">// nera</span>
+console.log(car2.colore );				<span class="nota">// gialla</span>
+</span>
+
+</pre>
+
+</p>
+
+<h3>Rimpiazzare il prototype con un oggetto vuoto</h3>
+<p>
+E' possibile sostituire il valore di default della proprietà prototype con un nuovo valore. 
+</p>
+<pre>
+var Foo = function Foo(){};
+Foo.prototype = {};					<span class="nota">si rimpiazza la proprietà prototype con un oggetto vuoto (si interrompe il riferimento)</span>
+var FooInstance = new Foo();
+<span class="azzurro">FooInstance.constructor === Foo;</span>			<span class="nota">// false</span>
+
+<span class="grigio">a controprova qui il valore non cambia </span>
+
+var Bar = function Bar(){};
+var BarInstance = new Bar();
+<span class="azzurro">BarInstance.constructor === Bar;</span>			<span class="nota">// true</span>
+</pre>
+</p>
+
+<h3>Creazione di oggetto senza  prototype</h3>
+
+<p>
+Quando si crea un oggetto senza il prototype si ottiene un oggetto senza le proprietà di <tt>Object</tt>. Pertanto solo le proprietà aggiunte per tale oggetto saranno le uniche vere proprietà esistenti 
+</p>
+<pre>
+var map = Object.create(null);
+map["pizza"] = 8.50;
+<span class="azzurro">
+console.log("pizza" in map);				<span class="nota">// true</span>
+console.log("toString" in map);				<span class="nota">// false</span>
+</span>
+</pre>
+
+
+<h3>Ereditarietà col prototype</h3>
+<p>
+Come a altri linguaggi di programmazione, anche in JavaScript un oggetto può ereditare proprietà e metodi da un'altro oggetto
+</p>
+<pre>
+var Person = function(){
+	this.bar = 'bar'
+};
+Person.prototype.foo = 'foo';
+Person.prototype.miometodo = function(){
+	return this.bar;
+}
+
+var Chef = function(){
+	this.goo = 'goo'
+};
+
+Chef.prototype = new Person();				<span class="nota">l'oggetto 'Chef' eredita proprietà e metodi dell'oggetto 'Person'</span> 
+var cody = new Chef();
+<span class="azzurro">
+console.log(cody.foo);					<span class="nota">// 'foo'</span>
+console.log(cody.goo);					<span class="nota">// 'goo' </span>
+console.log(cody.bar);					<span class="nota">// 'bar'</span>
+console.log(cody.miometodo());				<span class="nota">// 'bar'</span>
+</span>
+
+<span class="scuro">altro esempio</span>
+var Person = function(bar){
+	this.bar = bar;
+	this.anim = "anima mia";
+}
+var p = new Person('mik');
+<span class="azzurro">console.log(p.anim)</span>					<span class="nota">// 'anima mia' </span>
+
+var Gente = function (){}				<span class="nota">oggetto vuoto</span>
+Gente.prototype = new Person;				<span class="nota">collegamento degli oggetti (quindi 'Gente' eredita da 'Person') </span>
+var g = new Gente();
+<span class="azzurro">console.log(g.anim);					<span class="nota">// 'anima mia' (ereditata da 'Person')</span>
+console.log(g.bar)					<span class="nota">// *** 'undefined' perchè 'bar' è impostato come parazmetro </span>
+</span>
+<span class="grigio">mentre se si assegna a 'Person' un parametro che faccia riferimento alla proprietà 'bar' </span>
+Gente.prototype = new Person('mikele');			<span class="nota">collegamento degli oggetti (ora 'Gente' eredita da 'Person' anche la proprietà 'bar')</span>
+console.log(g.bar)					<span class="nota">// 'mikele' cioè il parametro passato </span>
+</pre>
+<p>
+La cosa da notare in quest'ultimo esempio rispetto al precedente è che l'oggetto costruttore 'Person' contiene un parametro (bar) che non va a influire nel collegamento a 'Gente' il quale non contiene parametri ed ha solo interesse nel recupero del valore della variabile 'anim'
+</p>
+
+<p>
+Altro metologia di ereditarità è quella con l'uso del metodo «call()»
+</p>
+<pre>
+function Employee() {
+	this.name = '';
+	this.dept = 'general';
+}
+
+function WorkerBee() {
+	Employee.call(this);				<span class="nota">** è qui che si attua l'ereditarietà in cui WorkerBee eredita da Employee</span>
+	this.projects = [];
+}
+
+var amy = new WorkerBee;
+amy.name = 'Amy';
+<span class="azzurro">
+console.log(amy.name);					<span class="nota">// Amy</span>
+console.log(amy.dept);					<span class="nota">// general (ereditato da Employee) </span>
+</span>
+</pre>
+
+
+
+<h3>Dinanimicità del prototype</h3>
+<p>
+La proprietà prototype è dinamica nel senso che le istanze otterranno sempre l'ultimo valore. 
+</p>
+<pre>
+<span class="grigio">Esempio 1</span>
+var Foo = function Foo(){};
+Foo.prototype.x = 1;
+<span class="grigio">// Foo.prototype = {x:1};</span>				<span class="nota">da lo stesso risultato del precedente</span>
+var FooInstance = new Foo();
+<span class="azzurro">console.log(FooInstance.x);</span>				<span class="nota">// 1</span>
+Foo.prototype.x = 2;
+<span class="azzurro">console.log(FooInstance.x);</span>				<span class="nota">// 2 (FooInstance è stato aggiornato) </span>
+</pre>
+<p><b>ATTENZIONE</b> a questo esempio dove le cose cambiano:</p>
+<pre>
+<span class="grigio">Esempio 2</span>
+var Foo = function Foo(){};
+Foo.prototype.x = 1;
+var FooInstance = new Foo();
+<span class="azzurro">console.log(FooInstance.x);</span>				<span class="nota">// 1</span>
+Foo.prototype = {x:2};					<span class="nota">si rimpiazza l'oggetto prototype con un nuovo oggetto </span>
+<span class="azzurro">console.log(FooInstance.x);</span>				<span class="nota">// 1 e non 2</span>
+var NewFooInstance = new Foo();				<span class="nota">si crea una nuova istanza di 'Foo' e il discorso cambia, infatti ...  </span>
+<span class="azzurro">console.log(NewFooInstance.x);</span>				<span class="nota">// ... la nuova istanza è ora collegata al prototype aggiornato e restituisce 2</span>	
+</pre>
+<p>
+In pratica è successo che mentre nel primo esempio l'oggetto prototype è stato sostituito con un nuovo valore e quindi ha rimpiazzato il vecchio valore normalmente nel secondo esempio l'oggetto prototype è stato sostituito con un nuovo oggetto e questo ha fatto rompere il collegamento nella catena con la istanza 'FooInstance' per cui è stato necessario ricreare una nuova istanza per recuperare il nuovo valore.
+</p>
+
+
+
+<script type="text/javascript">
+
+function Car() {}
+Car.prototype.color = "red";
+Car.prototype.doors = 4;
+Car.prototype.drivers = new Array("M", "S");
+Car.prototype.showColor = function () 
+{
+//    alert(this.color);
+	return this.color;
+};
+var myHourse1 = new Car;
+var myHourse2 = new Car;
+//myHourse1.drivers.push("T");		// aggiunge l'elemento 'T' alla fine dell'array 
+myHourse1.drivers.unshift("T");		// aggiunge l'elemento 'T' all'inizio dell'array 
+var color = myHourse2.showColor();
+// alert(myHourse1.drivers);    
+document.write(myHourse1.drivers);
+document.write("<br>" + color);
+
+</script>
+
+<h3>Esempio differente dal primo per il fatto che il costruttore non è vuoto </h3>
+
+<script type="text/javascript">
+
+function Carriola(sColor, iDoors) 
+{
+	this.color = sColor;
+	this.doors = iDoors;
+	this.drivers = new Array("A", "B");
+}
+
+Carriola.prototype.showColor = function () 
+{
+// alert(this.color);
+	return this.color;
+};
+
+var myHourse1 = new Carriola("red", 4);
+var myHourse2 = new Carriola("blue", 3);
+
+myHourse1.drivers.push("C");				// aggiunge il valore 'C' all'array 
+document.write(myHourse1.drivers);
+document.write("<br>" + myHourse2.drivers);
+
+</script>
+
+<h3>Esempio con l'utilizzo del <q>flag</q> <span class='nota'>_initialized</span> per determinare se al prototype è stato assegnato alcun metodo</h3>
+
+<script type="text/javascript">
+
+function Car(sColor, iDoors) 
+{
+	this.color = sColor;
+	this.doors = iDoors;
+	this.drivers = new Array("ford", "fiesta");
+	if (typeof Car._initialized == "undefined") 
+	{
+		Car.prototype.showColor = function()
+		{
+		//alert(this.color);
+		return this.color;
+		}; 
+		Car._initialized = true;
+	}  
+} // chiude la funzione 'Car'    
+
+var jk = new Car("giallo", 12);
+document.write(jk.color);
+document.write("<br>" + jk.drivers);
+//alert(jk.color);
+//alert(jk.drivers);
+</script>
+
+<h3>Aggiungere metodi all'oggetto <q>Array</q> </h3>
+
+<script type="text/javascript">
+// Funzione NON utilizzata 
+Array.prototype.enqueue = function(vItem) 
+{
+	this.push(vItem);
+};
+// Funzione NON utilizzata 
+Array.prototype.dequeue = function() 
+{
+	return this.shift();
+};
+
+Array.prototype.indexOf = function (vItem) 
+{
+	for (var i=0; i < this.length; i++) 
+	{
+		if (vItem == this[i]) 
+		{
+			return i;
+		} 
+	} 
+	return -1;
+} // function 
+var aColors = new Array("red", "green", "yellow");
+document.write("L'index di green è " + aColors.indexOf("green"));
+document.write("<br>" + aColors);
+
+</script>
+
+<h3>Definizione di metodo dopo che l'oggetto è stato instanziato </h3>
+
+<script type="text/javascript">
+
+var o = new Object;	// creazione di oggetto 
+
+Object.prototype.sayHi = function() 
+{	// definizione di metodo 
+	document.write("Hello boy");
+};
+
+o.sayHi();
+
+</script>
+
+
+<h2>Proprietà e metodi di prototype</h2>
+
+<h3>getPrototypeOf</h3>
+<p>
+E' il metodo che restituisce il prototype di un oggetto.
+</p>
+<pre>
+<span class="azzurro">console.log(Object.getPrototypeOf({}) == Object.prototype);	<span class="nota">// true</span>
+console.log(Object.getPrototypeOf(Object.prototype));		<span class="nota">// null (sta ad indicare che è l'ultimo prototype della catena)</span>
+</span>
+</pre>
+
+
+<pre>
+<span class="azzurro">Object.getOwnPropertyNames(Function.prototype) </span>		<span class="nota">["length", "name", "arguments", "caller", "constructor", "bind", "toString", "call", "apply"]</span>
+</pre>
+
+<pre>
+var tester = function (a, b, c){
+	console.log({
+		this: this,
+		a: a,
+		b: b,
+		c: c
+	});
+};
+
+<span class="azzurro">tester('a')</span>						<span class="nota">// {this: Window, a: "a", b: (undefined), c: (undefined)}</span>
+<span class="azzurro">tester('ananas', 'banana', 'caco')</span>			<span class="nota">// {this: Window, a: "ananas", b: 'banana', c: 'caco'}</span>
+
+</pre>
+
+
+<h3>Object.setPrototypeOf()</h3>
+
+<p>
+E' un metodo introdotto da ECMAScript 6 che da la possibilità di cambiare il prototype di uno specifico oggetto in corso d'opera. 
+Accetta due argomenti: l'oggetto il cui prototype deve cambiare e l'oggetto che trasferisce il suo prototype 	
+</p>	
+
+<pre>
+let person = {
+	getGreeting() {
+		return "Hello";
+	}
+};
+
+let dog = {
+	getGreeting() {
+		return "Woof";
+	}
+};
+
+let friend = Object.create(person);				<span class="nota">creazione oggetto "friend" che assume il prototype dell'oggetto "person"</span>
+<span class="azzurro">
+console.log(friend.getGreeting());				<span class="nota"> // "Hello"</span>
+console.log(Object.getPrototypeOf(friend) === person);		<span class="nota">// true</span>
+</span>
+Object.setPrototypeOf(friend, dog);				<span class="nota">cambiamo il prototype di "friend" assegnandogli quello di "dog"
+<span class="azzurro">
+console.log(friend.getGreeting());				<span class="nota">// "Woof"</span>
+console.log(Object.getPrototypeOf(friend) === dog);		<span class="nota">// true</span>
+</span>
+</pre>	
+
+
+
+<h3 id="call">Function.prototype.call</h3>
+
+<p>
+Facendo riferimento sempre alla funzione <q>tester()</q> di cui sopra
+</p>
+<pre>
+<span class="azzurro">
+tester.call(window, "this", "is", "cool");		<span class="nota">// {this: Window, a: "this", b: "is", c: "cool"}</span> 
+tester.call(null, "is", "even", "cooler");		<span class="nota">// {this: Window, a: "is", b: "even", c: "cooler"} </span>
+</span>
+<span class="grigio">mentre</span>
+<span class="azzurro">
+tester.call("this?", "is", "even", "cooler");		<span class="nota">// {this: String, a: "is", b: "even", c: "cooler" }</span>
+tester.call( 8, "is", "even", "cooler");		<span class="nota">// {this: Number, a: "is", b: "even", c: "cooler" }</span>
+tester.call([], "is", "even", "cooler");		<span class="nota">// {this: Array[0], a: "is", b: "even", c: "cooler"}</span>
+tester.call({}, "is", "even", "cooler");		<span class="nota">// {this: Object, a: "is", b: "even", c: "cooler"} </span>
+</span>
+</pre>
+
+<h3 id="apply" >Function.prototype.apply</h3>
+<p>
+Questo metodo è simile a <q>call</q> ma a volte può presentare qualche vantaggio in più. Facendo riferimento alla funzione <q>tester()</q> di cui sopra: 
+</p>
+<pre>
+<span class="azzurro">
+tester.apply(window, ["this", "is", "cool"]);		<span class="nota">// {this: Window, a: "this", b: "is", c: "cool"}</span>		
+</span>
+</pre>
+<p>Vediamo degli esempi più interessanti</p>
+<pre>
+var numbers = [3, 8, 7, 3, 1];
+<span class="azzurro">
+Math.max.apply(null, numbers);				<span class="nota">// 8</span>
+</span>
+
+<span class="grigio">oppure</span>
+
+function f(x, y, z) { 
+	console.log(x + y + z);
+}
+var args = [2, 3, 5];
+<span class="azzurro">
+f.apply(null, args);					<span class="nota">// 10</span>	
+</span>	
+</pre>
+<p>Vediamolo associato con <b>arguments</b> </p>
+<pre>
+var test = function(a, b, c) {
+	console.log(Object.getOwnPropertyNames(arguments));
+};
+<span class="azzurro">
+test("a", "b", "c");					<span class="nota">// ["0", "1", "2", "length", "callee"]</span>
+test.apply(null, ["a"]);				<span class="nota">// ["0", "length", "callee"]</span>
+</span>
+</pre>
+<p>
+La variabile <q>arguments</q> ha proprietà correspondenti ad ogni parametro passato alla funzione. La proprietà <q>callee</q> fa riferimento alla funzione che si sta eseguendo ma non è supportata in tutti i browser
+</p>
+<pre>
+var tester = function() {
+	console.log({
+		'this': this,
+		'arguments': arguments,
+		'length': arguments.length
+	});
+};
+<span class="azzurro">
+tester.apply(null, ["a", "b", "c"]);			<span class="nota">// {this: Window, arguments: Arguments[3], length: 3}</span>
+</span><span class="grigio">A seconda dellla console può anche restituire: { this: null, arguments: { 0: "a", 1: "b", 2: "c" }, length: 3 }</span>
+</pre>
+<p>Per convertire degli argomenti passati alla funzione in un array</p>
+<pre>
+var example = function(){
+	console.log(Array.prototype.slice.call(arguments).reverse() );
+	return Array.prototype.slice.call(arguments);
+};
+<span class="azzurro">
+var arr = example("a", "b", "c");</span>			<span class="nota">// ["c", "b", "a"]</span>			
+
+for(var i=0, arra; arra=arr[i]; i++){
+	console.log(arra);
+}
+<span class="nota">// Restituisce 
+a
+b
+c
+</span>
+</pre>
+
+</p>
+
+<h3>super</h3>
+
+<p>
+E6 ha introdotto la referenza <em>super</em> che facilita l'accesso alle funzionalità del prototype di un oggetto.
+Per esempio con ECMAScript 5:	
+</p>	
+
+<pre>
+let person = {
+	getGreeting() {
+		return "Hello";
+	}
+};
+
+let dog = {
+	getGreeting() {
+		return "Woof";
+	}
+};
+
+
+let friend = {
+	getGreeting() {
+		return Object.getPrototypeOf(this).getGreeting.call(this) + ", hi!";
+	}
+};
+
+// set prototype to person
+Object.setPrototypeOf(friend, person);
+<span class="azzurro">
+console.log(friend.getGreeting());			<span class="nota">// "Hello, hi!"</span>
+console.log(Object.getPrototypeOf(friend) === person);	<span class="nota">// true</span>
+</span>
+// set prototype to dog
+Object.setPrototypeOf(friend, dog);
+<span class="azzurro">
+console.log(friend.getGreeting());			<span class="nota">// "Woof, hi!"</span>
+console.log(Object.getPrototypeOf(friend) === dog);	<span class="nota">// true</span>
+</span>
+</pre>	
+
+<p>
+ora con <em>super</em> 	
+</p>	
+
+<pre>
+let friend = {
+	getGreeting() {
+		return super.getGreeting() + ", hi!";	<span class="nota">invece che => Object.getPrototypeOf(this).getGreeting.call(this)</span>
+	}
+};	
+</pre>	
+
+
+
+<script type="text/javascript">
+
+
+console.log( Object.getOwnPropertyNames(Function.prototype) );
+
+var tester = function (a, b, c){
+	console.log({
+		this: this,
+		a: a,
+		b: b,
+		c: c
+	});
+};
+
+tester(null,"this",''); 
+//tester.call(window, "this", "is", "cool"); 
+//tester.call( 8, "is", "even", "cooler");
+
+var test = function(a, b, c) {
+    console.log(Object.getOwnPropertyNames(arguments));
+};
+
+//test("a", "b", "c");
+//test.apply(null, ["a"]);
+
+
+var tester2 = function() {
+	console.log({
+		'this': this,
+		'arguments': arguments,
+		'length': arguments.length
+	});
+};
+
+tester2.apply(null, ["a", "b", "c"]);
+
+function toArray(args) {
+	return Array.prototype.slice.call(args);
+}
+
+var example = function(){
+//	console.log(arguments);
+	console.log(Array.prototype.slice.call(arguments, 1));
+};
+
+//example("a", "b", "c");
+
+function f(x, y, z) { 
+	console.log(x + y + z);
+}
+var args = [2, 1, 5];
+f.apply(null, args);								
+
+//f();			
+
+/////////////  Super   ////////////////
+
+let person = {
+	getGreeting() {
+		return "Hello";
+	}
+};
+
+let friend = {
+	getGreeting() {
+//		return Object.getPrototypeOf(this).getGreeting.call(this);		// vecchio metodo con "call" 
+		return super.getGreeting() + ", hi!";									// con il "super"
+	}
+};	
+
+// set prototype to person
+Object.setPrototypeOf(friend, person);
+console.log(person.getGreeting());					// "Hello"
+console.log(friend.getGreeting());					// "Hello, hi!"
+
+
+///////////////////// 	Catena del prototype		///////////////////////////////////
+
+
+var a = {};
+var b = function (){};
+var c = [];
+
+/*
+ Provare a digitare nella consolle questi oggetti, per esempio:
+
+// Il seguente restituisce un oggetto il cui prototype punta all'oggetto base «Object» e quindi a tutti i suoi metodi (toString, hasOwnProperty, ecc..) , nel senso che tali metodi possono essere sfruttati dall'oggetto «a»
+	
+	a.__proto__								
+
+// Nel seguente, siccome «b» è una funzione, la sua proprietà prototype punterà ai metodi associati alle "funzioni" (bind, call, ecc..)
+
+	b.__proto__
+
+// Il seguente non fa altro che salire la catena. In altre parole punta ai metodi dell'oggetto base «Object» (toString, hasOwnProperty, ecc..)
+
+	b.__proto__.__proto__
+
+// Nel seguente, siccome «c» è un array, la sua proprietà prototype punterà ai metodi associati agli "array" (push, pop, slice, ecc..)
+
+	c.__proto__
+
+// Il seguente non fa altro che salire la catena. In altre parole punta ai metodi dell'oggetto base «Object» (toString, hasOwnProperty, ecc..)
+
+	c.__proto__.__proto
+
+
+//console.log("Oggetto vuoto a: " +a.__proto__); 
+
+*/
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br /><br /><br /><br />
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

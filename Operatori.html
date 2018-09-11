@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Operatori</title>
+<link rel="stylesheet" href="../baseLocali.css" type="text/css" /> 
+<style type="text/css">
+
+</style>
+<script src="jQuery-1.6.min.js"> </script>
+</head>
+
+<body>
+
+<h1>Operatori</h1>
+
+<h3>! (Operatore logico NOT)</h3>
+
+<table class="tabella" width="40%" border="1" cellspacing="0" cellpadding="3">
+<tr>
+	<th>Espressione</th>
+	<th>Restituisce</th>
+</tr>
+<tr>
+	<td>Se l'operando è un oggetto</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>Se l'operando è un numero diverso da zero</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>Se l'operando non è definito </td>
+	<td>Un errore è capitato</td>
+</tr>
+<tr>
+	<td>Se l'operando è un numero</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>Se l'operando è NULL</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>Se l'operando è NaN</td>
+	<td>true</td>
+</tr>
+	
+</table>
+
+<h3> != (non uguale) e !== (Non identico) </h3>
+<p>
+<b>!=</b> restituisce true se gli operandi non sono uguali. <br />
+<b>!==</b> restituisce true se gli operandi non sono uguali e nemmeno dello stesso tipo
+</p>
+
+<script type="text/javascript">
+if("87" !== 87){
+document.write("The string 87 is NOT equal to the number 87");
+}else{
+document.write("The string 87 is EQUAL to the number 87");
+}
+</script>
+
+<h3>Assegnazioni</h3>
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+//$("div p").eq().text();
+y = "A";
+y += "B";
+var exp1 = "<span class='nota'>Tutti gli operatori di assegnazione, eccetto '+=', cercano di convertire le stringhe in numeri</span>";
+//If strings are used with the += operator, the left operand is concatenated to the end of the right operand (SBAGLIATO).
+
+$("#divo p").eq(0).html(exp1);
+$("#divo p").eq(1).text(y);
+//$("div p").eq().text();
+
+}); // chiude ready 
+</script>
+<div id='divo'>
+	<p></p>
+	<p></p>
+</div> 
+
+<h3>typeof</h3>
+<p class="nota">L'operatore "typeof" serve a determinare il tipo di variabile</p>
+
+<script language="JavaScript1.1">
+<!--
+var bMyVar = true;	// variabile boleana ("boolean")
+var nMyVar = 35;		// numero
+var sMyVar = "This is a string";	// stringa 
+var uMyVar;			// variavile non definita
+
+document.writeln("bMyVar = " + typeof(bMyVar));
+document.writeln("<br>nMyVar = " + typeof(nMyVar));
+document.writeln("<br>sMyVar = " + typeof(sMyVar));
+document.writeln("<br>uMyVar = " + typeof(uMyVar));
+-->
+</script>
+
+
+<h2>Operatore condizionale ternario </h2>
+
+<p>
+L'operatore condizionale ternario è  l'unico operatore JavaScript che necessità di tre operandi. Questo operatore è frequentemente usato al posto del comando «if» per la sua sintassi concisa e perché fornisce direttamente un espressione valutabile.
+</p>
+
+<pre>
+condizione ? espressione1 : espressione2 
+</pre>
+
+<dl>
+	<dt><b>condizione</b>: Un espressione booleana (che viene valutata in vero o falso).</dt>
+	<dt><b>espressione1, espressione2</b>: Espressione di qualunque tipo.</dt>
+	<dd>Se la condizione è vera sarà restituito "espressione1" altrimenti sarà restituito "espressione2"</dd>
+</dl>
+
+
+<pre>
+let prezzo;
+let chePrezzo = "Il prezzo è: " + (prezzo ? "$2.00" : "$10.00");		<span class="nota">// $10.00</span>
+
+<span class="grigio">Anche definendo «let prezzo = false» abbiamo lo stesso risultato; mentre se "prezzo" è definita oppure è true</span>
+
+let prezzo = true;
+let chePrezzo = "Il prezzo è: " + (prezzo ? "$2.00" : "$10.00");		<span class="nota">// $2.00</span>
+</pre>
+
+<pre>
+var elvisLives = Math.PI > 4 ? "Yep" : "Nope";					<span class="nota">// Nope</span>
+</pre>
+
+<p>Con l'utilizzo di operatori ternari multipli</p>
+
+<pre>
+var firstCheck = false,
+    secondCheck = false,
+    access = firstCheck ? "Access denied" : secondCheck ? "Access denied" : "Access granted"
+<span class="azzurro">
+console.log(access);								<span class="nota">// Access granted</span>
+</span>
+</pre>
+
+<p>
+E' possibile assegnare alle espressioni più valori mettendoli tra parentesi. <br>
+Nell'esempio seguente nelle due espressioni sono definiti due processi separati da una virgola e racchiusi in una parentesi
+</p>	
+
+<pre>
+var stop = false, age = 17;
+
+age &gt; 18 ? (
+    alert("OK, you can go."),
+    location.assign("continue.html")
+) : (
+    stop = true,
+    alert("Sorry, you are much too young!")
+);
+</pre>	
+
+<p>
+L'esempio seguente mostra l'uso dell'operatore ternario all'interno di una funzione	
+</p>	
+<pre>
+<span class="grigio">Con l'uso degli "if"</span>	
+function opTernario(valore){
+	if(valore){
+		return 'OK';
+	}else{
+		return 'NO';
+	}
+}
+
+<span class="grigio">Con l'operaore ternario</span>
+function opTernario(valore){
+	return valore ? 'OK' : 'NO';
+}
+<span class="azzurro">
+console.log(opTernario());				<span class="nota">// NO</span>
+console.log(opTernario('bene'));			<span class="nota">// OK</span>
+</span>
+
+</pre>
+
+<p>Da notare il seguente esempio dove l'argomento passato alla funzione è nel primo caso un numero e nel secondo caso una stringa. In entramni i casi la condizione è valutata «vera». <br> </p>	
+<pre>
+
+function opTernario(valore){
+	return (valore > 5) ? 'OK' : 'NO';
+}
+<span class="azzurro">
+console.log(jk(8));					<span class="nota">// OK</span>
+console.log(jk("8"));					<span class="nota">// OK</span>
+</span>
+
+</pre>
+
+
+<script type="text/javascript">
+
+
+var jk = (valore) => {
+	return (valore > 5 ) ? 'OK' : 'NO';
+//	return valore || 'NO';
+}
+
+
+console.log(jk());
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+<br /><br /><br /><br /><br /><br />
+
+
+</body>
+</html>

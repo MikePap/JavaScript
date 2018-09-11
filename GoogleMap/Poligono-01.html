@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<title>Poligono </title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.nota{color:orange;}
+.codice{color:green;}
+
+#map_canvas{ position:relative; margin:20px; width:80%; height:80%;  }
+
+</style>
+
+<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">
+
+  function initialize() {
+    var myLatLng = new google.maps.LatLng(24.886436490787712, -70.2685546875);
+    var myOptions = {
+      zoom: 5,
+      center: myLatLng,
+      mapTypeId: google.maps.MapTypeId.TERRAIN
+    };
+
+    var bermudaTriangle;
+
+    var map = new google.maps.Map(document.getElementById("map_canvas"),
+        myOptions);
+
+    var triangleCoords = [
+        new google.maps.LatLng(25.774252, -80.190262),
+        new google.maps.LatLng(18.466465, -66.118292),
+        new google.maps.LatLng(32.321384, -64.75737),
+        new google.maps.LatLng(25.774252, -80.190262)	
+//da notare che queste ultime coordinate sono uguali alla prime per indicare la chiusura del percorso, ma possono anche non esserci ed il percorso si chiude ugualmente. Nello script del file "Poligono-02.html"  non ci sono
+    ];
+
+    // Construct the polygon
+    bermudaTriangle = new google.maps.Polygon({
+      paths: triangleCoords,
+// Tutte le proprietà dei CSS sono valide tranne i nomi 	
+      strokeColor: "#0F0",		// colore del bordo linea. 
+      strokeOpacity: 0.8,		// opacità del bordo
+      strokeWeight: 2,			// spessore del bordo
+      fillColor: "#F00",		// colore di riempimento 
+      fillOpacity: 0.3,			// opacità del riempimento
+//	visible: true, 			// visibilità della linea.  di default è 'true'
+//	editable: true,			// permette di spostare la linea e di modificarla. default è 'false'
+//	geodesic:true,			// ???
+//	zIndex: 1,				// eventualmente impostabile nel caso di presenza di altre forme
+    });
+
+bermudaTriangle.setMap(map);
+//	bermudaTriangle.getEditable(true);
+  }
+</script>
+</head>
+<body onload="initialize()">
+ 
+ <div id="map_canvas"></div>
+
+</body>
+</html>
+

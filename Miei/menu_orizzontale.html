@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>menù barra orizzontale con JavaScript </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); }
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grassetto{font-weight:bold;}
+
+#divo{
+width:500px; margin-top:11px; /*margin-left:50px;*/ padding:10px; background:#E6F60B;  border:1px solid; 
+}
+#kok{
+width:500px; margin:31px; padding:10px; background:#F90;  border:1px solid;
+}
+
+
+#box{ position:relative; margin:50px auto; width:302px; height:225px; background:#333; border:1px solid; /*z-index:3;*/ }
+
+#br_puglia{ position:absolute; top:0; left:0;      width:100px;  border-bottom:1px solid; border-left:1px solid; z-index:2; }
+#br_campania{ position:absolute; top:0; left:100px; width:100px; border-bottom:1px solid; border-left:1px solid;  z-index:2; }
+#br_sicilia{ position:absolute; top:0; left:200px; width:100px; border-bottom:1px solid; border-left:1px solid; z-index:2; } 
+
+ 
+ul{height:auto; margin:0; padding:5px 0 0 0; font-size:16px; text-align:center;  color:rgb(50,50,250); background:#99FF00; } 
+ul li{ list-style-type:none; margin:0; padding:0;  font-size:14px; background:#000;  text-align:left; display:none; } 
+
+ul li a:link,  ul li a:visited{ color:#F00; display:block; padding:2px 4px; margin:0; text-decoration:none; } 
+ul li a:hover{  background-color:rgb(180,180,180);}
+
+
+</style>
+</head>
+<body>
+
+<h1>Menù barra orizzontale con JavaScript nativo </h1>
+<p class="nota">In IE 8 non funziona</p>
+
+
+<div id="box">
+ 
+	<div id="br_puglia"> 
+		<ul> Puglia
+			<li><a href="#">Bari</a></li>
+			<li><a href="#">Taranto</a></li>
+			<li><a href="#">Brindisi</a></li>
+			<li><a href="#">Lecce</a></li>
+			<li><a href="#foggia">Foggia</a></li>
+		</ul>   
+                      
+	</div><!-- br_puglia -->
+   
+	<div id="br_campania">  
+		<ul>Campania                                   
+			<li><a href="#">Napoli</a></li>
+			<li><a href="#">Salerno</a></li>
+			<li><a href="#">Caserta</a></li>
+			<li><a href="#">Benevento</a></li>	        
+		</ul>   
+	
+	</div><!-- br_campania --> 
+   
+	<div id="br_sicilia"> 
+		<ul> Sicilia
+			<li><a href="#">Palermo</a></li>
+			<li><a href="#">Catania</a></li>
+			<li><a href="#">Enna</a></li>
+			<li><a href="#">Siracusa</a></li>
+		</ul>
+	</div><!-- br_sicilia -->
+
+</div><!-- box -->
+
+
+<script type="text/javascript">
+document.onreadystatechange = function(){ 
+if (document.readyState == "interactive"){ 
+
+/*
+setTimeout(function()
+{
+	var ab = aa.id;
+	alert(ab)
+}, 1500);*/
+
+//yyy();
+
+}}// readyState
+
+//yyy();
+
+//function yyy(){
+
+//	var ul = document.getElementsByTagName('ul');
+var ul = document.querySelectorAll('ul');
+
+for(var i=0; i< ul.length; i++ ){
+	ul[i].addEventListener("mouseenter", mostra, false);
+	ul[i].addEventListener("mouseleave", nascondi, false);	
+}
+//}
+
+// Mostra tutti i link dopo un dato tempo
+function mostra(e){
+	setTimeout(function(){
+		var c = e.target.children; 
+		for(var i=0; i< c.length; i++ ){
+			c[i].style.display = 'block';
+		}
+	}, 300);
+} // 
+
+/*
+function mostra(e)
+{
+	var c = e.target.children; 
+	for(var i=0; i< c.length; i++ )
+	{
+		c[i].style.display = 'block';
+	}
+} // "mostra()"
+*/
+/*
+function nascondi()
+{
+//alert(Object.prototype.toString.call(e));											// [object MouseEvent]
+//alert(Object.prototype.toString.call(this));									// [object HTMLAnchorElement]
+//alert(Object.getPrototypeOf(e));														// [object MouseEventPrototype]
+//alert(Object.prototype.toString.call(e.target.parentNode));					// [object HTML LI Element]
+//alert(Object.prototype.toString.call(e.target.parentNode.parentNode));		// [object HTML UList Element]
+
+//	var io = e.target;							// va bene anche col target 
+	var figli = this.children;
+	var l = this.children.length;
+	for(var i=0; i< l; i++ )
+	{
+		figli[i].style.display = "none";
+	}	
+
+} // "nascondi()" 
+*/
+
+function nascondi(e){
+	setTimeout(function (){ 
+		var figli = e.target.children;
+		var l = e.target.children.length;
+		for(var i=0; i< l; i++ ){
+			figli[i].style.display = "none";
+		}	
+	}, 400);
+} // 
+
+
+
+</script>
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Incorporare video  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(50,150,50);}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+div.divo{position:relative; width:500px; height:350px; margin:5px; border:1px solid #0F0; }
+
+</style>
+</head>
+<body>
+
+<h1>Incorporare video da YouTube</h1>
+
+
+<p>
+<span class="nota">
+La <b>YouTube API</b> permette di poter eseguire sul proprio sito le operazioni che si possono fare sul sito di <q>YouTube</q></span> <br />
+Il modo più semplice per incorporare un video di YouTube è quello di inserire l'URL del video nei tags &lt;param&gt; e &lt;embed&gt; del tag &lt;object&gt;. Si può grazie a diversi parametri  personalizzare il <q>player</q> ( <a href="http://code.google.com/intl/it-IT/apis/youtube/player_parameters.html">vedere qui</a> ). Per esempio il parametro <b>fs</b> (per default è 0) se impostato  a 1 permette di poter visualizzare il video in <q>full screen</q>; <b>disablekb</b> (default:0 )se impostato a 1 disabilita le funzioanlità della tastiera
+</p>
+
+<div class="divo"> 
+<object width="500" height="350">
+<param name="movie" value="http://www.youtube.com/v/MlARSiEvpEI?fs=1&theme=light&border=1"></param>
+<param name="allowFullScreen" value="true"></param>
+<param name="allowScriptAccess" value="always"></param>
+<embed src="http://www.youtube.com/v/MlARSiEvpEI?&fs=1&theme=light&border=1" 
+type="application/x-shockwave-flash"
+  allowfullscreen="true"
+  allowscriptaccess="always"
+  width="500" height="350">
+</embed>
+</object>
+</div><!--divo-->
+
+<p>Inserendo il parametro <b>version=3</b> si indica di far riferimento alla versione 3 che è l'ultima (oggi: febbraio/2012) altrimenti fa riferimento alla prima versione. Una lampante differenza dalla prima versione è quella che evita di visualizzare il logo <q>YouTube</q> all'interno del video . Utilizzando il tag &lt;iframe&gt; il logo apparirebbe nella fascia dei controlli e per eliminarlo bosogna utilizzare e impostare a 1 il parametro <b>modestbranding</b>
+</p>
+<div class="divo"> 
+<object width="500" height="350">
+<param name="movie" 
+value="http://www.youtube.com/v/1JQgNJdVDvk?version=3&fs=1&autohide=1&showinfo=0"></param>
+<param name="allowFullScreen" value="true"></param>
+<param name="allowScriptAccess" value="always"></param>
+<embed src="http://www.youtube.com/v/1JQgNJdVDvk?version=3&fs=1&autohide=1&showinfo=0" 
+type="application/x-shockwave-flash"
+  allowfullscreen="true"
+  allowscriptaccess="always"
+  width="500" height="350">
+</embed>
+</object>
+</div><!--divo-->
+
+<p>Nel video di sopra a differenza del successivo è stato impostato il parametro <b>showinfo</b>=0 che non permette la visualizzazione di informnazioni quali ad esempio il titolo del video   </p>
+
+<div class="divo">
+	<iframe width="500" height="350"
+		src="http://www.youtube.com/embed/9h1swNWgP8Q?theme=light&color=red&modestbranding=1"
+		frameborder="0" allowfullscreen>
+	</iframe>
+</div><!--divo-->
+
+<p>Nel video di sopra è impostato il parametro <b>theme</b> che fornisce due tipi di player <b>dark</b> (default) e <b>light</b> </p>
+
+<div class="divo">
+	<iframe width="500" height="350"
+		src="http://www.youtube.com/embed/MlARSiEvpEI?fs=1&theme=light&border=1"
+		frameborder="0" allowfullscreen>
+	</iframe>
+</div><!--divo-->
+ 
+<p>Nel seguente video è utilizzato il parametro <b>playlist</b> che mostra altri video quando il video prinipale è terminato. I video da mostrare sono gli <b>id che identificano un video</b> (codificati) e sono appunto forniti al parametro separati da virgola   </p>
+
+<div class="divo">
+	<iframe width="500" height="350"
+		src="http://www.youtube.com/embed/MlARSiEvpEI?playlist=9h1swNWgP8Q,1JQgNJdVDvk&fs=1&theme=light&border=1&modestbranding=1"
+		frameborder="0" allowfullscreen>
+	</iframe>
+</div><!--divo-->
+
+<p>In seguito viene applicato il parametro <b>egm</b> che al termine del video visualizza una serie di miniaure di video correlati che YouTube stesso rileva. Questo parametro non è supportato da &lt;iframe&gt; </p>
+
+<div class="divo"> 
+<object width="500" height="350">
+<param name="movie" value="http://www.youtube.com/v/MlARSiEvpEI?version=3&egm=1&fs=1&theme=light&border=1"></param>
+<param name="allowFullScreen" value="true"></param>
+<param name="allowScriptAccess" value="always"></param>
+<embed src="http://www.youtube.com/v/MlARSiEvpEI?version=3&egm=1&fs=1&theme=light&border=1" 
+type="application/x-shockwave-flash"
+  allowfullscreen="true"
+  allowscriptaccess="always"
+  width="500" height="350">
+</embed>
+</object>
+</div><!--divo-->
+ 
+
+
+<!--
+
+YouTube : Developer Key	
+
+AI39si5A7dLDA1FBb-5vs3oGGndJrjNrxYE8KB1HawFDQ-pQef3TctlciD-aIBWHMOCooRvn8hoaW-ON-GTt8i2--4LgzrJzIQ
+
+** DA NOTARE: COME INDIRZZARE IL VIDEO AD UN CERTO PUNTO(TEMPO)
+
+http://www.youtube.com/watch?v=4Z9WVZddH9w#t=2h09m50s
+
+
+-->
+
+</body>
+</html>

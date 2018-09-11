@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Use strict  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); margin-left:50px;} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150); margin-left:31px;}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20); margin-left:20px;}
+code, pre{ color:rgb(20,150,30); font-weight:bold;}
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(50,100,255);}
+.scuro{color:#333;}
+tt, em{color:#6a9999}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+
+
+<h1>Use strict</h1>
+<p>
+L'utilizzo di <q>use strict</q> serve ad a stabilire che Javascript debba essere definito in modalità <b>strict</b>. Basta semplicemente aggiungere la stringa <q><b>use strict</b></q> all'inizio del documento Javascript o all'inizio della funzione. <br />
+Lo <q>Strict mode</q> è stato implementato nella versione ECMAScript 5, <span class="nota"> ma IE8 lo ignora.  </span>	       
+</p>
+<pre>
+<span class="nota">
+// Non-strict code...
+</span>
+(function(){
+ "use strict";
+<span class="nota">	// Define your library strictly...</span>
+})();
+<span class="nota">
+// Non-strict code... 
+</span>
+</pre> 
+
+<p>
+Il proposito di utilizzare <q>use strict</q> all'inizio di un certo codice Javascript è quello di ottenere una più rigorosa analisi del codice e gestione degli errori. Errori che senza l'uso di questa parola chiave verrebero igmnorati possono essere restituiti, per esempio:
+</p>
+
+<h3>Miglioramento del debugger</h3>
+<p>
+Come detto su si ottiene un maggiore controllo degli errori del codice analizzato con e suggerimenti per le varie soluzioni  
+</p>
+
+<h3>Prevenzione di creazione variabili globali</h3>
+<p>
+Senza 'use strict' quando si assegna un valore ad una variabile non dichiarata viene creata una variabile globale con quello stesso nome. Questo è un errore molto comune e frequente in Javascript. Con 'use strict' questa pratica causa la restituzione di un errore. 
+<pre>
+!function noStrictMode(){
+	jk = 'variabile non dichiarata';
+	console.log(jk);				<span class="nota">// variabile non dichiarata</span>
+}();
+
+!function isStrictMode(){
+ "use strict";
+	jk = 'variabile non dichiarata';		<span class="nota">// errore (jk is not defined)</span>
+	console.log(jk);
+}();
+
+<span class="grigio">Dichiarazione globale</span>
+ "use strict";
+function testStrict(){
+	var x;
+	x = 3.14;		<span class="nota">// non causa errore perchè la variabile 'x' viene dichiarata all'interno della funzione</span>
+}
+x = 3.14;			<span class="nota">// causa errore perchè la variabile 'x' non è dichiarata</span>
+
+<span class="grigio">Dichiarazione locale</span>
+function testStrict(){
+ "use strict";
+	x = 3.14;		<span class="nota">// causa errore perchè la variabile 'x' non è dichiarata all'interno della funzione</span> 
+}
+x = 3.14;			<span class="nota">// non causa errore perchè la modalità 'strict' è soltanto locale alla funzione e non a livello globale </span>
+</pre>
+
+
+</p>
+
+<h3>Riferimento a this nullo</h3>
+<p>
+Senza 'use strict'  un riferimento al valore di 'this' che è null o undefined viene imposto come globale. Mentre con 'use strict' produce un errore 
+
+<pre>
+!function noStrictMode(){
+	console.log(!this);		<span class="nota">// false</span>
+	console.log(this);		<span class="nota">// Window {top: Window, window: Window, location: Location, external: Object, chrome: Object…}</span>
+}(); 
+
+!function isStrictMode(){   
+ "use strict";
+	console.log(!this);		<span class="nota">// true</span>
+	console.log(this);		<span class="nota">// undefined</span>
+}(); 
+</pre>
+
+oppure
+
+<pre>
+<span class="grigio">Senza lo 'strict mode' </span>
+function Person(name) { 
+	this.name = name; 
+}
+<span class="azzurro">var ferdinand =  Person("Ferdinand"); 
+console.log(name);					<span class="nota">// restituisce 'ferdinand' (senza errori anche se NON è giusto)</span>
+</span>
+<span class="grigio">Con lo 'strict mode' invece</span>
+
+function Person(name) { 
+"use strict";
+	this.name = name; 
+}
+<span class="azzurro">var ferdinand =  Person("Ferdinand"); 
+console.log(name);					<span class="nota">// restituisce l'errore: Cannot set property 'name' of undefined </span>
+</span>
+<span class="grigio">mentre creando l'oggetto con 'new' allora 'this' è un proprio riferimento a 'Person' </span>
+<span class="azzurro">var ferdinand =  new Person("Ferdinand"); 
+console.log(name);					<span class="nota">// restituisce 'ferdinand' (come è giusto che sia)</span>
+</span>
+</pre>
+
+</p>
+
+<h3>Nomi di proprietà e argomenti di funzioni</h3>
+<p>Il parser con 'use strict' invia un errore quando incontra nomi di proprietà duplicati  o argomenti di funzioni doppie 
+<pre>
+var object = {foo: "bar", foo: "baz");			<span class="nota">errore perchè 'foo' è ripetuta</span>
+
+function foo(val1, val2, val1){};			<span class="nota">errore perchè 'val1' è ripetuta</span>
+</pre>
+</p>
+
+<h3>Rende eval() più sicuro</h3>
+<p>In 'use strict' variabili e funzioni dichiarate in <q>eval()</q>	non sono create nel <q>containing scope</q> cosa che invece succede nell'uso normale causando non pochi problemi.   
+<pre>
+function factorial( eval ) {
+	f = 1;
+	for ( i = 2; i <= eval; i++)
+		f = f * i;
+	return f;
+}
+<span class="azzurro">
+console.log("The factorial of 4 is: " ,factorial(4));		<span class="nota">// The factorial of 4 is:  24 </span>
+</span>
+function factorial( eval ) {
+ "use strict";
+	f = 1;
+	for ( i = 2; i <= eval; i++)
+		f = f * i;
+	return f;
+}
+<span class="azzurro">
+console.log("The factorial of 4 is: " ,factorial(4));		<span class="nota">// errore (Unexpected eval or arguments in strict mode ) </span>
+</span>
+</pre>
+</p>
+				
+<h3>Eliminazione di proprietà non configurabili</h3>
+<p>
+L'eliminazione di una variabile di una funzione o di un argomento con l'operatore <q>delete</q> non è permesso. L'operatore <q>delete</q> (utilizzato per rimuovere proprietà da un oggetto) non può essere usato su proprietà non configurabili dell'oggetto. 
+Senza 'use strict' si avrà un fallimento dell'operazione senza che ci sia una restituzione di errore cosa che invece avviene con 'use strict'
+<pre>
+var testStrict = 3.14;
+delete testStrict;				<span class="nota">errore</span>
+</pre>
+</p>	
+
+<h3>Altri tipi di errore restituiti con l'uso dello <q>Strict mode</q> che altrimenti sarebbero ignorati </h3>
+<p>
+<a href="http://ie.microsoft.com/testdrive/HTML5/TryStrict/">vedere qui</a>
+</p>
+<pre>
+	"use strict";
+
+var obj = {};
+Object.defineProperty(obj, "prop",{ 
+	value: "Don’t tread on me", writable: false 
+});
+obj.prop = "New value";
+<span class="azzurro">
+console.log(obj.prop);				<span class="nota">// errore  Cannot assign to read only property 'prop' of #&lt;Object&gt;   </span>
+</span>
+
+var obj = {};
+Object.preventExtensions(obj);
+obj.extension = "invalid";
+<span class="azzurro">
+console.log(obj.extension);			<span class="nota">// errore (Can't add property extension, object is not extensible)</span>
+</span>
+
+delete Object.prototype;			<span class="nota">// errore (Cannot delete property 'prototype' of function Object() { [native code] })</span>
+
+var result = 010 + 292;
+<span class="azzurro">
+console.log(result);				<span class="nota">// errore (Octal literals are not allowed in strict mode.)</span>
+</span>
+
+var testObj = {get x() {return 0} };
+testObj.x = 3.14;				<span class="nota">// errore perchè non è permesso definire una proprietà 'get-only' </span>
+
+var yield = 24;
+<span class="azzurro">
+console.log(yield);				<span class="nota">// errore (Unexpected strict mode reserved word)</span>
+</span>
+</pre>
+<p>
+Le parole chiave riservate che non sono permesse sono le seguenti:
+<dl>
+	<dd>implements</dd>
+	<dd>interface</dd>
+	<dd>package</dd>
+	<dd>private</dd>
+	<dd>protected</dd>
+	<dd>public</dd>
+	<dd>static</dd>
+	<dd>yield</dd>
+</dl>	
+
+</p>
+<span class="nota"></span>
+<span class="azzurro"></span>
+
+AdBan 
+
+
+<br /><br /><br /><br /><br /><br />
+
+
+
+
+
+<script type="text/javascript">
+
+/*
+!function noStrictMode(){
+//	console.log(this);
+	console.log(!this);
+}(); 
+//returns false, since 'this' refers to global object and '!this' becomes false
+
+!function isStrictMode(){   
+ "use strict";
+//	console.log(this);
+	console.log(!this);
+	//alert(this)
+}(); 
+//returns true, since in strict mode, the keyword 'this' does not refer to global object, unlike traditional JS. So here,'this' is null and '!this' becomes true.
+//noStrictMode();
+//isStrictMode();
+
+*/
+
+
+"use strict";
+
+var yield = 24;
+console.log(yield);
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

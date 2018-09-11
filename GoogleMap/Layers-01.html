@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+<title>Layers 01</title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.nota{color:orange;}
+.codice{color:green;}
+
+#map_canvas{ position:relative; width:100%; height:90%;  border:1px solid;  }
+#divo{width:50px; padding:2px 3px;  text-align:center; background:#F00; background-color:rgba(250,0,0, 0.7); }
+#divo a:link, a:visited{ display:block; text-decoration:none; font-weight:bold; font-size:12px; color:#FFF;}
+#divo a:hover{ text-decoration:underline; }
+
+.verde{color:green;}
+
+</style>
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=it"></script>
+
+<script type="text/javascript">
+
+function initialize() {
+var roma = new google.maps.LatLng(41.8929,12.4944);
+
+map = new google.maps.Map(document.getElementById('map_canvas'), {
+center: roma,
+zoom: 6,
+mapTypeId: google.maps.MapTypeId.HYBRID,
+mapTypeControl: true,	
+mapTypeControlOptions: {	
+style: google.maps.MapTypeControlStyle.DROPDOWN_MENU, 
+position: google.maps.ControlPosition.TOP_CENTER,
+}, // mapTypeControlOptions
+zoomControl: true,		// è la barra dell zoom 
+zoomControlOptions: {
+style: google.maps.ZoomControlStyle.SMALL,		// SMALL -- LARGE (grandezza della barra dello zoom)
+}, // zoomControlOptions
+});
+ 
+var layer = new google.maps.FusionTablesLayer({
+query: {
+select: 'Location',
+from: '2853001', 		// Amici: 2845966  -- Colori:2851394  -- Olivicoltori: 2853001
+//	where: 'Number > 2'		// Olivicoltori-02:2854024(1R4dc2PWtnOW0yMZbLQEH4A90ltt08Uu7k4H_n5U)
+// abcMappa:2856088   1N2UM-j0X0IKyCrt_wnK-G8cF9-iTuSHLaxtfbDQ 
+} // 'query'
+}); // 'layer'
+layer.setMap(map);
+ 
+} // "initialize"
+
+</script>
+
+</head>
+<!-- <body onload=""> -->
+<body>
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+initialize();
+
+$("body").append("<div id='divo'><a href='http://localhost/abc_locale/Olivicoltori/olivicoltori.php'>HOME</a></div>");
+var divo = $("#divo").attr({ 
+title: "Torna a Home Olivicoltori",
+alt: "Link che porta alla Home Olivicoltori"
+}); // 'attr'
+
+var homeControlDiv = document.createElement('DIV');
+$(homeControlDiv).append(divo);
+
+homeControlDiv.style.marginTop = "5px";	// è necessario per poterlo posizionare a fianco del controllo esistente 
+map.controls[google.maps.ControlPosition.TOP_CENTER].push(homeControlDiv);
+//map.controls[google.maps.ControlPosition.TOP_RIGHT].push(tt);	// NO 
+
+
+// http://localhost/jQuery/Immagini/macchie.jpg
+// http://localhost/jQuery/Immagini/gocce.jpg
+// http://localhost/
+
+}); // chiude ready 
+</script>
+
+<p>
+Per formattare il testo dei risultati da visualizzare si può farlo sia all'interno di <b>fusionTable</b> di google agendo in ogni record e mettendoci lo stile voluto (il che è un lavoraccio) oppure si possono mettere gli stili anche all'interno dei file .csv (<span class='codice'>vedere il file "more.csv" nella cartella 'Olivicoltori di 'abc locale'</span>). <br />
+Ho anche aggiunto delle immagini a due record (quelli aggiunti col file "more.csv"). Però l'ho fatto dopo aver importato il file all'interno di fusionTable di google, ma si possono aggiungere anche nei file .csv mettendo il percorso dell'immagine. La grandezza dell'immagine la stabilisce 'fusionTable' ma in base alla impostazione assegnata al tipo di formato ('Single Line Image', 'Four Line Image' 'Eight Line Image')
+</p>
+
+<div id="map_canvas"></div>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Eventi DOM  </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+
+<style type="text/css">
+</style>
+</head>
+<body>
+
+<h1>Eventi del DOM</h1>
+
+<h2>addEventListener</h2>
+
+<p>
+Un listener degli eventi lo si può definire in tre diversi modi
+<pre>
+<span class="blu">&lt;p onclick="alert('hello')" &gt; Cliccami &lt;/p&gt;				<span class="nota">inline attribute event handler (gestore eventi inline)</span>
+</span>
+elemento.onclick = function(){ alert('Hello') };			<span class="nota">property event handler (gestore proprieta)</span>
+
+elemento.addEventListener("click", function(){ alert('hello') } );	<span class="nota">metodo addEventListener</span>
+</pre>
+</p>
+<p>
+Nel caso dell'utilizzo del gestore proprietà è possibile assegnare soltanto un valore per volta
+<pre>
+<span class="blu">&lt;p&gt;Hello Mik &lt;/p&gt; </span>
+var p = document.querySelector('p');
+
+p.onclick = function(){alert('fuk')};			<span class="nota">// questa funzione non sarà eseguita</span>
+p.onclick = function(){alert('vaffanculo')};		<span class="nota">// verrà eseguita solo quest'ultima</span>
+</pre>
+</p>
+
+<h3>Propagazione eventi</h3>
+<p>
+Quando un evento è invocato esso si propaga su tutto l'albero del DOM e quindi su tutti gli elementi del documento. Ciò vuol dire che se durante il suo viaggio  incontra un'altro listener lo esegue. <br />
+La propagazione si divide in tre fasi: 
+<dl>
+	<dt>Fase di cattura o discesa (capture)</dt>
+	<dd>In questa fase l'evento discende l'albero del DOM a partire da 'window > document > html > body > ... </dd>
+
+	<dt>fase target</dt>
+	<dd>Il browser incontra il listener target e lo esegue   </dd>
+
+	<dt>Fase di risalita (bubbling)</dt>
+	<dd>L'evento risale l'albero del DOM visitando ancora uno per uno gli elementi fino a raggiungere il genitore 'window'  </dd>
+</dl>	
+<pre>
+<span class="blu">&lt;p&gt;Hello Mik &lt;/p&gt; </span>
+var p = document.querySelector('p');
+
+p.addEventListener("click", funzione, true);			<span class="nota">// listener collegato al paragrafo (con true si abilita la fase di cattura)</span>
+document.addEventListener("click", funzione, true);		<span class="nota">// listener collegato all'intero documento</span>
+</pre>
+<span class="grigio">Nell'esempio sopra succede che si fa click sul &lt;p&gt; verrà eseguita per prima la funzione del listener del documento e poi quella del &lt;p&gt;. Se invece si fa click in un punto nella pagina verrà eseguito soltanto il listener del documento </span>
+
+<pre>
+p.addEventListener("click", funzione, false);	
+document.addEventListener("click", funzione, false);	
+</pre>
+<span class="grigio">In quest'ultimo caso succede che se si fa click sul &lt;p&gt; verrà eseguita per prima la funzione del paragrafo e poi quella del documento. In pratica è successo che impostando a 'false' il terzo parametro non facciamo altro che dire al browser di non eseguire la fase di cattura (capture) e quindi il flusso non parte dall'oggetto window. Quindi il listener del documento sarà eseguito solo nella fase di risalita (bubbling)</span>
+</p>
+<p>
+L'oggetto evento passato alla funzione listener contiene una proprietà <b>eventPhase</b> che restituisce un numero che indica la fase dell'evento invocata. Il valore 1 rappresenta la fase di cattura, il valore 2 la fase di target e 3 la fase di risalita. 
+</p>
+
+
+<h3>attachEvent</h3>
+
+<p>
+In Internet explorer nelle versioni precedenti alla 9 il listener degli eventi non è riconosciuto mentre è supporato il metodo <tt>attachEvent</tt>
+</p>
+<pre>
+if(typeof elemento.addEventListener != "undefined"){
+	elemento.addEventListener("evento", listenerPerEventi, false);
+}
+else if(typeof elemento.attachEvent != "undefined"){
+	elemento.attachEvent("onevento", listenerPerEventi);	<span class="nota">anteporre 'on' al nome dell'evento (es: onclick)</span>	
+}
+</pre>
+<p>
+Ci sono un paio di differenze. La prima è che al nome dell'evento va anteposto <q>on</q>; per esempio l'evento 'click' diventa 'onclick'. <br />
+La seconda differenza riguarda il terzo paramentro visto sopra per <tt>addEventListener</tt> che nel metodo <tt>attachEvent</tt> non è presente perchè il modello eventi di Internet Explorer non prevede (non prevedeva prima della versione 9) la fase di cattura (o discesa). <br />
+Vediamo un esempio concreto</p>
+<pre>
+function OnButtonDown (button) {
+	button.style.color = "#ff0000";
+}
+
+function OnButtonUp (button) {
+	button.style.color = "#000000";
+}
+
+function Init () {
+	var button = document.getElementById ("testButton");
+	if (button.addEventListener) {				<span class="nota">x tutti i browsers tranne IE &lt; 9</span>	
+		button.addEventListener ("mousedown", function () {OnButtonDown (button)}, false);
+		button.addEventListener ("mouseup", function () {OnButtonUp (button)}, false);
+	}else{
+		if (button.attachEvent){			<span class="nota">x versioni di IE precedenti alla 9</span>
+			button.attachEvent ("onmousedown", function () {OnButtonDown (button)});
+			button.attachEvent ("onmouseup", function () {OnButtonUp (button)});
+		}
+	}
+}
+</pre>
+
+<p>
+Oppure
+</p>
+<pre>
+function addListener(obj, eventName, listener) {
+	if(obj.addEventListener) {
+		obj.addEventListener(eventName, listener, false);
+	} else {
+		obj.attachEvent("on" + eventName, listener);
+	}
+}
+
+funzioneListener(){
+	// ... 
+}
+
+addListener(window, "load", funzioneListener);
+
+</pre>
+
+
+
+<h2>removeEventListener</h2>
+<p>
+Metodo che permette di rimuovere un listener di eventi. <span class="nota">Sulle funzioni anonime tale metodo non funziona</span>
+<pre>
+p.addEventListener("click", funzione, false);			<span class="nota">aggiunta di un listener </span>
+p.removeEventListener('click', funzione ,false);		<span class="nota">rimozione listener </span>
+</pre>
+</p>
+
+<h3>this con gli eventi listener  </h3>
+<p>
+La parola chiave <q>this</q> all'interno di una funzione di un listener fa riferimento all'oggetto a cui l'evento è collegato
+<pre>
+<span class="blu">&lt;p&gt;Hello Mik &lt;/p&gt; </span>
+var p = document.querySelector('p');
+
+p.addEventListener("click", 
+function(){
+	console.log(this);				<span class="nota">// restituisce  &lt;p&gt;  </span>
+}, false); 
+
+<span class="grigio">Allo stesso modo di this lo stesso risultato si ottiene utilizzando <b>event.currentTarget</b> </span>
+
+p.addEventListener("click", 
+function(event){
+	console.log(event.currentTarget);		<span class="nota">// restituisce  &lt;p&gt;  </span>
+}, false); 
+</pre>
+</p>
+
+<h2>event.target</h2>
+<p>
+E' utile perchè permette di far riferimento proprio sull'elemento in cui avviene l'evento. <span class="nota">Non funziona in IE 8</span>
+<pre>
+<span class="blu">&lt;p&gt;Hello Mik &lt;/p&gt; </span>
+
+document.body.addEventListener('click',		<span class="nota">// listener sull'elemento 'body'</span>
+function(event){
+	console.log(event.target);		<span class="nota">// restituisce: &lt;p&gt; (cliccando sull'elemento &lt;p&gt;)  </span>				
+	console.log(this);			<span class="nota">// restituisce: l'elemento body (anche cliccando sull'elemento &lt;p&gt;)</span>
+}, false);
+</pre>
+</p>
+
+<h3>event.currentTarget</h3>
+
+<p>
+Fa riferimento all'elemento su cui il listener degli eventi è stato collegato mentre <tt>event.target</tt> identifica l'elemento su cui l'evento è occorso.
+</p>
+
+
+
+<h2>event.preventDefault</h2>
+<p>
+I browser forniscono degli <em>eventi predefiniti</em>; un esempio è quello del link &lt;a href=''&gt; che fa uscire dal documento corrente e caricare una nuova pagina. Questi eventi predefiniti si possono annullare con il metodo <q>event.preventDefault</q> 
+<pre>
+<span class="blu">&lt;a href="altro_documento.html"&gt; Vai in un altra pagina &lt;/a&gt;
+&lt;input type="checkbox" /&gt; </span>
+
+document.querySelector('a').addEventListener('click',
+function(event){
+	event.preventDefault();					<span class="nota">// la pagina indicata non caricherà</span>
+},false);
+
+document.querySelector('input').addEventListener('click',
+function(event){
+	event.preventDefault();					<span class="nota">// il checkbox non funzionerà</span>
+},false);
+</pre>
+</p>
+
+<p>
+Ci sono alcuni tipi di eventi predefiniti che non si riescono ad intercettare con JavaScript. Certo questo è dipendente  al browser. Per esempio, in Chrome, la shortcut con la tastiera <tt>Control-W</tt>  che chiude un pannello non si riesce a gestire con JavaScript.
+</p>
+
+
+<h2>stopProgagation</h2>
+<p>
+Metodo che permette di bloccare la fase di cattura (capture) e di risalita (bubbling) dell'evento facendo in modo di invocare solo l'evento sull'oggetto indicato
+<pre>
+<span class="blu">&lt;p&gt;Hello Mik &lt;/p&gt; </span>
+
+document.querySelector('p').addEventListener('click',
+function(event){
+	alert('ciao');					<span class="nota">// viene eseguito </span>
+	<b>event.stopPropagation()</b>;			<span class="nota">// interrompe le fasi di cattura e risalita e quindi ... </span>
+},false);
+
+document.addEventListener('click',			<span class="nota">// listener per l'oggetto 'document'</span>
+function(){
+	alert('body');					<span class="nota">// ... questa funzione non verrà eseguita</span>
+},false);
+
+document.querySelector('p').addEventListener('click',
+function(event){
+	alert('bello ');				<span class="nota">// viene eseguito perchè è lo stesso nodo &lt;p&gt;  </span>
+},false);
+</pre>
+</p>
+
+<h2>stopImmediatePropagation</h2>
+<p>
+Per capire la differenza tra questo metodo e <q>stopProgagation</q> prendiamo l'esempio precedente e cambiamo i metodi
+<pre>
+document.querySelector('p').addEventListener('click',
+function(event){
+	alert('ciao');					<span class="nota">// viene eseguito </span>
+	<b>event.stopImmediatePropagation()</b>;		<span class="nota">// interrompe le fasi di cattura e risalita per tutti </span>
+},false);
+
+document.addEventListener('click',			<span class="nota">// listener per l'oggetto 'document'</span>
+function(){
+	alert('body');					<span class="nota">// questa funzione non verrà eseguita</span>
+},false);
+
+document.querySelector('p').addEventListener('click',
+function(event){
+	alert('bello ');				<span class="nota">// neanche questa verrà eseguita anche se è lo stesso nodo &lt;p&gt;   </span>
+},false);
+</pre>
+</p>
+
+<h2>Event delegation</h2>
+<p>
+Un aspetto importante di questo discorso è che i target non hanno bisogno di stare nel documento quando l'evento accade. E' il caso di XHR responses (ajax). Un  esempio che può essere fatto è quello di una tabella con una gran quantità di righe; in questo caso l'event delegation diventa utile in questo senso:
+<pre>
+document.querySelector('table').addEventListener('click', 
+function(event){
+	if(event.target.tagName.toLowerCase() === 'td'){ 
+		console.log(event.target.textContent); 
+	}      
+},false);
+</pre>
+In pratica si è dato delega all'evento utilizzando <q>event.target</q> in modo che l'evento scatti solo in presenza di un elemento &lt;td&gt;. Se non fosse messa questa regola potrebbe succedere che se, per sempio, si fa click sul bordo della tabella verrebbero restituiti tutto il contenuto della tabella e quindi tutte le sue righe ... un disastrooo  
+</p>
+
+<h2>evento mousewheel (mousescroll)</h2>
+<p>
+E' l'evento che scatta quando si fa ruotare la rotella centrale del mouse. I borwser non lo interpretano tutti allo stersso modo. Firefox lo supporta come <b>DOMMouseScroll</b> mentre per tutti gli altri vale <b>mousewheel</b>. Naturalmente per le versioni antecedenti di IE 9 <b>onmousewheel</b>. <br />
+Per cui si dovrebbe agire in questo modo: 
+<pre>
+function mouseScroll() {
+	<span class="blu">var elem = document.getElementById ("myDiv");</span>
+	if (elem.addEventListener){ 						
+		elem.addEventListener ("mousewheel", funzione, false);		<span class="nota">// Opera, Chrome, Safari e IE >= 9 </span>
+		elem.addEventListener ("DOMMouseScroll", funzione, false);	<span class="nota">// Firefox</span>
+	}else{
+		if (elem.attachEvent){						<span class="nota">// IE before version 9</span>
+			elem.attachEvent ("onmousewheel", getScrollTop);
+		}
+	}
+} 
+</pre>
+</p>
+
+
+    Use the mouse wheel on the field below.
+    <div id="myDiv" style="width:200px; height:200px; overflow:auto;">
+        <div style="height:2000px; background-color:#a08080;"></div>
+    </div>
+    <br />
+    Il valore di scrollTop è: <span id="info" style="background-color:#e0e0d0;"></span>
+
+
+<h2>event.wich</h2>
+
+<p>
+L'oggetto <em>event</em> può darci informazioni aggiuntive riguardo al tipo di evento. La proprietà <b>wich</b>, per esempio, ci permette di conoscere quale tasto del mouse (sinistro, destro o centrale) è stato premuto 
+</p>
+<pre>
+var button = document.querySelector("button");
+button.addEventListener("mousedown", function(event) {
+	if (event.which == 1)
+		console.log("Left button");
+	else if (event.which == 2)
+		console.log("Middle button");
+	else if (event.which == 3)
+		console.log("Right button");
+});
+
+</pre>
+
+<h3>Utili utilizzi con l'event target </h3>
+<p>
+Nel caso di un elemento che è genitore di elementi &lt;button&gt; sui quali si vuole eseguire alcune azioni senza l'<b>event.target</b> dobbiamo usare il ciclo <tt>for</tt>
+<pre>
+<span class="blu">
+&lt;div id="colPranzoCena"&gt; 
+	&lt;button&gt;Colazione&lt;/button&gt;
+	&lt;button&gt;Pranzo&lt;/button&gt;
+	&lt;button&gt;Cena&lt;/button&gt;
+&lt;/div&gt;
+</span>
+var colPranzoCena = document.getElementById('colPranzoCena').children;
+for(var i=0; i &lt;  colPranzoCena.length; i++){
+	var button = colPranzoCena[i];
+	button.addEventListener('click', function (){
+		console.log(this.textContent);
+	},false);
+}
+</pre>
+Utilizzando <b>event.target</b> si evita di utilizzare il <tt>ciclo for</tt> e pertanto si risparmia codice, come nel seguente
+<pre>
+
+var colPranzoCena = document.getElementById('colPranzoCena');
+colPranzoCena.addEventListener('click', function (e){
+	var button = e.target;
+	console.log(button.textContent);					<span class="nota">// o Colazione o Pranzo o Cena</span>
+},false);
+
+</pre>
+Caso differente quando gli elementi non sono all'interno di un elemento. In tal caso l'<b>event.target</b> si ferma al primo elemento trovato e pertanto diventa necessario l'utilizzo del ciclo for
+<pre>
+<span class="blu">
+&lt;button class="pasti"&gt;Colazione&lt;/button&gt;
+&lt;button class="pasti"&gt;Pranzo&lt;/button&gt;
+&lt;button class="pasti"&gt;Cena&lt;/button&gt;
+</span>
+var buttons = document.querySelectorAll('.pasti');
+for(var i=0; i&lt; buttons.length; i++){
+	var button = buttons[i];
+	button.addEventListener('click', function (){
+		console.log(this.textContent);
+	},false);
+}
+
+</pre>
+</p>
+
+
+<h3>Aggiunta di nuovi Parametri al metodo "addEventListener()"  </h3>
+<p>
+Come visto sopra, il terzo argomento del metodo <q>addEventListener()</q> fa riferimento alla gestione della fase di cattura. <br>
+Negli ultimi tempi questo terzo argomento è stato trasformato in oggetto per far dare la possibilità di impostare più parametri. In pratica ora c'è la possibilità di definirne altri due oltre a quello esistente, che sono <b>passive</b> e <b>once</b>: 
+</p>
+<pre>
+element.addEventListener('click', myClickHandler, {
+	once: true,
+	passive: true,
+	capture: true
+});
+</pre>
+
+<dl>
+	<dd><b>passive</b> è un boleano che serve ad indicare che il listener non può chiamare il metodo "preventDefault()". Il default è false</dd>
+	<dd><b>once</b> è un boleano che serve ad indicare che il listener non può essere richiamato più di una volta. Il default è false</dd>
+</dl>
+
+<p class="nota">Al momento il supporto è dato solo da Firefox (50), Chrome(55) e Opera (42) </p>
+
+<p>Un trucchetto per far eseguire il listener solo una volta (simulazione di "once") è il seguente: </p>
+<pre>
+elemento.addEventListener("click", function cb (event){ 
+	var io = event.target;
+	alert(io.textContent);						<span class="nota">// esecuzione di evento</span>												
+	event.currentTarget.removeEventListener(event.type, cb);	<span class="nota">// blocco trigger evento</span>	
+},false);																					
+
+</pre>
+<p>pertanto, cliccando sull'elemento anche più volte, l'alert sarà mostrato soltanto una volta</p>
+
+
+
+
+<script type="text/javascript">
+
+function MouseScroll (event) {
+	var rolled = 0;
+	if ('wheelDelta' in event) {
+		rolled = event.wheelDelta;
+//		rolled = event.deltaY;						// pageY
+//		rolled = event.y;
+	}else{
+//		rolled = -40 * event.detail;			// Firefox (The measurement units of the detail and wheelDelta properties are different)
+		rolled = event.detail*(-40)
+//		rolled = event.deltaY;
+//		rolled = event.y;
+	}
+	var info = document.getElementById ("info");
+	info.innerHTML = rolled;
+
+/*	if(rolled === 120){ 
+//		alert('su');
+		event.preventDefault();
+	}else{
+//		alert('giù');
+		event.preventDefault();
+	}
+*/
+} //
+
+
+
+var getScrollTop = function (){
+	var box = document.getElementById ("myDiv");		
+	var scroll = box.scrollTop;
+	var info = document.getElementById ("info");
+	info.innerHTML = scroll ;
+};
+
+function Init () {
+	var elem = document.getElementById ("myDiv");
+	if (elem.addEventListener){		// all browsers except IE before version 9 (Internet Explorer, Opera, Google Chrome and Safari)
+		elem.addEventListener ("mousewheel", MouseScroll, false);
+		elem.addEventListener ("DOMMouseScroll", MouseScroll, false);		// Firefox
+//		elem.addEventListener (mouseScroll(), getScrollTop, false);			// NON FUNZIONA	
+	}else{
+		if (elem.attachEvent) { // IE before version 9
+			elem.attachEvent ("onmousewheel", getScrollTop);
+		}
+	}
+} //
+
+Init();
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+
+
+</body>
+</html>

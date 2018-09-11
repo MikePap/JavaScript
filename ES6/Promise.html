@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>ES6 Promise  </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+
+<h1>ES6 Promise</h1>
+
+<p>
+JavaScript è <q>single threaded</q> ciò significa che due bits non possono procedere allo stesso tempo e quindi uno procede dopo l'altro. Nei browser JavaScript condivide il <tt>thread</tt> (il canale) con altri. Quali siano dipende da browser a browser ma generalmente sono immagini, stili e gestione delle azioni degli utenti. Ed è proprio qui che ci viene incontro <b>Promise</b> perchè quello che si vuole è qualcosa del tipo
+<pre>
+img1.ready().then(function() {
+	<span class="grigio">// caricato</span>
+}, function() {
+	<span class="grigio">// fallimento</span>
+});
+
+<span class="grigio">// e quindi</span>
+Promise.all([img1.ready(), img2.ready()]).then(function() {
+	<span class="grigio">// caricammento completato</span>
+}, function() {
+	<span class="grigio">// uno o più fallimenti</span>
+});
+</pre>  
+</p>
+
+<p>
+Come principio <tt>Promise</tt> è come un <tt>listener</tt> di eventi tranne che 
+<dl>
+	<dd>Può avere successo o fallire solo una volta; non può accadere che si passi da un fallimento ad un successo e viceversa</dd>
+	<dd>Se un Promise ha successo o fallisce e successivamente si aggiunge un <tt>callback</tt> soltanto il corretto verrà richiamato </dd>
+</dl>	
+</p>
+
+<p>
+Un <tt>promise</tt> può essere:
+<dl>
+	<dt><b>pending</b>: l'azione correlata non ha ancora prodotto un risultato</dt>
+	<dt><b>settled</b>: l'azione si è completata o con un successo o con un fallimento</dt>
+	<dt><b>fulfilled</b>: l'azione correlata ha avuto successo </dt>
+	<dt><b>rejected</b>: l'azione correlata è fallita</dt>
+
+</dl>	
+</p>
+<p>
+Poniamo il seguente codice:
+</p>
+<pre>
+let promise = readFile("example.txt");
+</pre>
+<p>
+"readFile()", che è un metodo per leggere un file, non inizia immediatamente a leggere il file ma restituisce un oggetto <em>promise</em> 
+che rappresenta un'operazione asincrona di lettura da eseguirsi in seguito. <br>
+Quindi a questo punto il codice è nello stato <em>pending</em>. 
+Quando l'operazione asincrona si completa l'oggetto promise è considerato <em>settled</em>: 
+può aver avuto successo (<em>fulfilled</em>) o no ( <em>rejected</em>). <br>
+Più precisamente, un oggetto <b>promise può essere in stato di "pending", "fulfilled", or "rejected"</b> e 
+grazie al metodo <em>then()</em> si può programmare un azione da eseguire in caso di successo o fallimento.  <br>
+Il metodo <em>then()</em>  accetta due argomenti in cui il primo restituisce una funzione da richiamare in caso di successo (fulfilled) 
+ed il secondo è una funzione da richiamare in caso di fallimento (rejected)   
+</p>
+
+
+
+<p>
+Il seguente è un esempio di una definizione di un <tt>Promise</tt>
+</p>
+
+<pre>
+var promise = new Promise(function(resolve, reject) {
+
+	if (/* everything turned out fine */) {
+		resolve("Stuff worked!");
+	}else {
+		reject(Error("It broke"));
+	}
+});
+
+</pre>
+<p>
+Il seguente è un semplice esempio concreto (con l'uso di return)
+</p>
+<pre>
+var promise = new Promise(function(resolve, reject) {
+  resolve(1);
+});
+
+promise.then(function(val) {
+	console.log(val);				<span class="nota">// 1</span>
+	return val + 2;
+}).then(function(val) {
+	console.log(val);				<span class="nota">// 3</span>
+	return val + 3
+}).then(function (val) {
+	console.log(val);				<span class="nota">// 6</span>
+});
+</pre>
+
+<p>oppure</p>	
+
+<pre>
+let p1 = new Promise(function(resolve, reject) {
+	resolve(42);
+});
+
+let p2 = new Promise(function(resolve, reject) {
+	resolve(43);
+});
+
+p1.then(function(value) {
+	console.log(value);				<span class="nota">// 42 (prima esecuzione del gestore) </span>
+	return p2;					<span class="nota">chiamata a p2</span>
+}).then(function(value) {
+	console.log(value);				<span class="nota">// 43 (seconda esecuzione del gestore) </span>
+});
+</pre>
+
+<p>
+l'esempio mostra "p1" che mette in programma un lavoro (resolve 42); 
+il suo gestore di esecuzione (then) restituisce, inoltre, "p2" che è un oggetto promise che ha già programmato un lavoro; 
+per cui il secondo gestore di esecuzione può eseguirlo e restituire 43. <br>
+Tutt'altra cosa avverrebbe se "p2" invece fosse in stato di <em>rejected</em>, come nell'esempio seguente:
+</p>
+<pre>
+let p1 = new Promise(function(resolve, reject) {
+	resolve(42);
+});
+
+let p2 = new Promise(function(resolve, reject) {
+	reject(43);					<span class="nota">qui è avvenuto un errore</span>
+});
+
+p1.then(function(value) {
+	console.log(value);				<span class="nota">// 42</span>
+	return p2;					<span class="nota">chaimata a p2 che ...</span>
+}).then(function(value) {
+	console.log(value);				<span class="nota">... non avverrà a causa dell'errore</span>
+});
+
+</pre>
+
+<p>
+Osserviamo altri due esempi interessanti	 
+</p>	
+
+<pre>
+let promise = new Promise(function(resolve, reject) {
+	console.log("Promise");
+	resolve();
+});
+
+console.log("Hi!");
+
+<span class="grigio">L'output di questo codice è:<span class="nota">
+Promise
+Hi!
+</span></span>
+<span class="grigio">mentre</span>
+
+let promise = new Promise(function(resolve, reject) {
+	console.log("Promise");
+	resolve();
+});
+
+promise.then(function() {
+	console.log("Resolved.");
+});
+
+console.log("Hi!");
+<span class="grigio">
+L'output di questo codice è:<span class="nota">
+Promise
+Hi!
+Resolved
+</span></span>	
+	
+</pre>	
+
+<p>
+dal secondo esempio notiamo che l'esecutore 'promise' eseguisce immediatamente, restituendo prima di tutto il testo "Promise"; 
+chiamando "resolve()" non facciamo altro che far scattare l'operazione asincrona che sono eseguite grazie al metodo "then()" ( oppure catch()). <br>
+In questo modo notiamo che il testo "Resolved!" ci viene restituito alla fine perchè le fasi di "fulfilled" o "rejected" 
+sono messe alla fine della coda dopo che l'esecutore abbia completato il suo lavoro. 
+In altre parole, funziona come <b>setTimeout()</b>.
+</p>	
+
+
+
+<h2>Metodi</h2>
+
+<h3>Promise.resolve(valore)</h3>
+
+<p>
+Il metodo <tt>resolve</tt> restituisce un oggetto <tt>Promise</tt> che si è risolto con successo
+</p>
+<pre>
+<span class="grigio">Facendo un esempio statico</span>	
+Promise.resolve("Success").then(function(value) {
+	console.log(value);				<span class="nota">// "Success"</span>	
+}, function(value) {
+	// non chiamata
+});
+
+<span class="grigio">Utilizzando un array</span>	
+var p = Promise.resolve([1,2,3]);
+p.then(function(v) {
+	console.log(v[0]);				<span class="nota">// 1</span>	
+});
+
+<span class="grigio">Risolvendo un'altro Promise</span>	
+var original = Promise.resolve(true);
+var cast = Promise.resolve(original);
+cast.then(function(v) {
+	console.log(v);					<span class="nota">// true</span>	
+});
+
+</pre>
+
+<h3>Promise.reject(motivo)</h3>
+
+<p>
+Il metodo <tt>reject</tt> restituisce un oggetto <tt>Promise</tt> che non ha avuto successo dandone una spiegazione
+</p>
+<pre>
+Promise.reject("Testing static reject").then(function(reason) {
+	// non chiamata
+}, function(reason) {
+	console.log(reason);				<span class="nota">// "Testing static reject"</span>
+});
+</pre>
+
+
+<h3>Promise.prototype.then()</h3>
+
+<p>
+Il metodo <tt>then</tt> restituisce un <tt>Promise</tt>. Accetta due argomenti che sono due funzini di <tt>callback</tt>, una per il successo e l'altra per il fallimento.
+</p>
+<pre>
+var p1 = new Promise(function(resolve, reject) {
+	resolve("Success!");
+	// or
+	// reject ("Error!");
+});
+
+p1.then(function(value) {
+	console.log(value);				<span class="nota">// Success!</span> 
+}, function(reason) {
+	console.log(reason);				<span class="nota"> // Error! (in caso di fallimento)</span> 
+});
+</pre>
+
+<h3>Promise.all()</h3>
+
+<p>
+Il metodo <tt>all</tt> restituisce un <tt>Promise</tt> che è soddisfatto solo quando tutti gli argomenti hanno avuto buon esito
+</p>
+<pre>
+var p = new Promise(function(resolve, reject) { resolve(3); });
+Promise.all([true, p]).then(function(values) {
+	console.log(values);				<span class="nota"> // [true, 3]</span> 
+});
+</pre>
+
+<p>oppure</p>
+	
+<pre>
+let p1 = new Promise(function(resolve, reject) {
+	resolve(42);
+});
+
+let p2 = new Promise(function(resolve, reject) {
+	resolve(43);
+});
+
+let p3 = new Promise(function(resolve, reject) {
+	resolve(44);
+});
+
+let p4 = Promise.all([p1, p2, p3]);
+
+p4.then(function(value) {
+	console.log(Array.isArray(value)); 		<span class="nota">// true</span>
+	console.log(value[0]);				<span class="nota">// 42</span>
+	console.log(value[1]);				<span class="nota">// 43</span>
+	console.log(value[2]);				<span class="nota">// 44</span>
+});	
+</pre>		
+<p>
+La chiamata a "Promise.all()" crea "promise4" che viene realizzato solo quando "p1", "p2" e "p3" sono soddisfatti. <br>
+Se qualcuno degli oggetti promise è "rejected" allora "promise4" non produrrà risultato. Es:
+</p>	
+<pre>
+let p1 = new Promise(function(resolve, reject) {
+	resolve(42);
+});
+
+let p2 = new Promise(function(resolve, reject) {
+	reject(43);					<span class="nota">occhio qui</span>
+});
+
+let p3 = new Promise(function(resolve, reject) {
+	resolve(44);
+});
+
+let p4 = Promise.all([p1, p2, p3]);
+
+p4.then(function(value) {
+	console.log(Array.isArray(value)); 		
+	console.log(value[0]);						
+	console.log(value[1]);						
+	console.log(value[2]);						
+});
+<span class="nota">L'output sara: "uncaught exception: 43"</span>
+
+<span class="grigio">mentre se usiamo il metodo "catch()" avremo</span>
+
+p4.catch(function(value) {
+	console.log(Array.isArray(value)); 		<span class="nota">// false</span>
+	console.log(value);				<span class="nota">// 43</span>
+});
+	
+</pre>
+
+<p>
+L'esempio indica che in caso di un "reject" vengono bloccati tutti i "resolve" e viene restituito (utilizzando il metodo catch()) 
+soltanto il promise rifiutato (43)    	
+</p>	
+
+
+<p>
+Vedere anche il primo esempio in alto
+</p>
+
+<h3>Promise.prototype.catch()</h3>
+
+<p>
+Il metodo <tt>catch</tt> restituisce un <tt>Promise</tt> che gestisce solo il caso di fallimento
+</p>
+
+<pre>
+var p1 = new Promise(function(resolve, reject) {
+	resolve("Success");
+});
+
+p1.then(function(value) {
+	console.log(value);						<span class="nota"> // "Success"</span> 
+	throw "oh, no!";
+}).catch(function(e) {							<span class="nota"> metodo 'catch'</span> 
+	console.log(e);							<span class="nota"> // "oh, no!"</span> 
+});
+</pre>
+
+
+<h3>Promise.race()</h3>
+
+<p>
+Il metodo <tt>race</tt> restituisce un <tt>Promise</tt> che si risolve non appena si verifichi un caso di successo o di fallimento
+</p>
+
+<pre>
+	
+let p1 = new Promise(function(resolve, reject) {
+	resolve(45);
+});
+
+let p2 = new Promise(function(resolve, reject) {
+	resolve(43);
+});
+
+let p3 = new Promise(function(resolve, reject) {
+	resolve(44);
+});
+
+let p4 = Promise.race([p1, p2, p3]);
+
+p4.then(function(value) {
+	console.log(value);						<span class="nota"> // 45 (viene restituito solo p1 che è il primo analizzato) </span>
+});
+	
+<span class="grigio">oppure</span>	
+	
+var p1 = new Promise(function(resolve, reject) { 
+	setTimeout(resolve, 500, "one"); 
+});
+var p2 = new Promise(function(resolve, reject) { 
+	setTimeout(resolve, 100, "two"); 
+});
+
+Promise.race([p1, p2]).then(function(value) {
+	console.log(value);						<span class="nota"> // "two" (entrambi si risolvono ma p2 è più rapido)</span> 
+});
+
+<span class="grigio">oppure </span>
+
+var p5 = new Promise(function(resolve, reject) { 
+	setTimeout(resolve, 500, "five"); 
+});
+var p6 = new Promise(function(resolve, reject) { 
+	setTimeout(reject, 100, "six");
+});
+
+Promise.race([p5, p6]).then(function(value) {
+	// Not called              
+}, function(reason) {
+	console.log(reason);						<span class="nota">// "six" (p6 è più rapido )</span> 
+});
+
+</pre>
+
+
+
+
+
+
+<script type="text/javascript">
+
+
+
+///////////////////////////////////////////////
+/*
+var p1 = new Promise(function(resolve, reject) {
+  resolve("Success");
+});
+
+p1.then(function(value) {
+  console.log(value); // "Success!"
+  throw "oh, no!";
+}).catch(function(e) {
+  console.log(e); // "oh, no!"
+});
+
+///////////////////////////////////////////////
+/*
+var p = new Promise(function(resolve, reject) { resolve(3); });
+Promise.all([true, p]).then(function(values) {
+	console.log(values); // [true, 3]
+});
+
+
+///////////////////////////////////////////////////////////
+/*
+var p1 = new Promise(function(resolve, reject) {
+  resolve("Success!");
+  // or
+  // reject ("Error!");
+});
+
+p1.then(function(value) {
+  console.log(value); // Success!
+}, function(reason) {
+  console.log(reason); // Error!
+});
+
+///////////////////////////////////////////////////
+
+/*
+Promise.reject(new Error("fail")).then(function(error) {
+  // not called
+}, function(error) {
+  console.log(error); // Stacktrace
+});
+
+Promise.reject("Testing static reject").then(function(reason) {
+  // not called
+}, function(reason) {
+	console.log(reason); // "Testing static reject"
+});
+
+
+////////////////////////////////////
+/*
+var p = Promise.resolve([1,2,3]);
+p.then(function(v) {
+	console.log(v[0]); // 1
+});
+
+var p = Promise.resolve([1,2,3]);
+p.then(function(v) {
+  console.log(v[0]); // 1
+});
+
+*/
+</script>
+
+
+
+
+<h3>Esempio di Promise con XMLHttpRequest</h3>
+
+
+<p>
+Ora vediamo un esempio di <tt>Promise</tt> e <tt>XMLHttpRequest</tt> con cui si vuole estrarre dei dati da file json. <br />
+Si definisce una funzione-base, che chiamiamo <em>get</em>, per collegarsi al server con ajax  
+</p>
+<pre>
+function get(url) {
+	return new Promise(function(resolve, reject) {
+		var req = new XMLHttpRequest();
+		req.open('GET', url);
+
+		req.onload = function() {				<span class="nota">// This is called even on 404 etc</span>
+			if (req.status == 200) {
+				resolve(req.response);
+			}else{
+				reject(Error(req.statusText));
+			}
+		};
+
+		req.onerror = function() {
+			reject(Error("Network Error"));
+		};
+
+		req.send();
+	});
+}
+</pre>
+Ora per poter estrarre dati dal file <em>story.json</em> utilizziamo il metodo <b>then</b> 
+
+<pre>
+get('story.json').then(function(response) {
+	console.log("Success!", response);
+}, function(error) {
+	console.error("Failed!", error);
+});
+</pre>
+Pertanto in caso che la chiamata abbia successo <tt>response</tt> restituirà i dati del file altrimenti sarà restituito un messaggio di errore. 
+<p>
+Ora vediamo come sfruttare al meglio <tt>Promise</tt>. Il file <em>story.json</em> non è altro che un file <em>indice</em> (indice di una storia o romanzo) in cui sono riportati tutti i capitoli del romanzo; ogni capitolo ha un suo file .json dedicato. <br />
+Nell'esempio seguente si vuole estrarre soltanto il capitolo 1. Questa volta si crea una importante funzione-base <em>getJSON(url)</em> che richiama la funzione <em>get()</em> creata in precedenza e gli passa come argomento l'url del file.  
+</p>
+
+<pre>
+function getJSON(url) {
+	return get('allegati/' +url).then(JSON.parse)		<span class="nota">'allegati/' è la directory del file 'story.json'  </span>
+	.catch(function(err){
+		console.log("Problema nel caricamento del file: ", url, err);
+		throw err;
+	});
+}
+</pre>
+
+<p>
+Ora sfruttando il  fatto che i capitoli riportati nel file <em>story.json</em> (nell'array 'chapterUrls') hanno lo stesso nome del rispettivo file .json, col metodo <tt>then</tt> è molto semplice recuperare il primo capitolo 
+</p>
+
+<pre>
+getJSON('story.json').then(function(story) {
+  return getJSON(story.chapterUrls[0]);
+}).then(function(chapter1) {
+  console.log("Got chapter 1!", chapter1);
+});
+</pre>
+
+<p>
+Recuperare un solo capitolo può essere utile ma recuperarli tutti è quello che si propone il nostro esemnpio. Per tale proposito definiamo altre due importanti funzioni-base: <em>getChapter(i)</em> e <em>getURL(url, callback)</em>. La funzione <em>getChapter(i)</em> sfrutta il discorso delle funzioni <tt>higher-order</tt> spiegato nel file  <a href="../Oggetti/Function.html">Function.html</a>,  mentre <em>getURL(url, callback)</em> la utilizziamo per estrarre il numero dei capitoli del nostro romanzo ed anche per richiamare <em>getChapter(i)</em>
+</p>
+
+<pre>
+function getChapter(i) {
+	storyPromise = storyPromise || getJSON('story.json');
+	return storyPromise.then(function(story) {
+		return getJSON(story.chapterUrls[i]);
+	})
+}
+
+
+function getURL(url, callback) {
+	var req = new XMLHttpRequest();
+	req.open("GET", url, true);
+	req.addEventListener("load", function() {
+		if (req.status &lt; 400)
+			callback(req.responseText);
+		else
+			callback(null, new Error("Request failed: " + req.statusText));
+	});
+	req.addEventListener("error", function() {
+		callback(null, new Error("Network error"));
+	});
+	req.send(null);
+}
+</pre>
+
+<p>
+il  secondo argomento della funzione <em>getURL(url, callback)</em> è una funzione che sfrutteremo per richiamare la funzione <em>getChapter(i)</em> ed estrarre tutti i dati (capitoli) da ogni rispettivo file. 
+</p>
+<pre>
+function callback(jsonObj){
+	var oggetto = JSON.parse(jsonObj);
+	var result = oggetto.chapterUrls.length;
+
+	for(var i=0; i &lt; result; i++){
+		getChapter(i).then(function(chapter) {
+			risultato += chapter.html;
+			divo.innerHTML = "&lt;h3&gt;Il romanzo Promise &lt;h3&gt; " +risultato;	<span class="nota">// 'divo' è l'elemento che conterrà i capitoli</span>				
+		}, function (error){
+			console.log("Failed!", error);
+		})
+	}
+}
+</pre>
+<p>
+Infine richiamiamo la funzione getURL() ed il gioco è fatto
+</p>
+
+<pre>
+var risultato = "";						<span class="nota">vedi funzione 'callback()'</span> 
+var storyPromise;						<span class="nota">vedi funzione 'getChapter()'</span> 
+var divo = document.getElementById('divo');
+<span class="azzurro">
+getURL("allegati/story.json", callback);
+</span>
+</pre>
+
+
+<div id="divo"></div> 
+
+<script type="text/javascript">
+
+
+/*
+//######### Semplice esempio dell'uso di Promise 	############
+var promise = new Promise(function(resolve, reject) {
+  resolve(1);
+});
+
+
+promise.then(function(val) {
+	console.log(val);							// 1
+	return val + 2;
+}).then(function(val) {
+	console.log(val);							// 3
+	return val + 3
+}).then(function (val) {
+	console.log(val);							// 6 
+});
+
+*/
+
+
+function get(url) {
+	return new Promise(function(resolve, reject) {
+		var req = new XMLHttpRequest();
+		req.open('GET', url);
+
+		req.onload = function() {			// This is called even on 404 etc
+			if (req.status == 200) {
+				resolve(req.response);
+			}else{
+				reject(Error(req.statusText));
+			}
+		};
+
+		req.onerror = function() {
+			reject(Error("Network Error"));
+		};
+
+		req.send();
+	});
+}
+
+/*
+
+get('allegati/story.json').then(function(response) {
+	console.log("Success!", response);
+}, function(error) {
+	console.error("Failed!", error);
+
+});
+*/
+
+
+
+function getJSON(url) {
+	return get('allegati/' +url).then(JSON.parse)
+	.catch(function(err){
+		console.log("Problema nel caricamento del file: ", url, err);
+		throw err;
+	});
+}
+
+
+
+
+
+/*
+// ####### Recupero di un capitolo #######
+getJSON('story.json').then(function(story) {
+  return getJSON(story.chapterUrls[0]);
+}).then(function(chapter1) {
+  console.log("Got chapter 1!", chapter1);
+});
+*/
+
+/*
+function getChapter() {
+//	storyPromise = storyPromise || getJSON('story.json');
+
+	storyPromise = getJSON('story.json');
+		return storyPromise.then(function (story){
+			console.log(story.chapterUrls.length);
+			return getJSON(story.chapterUrls[0]);
+
+		}).then(function (chapter){
+//			console.log(chapter.html);									// Ok
+			divo.innerHTML = chapter.html;							// Ok
+		});
+}
+
+getChapter();						// 5 (OK)
+*/
+
+
+
+function getChapter(i) {
+	storyPromise = storyPromise || getJSON('story.json');
+	return storyPromise.then(function(story) {
+		return getJSON(story.chapterUrls[i]);
+	})
+}
+
+function getURL(url, callback) {
+	var req = new XMLHttpRequest();
+	req.open("GET", url, true);
+	req.addEventListener("load", function() {
+		if (req.status < 400)
+			callback(req.responseText);
+		else
+			callback(null, new Error("Request failed: " + req.statusText));
+	});
+
+	req.addEventListener("error", function() {
+		callback(null, new Error("Network error"));
+	});
+
+	req.send(null);
+}
+
+function	callback(jsonObj){
+	var oggetto = JSON.parse(jsonObj);
+	var result = oggetto.chapterUrls.length;
+
+	for(var i=0; i< result; i++){
+		getChapter(i).then(function(chapter) {
+			risultato += chapter.html;
+			divo.innerHTML = "<h3>Il romanzo Promise </h3>" +risultato;					// Ok
+		})
+	}
+}
+
+var risultato = "", storyPromise;
+var divo = document.getElementById('divo');
+
+getURL("allegati/story.json", callback);
+
+
+	
+/*
+//####### Estrazione di più capitoli ##############
+
+var risultato = "";
+getChapter(3).then(function(chapter) {
+	console.log(chapter);
+//	divo.innerHTML = chapter.html;
+	risultato += chapter.html;
+//	var testo = document.createTextNode(chapter.html);
+//	divo.appendChild(testo);												// OK 
+	return getChapter(4);
+}).then(function(chapter) {
+	console.log(chapter);
+//	var testo = document.createTextNode(chapter.html);
+//	divo.appendChild(testo);												// OK
+
+	risultato += chapter.html;
+
+	divo.innerHTML = risultato;											// da porsi nell'ultima chiamata 
+});
+
+*/
+
+</script>
+
+
+
+<h2>Gestione degli errori</h2>
+
+<p>
+Il metodo <tt>then</tt> richiede due argomenti; uno in caso di successo e l'altro in caso di fallimento;
+</p>
+<pre>
+get('story.json').then(function(response) {
+	console.log("Success!", response);
+}, function(error) {
+	console.log("Failed!", error);
+});
+</pre>
+<p>
+Però si può anche utilizzare il metodo <b>catch</b> che è più leggibile
+</p>
+<pre>
+get('story.json').then(function(response) {
+	console.log("Success!", response);
+}).catch(function(error) {
+	console.log("Failed!", error);
+});
+</pre>
+<p>
+Attenzione che non è proprio la stessa cosa. L'esempio di <tt>catch</tt> visto sopra è come se fosse
+</p>
+<pre>
+get('story.json').then(function(response) {
+	console.log("Success!", response);
+}).then(undefined, function(error) {
+	console.log("Failed!", error);
+});
+</pre>
+<p>
+La differenza importante e utile è cosi spiegata. Se abbiamo <tt>then(func1, func2)</tt>, sarà chiamata <tt>func1</tt> or <tt>func2</tt> ma mai entrambe. Invece se abbiamo <tt>then(func1).catch(func2)</tt> entrambe saranno chiamate se <tt>func1</tt> fallisce perchè sono separate nella catena 
+</p>
+<pre>
+asyncThing1().then(function() {
+	return asyncThing2();
+}).then(function() {
+	return asyncThing3();
+}).catch(function(err) {
+	return asyncRecovery1();
+}).then(function() {
+	return asyncThing4();
+}, function(err) {
+	return asyncRecovery2();
+}).catch(function(err) {
+	console.log("Don't worry about it");
+}).then(function() {
+	console.log("All done!");
+});
+</pre>
+
+<h3>reject in azione</h3>
+
+<p>
+Reject (respinte, rifiuti, bocciature) avvengono quando un <tt>Promise</tt> viene respinto 
+</p>
+<pre>
+var jsonPromise = new Promise(function(resolve, reject) {
+	resolve(JSON.parse("This ain't JSON"));				<span class="nota">definito un valore JSON non valido per provocare un errore </span>
+});
+
+jsonPromise.then(function(data) {
+	console.log("It worked!", data);				<span class="nota">questo parte di codice non verrà eseguita ...</span>
+}).catch(function(err) {
+	console.log("It failed!", err);					<span class="nota">... mentre sarà restituita questa a causa dell'errore</span>
+});
+</pre>
+
+<p>
+Allo stesso modo avremo un errore se utilizzassimo in modo sbagliato la funzione <em>get</em> vista sopra
+</p>
+<pre>
+get('/').then(JSON.parse).then(function(){				<span class="nota">errore procurato: '/' non è JSON  </span>
+	console.log("It worked!", data);
+}).catch(function(err) {
+	console.log("It failed!", err);
+});
+</pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+</body>
+</html>

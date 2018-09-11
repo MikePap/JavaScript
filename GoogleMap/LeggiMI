@@ -1,0 +1,46 @@
+#### API key per Google Map  ####
+
+Ora l'API Google Map, per la rappresentazione delle sue mappe ha bisogno di una chiave ('API key') per un discorso di autenticazione.
+Questa chiave  è possibile ottenerla: 'https://developers.google.com/maps/documentation/javascript/get-api-key'
+La mia chiave è: 'AIzaSyBGdgU_LiffVIA7leAWvnyfy_DxUa90O-g' ed è possibile recuperarla dalla mia dashboard di Google: 
+https://console.developers.google.com/apis/dashboard?project=sodium-task-103213&duration=PT1H
+
+Una volta ottenuta bisogna inserirla nei documenti .HTML nel tag <script> di riferimento alla API di Google:
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"type="text/javascript"></script>
+
+Quindi il tag <script> nel mio caso diverrebbe:
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGdgU_LiffVIA7leAWvnyfy_DxUa90O-g&callback=initialize" async defer></script>
+
+=====================================================================================================================================
+"initialize" (parte finale dello <script>) è una funzione che invoca la classe della Google Map e che definisce le coordinate per le rappresentazioni delle mappe.
+Quindi è da ricordare che la classe della Google Map ('new google.maps.LatLng') va richiamata all'interno della funzione "initialize()"
+=====================================================================================================================================
+
+'NB: Pertanto andrebbero modificati tutti i file di questa directory'
+
+Ho modificato soltanto i seguenti file:
+
+- GoogleMap.html
+- Asynchronously_Loading.html
+- Cerchi.html 
+- CalcoloPercorso.html
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

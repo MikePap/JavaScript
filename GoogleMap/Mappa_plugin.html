@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>Mappa da plugin jQuery</title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+
+
+#mappa { position:relative; margin:20px; width:80%; height:80%;  }
+
+/* #divo{position:relative; margin:0 auto;  width:50px; height:31px; background:#F00; }  */
+
+</style>
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<script type="text/javascript" src="plugin/StampaMappaOpz.js"></script>
+<script type="text/javascript" src="plugin/StampaMappa.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true&language=it">
+</script>
+
+<script type="text/javascript">
+
+</script>
+
+</head>
+<body>
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+jQuery(function($){
+
+//$("#mappa").MappaGoogle("41.126126249505084","16.87195830917358",16);	// Plugin senza opzioni per i controlli  ("StampaMappa.js")
+
+// Plugin con opzioni per i controlli ("StampaMappaOpz.js")
+// ATTENZIONE: se non si vuole impostare  un'opzione basta sostituirla con "" nella giusta posizione (vedi riga 45)
+$("#mappa").MappaGoogleOpz("41.126126249505084","16.87195830917358",16, 
+google.maps.MapTypeId.ROADMAP,				// tipo di mappa --> HYBRID  ROADMAP  SATELLITE  TERRAIN
+//google.maps.MapTypeControlStyle.DROPDOWN_MENU,	// stile del tipo di mappa --> DROPDOWN_MENU  HORIZONTAL_BAR  DEFAULT
+"",									// NON VOLENDO IMPOSTARE L'OPZIONE DI CUI SOPRA ^ LA SOSTITUISCO COSI' 
+google.maps.ControlPosition.TOP_CENTER,			// posizione tipo Mappa
+google.maps.ControlPosition.TOP_LEFT,			// posizione pannello cerchietto con le freccette
+google.maps.ZoomControlStyle.SMALL,				//  SMALL -- LARGE (stile grandezza della barra dello zoom)
+google.maps.ControlPosition.LEFT_CENTER,			// posizione della barra dello zoom 
+google.maps.ControlPosition.TOP_RIGHT,			// posizione omino 
+false									// indica se visualizzare o no la scala di unità di misura (boleano) 
+//google.maps.ControlPosition.BOTTOM_LEFT			// posizione della scala di unità di misura (eventuale)
+);	// 
+
+
+}); // chiude plugin 
+
+}); // chiude ready 
+</script>
+
+<h3>Utilizzo del plugin <b>MappaGoogle</b> nel file <q>StampaMappa.js</q> per stampare una mappa e personalizzare i controlli </h3>
+
+
+<div id="mappa"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

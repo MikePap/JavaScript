@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Object.freeze  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(20,150,30); font-weight:bold;}
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(100,150,255);}
+.scuro{color:#333;}
+tt, em{color:#6a9999}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+<h1>Object.freeze</h1>
+
+<p>
+Il metodo <b>Object.freeze()</b> congela un oggetto. In altre parole non permette alle proprietà dell'oggetto di essere modificate cosi come non permette che vengano aggiunte o modificate altre proprietà. <span class="nota">Da vedere il metodo <tt>Object.seal()</tt> che è quasi simile </span>
+<pre>
+var obj = {
+	prop: function (){},
+	foo: "bar"
+};
+
+var o = Object.freeze(obj);			<span class="nota">azionamento blocco con 'freeze'</span>
+
+obj.foo = "quux";				<span class="nota">pertanto la proprietà 'foo' non sarà modificata</span>
+obj.nuova = "nuova proprietà";			<span class="nota">e neanche questa proprietà sarà aggiunta all'oggetto 'obj'</span>
+
+<span class="azzurro">console.log( obj.foo );</span>				<span class="nota">// restituisce 'bar'</span>
+<span class="azzurro">console.log( obj.nuova);</span>			<span class="nota">// restituisce undefined</span>
+
+function fail(){
+	obj.foo = "sparky";			<span class="nota">produrrà un errore</span>
+	delete obj.nuova;			<span class="nota">produrrà un errore</span>
+}
+<span class="azzurro">fail();</span>
+</pre>
+ATTENZIONE però che il metodo <tt>freeze</tt> è ininfluente sulle proprietà degli oggetti interni
+<pre>
+obj = {
+	foo:'hello',
+	interna: {b :'bip' }
+};
+
+Object.freeze(obj);
+
+obj.interna.b = "nuovo bip";
+obj.foo = 'ciao';
+
+console.log(obj.foo);			<span class="nota">// restituisce 'hello'</span>
+console.log(obj.interna.b);		<span class="nota">// ** restituisce 'nuovo bip' e non 'bip'</spa>
+</pre>
+Per cui c'è bisogno di una funzione appropriata per estendere il 'congelamento'
+<pre>
+function deepFreeze (o) {
+	var prop, propKey;
+	Object.freeze(o);			
+	for (propKey in o) {
+		prop = o[propKey];
+		if (!o.hasOwnProperty(propKey) || !(typeof prop === "object") || Object.isFrozen(prop)) {
+			continue;
+		}
+		deepFreeze(prop); 
+	}
+}
+
+obj2 = {
+	internal : {}
+};
+
+deepFreeze(obj2);
+obj2.internal.a = "anotherValue";
+
+<span class="azzurro">console.log(obj2.internal.a);</span>		<span class="nota">// ora restituisce undefined</span>
+
+
+</pre>
+</p>
+
+
+
+
+
+<script type="text/javascript">
+
+
+obj = {
+	foo:'hello',
+	interna: {b :'bip' }
+};
+
+Object.freeze(obj);
+
+obj.interna.b = "nuovo valore";
+obj.foo = 'ciao';
+
+console.log(obj.interna.b);				// nuovo valore
+console.log(obj.foo);						// hello
+
+function deepFreeze (o) {
+	var prop, propKey;
+	Object.freeze(o); // First freeze the object.
+	for (propKey in o) {
+		prop = o[propKey];
+		if (!o.hasOwnProperty(propKey) || !(typeof prop === "object") || Object.isFrozen(prop)) {
+      // If the object is on the prototype, not an object, or is already frozen, 
+      // skip it. Note that this might leave an unfrozen reference somewhere in the
+      // object if there is an already frozen object containing an unfrozen object.
+			continue;
+		}
+		deepFreeze(prop); // Recursively call deepFreeze.
+	}
+}
+
+obj2 = {
+	internal : {}
+};
+
+deepFreeze(obj2);
+obj2.internal.a = "anotherValue";
+
+console.log(obj2.internal.a);				// undefined
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br /><br />
+
+
+
+
+
+</body>
+</html>

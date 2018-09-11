@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>  Apparizione testo </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css" />
+<style type="text/css">
+
+#hide{
+display:none;
+}
+
+</style>
+
+</head>
+<body>
+
+<h1>Visualizzazione di una stringa di testo lettera per lettera  </h1>
+<button id="show">Mostra testo</button>	
+
+<p id="hello"></p>
+
+<button id="hide">Cancella testo</button>
+
+
+<script type="module">
+
+function *lStringa (frase){
+	for(let i=0; i< frase.length; i++){
+		yield frase[i];
+	}
+}; 
+
+const stringa = "Per la visualizzazione di questo testo ho usato le funzioni arrows e generatore!";
+//const stringa = "Per la visualizzazione di questo ";
+let testo;
+const frame = 40;
+const attesa = frame * stringa.length;
+
+let mostraTesto = () =>  {
+	let num = testo.next().value;
+	if(num !== undefined){
+		let tn = document.createTextNode(num); 
+		document.querySelector("#hello").appendChild(tn);
+	}
+	setTimeout(mostraTesto, frame);
+}
+
+
+let mostra = document.querySelector("#show");
+mostra.addEventListener("click", function(){ 
+	testo = lStringa(stringa);
+	mostraTesto();
+	setTimeout( function (){
+		document.getElementById("hide").style['display'] = "block"; 
+	}, attesa);
+},false);
+
+
+let nascondi = document.getElementById("hide"); 
+nascondi.addEventListener("click", function(){ 
+	document.querySelector("#hello").textContent = "";	
+//	document.querySelector("#hello").innerHTML = "";					// va bene uguale	
+	document.getElementById("hide").style['display'] = "none"; 
+},false);
+
+
+</script>
+
+
+
+
+
+</body>
+</html>
+

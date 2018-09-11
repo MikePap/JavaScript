@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Metodi Arrays in ES6  </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css" /> 
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+<h1>Metodi array in ES6</h1>
+
+<p class="nota">
+I seguenti metodi di array sono stati introdotti nella versione JavaScript 1.6 ( ES6 )
+</p>
+
+
+<section class="listaArgomenti">
+	<select name="sezioni" class="sezioni">
+		<option value="seleziona">Seleziona l'argomento</option>
+		<option value="s1">isArray</option>
+		<option value="s2">indexOf()</option>
+		<option value="s3">lastIndexOf()</option>
+		<option value="s4">map()</option>		
+		<option value="s5">filter()</option>
+		<option value="s6">forEach()</option>
+		<option value="s7">every()</option>
+		<option value="s8">some()</option>
+		<option value="s9">reduce()</option>
+		<option value="s10">from()</option>
+		<option value="s10a">of()</option>
+		<option value="s11">entries()</option>
+		<option value="s12">keys()</option>
+		<option value="s12a">values()</option>
+		<option value="s13">fill()</option>
+		<option value="s14">find()</option>
+		<option value="s15">findIndex()</option>
+		<option value="s16">Symbol.iterator</option>
+	</select>
+</section>
+
+<section id="s1">
+<h2>Array.isArray</h2>
+<p>
+Metodo che restituisce un valore boleano a seconda se l'oggetto è un array. 
+<span class="nota">All'interno c'è il polyfill </span>
+</p>
+
+<pre>
+console.log( Array.isArray([]) )			<span class="nota">// restituisce 'true'</span>
+
+var arr = [1,2];
+console.log( Array.isArray(arr) );			<span class="nota">// restituisce 'true'</span>
+</pre>
+</section>
+
+<section id="s2">
+<h2>Array.prototype.indexOf()</h2>
+<p>Serve a recuperare l'indice di un dato valore di un array. 
+<span class="nota">Da IE9. C'è il polyfill </span>
+<pre>
+var a = ['uno','due','tre','quattro'];
+var y = a.indexOf('quattro');				<span class="nota">// restituisce 3</span>
+</pre>
+</p>
+</section>
+
+<section id="s3">
+<h2>Array.prototype.lastIndexOf()</h2>
+
+<p>
+Il metodo restituisce l'ultimo indice dell'elemento (qualora c'è ne fossero più di uno uguali) fra quelli incontrati nell'attraversamento dell'array. Se non ne incontra restituisce <b>-1</b>. 
+<span class="nota">Da IE9. C'è il polyfill</span>
+</p>
+<pre>
+arr.lastIndexOf(searchElement, fromIndex)
+</pre>
+<p>
+Il secondo argomento indica che la ricerca va fatta fino a quel dato indice. In altre parole è come se fermasse l'array fino a quel dato indice eliminando tutti gli elementi successivi e quindi la ricerca andrebbe fatta solo su quei elementi partendo da zero.  
+</p>
+<pre>
+var array = [2, 5, 9, 2, 8, 10, 9, 7];
+var index1 = array.lastIndexOf(9);
+var index2 = array.lastIndexOf(9, 3);
+var index3 = array.lastIndexOf(9, 1);
+<span class="azzurro">
+console.log(index1);			<span class="nota">// 6 (con un solo argomento la ricerca parte da zero in avanti fino alla fine)</span>
+console.log(index2);			<span class="nota">// 2 (interrompe l'array al quarto elemento e partendo da zero incontra il 9 al terzo indice)</span>
+console.log(index3);			<span class="nota">// -1 (è come se eliminasse tutti gli elementi dell'array lasciando i primi due fra i quali non incontra il 9) </span>
+</span>
+</pre>
+</section>
+
+<section id="s4">
+<h2>Array.prototype.map()</h2>
+<p>
+Restituisce un nuovo array dai risultati ottenuti dalla funzione di callback. 
+<span class="nota">All'interno c'è il polyfill </span>
+<pre>
+var lista = [1,2,3,4].map(function (val) {  
+	return val * val; 
+});
+<span class="azzurro">console.log(lista);</span>					<span class="nota">// restituisce l'array [1,4,9,16]</span>
+
+var a1 = ['a', 'b', 'c'];
+var a2 = a1.map(function(item) { 
+	return item.toUpperCase(); 
+});
+<span class="azzurro">console.log((a2));</span>					<span class="nota">// restituisce ["A", "B", "C"]  </span>	
+
+var a3 = a1.map(function(i){
+	return i > 'a';
+});
+<span class="azzurro">console.log((a3));</span>					<span class="nota">// restituisce [false, true, true]   </span>	
+
+var lista = [1,2,3,4].map(function (val, i) {  
+	console.log(i);					<span class="nota">// restituisce 0,1,2,3 (gli indici dei valori) </span>
+	console.log(val);				<span class="nota">// restituisce 1,2,3,4 (i valori) </span>
+}); 
+<span class="azzurro">lista;</span>				
+</pre>
+</p>
+</section>
+
+<section id="s5">
+<h2>Array.prototype.filter()</h2>
+<p>
+Restituisce un nuovo array con i valori ottenuti dalla condizione imposta dalla funzione di callback. 
+<span class="nota">All'interno c'è il polyfill </span>
+<pre>
+var a1 = ['a', 10, 'b', 20, 'c', 30];
+
+var a2 = a1.filter(function(item) { 
+	return typeof item == 'number'; 
+});
+<span class="azzurro">console.log((a2));</span>		<span class="nota">// restituisce [10, 20, 30] </span>
+
+var a3 = a1.filter(function (it){
+	return it > 'a' || it > 10;
+});
+<span class="azzurro">console.log((a3));</span>		<span class="nota">// restituisce ["b", 20, "c", 30] </span>
+
+</pre>
+</p>
+</section>
+
+<section id="s6">
+<h2>Array.prototype.forEach()</h2>
+<p>
+Altro metodo per attraversare un'array.
+<span class="nota">All'interno c'è il polyfill </span>
+<pre>
+var colors = ['red', 'green', 'blue'];
+
+colors.forEach(function(color) {
+	console.log(color);			<span class="nota">// restituisce 'red, blue, green'</span>
+	console.log(color[0]);			<span class="nota">// restituisce 'r g b'</span>
+	console.log(colors[0]);			<span class="nota">// restituisce 'red'</span>
+});
+
+</pre>
+</p>
+</section>
+
+<section id="s7">
+<h2>Array.prototype.every()</h2>
+<p>
+Restituisce true se ogni elemento incontrato dal callback è true. 
+<span class="nota">All'interno c'è il polyfill </span>
+<pre>
+function isNumber(value){
+	return typeof value == 'number';
+}
+
+var a1 = [1, 2, 3];
+<span class="azzurro">console.log( (a1.every(isNumber)) );</span>		<span class="nota">// restituisce true</span> 
+
+var a2 = [1, '2', 3];
+<span class="azzurro">console.log( a2.every(isNumber) );</span>		<span class="nota">// restituisce false</span> 
+</pre>
+</p>
+</section>
+
+<section id="s8">
+<h2>Array.prototype.some()</h2>
+<p>
+Restituisce true se la funzione di callback restituisce true per almeno un elemento dell'array
+<span class="nota">All'interno c'è il polyfill </span>
+<pre>
+function isNumber(value){
+	return typeof value == 'number';
+}
+
+var a1 = [1, 2, 3];
+<span class="azzurro">console.log(a1.some(isNumber));</span>			<span class="nota">// restituisce true</span> 	
+
+var a2 = [1, '2', 3];
+<span class="azzurro">console.log(a2.some(isNumber));</span>			<span class="nota">// restituisce true</span> 
+
+var a3 = ['1', '2', '3'];
+<span class="azzurro">console.log(a3.some(isNumber));</span>			<span class="nota">// restituisce false</span> 
+</pre>
+</p>
+</section>
+
+<section id="s9">
+<h2>Array.prototype.reduce() </h2>
+
+<p>
+E' un metodo che permette di accumulare (sommare) gli elementi dell'array. 
+<span class="nota">All'interno c'è il polyfill </span> 
+</p>
+
+<pre>
+array.reduce(callback[, initialValue])
+</pre>
+<p>
+La funzione di <tt>callback</tt> permette 4 parametri
+<dl>
+	<dt><b>previousValue</b>: il valore restituito dall'ultima invocazione  </dt>
+	<dt><b>currentValue</b>: l'elemento corrente che sta per essere analizzato </dt>
+	<dt><b>index</b>: l'indice dell'elemento che sta per essere analizzato</dt>
+	<dt><b>array</b>: restituisce tutto l'array </dt>
+</dl>	 
+Il parametro <tt>initialValue</tt> è opzionale ed è l'oggetto da usare come primo argomento per la prima chiamata del callback. Se esso è fornito allora corrisponderà ad <tt>previousValue</tt> e <tt>currentValue</tt> sarà uguale al primo valore dell'array altrimenti <tt>previousValue</tt> corrisponderà al primo valore dell'array e  <tt>currentValue</tt> al secondo. 
+</p>
+<pre>
+var arr = [0, 1, 2, 3, 4].reduce(function(previousValue, currentValue, index, array) {
+	return previousValue;					<span class="nota">// 0 (primo valore dell'array)</span>	
+	return currentValue;					<span class="nota">// 4 (ultimo valore)</span>			
+	return index;						<span class="nota">// 4 (indice dell'ultimo elemento)</span>
+	return array;						<span class="nota">// [0,1,2,3,4] </span>
+	return previousValue + currentValue;			<span class="nota">// 10 (somma di tutti i valori)</span>			
+});
+</pre>
+<p>
+Vediamo un esempio con l'aggiunta del parametro opzionale <tt>initialValue</tt> 
+</p>
+<pre>
+var total = [0, 1, 2, 3].reduce(function(a, b) {
+	return a + b;
+}, 10);
+<span class="azzurro">
+console.log(total);						<span class="nota">// 16</span>
+</span>
+</pre>
+<p>
+Succede che <tt>initialValue</tt> diventa il primo valore che va a sommarsi a tutti gli altri. <br />
+</p>
+</section>
+
+<section id="s10">
+<h2>Array.from()</h2>
+
+<p>
+<span class="nota">All'interno c'è il polyfill </span> <br />
+Permette di creare array da :
+
+<dl>
+	<dt><b>oggetti di tipo array</b> che hanno una proprietà <tt>length</tt> e elementi indicizzati </dt>
+	<dt><b>oggetti iterabili</b> tipo Map o Set </dt>
+</dl>	
+</p>
+<pre>
+function f() {
+	return Array.from(arguments);
+}
+<span class="azzurro">
+f(1, 2, 3);							<span class="nota">[1, 2, 3]</span>
+</span>
+
+var s = new Set(["foo", window]);
+<span class="azzurro">
+Array.from(s);							<span class="nota">["foo", window]</span>
+</span>
+
+var m = new Map([[1, 2], [2, 4], [4, 8]]);
+<span class="azzurro">
+Array.from(m);							<span class="nota">[[1, 2], [2, 4], [4, 8]] </span>
+</span>
+
+<span class="azzurro">
+Array.from("foo");						<span class="nota">["f", "o", "o"]</span>
+</span>
+</pre>
+</section>
+
+
+<section id="s10a">
+<h2>Array.of()</h2>	
+
+<p>
+Il metodo <em>Array.of()</em> funziona come il costruttore <em>Array</em> ma non si comporta allo stesso modo nel caso di un singolo valore numerico. <br>
+Crea sempre un array contenente i suoi argomenti senza badare al numero degli argomenti o al loro tipo.
+</p>
+
+<pre>
+let items = new Array(2);			<span class="nota">dichiarazione di un Array costruttore</span>
+<span class="azzurro">
+console.log(items.length);			<span class="nota">// 2</span>
+console.log(items[0]);				<span class="nota">// undefined</span>
+console.log(items[1]);				<span class="nota">// undefined</span>	
+</span>
+items = new Array("2");
+<span class="azzurro">
+console.log(items.length);			<span class="nota">// 1</span>
+console.log(items[0]);				<span class="nota">// "2"</span>	
+</span>	
+<span class="grigio">mentre con Array.of</span>
+
+items = Array.of(2);				<span class="nota">dichiarazione di un array con Array.of</span>
+<span class="azzurro">
+console.log(items.length);			<span class="nota">// 1 (qui si nota la differenza) </span>
+console.log(items[0]);				<span class="nota">// 2 (e di conseguenza anche qui) </span>
+</span>
+items = Array.of("2");
+<span class="azzurro">
+console.log(items.length);			<span class="nota">// 1</span>
+console.log(items[0]);				<span class="nota">// "2"</span>
+</span>
+<span class="grigio">oppure (ma qui il comportamento è uguale all'Array costruttore)</span>
+	
+let items = Array.of(1, 2);
+<span class="azzurro">
+console.log(items.length);			<span class="nota">// 2</span>
+console.log(items[0]);				<span class="nota">// 1</span>
+console.log(items[1]);				<span class="nota">// 2</span>
+</span>	
+</pre>	
+
+</section>	
+
+
+<section id="s11">
+<h2>Array.prototype.entries()</h2>
+
+<p>
+Metodo che restituisce un oggetto array iteratore contenente la coppia indice/valore di ogni elemento dell'array. 
+<span class="nota">Supportato al momento solo da Firefox e Chrome </span> <br />
+</p>
+<pre>
+var arr = ['a', 'b', 'c'];
+var eArr = arr.entries();
+<span class="azzurro">
+console.log(eArr.next().value);					<span class="nota">// [0, 'a']</span>
+console.log(eArr.next().value);					<span class="nota">// [1, 'b']</span>
+console.log(eArr.next().value);					<span class="nota">// [2, 'c']</span>
+</span>
+</pre>
+</section>
+
+<section id="s12">
+<h2>Array.prototype.keys()</h2>
+
+<p>
+Metodo che restituisce un oggetto array iteratore contenente l'indice di ogni elemento dell'array. 
+<span class="nota">Supportato al momento solo da Firefox e Chrome </span> <br />
+</p>
+<pre>
+var arr = ['a', 'b', 'c'];
+var eArr = arr.keys();						<span class="nota">produce un Array Iterator {  }</span>
+<span class="azzurro">
+console.log(eArr.next().value);					<span class="nota">// 0</span>
+console.log(eArr.next().value);					<span class="nota">// 1</span>
+console.log(eArr.next().value);					<span class="nota">// 2</span>
+</span>
+<span class="grigio">oppure se vogliamo iterarlo possiamo usare il metodo 'for of'</span>
+
+for (let letter of eArr) {
+	console.log(letter);					<span class="nota">// 0 1 2</span>
+}
+
+</pre>
+</section>
+
+<section id="s12a">
+<h2>Array.prototype.values()</h2>
+<p>
+Metodo che restituisce un oggetto array iteratore contenente il valore di ogni elemento dell'array. 
+</p>
+<pre>
+var arr = ['a', 'b', 'c'];
+var eArr = arr.values();					<span class="nota">produce un Array Iterator {  }</span>
+<span class="azzurro">
+console.log(eArr.next().value);					<span class="nota">// a</span>
+console.log(eArr.next().value);					<span class="nota">// b</span>
+console.log(eArr.next().value);					<span class="nota">// c</span>
+</span>
+<span class="grigio">oppure se vogliamo iterarlo possiamo usare il metodo 'for of'</span>
+
+for (let letter of eArr) {
+	console.log(letter);					<span class="nota">// a b c</span>					
+}
+</pre>
+
+</section>
+
+<section id="s13">
+<h2>Array.prototype.fill()</h2>
+
+<p>
+Metodo che permette di introdurre un valore statico all'interrno di un'array. 
+<span class="nota">All'interno c'è il polyfill </span> 
+</p>
+<pre>
+arr.fill(value[, start = 0[, end = this.length]])
+</pre>
+<dl>
+	<dt><b>value</b>: valore da inserire nell'array</dt>
+	<dt><b>start</b>: indice di inizio inserimento (indice 0 è il primo)</dt>
+	<dt><b>end</b>: indice di fine inserimento (indice 1 è il primo)</dt>
+</dl>	
+
+<pre>
+var a = [1, 2, 3, 4, 5].fill(8);				             
+var b = [1, 2, 3, 4, 5].fill(8, 2);				
+var c = [1, 2, 3, 4, 5].fill(8, 1, 3);				
+var d =	[].fill.call({ length: 3 }, 8)
+<span class="azzurro">
+console.log(a);							<span class="nota">// [8,8,8,8,8] (con il solo parametro 'value' inserisce dal primo all'ultimo)</span> 
+console.log(b);							<span class="nota">// [1,2,8,8,8] (inserisce dal terzo fino all'ultimo)</span>
+console.log(c);							<span class="nota">// [1,8,8,4,5] (inserisce dal secondo fino al terzo) </span>
+console.log(d);							<span class="nota">// Object { 0: 8, 1: 8, 2: 8, length: 3 }</span>
+
+</span>
+</pre> 
+</section>
+
+<section id="s14">
+<h2>Array.prototype.find()</h2>
+
+<p>
+Metodo che restituisce un valore dell'array qualora l'elemento dell'array soddisfa uno o dei criteri definiti in una funzione. 
+<span class="nota">All'interno c'è il polyfill </span>   
+</p>
+<pre>
+arr.find(callback[, thisArg])
+</pre>
+<p>
+Il metodo esegue la funzione di callback per ogni elemento fino a quando non trova il valore che soddisfa le condizioni e lo restituisce; dopodichè ferma l'iterazione. Se non incontra nessun valore restituisce <tt>undefined</tt>. In altre parole da la possibilità di recuperare un solo valore. 
+</p>
+<pre>
+function isPrime(element, index, array) {
+	if(element > 6){
+		return element;	
+	}
+}
+<span class="azzurro">
+console.log( [4, 6, 8, 12].find(isPrime) );			<span class="nota">// 8 </span>
+</span>
+</pre>
+</section>
+
+<section id="s15">
+<h2>Array.prototype.findIndex()</h2>
+<p>
+Metodo che restituisce l'indice di un elemento dell'array qualora l'elemento dell'array soddisfa uno o dei criteri definiti in una funzione. Dopo aver restituito l'indice ferma l'iterazione. <span class="nota">All'interno c'è il polyfill </span>   
+</p>
+<pre>
+function isPrime(element, index, array) {
+	if(element > 6){
+		return element;	
+	}
+}
+<span class="azzurro">
+console.log( [4, 6, 8, 12].findIndex(isPrime) );		<span class="nota">// 2 </span>
+</span>
+</pre>
+</section>
+
+<section id="s16">
+<h2>Array.prototype[@@iterator]()</h2>
+
+
+<pre>
+arr[Symbol.iterator]()
+</pre>
+<span class="nota">Supportato al momento solo da Chrome </span>   
+<pre>
+var arr = ['w', 'y', 'k', 'o', 'p'];
+var eArr = arr[Symbol.iterator]();
+<span class="azzurro">
+console.log(eArr.next().value);						<span class="nota">// w</span> 
+console.log(eArr.next().value);						<span class="nota">// y</span> 
+console.log(eArr.next().value);						<span class="nota">// k</span> 
+console.log(eArr.next().value);						<span class="nota">// o</span> 
+console.log(eArr.next().value);						<span class="nota">// p</span> 
+</span>
+</pre>
+</section>
+
+									<div id="freccia_sali"><div></div> </div> 
+
+<script type="text/javascript">
+/*
+function reduce(array, combine, start) {
+var current = start;
+	for (var i = 0; i < array.length; i++)
+		current = combine(current, array[i]);
+	return current;
+}
+
+console.log(reduce([1, 2, 3, 4],  function(a, b){return a + b;},  0));
+*/
+
+//### 	Polyfill isArray (Provato su IE8 funziona) 	###
+if (!Array.isArray) {
+	Array.isArray = function(arg) {
+		return Object.prototype.toString.call(arg) === '[object Array]';
+	};
+}
+
+//### 	Polyfill indexOf (Provato su IE8 funziona) 	###
+if (!Array.prototype.indexOf) {
+	Array.prototype.indexOf = function(searchElement, fromIndex) {
+		var k;
+		if (this == null) {
+			throw new TypeError('"this" is null or not defined');
+		}
+		var O = Object(this);
+		var len = O.length >>> 0;
+		if (len === 0) {
+			return -1;
+		}
+		var n = +fromIndex || 0;
+		if (Math.abs(n) === Infinity) {
+			n = 0;
+		}
+		if (n >= len) {
+			return -1;
+		}
+		k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
+		while (k < len) {
+			if (k in O && O[k] === searchElement) {
+				return k;
+			}
+		k++;
+		}
+		return -1;
+	};
+}
+
+
+//### 	Polyfill lastIndexOf (Provato su IE8 funziona) 	###
+if (!Array.prototype.lastIndexOf) {
+	Array.prototype.lastIndexOf = function(searchElement /*, fromIndex*/) {
+		'use strict';
+		if (this === void 0 || this === null) {
+			throw new TypeError();
+		}
+		var n, k,
+		t = Object(this),
+		len = t.length >>> 0;
+		if (len === 0) {
+			return -1;
+		}
+		n = len - 1;
+		if (arguments.length > 1) {
+			n = Number(arguments[1]);
+			if (n != n) {
+				n = 0;
+			}else if(n != 0 && n != (1 / 0) && n != -(1 / 0)) {
+				n = (n > 0 || -1) * Math.floor(Math.abs(n));
+			}
+		}
+
+		for (k = n >= 0 ? Math.min(n, len - 1) : len - Math.abs(n); k >= 0; k--) {
+			if (k in t && t[k] === searchElement) {
+				return k;
+			}
+		}
+		return -1;
+	};
+}
+
+
+
+//### 	Polyfill map (Provato su IE8 funziona) 	###
+if (!Array.prototype.map) {
+	Array.prototype.map = function(callback, thisArg) {
+		var T, A, k;
+		if (this == null) {
+			throw new TypeError(' this is null or not defined');
+		}
+		var O = Object(this);
+		var len = O.length >>> 0;
+
+		if (typeof callback !== 'function') {
+			throw new TypeError(callback + ' is not a function');
+		}
+		if (arguments.length > 1) {
+			T = thisArg;
+		}
+		A = new Array(len);
+		k = 0;
+		while (k < len) {
+			var kValue, mappedValue;
+			if (k in O) {
+				kValue = O[k];
+				mappedValue = callback.call(T, kValue, k, O);
+				A[k] = mappedValue;
+			}
+			k++;
+		}
+		return A;
+	};
+}
+
+//### 	Polyfill filter (Provato su IE funziona) 	###
+if (!Array.prototype.filter) {
+	Array.prototype.filter = function(fun/*, thisArg*/) {
+		'use strict';
+		if (this === void 0 || this === null) {
+			throw new TypeError();
+		}
+		var t = Object(this);
+		var len = t.length >>> 0;
+		if (typeof fun !== 'function') {
+			throw new TypeError();
+		}
+		var res = [];
+		var thisArg = arguments.length >= 2 ? arguments[1] : void 0;
+		for (var i = 0; i < len; i++) {
+			if (i in t) {
+				var val = t[i];
+				if (fun.call(thisArg, val, i, t)) {
+					res.push(val);
+				}
+			}
+		}
+		return res;
+	};
+}
+
+
+//### 	Polyfill forEach (Provato su IE funziona) 	### 
+if (!Array.prototype.forEach) {
+	Array.prototype.forEach = function(callback, thisArg) {
+		var T, k;
+		if (this == null) {
+			throw new TypeError(' this is null or not defined');
+		}
+		var O = Object(this);
+		var len = O.length >>> 0;
+		if (typeof callback !== "function") {
+			throw new TypeError(callback + ' is not a function');
+		}
+		if (arguments.length > 1) {
+			T = thisArg;
+		}
+		k = 0;
+		while (k < len) {
+			var kValue;
+			if (k in O) {
+				kValue = O[k];
+				callback.call(T, kValue, k, O);
+			}
+			k++;
+		}
+	};
+}
+
+
+//### 	Polyfill every (Provato su IE funziona) 	###
+if (!Array.prototype.every) {
+	Array.prototype.every = function(callbackfn, thisArg) {
+		'use strict';
+		var T, k;
+		if (this == null) {
+			throw new TypeError('this is null or not defined');
+		}
+		var O = Object(this);
+		var len = O.length >>> 0;
+		if (typeof callbackfn !== 'function') {
+			throw new TypeError();
+		}
+		if (arguments.length > 1) {
+			T = thisArg;
+		}
+		k = 0;
+		while (k < len) {
+			var kValue;
+			if (k in O) {
+				kValue = O[k];
+				var testResult = callbackfn.call(T, kValue, k, O);
+				if (!testResult) {
+					return false;
+				}
+			}
+		k++;
+		}
+		return true;
+	};
+}
+
+//### 	Polyfill some (Provato su IE funziona)
+if (!Array.prototype.some) {
+	Array.prototype.some = function(fun /*, thisArg*/) {
+		'use strict';
+		if (this == null) {
+			throw new TypeError('Array.prototype.some called on null or undefined');
+		}
+		if (typeof fun !== 'function') {
+			throw new TypeError();
+		}
+		var t = Object(this);
+		var len = t.length >>> 0;
+		var thisArg = arguments.length >= 2 ? arguments[1] : void 0;
+		for (var i = 0; i < len; i++) {
+			if (i in t && fun.call(thisArg, t[i], i, t)) {
+				return true;
+			}
+		}
+		return false;
+	};
+}
+
+
+//### 	Polyfill reduce (Provato su IE8 funziona) 	### 
+if (!Array.prototype.reduce) {
+	Array.prototype.reduce = function(callback /*, initialValue*/) {
+		'use strict';
+		if (this == null) {
+			throw new TypeError('Array.prototype.reduce called on null or undefined');
+		}
+		if (typeof callback !== 'function') {
+			throw new TypeError(callback + ' is not a function');
+		}
+		var t = Object(this), len = t.length >>> 0, k = 0, value;
+		if (arguments.length == 2) {
+			value = arguments[1];
+		} else {
+			while (k < len && ! k in t) {
+				k++; 
+			}
+			if (k >= len) {
+				throw new TypeError('Reduce of empty array with no initial value');
+			}
+			value = t[k++];
+		}
+		for (; k < len; k++) {
+			if (k in t) {
+				value = callback(value, t[k], k, t);
+			}
+		}
+		return value;
+	};
+}
+
+
+//### 	Polyfill from (Provato su IE8 funziona) 	### 
+if (!Array.from) {
+	Array.from = (function () {
+		var toStr = Object.prototype.toString;
+		var isCallable = function (fn) {
+			return typeof fn === 'function' || toStr.call(fn) === '[object Function]';
+		};
+		var toInteger = function (value) {
+			var number = Number(value);
+			if (isNaN(number)) { return 0; }
+			if (number === 0 || !isFinite(number)) { return number; }
+			return (number > 0 ? 1 : -1) * Math.floor(Math.abs(number));
+		};
+		var maxSafeInteger = Math.pow(2, 53) - 1;
+		var toLength = function (value) {
+			var len = toInteger(value);
+			return Math.min(Math.max(len, 0), maxSafeInteger);
+		};
+		return function from(arrayLike/*, mapFn, thisArg */) {
+			var C = this;
+			var items = Object(arrayLike);
+			if (arrayLike == null) {
+				throw new TypeError("Array.from requires an array-like object - not null or undefined");
+			}
+			var mapFn = arguments.length > 1 ? arguments[1] : void undefined;
+			var T;
+			if (typeof mapFn !== 'undefined') {
+				if (!isCallable(mapFn)) {
+					throw new TypeError('Array.from: when provided, the second argument must be a function');
+				}
+				if (arguments.length > 2) {
+					T = arguments[2];
+				}
+			}
+			var len = toLength(items.length);
+			var A = isCallable(C) ? Object(new C(len)) : new Array(len);
+			var k = 0;
+			var kValue;
+			while (k < len) {
+				kValue = items[k];
+				if (mapFn) {
+					A[k] = typeof T === 'undefined' ? mapFn(kValue, k) : mapFn.call(T, kValue, k);
+				} else {
+					A[k] = kValue;
+				}
+				k += 1;
+			}
+			A.length = len;
+			return A;
+		};
+	}());
+}
+
+
+//### 	Polyfill fill (Provato su IE8 funziona) 	### 
+if (!Array.prototype.fill) {
+	Array.prototype.fill = function(value) {
+		if (this == null) {
+			throw new TypeError('this is null or not defined');
+		}
+		var O = Object(this);
+		var len = O.length >>> 0;
+		var start = arguments[1];
+		var relativeStart = start >> 0;
+		var k = relativeStart < 0 ?
+		Math.max(len + relativeStart, 0) :
+		Math.min(relativeStart, len);
+		var end = arguments[2];
+		var relativeEnd = end === undefined ?
+		len : end >> 0;
+		var finale = relativeEnd < 0 ?
+		Math.max(len + relativeEnd, 0) :
+		Math.min(relativeEnd, len);
+		while (k < finale) {
+			O[k] = value;
+			k++;
+		}
+		return O;
+	};
+}
+
+
+//### 	Polyfill find (Provato su IE8 funziona) 	### 
+if (!Array.prototype.find) {
+	Array.prototype.find = function(predicate) {
+		if (this == null) {
+			throw new TypeError('Array.prototype.find called on null or undefined');
+		}
+		if (typeof predicate !== 'function') {
+			throw new TypeError('predicate must be a function');
+		}
+		var list = Object(this);
+		var length = list.length >>> 0;
+		var thisArg = arguments[1];
+		var value;
+
+		for (var i = 0; i < length; i++) {
+			value = list[i];
+			if (predicate.call(thisArg, value, i, list)) {
+				return value;
+			}
+		}
+		return undefined;
+	};
+}
+
+
+//### 	Polyfill findIndex (Provato su IE8 funziona) 	### 
+if (!Array.prototype.findIndex) {
+	Array.prototype.findIndex = function(predicate) {
+		if (this == null) {
+			throw new TypeError('Array.prototype.find called on null or undefined');
+		}
+		if (typeof predicate !== 'function') {
+			throw new TypeError('predicate must be a function');
+		}
+		var list = Object(this);
+		var length = list.length >>> 0;
+		var thisArg = arguments[1];
+		var value;
+
+		for (var i = 0; i < length; i++) {
+			value = list[i];
+			if (predicate.call(thisArg, value, i, list)) {
+				return i;
+			}
+		}
+		return -1;
+	};
+}
+
+
+</script>
+
+
+<script type="text/javascript" src="../../baseLocali.js"></script>
+
+<script type="text/javascript">
+// Scorrimento verso la sezione cliccata
+var select = document.querySelector('select.sezioni');
+select.addEventListener("change", function(){ 
+	var valSez = this.value;									// s3
+	var pattern = "#" + valSez;
+	var of = document.querySelector(pattern).offsetTop;
+	window.pageYOffset = of;
+	document.documentElement.scrollTop = of;
+	document.body.scrollTop = of;
+//	Togliere il focus dalla <select> e assegnarlo al documento 
+	window.focus();
+	document.documentElement.focus();
+	document.body.focus();
+},false);
+
+// Per lo scorrimento del documento, verso l'alto
+var obj = new ScrollPage('1000', 100, 'freccia_sali', 300);
+obj.showFreccia();
+obj.clickScroll();
+//bloccaPropagazione();	
+
+</script>
+
+
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+</body>
+</html>

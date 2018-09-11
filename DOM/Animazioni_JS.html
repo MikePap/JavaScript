@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Animazioni 1  </title>
+<style type="text/css">
+html,body,div,p{ margin:0; padding:0;}
+
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); }
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+.grassetto{font-weight:bold;}
+
+
+#kok{
+width:200px; height:100px;	 background:yellow; border:1px solid;
+}
+
+
+</style>
+<script type="text/javascript" src="../allegati/core_min.js"> </script>
+<script type="text/javascript" src="../allegati/animazione.js"> </script>
+</head>
+<body>
+
+<h1>classe per animazione elementi </h1>
+
+<h3>
+La funzione costruttore <q>Animazione</q> permette di eseguire l'animazione di una o più proprietà dei CSS  <br />
+La funzione <q>fermaAnimazione</q> permette di bloccare un'animazione ed è collegata alla funzione <em>Animazione</em>
+</h3>
+
+<p>
+
+La funzione <b>Animazione</b> fa uso della classe <b>Core</b> per eliminare le differenze dei browser sui listener degli eventi e sul recupero dello stile da animare. 
+</p>
+
+<br />
+
+<button id="start">Vai</button>
+<button id="blocca">Ferma</button>
+
+<div id="kok"></div>
+<br />
+
+
+<script type="text/javascript">
+/*
+document.addEventListener("DOMContentLoaded", function(){
+	pulsante.addEventListener("click", funzione(200), false);
+});
+*/
+
+//@@@ Invocazione funzione costruttore "Animazione" col pulsante "Vai"  @@@
+//var obj = new Animazione(['width'], [1000], 2000,100,'#kok','#start','click');						// animazione soltanto della 'width'
+var obj = new Animazione(['width', 'height'], [1000, 400], 2000,100,'#kok','#start','click');		// animazione di due proprietà
+obj.clickStart();
+//@@@ Invocazione funzione che blocca l'animazione col pulsante "Ferma" @@@
+fermaAnimazione.prototype = new Animazione();
+var ob = new fermaAnimazione('#blocca','click');
+ob.clickStop();
+
+
+//@@@ la classe "Animazione" utilizza il metodo "setTimeout()"  @@@@
+//Animazione.clickStart();					// clickStart() fa scattare l'animazione 
+//Animazione.clickStop();						// clickStop() blocca l'animazione 
+
+
+/*
+//@@@ la classe "Animazione2" utilizza il metodo "setInterval()"  @@@@
+Animazione2.clickStart();					// clickStart() fa scattare l'animazione 
+Animazione2.clickStop();						// clickStop() blocca l'animazione 
+*/
+
+//### Funzione che mostra l'orologio ###
+function gettime(){
+	var date= new Date();
+	var hr = date.getHours();
+	var m = date.getMinutes();
+	var s = date.getSeconds();
+
+	if (hr > 24){
+		hr -= 24
+	}
+	if(m < 10){
+		m = "0" + m
+	}
+	if(s < 10){
+		s = "0" + s
+	}
+	document.clockform.clock.value = hr + ":" + m + ":" + s ;					// Visualizzazione dell'orologio nel campo input 
+//	document.getElementById('campo').value = hr + ":" + m + ":" + s;
+	setTimeout("gettime()",1000)
+} //  "gettime" 
+
+/*
+document.addEventListener("DOMContentLoaded", function(){
+	gettime();
+});
+*/
+document.onreadystatechange = function() 
+{ 
+	if (document.readyState == "complete") { 
+		gettime();
+	} 
+}  
+
+
+
+
+
+</script>
+
+<br /><br />
+
+
+<form name="clockform">
+	<input type="text" id="campo" name="clock" size='10'  >
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

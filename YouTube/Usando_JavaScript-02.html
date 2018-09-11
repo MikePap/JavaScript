@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Incorporare video con Javascript </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(50,150,50);}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+<h1>Incorporare video con Javascript</h1>
+
+<p>
+Dopo aver creato l'oggetto si possono richiamare vari metodi per controllare le funzionalità del player
+
+</p>
+
+<script type="text/javascript" src="swfobject/swfobject.js"></script>    
+  <div id="ytapiplayer">
+    You need Flash player 8+ and JavaScript enabled to view this video.
+  </div>
+
+  <script type="text/javascript">
+
+    var params = { allowScriptAccess: "always", allowFullScreen:"true" };
+    var atts = { id: "myytplayer" };
+    swfobject.embedSWF("http://www.youtube.com/v/MlARSiEvpEI?&enablejsapi=1&playerapiid=ytplayer&version=3",
+                       "ytapiplayer", "425", "356", "8", null, null, params, atts);
+
+
+
+
+function play() {
+//ytplayer = document.getElementById("myytplayer");
+ytplayer = document.getElementById("myytplayer");
+ytplayer.cuePlaylist("MlARSiEvpEI,9h1swNWgP8Q,1JQgNJdVDvk",0,0, "small");
+if (ytplayer) {
+// ytplayer.loadPlaylist("MlARSiEvpEI,9h1swNWgP8Q,1JQgNJdVDvk",0,0, "small");
+ytplayer.nextVideo();
+}
+} // "play"
+
+
+
+
+/*
+function play() {
+ytplayer = document.getElementById("myytplayer");
+if (ytplayer) {
+ytplayer.loadPlaylist("MlARSiEvpEI,9h1swNWgP8Q,1JQgNJdVDvk",0,0, "small");
+}
+} // "play"
+*/
+
+
+</script>
+
+<a href="javascript:void(0);" onclick="play();">Play</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

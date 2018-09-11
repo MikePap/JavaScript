@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>Overlay 2  </title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.nota{color:orange;}
+.codice{color:green;}
+
+#map_canvas{ position:relative; margin:20px; width: 600px; height:500px  }
+
+</style>
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=it"></script>
+
+<script type="text/javascript">
+
+ var map;
+ var markers = [];
+
+      function initialize() {
+        var haightAshbury = new google.maps.LatLng(37.7699298, -122.4469157);
+        var mapOptions = {
+          zoom: 12,
+          center: haightAshbury,
+          mapTypeId: google.maps.MapTypeId.TERRAIN
+        };
+        map = new google.maps.Map(document.getElementById('map_canvas'),
+            mapOptions);
+
+        google.maps.event.addListener(map, 'click', function(event) {
+          addMarker(event.latLng);	// la funzione 'addMarker' fa aggiungere un marcatore alla mappa ad ogni click 
+        });
+      } // "initialize"
+
+      // Add a marker to the map and push to the array.
+      function addMarker(location) {
+        marker = new google.maps.Marker({
+          position: location,
+          map: map
+        });
+        markers.push(marker);		// alla variabile (che è un array) instanziata in riga 24 viene passato il marker 
+      } // "addMarker"
+
+      // Sets the map on all markers in the array.
+	// Imposta sulla mappa tutti i marcatori presenti (creati) nell'array (riga 47)
+      function setAllMap(map) {
+        for (var i = 0; i < markers.length; i++) {
+          markers[i].setMap(map);	// il metodo 'setMap' ("google.maps.Marker") rende i marcatori su una mappa passsata come argomento
+        }
+      } // "setAllMap" 
+
+      // Removes the overlays from the map, but keeps them in the array.
+// se al metodo 'setMap' si passa come argomento 'null' vengono rimossi tutti i marcatori esistenti. Ciò non li elimina ma li rende non visibili. Infatti se dove aver invocato questo metodo con 'null' lo si richiama passandogli come argomento la mappa passata inizialmente i marcatori verrano resi visibili. Questo lo si può verificare nella pagina cliccando prima sul pulsante "Clear Overlays" e poi su "Show All Overlays"
+      function clearOverlays() {
+        setAllMap(null);	
+      } // "clearOverlays"
+
+      // Shows any overlays currently in the array.
+// Reimposta il metodo 'setMap' passandogli l'argomento come in riga 54. Ciò viene reso utile nel momento in cui si volesse rendere visibili i marcatori  dopo averli resi invisibili con il metodo 'clearOverlays'
+      function showOverlays() {
+        setAllMap(map);		
+      } // "showOverlays"
+
+      // Deletes all markers in the array by removing references to them.
+// In questa funzione impostando la variabile 'marker' (che è un array) così come instanziata in riga 24 si rimuovono effettivamente ttutti i marcatoti dalla mappa  
+      function deleteOverlays() {
+        clearOverlays();
+        markers = [];
+      } // "deleteOverlays"
+
+      google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+
+</head>
+<!-- <body onload=""> -->
+<body>
+
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+initialize();
+
+}); // chiude ready 
+</script>
+
+<p class="codice">Cliccare all'interno della mappa per aggiungere i marcatori. Il pulsante <b>Delete Overlays</b>  li rimuove completamente mentre il pulsante <b>Clear Overlays</b> li rende invisibili senza eliminarli.  Infatti dopo aver premuto tale pulsante i marcatori vengono resi invisibili e se si preme sul pulsante <b>Show All Overlays</b> saranno resi visibili.
+</p>.
+
+  <div>
+      <input onclick="clearOverlays();" type=button value="Clear Overlays"/>
+      <input onclick="showOverlays();" type=button value="Show All Overlays"/>
+      <input onclick="deleteOverlays();" type=button value="Delete Overlays"/>
+    </div>
+
+<div id="map_canvas"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

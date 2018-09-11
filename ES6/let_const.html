@@ -1,0 +1,327 @@
+ <!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>let  e const</title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(20,150,30); font-weight:bold; background:rgb(230,230,230); margin:5px 10px; padding:8px; }
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(100,150,255);}
+.scuro{color:#333;}
+.rosso{color:red;}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+<h2>Premessa</h2>
+
+<p>
+Prima di introdurre il discorso su <b>let</b> è utile capire il discorso sull'hoisting delle variabili con l'uso del <b>var</b>. <br />
+Cioè quando si dichiarano le variabili con <em>var</em> loro sono trattate come se fossero al top della funzione (se dichiarate in una funzione) oppure nel <em>global scope</em> se sono dichiarate al di fuori delle funzioni). <br />
+Esempio:
+</p>
+
+<pre>
+function getValue(condition) {
+	if (condition) {
+		var value = "blue";
+		// other code
+		return value;
+	}else{
+		<span class="nota">// value exists here with a value of undefined</span>
+		return null;
+	}
+	<span class="nota">// value exists here with a value of undefined</span>
+}
+</pre>
+<p>In pratica è come se la variabile "value" fosse dichiarata al top della funzione </p>
+
+<pre>
+function getValue(condition) {
+	var value;
+	if (condition) {
+		value = "blue";
+		// other code
+		return value;
+	}else{
+		return null;
+	}
+}
+</pre>
+
+<p>
+Ciò, per chi è abituato con altri linguaggi, porta a confusione ed errori; pertanto per ovviare a questo problema, <em>ECMAScript 6</em> ha introdotto la dichiarazione <b>let</b>
+</p>
+
+<h1>let</h1>
+
+<p>
+Permette di dichiarare una variabile locale in uno scope di blocco
+</p>
+
+<p>
+Riprendendo l'esempio fatto su in premessa della funzione "getValue()" avremo:
+</p>
+<pre>
+function getValue(condition) {
+	if (condition) {
+		let value = "blue";
+		// other code
+		return value;
+	} else {
+		<span class="nota">// value doesn't exist here</span>
+		return null;
+	}
+	<span class="nota">// value doesn't exist here</span>
+}
+
+</pre>
+
+
+
+
+<p>
+L'espressione <q>let</q> limita lo scope della variabile dichiarata solo in quella specifica espressione
+<pre>
+var a = 5;
+if(a){
+	let a = 6; 
+	console.log(a);			<span class="nota">// 6</span> 	
+}
+console.log(a);				<span class="nota">// 5</span> 				
+</pre>
+</p>
+
+<p>
+Usata all'interno di un blocco <q>if</q> limita lo scopo della variabile soltanto nel blocco <q>if</q>. Da notare la differenza, all'interno del blocco, tra la variabile <q>a</q> a cui si assegnato il <q>let</q> e la variabile <q>b</q> 
+<pre>
+var a = 5;
+var b = 10;
+
+if (a === 5) {
+	let a = 4;			<span class="nota">lo scope sta all'interno del blocco 'if'</span> 
+	var b = 1;			<span class="nota">lo scope è all'interno della funzione </span>
+
+	console.log(a);			<span class="nota">// 4</span>
+	console.log(b);			<span class="nota">// 1</span>
+} 
+
+console.log(a);				<span class="nota">// 5</span>
+console.log(b);				<span class="nota">// 1 (cambia perchè si assegnato un nuovo valore all'interno del blocco if)</span>
+</pre>
+</p>
+
+<p>
+Il <q>let</q> lo si può anche usare in un ciclo per limitare il valore solo all'interno del ciclo
+
+<pre>
+for (let i = 0; i&lt;10; i++) {
+	alert(i);			<span class="nota">// 1, 2, 3, 4 ... 9</span> 
+}
+
+alert(i);				<span class="nota">// da errore (i is not defined) </span> 
+</pre>
+</p>
+
+
+<p>
+Da notare la differenza tra 'let' e 'var' usati in un ciclo come in questo esempio
+</p>
+<pre>
+let arr = [];
+for (let i=0; i &lt; 3; i++) {
+	arr.push(() => i);		<span class="nota">DA NOTARE: in arr sono inseriti 3 funzioni e non numeri </span>
+}
+<span class="azzurro">
+console.log(arr.map(x => x()));		<span class="nota">// [0,1,2] </span>
+</span>	
+<span class="grigio">mentre</span>
+
+let arr = [];
+for (var i=0; i &lt; 3; i++) {
+	arr.push(() => i);
+}
+<span class="azzurro">
+console.log(arr.map(x => x()));		<span class="nota">// [3,3,3] </span>
+</span>	
+
+<span class="grigio">altra cosa se invece </span>
+
+var arr = [];
+for (var i=0; i &lt; 3; i++) {
+	arr.push(i);
+}
+<span class="azzurro">
+console.log(arr);			<span class="nota">// [0,1,2] </span>
+</span>	
+</pre>
+
+<p>Differenze tra 'var' e 'let' quando usati come parametri in una funzione</p>
+
+<pre>
+function func(arg) {
+	let arg;			<span class="nota">// static error: duplicate declaration of `arg`</span>
+}
+
+<span class="grigio">mentre con 'var' non da errori </span>
+function func(arg) {
+	var arg;			<span class="nota">// tutto ok </span>
+}
+
+
+</pre>
+
+
+
+<h1>Costanti</h1>
+<p>
+Le costanti possono essere create con la parola chiave <b>const</b> che deve essere sempre posta altrimenti viene scambiato per variabile globale. Può iniziare con una lettera, underscore(_) o segno del dollaro($) e può contenere caratteri alfabetici, numerici o underscore. <span class="nota">Non supportato in IE8</span>
+</p>
+<pre>
+const prefix = '212';
+</pre>
+
+<p>
+Una costante <b>non può essere inizializzata</b> ma gli si deve assegnare obbligatoriamente un valore:
+</p>
+
+<pre>
+const foo;			<span class="nota">SyntaxError: missing = in const declaration</span>
+</pre>
+
+<p>
+Una costante non può cambiare il suo valore nell'esecuzione dello script come <b>non può essere reimpostata</b>; quindi in altre parole <b>può essere soltanto letta</b>.
+</p>
+<pre>
+const f = 5;
+<span class="azzurro">console.log(f);</span>			<span class="nota">// restituisce 5</span>
+
+const f = 6;
+<span class="azzurro">console.log(f);</span>			<span class="nota">// restituisce ancora 5</span>
+</pre>
+
+
+<h3>let e const</h3>
+
+<p>
+Altra cosa succede quando una variabile è dichiarata con let. <br />
+Se per esempio dichiaramo 
+</p>
+<pre>
+var count = 30;
+let count = 40;			<span class="nota">da errore</span>
+</pre>
+
+<p>mentre</p>
+
+<pre>
+var count = 30;
+
+if (condition) {
+	let count = 40;			<span class="nota">non da errore</span>
+	// ....
+}
+
+
+</pre>
+
+
+
+<p>
+Il seguente è un'esempio su altri modi corretti/sbagliati dell'uso delle costanti
+</p>
+<pre>
+function getAreaOfCircle(radius) {
+	if(radius) {
+		const PI = 3.412;
+		const R;			<span class="nota">// ERRORE: le costanti devono essere inizializzate (come sopra) </span>
+		PI=22/7;			<span class="nota">// ERRORE: il valore della costante non può essere riassegnato</span>
+		return PI * radius * radius;
+	}
+	console.log(PI);			<span class="nota">// ERRORE: la costante PI fa parte dello blocco if e rimane utilizzata solo per quello scopo</span>
+	return 0;
+}
+<span class="azzurro">
+console.log(getAreaOfCircle(10));
+console.log(getAreaOfCircle());		</span>
+</pre>
+
+<p>
+C'è però un eccezione, come nel caso seguente:
+</p>
+<pre>
+const obj = {};
+obj.prop = 123;
+<span class="azzurro">
+console.log(obj.prop);				<span class="nota">// 123</span>
+</span>
+</pre>
+<p>
+L'esempio considera il caso di una costante che è un oggetto; in questo caso se aggiungiamo valori alle sue proprietà non causa errore.  	
+</p>
+
+
+
+
+<script type="text/javascript">
+
+/*
+var a = 5;
+let(a = 6) alert(a);	
+alert(a);				
+*/
+
+
+/*
+var a = 5;
+var b = 10;
+
+if (a === 5) {
+	let a = 4;			
+	var b = 1;			
+
+	console.log(a);	
+	console.log(b);	
+} 
+
+console.log(a);		
+console.log(b);		
+*/
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+</body>
+</html>
+

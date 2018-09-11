@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>confirm  </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(50,150,50);}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+
+</style>
+</head>
+<body>
+
+
+<h1>confirm</h1>
+
+
+
+<script type="text/javascript">
+var response = confirm("Do you want to proceed with this book?  Click OK to proceed otherwise click Cancel.");
+alert(response);
+
+//////////////////////////////////
+
+function CheckRequest(newurl)
+{
+	if (confirm("Do you want to visit " + newurl + " site.")) 
+	{
+		return true
+		} 
+		else 
+		{
+			return false
+		}
+}
+
+
+</script>
+
+<P><A href="http://www.java2s.com" onClick = "return CheckRequest('java2s')">Java</A></P>
+<!--da Notare che funziona anche senza il return -> onClick = "return CheckRequest('java2s')" (vedi sotto) -->
+<P><A href="http://www.netscape.com" onClick = "CheckRequest('Netscape')">Netscape</A></P>
+
+
+
+<script type="text/javascript">
+var username = prompt("Type your name:", "");
+
+if (confirm("Your name is: " + username + ". Is that correct?") == true )
+{
+  alert("Hello " + username);
+}
+else
+{
+  alert("Hi");
+}
+
+</script>
+
+
+
+
+
+
+</body>
+</html>

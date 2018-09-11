@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<immagini>
+
+	<immagine>
+		<srcImg>../img/ulivo_01.jpg</srcImg>	
+		<titolo>olivo secolare pugliese 01</titolo>
+		<altImg>olivo secolare pugliese 01</altImg>
+		<larghezza>500</larghezza>
+		<altezza>350</altezza>
+		<indice>0</indice>
+	</immagine>
+	<immagine>
+		<srcImg>../img/ulivo_02.jpg</srcImg>	
+		<titolo>ulivo secolare pugliese 02</titolo>
+		<altImg>ulivo secolare pugliese 02</altImg>
+		<larghezza>500</larghezza>
+		<altezza>350</altezza>
+		<indice>1</indice>
+	</immagine>
+	<immagine>
+		<srcImg>../img/ulivo_03.jpg</srcImg>	
+		<titolo>olivo secolare pugliese 03</titolo>
+		<altImg>olivo secolare pugliese 03</altImg>
+		<larghezza>500</larghezza>
+		<altezza>350</altezza>
+		<indice>2</indice>
+	</immagine>
+	<immagine>
+		<srcImg>../img/ulivo_05.jpg</srcImg>	
+		<titolo>olivo secolare pugliese 04</titolo>
+		<altImg>olivo secolare pugliese 04</altImg>
+		<larghezza>500</larghezza>
+		<altezza>350</altezza>
+		<indice>3</indice>
+	</immagine>
+	<immagine>
+		<srcImg>../img/ulivo_07.jpg</srcImg>	
+		<titolo>olivo secolare pugliese 05</titolo>
+		<altImg>olivo secolare pugliese 05</altImg>
+		<larghezza>500</larghezza>
+		<altezza>350</altezza>
+		<indice>4</indice>
+	</immagine>
+
+</immagini>
+

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>self</title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+code, pre{ color:rgb(50,150,50);}
+.nota{ color:rgb(250,120,0);}
+.codice{ color:rgb(30,120,30);}
+</style>
+<script src="jQuery-1.6.min.js"> </script>
+</head>
+<body id="myBody" bottomMargin="150">
+
+
+
+
+<h1>self</h1>
+
+<p class="nota">La parola speciale <b><q>self</q></b> permette di far riferimento al documento corrente </p>
+
+
+<script type="text/javascript">
+/*
+if (top==self)
+{
+    var main_frame = "http://www.java2s.com";
+    var cur_url = self.location.href;
+    var setframes = main_frame + "?" + cur_url;
+    location.href = setframes;
+}
+*/
+
+var me = self.location.href;		// http://localhost/JavaScript/self_domain.html
+alert(me);
+
+</script>
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+var questa_pagina = self.location.href;	// // restituisce "http://localhost/JavaScript/self_domain.html"
+//var questa_pagina = location.pathname;	// restituisce "/JavaScript/self.html"
+
+$("div").text(questa_pagina);	
+
+}); // chiude ready 
+</script>
+    
+<div></div> 
+
+<h1>document.URL</h1>
+
+<p class="nota">La proprietà <q>document.URL</q> contiene l'URL del documento corrente. Da lo stesso risultato di "self" </p>
+<script type="text/javascript">
+
+document.write("URL: "+document.URL);
+
+</script>
+
+
+<h1>document.domain </h1>
+
+<p class="nota">Il proprietà <q>domain</q> contiene il nome dell'host del documento </p>
+
+<script type="text/javascript">
+
+document.write("Il dominio è: ",document.domain);
+
+
+</script>
+
+
+<script type="text/javascript">
+
+function function1() {
+alert(window.self.myBody.bottomMargin);
+}
+
+</script>
+
+<br /><br />
+<p>Questo esempio successivo non funziona</p>
+<input type="button" value="Bottom Margin" onclick="function1();">
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>traceur esempi </title>
+<style type="text/css">
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250); margin:10px 50px; } 
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150); margin:10px 40px; }
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20); margin:10px 31px; }
+code, pre{ color:rgb(20,150,30); font-weight:bold; background:rgb(230,230,230); margin:5px 10px; padding:8px; }
+.nota{ color:rgb(250,120,0);}
+.grigio{color:gray;}
+.azzurro{color:rgb(100,150,255);}
+.scuro{color:#333;}
+tt, em{color:#6a9999}
+.codice{ color:rgb(30,120,30);}		
+dt{ color:#003399; margin-left:10px;}
+dd{ color:#0066FF; margin-left:10px;}
+
+</style>
+</head>
+<body>
+
+
+<h1>Esempi ES6 con traceur</h1>
+
+<p>
+Dopo aver inserito i due script di <tt>traceur</tt> bisogna cambiare l'attributo <tt>type</tt> per gli script di JavaScript. <br />
+</p>
+
+<pre>
+&lt;script src="https://google.github.io/traceur-compiler/bin/traceur.js"&gt;&lt;/script&gt;
+&lt;script src="https://google.github.io/traceur-compiler/src/bootstrap.js"&gt;&lt;/script&gt;
+
+&lt;script type="module"&gt;
+
+	<span class="nota"> ... tutto il codice</span>	
+
+&lt;/script&gt;
+</pre>
+
+<br />
+<a href="https://github.com/google/traceur-compiler">Traceur compiler</a>
+
+<!--
+I file 'traceur.js' e 'bootstrap.js'  sono le librerie che permettono la compilazione delle features di ES6 in ES5 
+(sono state scaricate nella cartella http://localhost/JavaScript/ES6/allegati/  )
+-->	
+
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+
+
+<!--gli scripts vanno posti all'interno dello <script type="module"> -->	
+
+<script type="module">
+
+
+//### Esempi con let ###
+/*
+var a = 5;
+if(a){
+	let a = 6; 
+	console.log(a); ;	
+}
+console.log(a);				
+
+/*
+var a = 5;
+var b = 10;
+
+if (a === 5) {
+	let a = 4;			
+	var b = 1;			
+
+	console.log(a);	
+	console.log(b);	
+} 
+
+console.log(a);		
+console.log(b);		
+
+*/
+
+
+//### Esempi con 'class' ###
+/*
+class Car {
+	constructor(make) { //constructors!
+		this.make = make;
+		this.currentSpeed = 25;
+	}
+
+	printCurrentSpeed(){
+  		console.log(this.make + ' is going ' + this.currentSpeed + ' mph.');
+	}
+}
+
+class RaceCar extends Car { //inheritance
+	constructor(make, topSpeed) {
+		super(make); //call the parent constructor with super
+		this.topSpeed = topSpeed;
+	}
+
+	goFast(){
+  		this.currentSpeed = this.topSpeed;
+	}
+}
+
+let stang = new RaceCar('Mustang', 150);
+
+stang.printCurrentSpeed();
+stang.goFast();
+stang.printCurrentSpeed();
+
+*/
+
+
+///// Esempi con 'Module' /////
+/*
+import { double, square } from 'allegati/module-1.js';
+import {double} from 'allegati/module-1.js';								// qui si importa soltanto una funzione
+console.log(double(2));	
+console.log(square(5));
+
+// Oppure un'altro modo per importare tutti i metodi e proprietà è quello dell'uso del simbolo *
+import * as lib from 'allegati/module-1.js';								
+// ATTENZIONE: bisogna utilizzare un parola simbolo che faccia riferimento alle funzioni (in questo caso ho usato 'lib') 
+console.log(lib.double(2));	
+console.log(lib.double(5));	
+
+import moltiplicazione from 'allegati/module-2.js';			// 'module-2.js' è esportato usando la parola chiave 'default'
+console.log(moltiplicazione(5, 4));
+
+
+// Nella seguente si importa la funzione da 'module-3.js' che a sua volta importa da 'module-1.js' 
+import  {importExport} from 'allegati/module-3.js';			
+console.log(importExport(4));
+
+
+// Il seguente importa il modulo 'module-4' che a sua volta esporta dal modulo 'module-1'
+import { addizione } from 'allegati/module-4.js';
+//console.log(double(6));	
+console.log(addizione(5));
+*/
+
+
+import * as lib from 'allegati/module-1.js';								// qui si importa soltanto una funzione
+console.log(lib.double(2));	
+//console.log(square(5));
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+https://github.com/adobe-webplatform/css-shapes-polyfill
+
+https://google.github.io/traceur-compiler/bin/traceur.js
+
+https://github.com/adobe-webplatform/css-shapes-polyfill/blob/master/shapes-polyfill.min.js
+
+https://github.com/adobe-webplatform/css-shapes-polyfill/bin/shapes-polyfill.min.js
+https://github.com/adobe-webplatform/css-shapes-polyfill
+-->	
+
+
+
+
+
+
+
+</body>
+</html>
+

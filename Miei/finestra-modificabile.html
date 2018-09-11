@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title> Finestra modificabile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css" /> 
+<style type="text/css">
+
+/*	Le regole seguenti rappresentano un  eventuale box da instanziare su cui applicare la funzione "finestraModificabile()"	*/
+
+div.box{ 
+position:absolute; width:300px; height:250px; top:100px; left:200px;  background:#FFF; border:1px solid;  
+border-radius:5px;	display:none; 
+-moz-border-radius:5px;						/* Firefox */
+-webkit-border-radius:5px;  				/* Safari e Chrome */
+}
+div.box h3{
+font-size:1.2em;
+}
+
+div.topms{ 
+width:100%;  padding:5px 0; margin:0;  background:#06F; color:#FFF; font-weight:bold; text-align:center; letter-spacing:2px;
+}
+div.chiudims{ 
+position:absolute; top:0; right:0; width:20px; padding:4px 0; margin:0; cursor:pointer; background:#333;   border:1px solid;  
+}
+div.chiudims:hover{ 
+background:#999; color:#F00; 
+}
+div.angoloms{ 
+position:absolute; bottom:0; right:0; padding:0; margin:0; cursor: nw-resize;
+}
+
+div.box p{
+padding:5px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Finestra Modificabile</h1>
+
+<button id="mostraBox">Mostra il Box</button>
+
+<!--
+Nell'esempio l'elemnto div.box non è applicato alla funzione "finestraModificabile()" (quindi non verrà visualizzata). E' stata invece creata una finstrella con la funzione "creaFinestrella()"
+-->
+ 
+<div class="box"> 
+	<div class="topms">Prendimi e sballottami
+		<div class="chiudims">&times;</div>
+	</div>
+	<h3>Olio Extravergine d'Oliva</h3>
+	<p>
+Il nostro obiettivo è quello di dare ai nostri utenti tutta l'informazione possibile su questo straordinario prodotto in modo da far si che sulle nostre tavole sia sempre il protagonista principale. <br />
+	</p>
+	<div class="angoloms"> .: </div>  
+</div><!--box-->
+
+
+<script type="text/javascript" src="../allegati/finestraModificabile.js"></script>
+
+<script type="text/javascript">
+
+var titoloFinestra = 'Titolo Finestra';
+var testoFinestra = 'Contenuto della finestra';
+
+creaFinestrella(titoloFinestra, '#fff', '#2849e0', '#fff', '#a52a2a',  testoFinestra, '#555', "#f3f3cc");
+finestraModificabile("div.boxfm", "div.topfm", "div.xfm", "div.angolofm");
+
+/*
+Chiamata della funzione con compreso gli elementi per la modifica delle dimensioni di width e height separatamente
+//finestraModificabile("div.boxfm", "div.topfm", "div.xfm", "div.angolofm", "div.latodx", "div.latobx");
+*/
+
+
+var mostraBox = document.getElementById("mostraBox");				// pulsante per visualizzare l'elemento 'box'
+mostraBox.addEventListener('click', function(){
+//	Visualizzazione della finestrella creata con la funzione creaFinestrella()
+	document.querySelector("div.boxfm").style['display'] = 'block';
+}, false);
+
+
+// Funzione applicata all'elemento div.box 
+// finestraModificabile("div.box", "div.topms", "div.angoloms", "div.chiudims");
+
+
+</script>
+
+
+
+
+</body>
+</html>
+

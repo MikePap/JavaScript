@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<title>Vista Strada 02</title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.nota{color:orange;}
+.codice{color:green;}
+
+/* #map_canvas{ position:relative; margin:20px; width:80%; height:80%;  } */
+
+</style>
+
+<script src="//maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+<script type="text/javascript">
+
+  function initialize() {
+    var fenway = new google.maps.LatLng(42.345573,-71.098326);
+    var mapOptions = {
+      center: fenway,
+      zoom: 14,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+	// Creazione oggetto 'Map' per l'elemento id:map_canvas 
+    var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+    var panoramaOptions = {
+      position: fenway,
+      pov: {	// proprietà che fornisce l'orientamento della camera specificate nell'oggetto "google.maps.StreetViewPov" impostando le proprietà 'heading', 'pitch', 'zoom' 
+	heading: 90,		// relativo al vero Nord che è 0°, east è 90°, south è 180°, west è 270°.
+	pitch: 0,			// va da 90 a -90. 
+	zoom: 1			// il valore minimo è zero 0 
+	} // 'pov' 
+	}; // "panoramaOptions" 
+
+
+var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);	// creazione oggetto 'StreetViewPanorama' per l'elemento id:pano'
+map.setStreetView(panorama);	// Il metodo 'setStreetView' classe "Map" collega l'oggetto 'StreetViewPanorama' (var panorama) all'oggetto 'Map' (map). Grazie a questo metodo si può visualizzare la mappa presente nell'elemento 'map_canvas' nell'elemento 'pano' 
+
+} // "initialize" 
+
+</script>
+</head>
+<body onload="initialize()">
+
+<p>
+Spostando l'omino sulla mappa a sinistra si ottiene uno spostamento delle immagini nella mappa a destra
+</p>
+
+  <div id="map_canvas" style="width: 500px; height: 500px"></div>
+  <div id="pano" style="position:absolute; left:510px; top: 41px; width: 500px; height: 500px;"></div>
+
+
+
+</body>
+</html>
+

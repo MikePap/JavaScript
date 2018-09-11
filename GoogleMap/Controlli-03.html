@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>Ritorna a casa  </title>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+h3{margin:0; margin-left:20px; font-size:18px; color:#00F;}
+p{margin:10px;}
+.nota{color:orange;}
+.codice{color:green;}
+
+#mappa { position:relative; margin:20px; width:80%; height:80%;  }
+
+</style>
+<script type="text/javascript" src="../jQuery-1.6.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true">
+</script>
+
+<script type="text/javascript">
+
+var map;
+var chicago = new google.maps.LatLng(41.850033, -87.6500523);
+
+function HomeControl(controlDiv, map) {
+
+  // Set CSS styles for the DIV containing the control
+  // Setting padding to 5 px will offset the control
+  // from the edge of the map
+  controlDiv.style.padding = '5px';
+
+  // Set CSS for the control border
+  var controlUI = document.createElement('DIV');
+  controlUI.style.backgroundColor = 'white';
+  controlUI.style.borderStyle = 'solid';
+  controlUI.style.borderWidth = '2px';
+  controlUI.style.cursor = 'pointer';
+  controlUI.style.textAlign = 'center';
+  controlUI.title = 'Click to set the map to Home';
+  controlDiv.appendChild(controlUI);
+
+  // Set CSS for the control interior
+  var controlText = document.createElement('DIV');
+  controlText.style.fontFamily = 'Arial,sans-serif';
+  controlText.style.fontSize = '12px';
+  controlText.style.paddingLeft = '4px';
+  controlText.style.paddingRight = '4px';
+  controlText.innerHTML = '<b>Home</b>';
+  controlUI.appendChild(controlText);
+
+  // Setup the click event listeners: simply set the map to
+  // Chicago
+  google.maps.event.addDomListener(controlUI, 'click', function() {
+    map.setCenter(chicago)
+  });
+
+} // "HomeControl"
+
+function initialize() {
+  var mapDiv = document.getElementById('mappa');
+  var myOptions = {
+    zoom: 12,
+    center: chicago,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  }
+  map = new google.maps.Map(mapDiv, myOptions);
+
+  // Create the DIV to hold the control and
+  // call the HomeControl() constructor passing
+  // in this DIV.
+  var homeControlDiv = document.createElement('DIV');
+  var homeControl = new HomeControl(homeControlDiv, map);
+
+  homeControlDiv.index = 1;		// ???
+  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);
+}
+
+</script>
+
+</head>
+
+<script  type="text/javascript">
+jQuery(document).ready(function(){
+
+//initialize();	// 
+
+
+// Per fare a meno delle funzioni "inizialize" e "HomeControl" con jQuery  
+var map;
+var chicago = new google.maps.LatLng(41.850033, -87.6500523);
+
+//var latlng = new google.maps.LatLng(-34.397, 150.644);
+var myOptions = {
+zoom: 12,
+center: chicago,
+mapTypeId: google.maps.MapTypeId.ROADMAP,
+} // myOptions 
+
+var map = new google.maps.Map(document.getElementById("mappa"),  myOptions);
+
+// Per sostituire la funzione "HomeControl" 
+$("body").append("<div id='divo'>HOME</div>");
+var tt = $("#divo").css({background: "#F00", cursor:"pointer", width:"50px", padding:"3px", fontSize:"12px", textAlign:"center"});
+var homeControlDiv = document.createElement('DIV');
+$(homeControlDiv).append(tt);
+//  var homeControl = new HomeControl(homeControlDiv, map);	// NON SERVE PIU' LA FUNZIONE "HomeControl" 
+
+homeControlDiv.style.marginTop = "5px";	// è necessario per poterlo posizionare a fianco degli altri due (con la funzione "HomeControl" non c'è ne bisogno e si posiziona correttamente) 
+map.controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);
+
+/*
+//QUESTA ...
+google.maps.event.addDomListener(homeControlDiv, 'click', function() {
+    map.setCenter(chicago)
+});
+PUO' ESSERE SOSTITUITRA DA ... 
+*/
+$(homeControlDiv).click(function(){
+map.setCenter(chicago);
+}); // click 
+/*  CE PIU' FACIL */
+
+
+}); // chiude ready 
+</script>
+
+<body>
+
+<p class="codice">Sposta la mappa e poi clicca sul pulsante <b>HOME</b>  </p>
+
+<div id="mappa" style="width:500px;height:400px;"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
