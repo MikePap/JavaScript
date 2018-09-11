@@ -1,0 +1,6 @@
+# ignora tutti i file che finiscono con tilde (~)
+*~
+# Ignorare i seguenti file
+/Untitled-2.html
+
+# Ignorare i file delle seguenti directory
