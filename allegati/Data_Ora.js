@@ -1,118 +1,83 @@
-function nm_giorno_settimana(){
-//	Domenica => 0 , Lunedi => 1 ecc 
-	var current_date = new Date();
-	var nm_giorno =  current_date.getDay();
-	var nm_giorno = "0" + nm_giorno;
-	return nm_giorno;
-} 
+var nm_giorno_settimana = function () { 
+// Domenica => 0 , Lunedi => 1 ... 
+	return new Date().getDay() 
+};
 
 
-function giorno_mese(){
+var giorno_mese = function () {
 // 1, 2, 3 ecc 
-	var current_date = new Date();
-	var day = current_date.getUTCDate();
-	if(day < 10)
-		var giorni = "0"+day;
-	else
-		var giorni = day; 
-	return giorni;
-} 
+	var day = new Date().getUTCDate();
+	return (day < 10) ? '0'+day : day;
+} // ### giorno_mese ####
 
 
-function weekday(){
+var weekday = function () {
 	var current_date = new Date();
 	var weekdays = new Array(7);
-	weekdays[0] = "Domenica";			// Sunday
-	weekdays[1] = "Lunedi";				// Monday
-	weekdays[2] = "Martedi";			// Tuesday
-	weekdays[3] = "Mercoledi";			// Wednesday
-	weekdays[4] = "Giovedi";			// Thursday
-	weekdays[5] = "Venerdi";			// Friday
-	weekdays[6] = "Sabato";				// Saturday
+	weekdays[0] = "Domenica";		// Sunday
+	weekdays[1] = "Lunedi";			// Monday
+	weekdays[2] = "Martedi";		// Tuesday
+	weekdays[3] = "Mercoledi";		// Wednesday
+	weekdays[4] = "Giovedi";		// Thursday
+	weekdays[5] = "Venerdi";		// Friday
+	weekdays[6] = "Sabato";			// Saturday
 
 	var weekday_value = current_date.getDay();
 	var giorno = weekdays[weekday_value];
 	return giorno;
-} 
+} // #### weekday ####
 
 
-function mese(){
+var mese = function () {
 	var current_date = new Date();
 	var months = new Array(12);
-	months[0] = "Gennaio";					// January
-	months[1] = "Febbraio";					// February
-	months[2] = "Marzo";						// March
-	months[3] = "Aprile";					// April
-	months[4] = "Maggio";					// May
-	months[5] = "Giugno";					// June
-	months[6] = "Luglio";					// July
-	months[7] = "Agosto";					// August
-	months[8] = "Settembre";				// September
-	months[9] = "Ottobre";					// October
-	months[10] = "Novembre";				// November
-	months[11] = "Dicembre";				// December
+	months[0] = "Gennaio";			// January
+	months[1] = "Febbraio";			// February
+	months[2] = "Marzo";				// March
+	months[3] = "Aprile";			// April
+	months[4] = "Maggio";			// May
+	months[5] = "Giugno";			// June
+	months[6] = "Luglio";			// July
+	months[7] = "Agosto";			// August
+	months[8] = "Settembre";		// September
+	months[9] = "Ottobre";			// October
+	months[10] = "Novembre";		// November
+	months[11] = "Dicembre";		// December
 
 	var mese_valore = current_date.getMonth();
-	var nome_mese = months[mese_valore]; 
-	return nome_mese;
-} 
+	return months[mese_valore]; 
+} //#### mese ####
 
 
-function anno(){
-	var current_date = new Date();
-	var annata = current_date.getFullYear();
-	return annata;
-} 
+var anno = function () { 
+	return  new Date().getFullYear();
+};
 
 
-function ore(){
-	var current_date = new Date();
-	var hour = current_date.getHours();
-	if(hour < 10)
-		var ora = "0" +hour;
-	else
-		var ora = hour;
-	return ora;
-} 
+var ore = function () {
+	return 	(new Date().getHours() < 10)	? ora="0"+new Date().getHours() : ora=new Date().getHours();
+};
 
 
-function minuti(){
-	var current_date = new Date();
-	var minuto = current_date.getMinutes();
-	if(minuto < 10)
-		var minuts = "0" +minuto;
-	else
-		var minuts = minuto;
-	return minuts;
-}
+var minuti = function () {
+	return (new Date().getMinutes() < 10)	? "0"+new Date().getMinutes() : new Date().getMinutes();
+};
 
 
-function secondi(){
-	var current_date = new Date();
-	var seconds = current_date.getSeconds();
-	if(seconds < 10)
-		var secondo = "0" +seconds;
-	else
-		var secondo = seconds;
-	return secondo;
-} 
+var secondi = function () {
+	return (new Date().getSeconds() < 10)	? "0"+new Date().getSeconds() : new Date().getSeconds();
+};
 
 
-function data_oggi(){
-	var giorno = weekday();
-	var nm_giorno = giorno_mese();
-	var mes = mese();
-	var ann = anno();
-	var jk = giorno+' '+nm_giorno+' '+mes+' '+ann;
-	return jk;
-} 
+
+var data_oggi = function () { 
+	return weekday()+ ' ' +giorno_mese()+ ' ' +mese()+ ' ' +anno();		// "Martedi 24 Febbraio 2015"
+};
 
 
-function ora_minuti(){
-	var ora = ore(); 
-	var minuts = minuti();
-	var jk = ora+':'+minuts;
-	return jk;
-}
+var ora_minuti = function () {
+	return ore()+ ':' +minuti();				// "14:08"
+};
+
 
 

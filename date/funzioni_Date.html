@@ -60,30 +60,20 @@ Nel file <b>Data_Ora.js</b> ( cartelle <b>JavaScript/allegati o JS</b> ) ci sono
 ##########	Nel file "Data_Ora.js" (cartelle "JavaScript/allegati" o "JS" ) ci sono le stesse funzioni di questo documento. 	#####
 */
 
-function nm_giorno_settimana(){
-// Domenica => 0 , Lunedi => 1 ecc 
-var current_date = new Date();
-var nm_giorno =  current_date.getDay();
-//var nm_giorno = nm_giorno;
-var nm_giorno = "0" + nm_giorno;
-return nm_giorno;
-} // ### nm_giorno_settimana ###
+var nm_giorno_settimana = function () { 
+// Domenica => 0 , Lunedi => 1 ... 
+	return new Date().getDay() 
+};
 
 
-function giorno_mese(){
+var giorno_mese = function () {
 // 1, 2, 3 ecc 
-var current_date = new Date();
-var day = current_date.getUTCDate();
-if(day < 10)
-var giorni = "0"+day;
-else
-var giorni = day; 
-return giorni;
+	var day = new Date().getUTCDate();
+	return (day < 10) ? '0'+day : day;
 } // ### giorno_mese ####
 
 
-function weekday(){
-
+var weekday = function () {
 	var current_date = new Date();
 	var weekdays = new Array(7);
 	weekdays[0] = "Domenica";		// Sunday
@@ -100,8 +90,7 @@ function weekday(){
 } // #### weekday ####
 
 
-function mese(){
-
+var mese = function () {
 	var current_date = new Date();
 	var months = new Array(12);
 	months[0] = "Gennaio";			// January
@@ -118,65 +107,40 @@ function mese(){
 	months[11] = "Dicembre";		// December
 
 	var mese_valore = current_date.getMonth();
-	var nome_mese = months[mese_valore]; 
-	return nome_mese;
+	return months[mese_valore]; 
 } //#### mese ####
 
-function anno(){
-	var current_date = new Date();
-	var annata = current_date.getFullYear();
-	return annata;
-} // ### anno ### 
+
+var anno = function () { 
+	return  new Date().getFullYear();
+};
 
 
-function ore(){
-	var current_date = new Date();
-	var hour = current_date.getHours();
-	if(hour < 10)
-		var ora = "0" +hour;
-	else
-		var ora = hour;
-	return ora;
-} // ### ore ### 
+var ore = function () {
+	return 	(new Date().getHours() < 10)	? ora="0"+new Date().getHours() : ora=new Date().getHours();
+};
 
 
-function minuti(){
-	var current_date = new Date();
-	var minuto = current_date.getMinutes();
-	if(minuto < 10)
-	//var ora_minuti = 'ore '+ora+':0'+minuti;
-		var minuts = "0" +minuto;
-	else
-		var minuts = minuto;
+var minuti = function () {
+	return (new Date().getMinutes() < 10)	? "0"+new Date().getMinutes() : new Date().getMinutes();
+};
 
-	return minuts;
-} // ### minuti ####
 
-function secondi(){
-	var current_date = new Date();
-	var seconds = current_date.getSeconds();
-	if(seconds < 10)
-		var secondo = "0" +seconds;
-	else
-		var secondo = seconds;
-	return secondo;
-} // ### secondi #### 
+var secondi = function () {
+	return (new Date().getSeconds() < 10)	? "0"+new Date().getSeconds() : new Date().getSeconds();
+};
 
-function data_oggi(){
-	var giorno = weekday();
-	var nm_giorno = giorno_mese();
-	var mes = mese();
-	var ann = anno();
-	var jk = giorno+' '+nm_giorno+' '+mes+' '+ann;
-	return jk;
-} 
 
-function ora_minuti(){
-	var ora = ore(); 
-	var minuts = minuti();
-	var jk = ora+':'+minuts;
-	return jk;
-}
+
+var data_oggi = function () { 
+	return weekday()+ ' ' +giorno_mese()+ ' ' +mese()+ ' ' +anno();		// "Martedi 24 Febbraio 2015"
+};
+
+
+var ora_minuti = function () {
+	return ore()+ ':' +minuti();				// "14:08"
+};
+
 
 
 </script>
