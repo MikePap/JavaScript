@@ -85,6 +85,32 @@ elemento.addEventListener("click", function cb (event){
 
 </pre>
 <p>pertanto, cliccando sull'elemento anche più volte, l'alert sarà mostrato soltanto una volta</p>
+
+<p><b>La seguente è ancora più bella</b></p>
+<pre>
+const unSoloEvento = fn => {
+	let called = false;
+	return function(...args) {
+		if (called) return;
+		called = true;
+		return fn.apply(this, args);
+	};
+};
+
+<span class="grigio">Pertanto se abbiamo la seguente funzione</span>
+
+function ciao(){
+	console.log('ciao bello');
+}
+
+<span class="grigio">e la richiamiamo al trigger su un elemento  </span>
+<span class="azzurro">
+document.getElementById("elemento").addEventListener("click", unSoloEvento(ciao) );		<span class="nota">** la funzione sarà restituita soltanto una volta</span>
+</span>
+</pre>
+
+
+
 </section>
 
 
