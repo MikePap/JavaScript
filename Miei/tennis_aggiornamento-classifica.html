@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Aggiornamento Classifica Circolo Tennis</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+<h1>Aggiornamento classifica a seguito sfida</h1> 
+
+<p>
+La seguente applicazione è un semplice esempio di un aggiornamento di classifica a seguito di una sfida tra due giocatori.
+</p>
+<p>
+Si parte dal presupposto che ci sia una ipotetica classifica di giocatori facente parte di un <b>Circolo Tennis</b>. <br>
+I giocatori sono cosi inseriti in una array di questo tipo: 
+</p>
+<pre>
+var atleti = ["Aldo", "Giovanni", "Marco", "Michele", "Enzo", "Luca", "Vito", "Roberto", "Bruno", "Carlo"];
+</pre>
+<p>
+Dalla lista "atleti" si può dedurre che il giocatore "Aldo" è in prima posizione, "Giovanni" in seconda e via via fino a "Carlo" che è in decima  posizione.
+</p>
+<p>
+<b>Il regolamento del circolo dispone che un giocatore possa sfidare un'altro giocatore che sia in una posizione superiore alla sua. </b>
+</p>
+<p>
+Supponiamo quindi che "Bruno" (posizione 9) voglia sfidare "Luca" (posizione 6). Se "Luca" vince la partita, la classifica rimane invariata. <br>
+Se vince "Bruno", invece, succede che "Bruno" passa nella posizione di "Luca" e quest'ultimo scala di una posizione. <br>
+Gli altri giocatori compresi tra "Luca" e "Bruno" scalano anch'essi di una posizione.
+</p>
+<p>
+Quindi, in definitiva, se "Bruno" vince avremo la lista "atleti" cosi trasformata:
+</p>
+<pre>
+var atleti = ["Aldo", "Giovanni", "Marco", "Michele", "Enzo", "Bruno", "Luca", "Vito", "Roberto", "Carlo"];
+</pre>
+
+<p>
+Per ottenere questo aggiornamento di classifica c'è bisogno di due semplici funzioni che sono:
+</p>
+<pre>
+
+<span class="grigio">// Restituisce la posizione del giocatore nella classifica</span>
+function posizioneGiocatore (lista, giocatore) {
+	return lista.indexOf(giocatore);
+}
+
+<span class="grigio">Aggiornamento classifica se lo sfidante si aggiudica l'incontro </span>
+function aggiornamentoClassifica(giocatori, vincente, perdente) {
+	var posVincente = posizioneGiocatore(giocatori, vincente);
+	var posPerdente = posizioneGiocatore(giocatori, perdente);
+
+	giocatori.splice(posVincente, 1);				<span class="nota">// eliminazione del vincente dalla lista</span>
+	giocatori.splice(posPerdente, 1);				<span class="nota">// eliminazione del perdente dalla lista</span>
+
+	giocatori.splice( posPerdente, 0, vincente );			<span class="nota">// inserimento del vincente nella posizione del perdente</span>
+	giocatori.splice( (posPerdente+1), 0, perdente );		<span class="nota">// il perdente scala di una posizione insieme agli altri</span>
+}
+
+</pre>
+
+<p>
+Pertanto, qualora lo sfidante si è aggiudicato la partita, possiamo invocare la funzione passando come primo argomento l'array dei giocatori; come secondo argomento lo sfidante vincente e come terzo argomento il giocatore perdente la sfida:
+</p>
+<pre>
+
+var atleti = ["Aldo", "Giovanni", "Marco", "Michele", "Enzo", "Luca", "Vito", "Roberto", "Bruno", "Carlo"];
+<span class="azzurro">
+aggiornamentoClassifica( atleti, 'Bruno', 'Luca' );
+</span>
+<span class="nota">Classifica aggiornata: ["Aldo", "Giovanni", "Marco", "Michele", "Enzo", "Bruno", "Luca", "Vito", "Roberto", "Carlo"];
+</span>
+</pre>
+
+
+
+
+
+<script type="text/javascript">
+
+var atleti = ["Aldo", "Giovanni", "Marco", "Michele", "Enzo", "Luca", "Vito", "Roberto", "Bruno", "Carlo"];
+
+function posizioneGiocatore (lista, giocatore) {
+	return lista.indexOf(giocatore);
+}
+
+//console.log( posizione(atleti, 'Bruno') );						// 9
+
+function aggiornamentoClassifica(giocatori, vincente, perdente) {
+	var posVincente = posizioneGiocatore(giocatori, vincente);
+	var posPerdente = posizioneGiocatore(giocatori, perdente);
+
+	giocatori.splice(posVincente, 1);									// eliminazione vincente dalla lista
+	giocatori.splice(posPerdente, 1);									// eliminazione perdente dalla lista
+
+	giocatori.splice( posPerdente, 0, vincente );					// inserimento vincente nella posizione del perdente
+	giocatori.splice( (posPerdente+1), 0, perdente );				// il perdente scala di una posizione
+}//
+
+aggiornamentoClassifica( atleti, 'Bruno', 'Luca' );
+
+for(ind in atleti) {
+	console.log( ind, ': ', atleti[ind]  );
+}
+
+
+
+</script>
+
+
+
+
+
+
+<br><br><br><br><br><br>
+
+
+
+
+</body>
+</html>
