@@ -23,6 +23,7 @@ I seguenti metodi di array sono stati introdotti nella versione JavaScript 1.6 (
 		<option value="s1">isArray</option>
 		<option value="s2">indexOf()</option>
 		<option value="s3">lastIndexOf()</option>
+		<option value='s3A'>includes</option>
 		<option value="s4">map()</option>		
 		<option value="s5">filter()</option>
 		<option value="s6">forEach()</option>
@@ -92,6 +93,27 @@ console.log(index3);			<span class="nota">// -1 (è come se eliminasse tutti gli
 </span>
 </pre>
 </section>
+
+<section id="s3A">
+<h2>Array.prototype.includes</h2>
+
+<p>
+Il metodo permette di rilevare un elemento dell'array. 
+</p>
+<pre>
+let arr = [1, 2, 3, '', NaN, 'rosso', 'giallo'];
+<span class="azzurro">
+console.log(arr.includes(2);					<span class="nota">// true</span>
+console.log(arr.includes(4));					<span class="nota">// false</span>
+console.log(arr.includes(''));					<span class="nota">// true</span>
+console.log(arr.includes('rosso'));				<span class="nota">// true</span>
+console.log(arr.includes(NaN);					<span class="nota">// true</span>
+</span>
+
+</pre>
+
+</section>
+
 
 <section id="s4">
 <h2>Array.prototype.map()</h2>

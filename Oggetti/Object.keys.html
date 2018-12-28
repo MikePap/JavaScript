@@ -3,19 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <title>Object.keys  </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css" /> 
+
 <style type="text/css">
-h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
-h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
-h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
-code, pre{ color:rgb(20,150,30); font-weight:bold;}
-.nota{ color:rgb(250,120,0);}
-.grigio{color:gray;}
-.azzurro{color:rgb(100,150,255);}
-.scuro{color:#333;}
-tt, em{color:#6a9999}
-.codice{ color:rgb(30,120,30);}		
-dt{ color:#003399; margin-bottom:5px;}
-dd{ color:#0066FF;}
 
 </style>
 </head>
@@ -71,7 +61,28 @@ console.log(Object.values(arr));			<span class="nota">// Array [ "Aldo", "Giovan
 </span>
 </pre>
 
-<br><br><br>
+<br>
+
+<h1>Object.entries</h1>
+<p>
+Questo metodo ci permette di ottenere, allo stesso tempo, chiave e valore di un oggetto 
+</p>
+<pre>
+let obj = { frutto: 'mela', colore: 'rossa', tipo: 'deliziosa' };
+for(let [chiave, valore] of Object.entries(obj) ){
+	console.log(`chiave: ${chiave} valore: ${valore}`);
+}	
+
+<span class="grigio">Oppure con l'uso di Map</span>
+let map = new Map(Object.entries(obj) );
+<span class="azzurro">
+console.log(map);					<span class="nota">// Map(3) { frutto → "mela", colore → "rossa", tipo → "deliziosa" }</span>
+</span>
+
+</pre>
+
+
+<br><br>
 
 
 

@@ -152,6 +152,9 @@ This is &lt;a href=&quot;#html&quot;&gt;HTML&lt;/a&gt; with a SCRIPT',
 
 <script type="text/javascript">
 
+let arr = [1, 2, 3, '', NaN, 'rosso', 'giallo'];
+//let jk = arr.includes(rosso);
+//console.log(jk);
 
 
 
@@ -165,6 +168,74 @@ This is &lt;a href=&quot;#html&quot;&gt;HTML&lt;/a&gt; with a SCRIPT',
 
 
 
+
+//////////////////////////////		JSON.stringify				/////////////////////////////
+/*
+var t = JSON.stringify( { event: 'CHAIN', message: 'ciao bello' } );  
+console.log(t);
+
+//let obj = { event: 'CHAIN', message: 'ciao bello' };  
+//console.log(obj['event']);
+
+<<<<<<< Updated upstream
+let st = JSON.parse(t);
+//console.log(st['message']);
+*/
+
+
+
+/////////////////			Math			/////////////////////////////////
+
+/*
+const port = 18070+Math.floor(Math.random()*30);						// 18070 / 18099
+console.log(port);
+var t = Math.random()*30;
+//console.log(t);
+*/
+
+
+
+
+
+//////////////////////////////		btoa - atob			////////////////////////////////
+/*
+var encodedData = window.btoa('Hello, world');				// SGVsbG8sIHdvcmxk
+console.log(encodedData);
+
+var decodedData = window.atob(encodedData);					// Hello, world
+console.log(decodedData);
+*/
+=======
+
+
+//////////////////	remove			//////////////////////////
+
+var el = document.getElementById('div-01');
+el.remove();
+//el.nextElementSibling.remove(); // Removes the div with the 'div-02' id
+
+/*
+///////////////////////////		console.log & company		////////////////////////////////
+
+// C'è la possibilità di usare i Placeholder che sono: 
+// %s => stringa;
+// %d => numero decimale o intero
+// %o => oggetto
+console.log( 'Mi piacciono le %s ma non posso mangiarne più di %d al giorno', 'mandorle', 10);
+console.log( "La spesa di oggi:  %o", {pane: 'quartino', frutta: 'arance'}  );
+>>>>>>> Stashed changes
+
+// Si possono anche applicare stili CSS
+console.log('I am a %cbutton', 'color: white; background-color: orange; padding: 2px 5px; border-radius: 5px');
+
+<<<<<<< Updated upstream
+=======
+///// console.dir
+let elem = document.getElementById('didii');
+console.dir(elem);
+////////	console.warn	(ha uno sfondo giallo)
+console.warn('Io sono jakkk');
+*/
 
 //////////////////////////////		JSON.stringify				/////////////////////////////
 /*
@@ -203,6 +274,23 @@ console.log(decodedData);
 */
 
 
+
+////////////////		fetch			////////////////////////////////////
+/*
+fetch('https://www.kaipai.it/json/catAlimenti.json', { 
+//		mode: 'same-origin', 
+//		credentials: 'omit', 
+		headers: { "Content-Type": "application/json; charset=utf-8" }
+	})
+	.then(function(response) {
+		return response.json();
+	})
+	.then(function(myJson) {
+		console.log(JSON.stringify(myJson));
+	});
+*/
+
+>>>>>>> Stashed changes
 /////////////////			Function 			/////////////////////////////
 
 /*
@@ -375,6 +463,7 @@ console.log(obj['la mia']());
 /*
 
  console.log(new Date().getTime());
+<<<<<<< Updated upstream
 
 //var d = Date.prototype.getTimezoneOffset()
 //console.log(d);								// errore
@@ -383,6 +472,16 @@ var x = new Date();
 var c = x.getTimezoneOffset() / 60 ;	
 console.log(c);								// -1
 
+=======
+
+//var d = Date.prototype.getTimezoneOffset()
+//console.log(d);								// errore
+	
+var x = new Date();
+var c = x.getTimezoneOffset() / 60 ;	
+console.log(c);								// -1
+
+>>>>>>> Stashed changes
 var today = new Date();
 var day = today.getUTCDate();
 var hours = today.getUTCHours();
@@ -496,15 +595,14 @@ function attesa(){
 attesa();										// analizza e lo restituisce prima e poi
 console.log('OK');							// visualizza questo
 */
-
-
 /*
-var el = document.getElementById('div-01');
-//el.remove();
-el.nextElementSibling.remove(); // Removes the div with the 'div-02' id
-
-//var stile = el.style;
-//stile['color'] = 'red';
+let total = 0, count = 1;
+while ( count <= 10 ) {
+  total += count;								// total + count
+  count += 1;									// count + 1
+}
+console.log(total);							// 55
+// 1, 3, 6, 10, 15, 21, 28, 36, 45, 55   
 */
 
 
@@ -573,6 +671,8 @@ function asyncFunc() {
 			handler('DONE');
 		}
 	}, 2000);
+<<<<<<< Updated upstream
+=======
 
 	return eventEmitter;
 }//
@@ -581,8 +681,20 @@ asyncFunc().success.push(x => console.log('Result: '+x));
 */
 
 
+>>>>>>> Stashed changes
+
+	return eventEmitter;
+}//
+
+<<<<<<< Updated upstream
+asyncFunc().success.push(x => console.log('Result: '+x));
+*/
 
 
+
+
+=======
+>>>>>>> Stashed changes
 ////////////////////////////		Array		//////////////////////////////////////////
 
 /*
@@ -861,8 +973,26 @@ p4.then(function(value) {
 */
 
 
+<<<<<<< Updated upstream
 
 
+=======
+/*
+var testModule = function (elem) {
+	return Promise.resolve(elem);
+}
+
+var mela = testModule('mela');
+var pera = testModule('pera');
+var vuoto = testModule('');
+var nullo = testModule();
+var banana = testModule('banana');
+let frutti = Promise.all([mela, pera, vuoto, nullo, banana]) 
+.then((frutto) => {
+	console.log(frutto);
+});
+*/
+>>>>>>> Stashed changes
 
 /////////////////////////////////////////// 		Proxies		 ///////////////////////////////////////
 /*

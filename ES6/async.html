@@ -189,9 +189,25 @@ Volendo, possiamo utilizzare «async/await» soltanto per ri-costituire la funzi
 </p>
 
 <p>
-In definitiva, l'esempio ci mostra come usare «promise» e «async/await» nello stesso ambito. Come numero di righe di codice stiamo più o meno la, però la sintassi di «async» è meno verbosa e quindi più leggibile.
+In definitiva, l'esempio ci mostra come usare «promise» e «async/await» nello stesso ambito. Come numero di righe di codice stiamo più o meno la, però la sintassi di «async» è meno verbosa e quindi più leggibile.<br>
+Come nell'esempio seguente:
 </p>
+<pre>
+<span class="grigio">Con Promise</span>
+function getAmnount(userId){
+	getUser(userId)
+	.then(getBalance)
+	.then(amount => return amount);
+}
 
+<span class="grigio">Con async-await </span>
+async function getAmnount(userId){
+	let user = await getUser(userId);
+	let amount = await getBalance(user);
+	return amount;
+}
+
+</pre>
 
 
 <br><br><br><br><br><br>

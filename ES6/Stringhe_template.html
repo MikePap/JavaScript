@@ -24,8 +24,20 @@
 'doo '.repeat(3)					<span class="nota">// doo doo doo</span>
 </pre>
 
+<h2>String padding</h2>
+<h3>String.prototype.padStart</h3>
+<pre>
+'5'.padStart(10)			<span class="nota">// '          5'</span>
+'5'.padStart(10, '=*')			<span class="nota">// '=*=*=*=*=5'</span>
+</pre>
 
-<h1>Template strings</h1>
+<h3>String.prototype.padEnd</h3>
+<pre>
+'5'.padEnd(10)				<span class="nota">// '5         '</span>
+'5'.padEnd(10, '=*')			<span class="nota">// '5=*=*=*=*='</span>
+</pre>
+
+<h2>Template strings</h2>
 
 <p>
 E' un modo di rappresentare o se vogliamo di richiamare le variabili attraverso dei simboli che sono il <em>dollaro</em> ($) e le parentesi graffe {} e racchiudere le espressioni tra virgolette contrarie `` <b>(In windows: Alt + 96 --- in Ubuntu: AltGr + ' ) </b>
