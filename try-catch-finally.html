@@ -177,6 +177,26 @@ Esegue finally
 </pre>
 
 
+<h3>Catch Error </h3>
+
+<pre>
+
+try {
+  throw new EvalError('Hello', 'someFile.js', 10);
+} catch (e) {
+  console.log(e instanceof EvalError);			<span class="nota">// true</span>
+  console.log(e.message);				<span class="nota">// "Hello"</span>
+  console.log(e.name);					<span class="nota">// "EvalError"</span>
+  console.log(e.fileName);				<span class="nota">// "someFile.js"</span>
+  console.log(e.lineNumber);				<span class="nota">// 10</span>
+  console.log(e.columnNumber);				<span class="nota">// 0</span>
+  console.log(e.stack);					<span class="nota">// @http://localhost/JavaScript/Untitled-2.html:1224:9</span>
+}
+
+
+</pre>
+
+
 <br><br><br>
 
 

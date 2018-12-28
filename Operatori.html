@@ -197,6 +197,40 @@ console.log(jk("8"));					<span class="nota">// OK</span>
 </pre>
 
 
+<h3>Operatore Modulo %</h3>
+
+<pre>$a % $b = risultato </pre>
+<p>
+L'operatore modulo, o resto, divide l'argomento $a per l'argomento $b e restituisce il resto come risultato. <br>
+Se <q>$a=1000</q> e <q>$b=255</q> il resto sarà <q>235</q>. In altre parole avremo che <b>1000 = (255*3) + 235</b>  </p>
+
+<p id="">
+Una cosa che capita è quella di rilevare i pari e i dispari in una iterazione. <br>
+Utilizzando questo modulo lo possiamo fare molto semplicemente mettendo in relazione l'iteratore e il numero 2. <br>
+Ciò a dire che se il numero dell'iteratore è dispari, in relazione a 2, si avrà sempre come risultato uno,  mentre se l'iteratore è un numero pari si otterrà lo zero. <br>
+In altre parole, qualsiasi numero dispari in relazione con 2 da come risultato uno. Mentre qualsiasi numero pari da zero.
+</p>
+<pre>
+
+for(var i=0; i &lt; 10; i++) {
+	if(i % 2 == 1) {					<span class="nota">// 1 3 5 7 9</span>
+		console.log(i);
+	} 
+}
+
+<span class="grigio">mentre</span>
+
+for(var i=0; i &lt; 10; i++) {
+	if(i % 2 == 0) {
+		console.log(i);					<span class="nota">// 0 2 4 6 8</span>
+	}
+}
+
+</pre>
+
+
+
+
 <script type="text/javascript">
 
 

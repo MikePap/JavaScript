@@ -3,88 +3,74 @@
 <head>
 <meta charset="utf-8" />
 <title>self</title>
+<link rel="stylesheet" href="../baseLocali.css" type="text/css" /> 
 <style type="text/css">
-h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
-h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
-h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
-code, pre{ color:rgb(50,150,50);}
-.nota{ color:rgb(250,120,0);}
-.codice{ color:rgb(30,120,30);}
+
 </style>
-<script src="jQuery-1.6.min.js"> </script>
+
 </head>
+
 <body id="myBody" bottomMargin="150">
-
-
-
 
 <h1>self</h1>
 
 <p class="nota">La parola speciale <b><q>self</q></b> permette di far riferimento al documento corrente </p>
 
+<p>
+Per esempio:     
+</p>
 
-<script type="text/javascript">
-/*
-if (top==self)
-{
-    var main_frame = "http://www.java2s.com";
-    var cur_url = self.location.href;
-    var setframes = main_frame + "?" + cur_url;
-    location.href = setframes;
-}
-*/
-
-var me = self.location.href;		// http://localhost/JavaScript/self_domain.html
-alert(me);
-
-</script>
-
-<script  type="text/javascript">
-jQuery(document).ready(function(){
-
-var questa_pagina = self.location.href;	// // restituisce "http://localhost/JavaScript/self_domain.html"
-//var questa_pagina = location.pathname;	// restituisce "/JavaScript/self.html"
-
-$("div").text(questa_pagina);	
-
-}); // chiude ready 
-</script>
+<pre>
     
-<div></div> 
+self.location                  <span class="nota">// http://localhost/JavaScript/self_domain.html</span>
+self.location.protocol         <span class="nota">// http: </span>
+
+<span class="grigio">Oppure avendo tale nodo</span>
+
+&lt;body id="myBody"&gt;
+
+self.myBody.nodeName            <span class="nota">// BODY</span>
+
+</pre>
 
 <h1>document.URL</h1>
 
-<p class="nota">La proprietà <q>document.URL</q> contiene l'URL del documento corrente. Da lo stesso risultato di "self" </p>
-<script type="text/javascript">
+<p class="nota">La proprietà <q>document.URL</q> contiene l'URL del documento corrente. </p>
 
-document.write("URL: "+document.URL);
-
-</script>
+<button id="doc_url">URL documento</button>
 
 
 <h1>document.domain </h1>
 
-<p class="nota">Il proprietà <q>domain</q> contiene il nome dell'host del documento </p>
+<p class="nota">La proprietà <q>document.domain</q> contiene il nome dell'host del documento </p>
 
-<script type="text/javascript">
+<button id="doc_dominio">Dominio documento</button>
 
-document.write("Il dominio è: ",document.domain);
-
-
-</script>
 
 
 <script type="text/javascript">
 
-function function1() {
-alert(window.self.myBody.bottomMargin);
-}
+//////////////////      self        ///////////////////////
+
+console.log( self.location.protocol );
+console.log( self.myBody.nodeName );
+
+
+////////////////////   document.URL        ///////////////////////
+
+document.getElementById('doc_url').addEventListener('click', function (){
+    alert("L'URL di questo documento è: \n" + document.URL);
+}, false)
+
+////////////////////   document.domain        ///////////////////////
+
+document.getElementById('doc_dominio').addEventListener('click', function (){
+    alert("Il dominio di questo documento è: " + document.domain);
+}, false)
+
 
 </script>
 
-<br /><br />
-<p>Questo esempio successivo non funziona</p>
-<input type="button" value="Bottom Margin" onclick="function1();">
 
 
 

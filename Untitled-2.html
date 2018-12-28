@@ -153,91 +153,74 @@ This is &lt;a href=&quot;#html&quot;&gt;HTML&lt;/a&gt; with a SCRIPT',
 <script type="text/javascript">
 
 
-var s = 'mia stringa';
 
-console.log( s.slice(-3)  );
 
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////		JSON.stringify				/////////////////////////////
+/*
+var t = JSON.stringify( { event: 'CHAIN', message: 'ciao bello' } );  
+console.log(t);
+
+//let obj = { event: 'CHAIN', message: 'ciao bello' };  
+//console.log(obj['event']);
+
+let st = JSON.parse(t);
+//console.log(st['message']);
+*/
+
+
+
+/////////////////			Math			/////////////////////////////////
 
 /*
-function createHash({ timestamp, data, index }) {
-	return (timestamp+data+index);
+const port = 18070+Math.floor(Math.random()*30);						// 18070 / 18099
+console.log(port);
+var t = Math.random()*30;
+//console.log(t);
+*/
+
+
+
+
+
+//////////////////////////////		btoa - atob			////////////////////////////////
+/*
+var encodedData = window.btoa('Hello, world');				// SGVsbG8sIHdvcmxk
+console.log(encodedData);
+
+var decodedData = window.atob(encodedData);					// Hello, world
+console.log(decodedData);
+*/
+
+
+/////////////////			Function 			/////////////////////////////
+
+/*
+function poppa(){
+	var r = 'rosso';
+	var b = 'blue';
+	var fun = function () { return (r+ '-' +b);
+	 };
+	return { r , b, fun };
 }
 
-var k = {timestamp: 'alba', data: 'chiara', index: 'di notte' };
-var j = createHash( k );  
-console.log(j);
-*/
-
-
-//document.body.addEventListener('click', once(startApp));
-
-
-/*
-elemento.addEventListener("click", function cb (event){ 
-	var io = event.target;
-	alert(io.textContent);						// esecuzione di evento												
-	event.currentTarget.removeEventListener(event.type, cb);	// blocco trigger evento	
-},false);																					
-*/
-
-
-
-/*
-//var d = Date.prototype.getTimezoneOffset()
-//console.log(d);
-	
-var x = new Date();
-var c = x.getTimezoneOffset() / 60 ;	
-//console.log(c);
-
-var today = new Date();
-var day = today.getUTCDate();
-var hours = today.getUTCHours();
-//console.log(day);
-//console.log('Ore: ', hours);
-
-
-
-var ore = x.getHours();
-//console.log(ore);
-//console.log(today);
-
-console.log( today );
-
-console.log( today.toDateString() );
-console.log( today.toTimeString() );
+console.log( poppa().r  );
+console.log( poppa().b  );
+console.log(poppa().fun());
 */
 
 
 /*
-var elem = document.createElement('div');			
-elem.style['border'] = '1px solid #blue';
-elem.innerHTML = 'Ciao waglion';
-document.body.appendChild(elem);
-
-
-*/
-
-
-//document.cookie = "name=JAKi";
-//document.cookie = "name=JAKi;max-age=0";
-//document.cookie = "favorite_food=veggie";
-//document.cookie = "cognome=Pap;path="
-
-function alertCookie() {
-	alert(document.cookie);
-}
-
-//alert(location.pathname);
-
-
-document.body.addEventListener("beforeunload", function(event) {
-	alert('ciao ciao');
-});
-
-
-
-
 function filtra (lista, valore) {
 
 	var res = [], i, item;
@@ -256,257 +239,8 @@ function filtra (lista, valore) {
 }
 
 
-//console.log(filtra ([ 4, 6, 8, 'pera', 12, 'mela', 6, 'pera' ], 6) );	
+console.log(filtra ([ 4, 6, 8, 'pera', 12, 'mela', 6, 'pera' ], 6) );	
 //console.log( filtra('op', 'pera') );
-
-
-/*
-//var buffer = new ArrayBuffer(8);
-//console.log(buffer.byteLength);
-var jk = Int16Array.from('123');                      
-console.log( jk.toString('hex')  )
-*/
-
-/*
-var elem = document.getElementById("didii"); 
-
-elem.addEventListener("mouseover", function(){ 
-	var selObj = window.getSelection(); 
-	alert(selObj);
-},false);
-*/
-
-
-
-//alert(window.getSelection()) // What is called
-//alert(window.getSelection().toString())  // What
-
-var win = document.defaultView;
-//console.log(win);
-
-/*
-if (window.fullScreen) {
-	alert('SI')
-}
-else {
-	alert('NO')
-}
-*/
-
-//var elem = document.getElementById("iop"); 
-//var elem = document.getElementById('test');
-
-
-
-/*
-//var visible = window.locationbar.visible;
-var visible = window.menubar.visible;
-//console.log(visible);
-
-function foo() {
-	var selObj = window.getSelection(); 
-	alert(selObj);
-	var selRange = selObj.getRangeAt(0);
-	// do stuff with the range
-}
-
-//foo();
-
-*/
-
-
-/*
-//var match = /\d+/.exec("(one two 40) (100)(55 78)");
-var match = /d(b+)(a)/ig;
-//var arr = match.exec("cdbBdbsbz");
-//var arr = match.exec("dbada");
-
-var matcher = /<\/?([a-zA-Z0-9]+)*(.*?)\/?>/igm;
-
-console.log(arr);						// 
-console.log(arr[0]);
-console.log(arr[1]);
-console.log("3: ",  arr[2]);
-//console.log(arr[3]);
-
-//var pat = /(cal)k/; 
-//console.log( pat.test("hhhcalkkkk") );
-//console.log(/[.]/.test("1998"));				// true (per i numeri)
-//console.log(/[.]/.test("www.google.com"));
-//console.log(/\d+/.test("abc"));				// false
-*/
-
-/*
-var obj = {
-	'j k': 'jak',
-	kk: 'kappa',
-	'la mia': function (){ return 'cielo' }
-}
-
-console.log(obj['j k']);
-console.log(obj['la mia']());
-*/
-
-
-
-//document.getElementById("didii").onmouseover = function () { "testIt";}
-
-// escapeHtml(str)
-/*
-var divo = document.getElementById("divo").innerHTML; 
-//alert(divo);
-var d = escapeHtml(divo);
-//alert(d)
-
-var tt = escapeHtml("we wagnè  l'ha vist");
-
-alert( tt );
-*/
-
-/*
-var elem = document.createElement('div');			
-elem.style['border'] = '1px solid #blue';
-elem.innerHTML = 'Ciao waglion';
-document.body.appendChild(elem);
-*/
-
-
-//alert( "  > ' $ & " );
-//alert( '&amp; &lt; &gt; &quot; &#039; &#x27; &#x27; &#x2F;' ); 
-//alert( '\u003c' );
-//alert( "fuk \nfik")
-/*
-//document.cookie = "name=JAKi";
-//document.cookie = "name=JAKi;max-age=0";
-//document.cookie = "favorite_food=veggie";
-//document.cookie = "cognome=Pap;path="
-
-function alertCookie() {
-	alert(document.cookie);
-}
-
-//alert(location.pathname);
-*/
-
-
-/*
-var artisti = [{'nome':'Pino', 'cognoma':'Daniele' }, {'nome':'Fabrizio', 'cognoma':'DeAndrè'} ];
-
-console.log(artisti);
-
-for(var i=0; i < artisti.length; i++){
-	var artista = artisti[i];
-//	console.log( artista );
-	for(var attr in artista){
-//		console.log('N: ', artista[attr] );
-	}
-}
-*/
-
-
-/*
-var i=0;
-while(i < 10){
-	console.log(i);
-	i++;
-}
-*/
-
-
-/*
-function jak () {
-
-	let previousBlock = 'aldok';															// newChain[0];
-	let blockIndex = 0;
-	var newChain = ['aldo', 'giovanni', 'giacomo'];
-
-	while(blockIndex < newChain.length){
-		let block = newChain[blockIndex];
-
-		if(block === previousBlock) { return false } 
-
-		previousBlock = block;
-//		console.log(previousBlock);
-		blockIndex++;
-	}
-
-	return previousBlock;
-
-}//
-
-var j = jak();
-console.log(j);
-*/
-
-/*
-var testo = "www.abcoliodoliva.com";
-var t = testo.slice(-3);
-console.log(t);
-
-
-var t = new Date().getTime();
-//console.log(t);
-*/
-
-/*
-var myModule = (function () {
-
-	var module = {},
-	privateVariable = "Hello World";
- 
-	function privateMethod() {
-		// ...
-	}
- 
-	module.publicProperty = "Foobar";
-
-	module.publicMethod = function () {
-		console.log( privateVariable );
-	};
- 
-	return module;
- 
-})();
-
-console.log( myModule.privateVariable );
-console.log( myModule.publicProperty );				// Foobar
-myModule.publicMethod();									// Hello World
-*/
-
-
-/*
-var myRevealingModule = (function () {
- 
-	var privateVar = "Ben Cherry",
-		publicVar = "Hey there!";
-
-	function privateFunction() {
-		console.log( "Name:" + privateVar );
-	}
-
-	function publicSetName( strName ) {
-		privateVar = strName || privateVar;
-	}
-
-	function publicGetName() {
-		privateFunction();
-	}
- 
-	return {
-		setName: publicSetName,
-		greeting: publicVar,
-		getName: publicGetName
-	};
- 
-})();
-
-
-//myRevealingModule.setName( "Paul Kinlan" );
-//myRevealingModule.setName( );
-//myRevealingModule.getName();					// Name:Paul Kinlan
-console.log(myRevealingModule.privateVar );
-console.log(myRevealingModule.publicVar );
-console.log(myRevealingModule.greeting );
 */
 
 /*
@@ -521,43 +255,9 @@ function FooBar( options, fruits ){
 
 var fooBar = FooBar({a: "alpha", b:'beta'}, {a: 'ananas', b: 'banana' } );
 
-console.log(fooBar.opzioni);				// Object { a: "alpha", b: "beta" } 
-console.log(fooBar.frutti);				// Object { a: "alpha", b: "beta" } 
-//console.log(fooBar.opzioni.a);				// alpha
-*/
-
-
-
-
-/*
-var julian = [{data: {a:5, b:2}}, {data: {a:1, b:4}}, {data: {a:1, b:3}} ];
-//console.log( julian[0].data );
-for(var i=0; i < julian.length; i++){ console.log(julian[i].data); }
-*/
-
-
-
-/*
-var Func = function () {
-	this.ob = {};
-}
-
-Func.prototype.on = function (prop, val) {
-//	this.ob['frutti'] = 'mela';
-	this.ob[prop] = [];
-//	this.ob[prop] = this.ob[prop] || [];
-	this.ob[prop].push(val);
-}
-
-var frutto = new Func();
-console.log(frutto);										// Object { ob: Object }
-console.log(frutto['ob']);								// Object 
-frutto.on('frutti1', 'pera');
-frutto.on('frutti2','mela');
-frutto.on('frutti3',['arancia', 'banana']);
-
-console.log(frutto['ob']);								// Object { frutti1: Array[1], frutti2: Array[1], frutti3: Array[1] }
-console.log(frutto['ob']['frutti3'][0][1]);		// banana
+console.log(fooBar.opzioni);					// Object { a: "alpha", b: "beta" } 
+console.log(fooBar.frutti);					// Object { a: "alpha", b: "beta" } 
+console.log(fooBar.opzioni.a);				// alpha
 */
 
 
@@ -589,176 +289,7 @@ if(em['events']){
 		console.log(el);
 	})
 }
-
 */
-
-
-
-
-
-
-/*
-var ob = {};
-ob['tipo'] = [];
-ob['tipo'].push('one');
-console.log(ob);
-*/
-
-
-
-/*
-function Cody (){
-	this.events = {};
-	this.living = true;
-	this.age = 33;
-	this.gender = 'male';
-	this.getGender = function() {return this.gender;};
-	this.on = function () {
-		this.events['type'].push('fuk');
-		return this.events['type'];
-	}
-}
-
-var cody = new Cody(); 		// invocato via Cody constructor
-console.log(cody);		// restituisce  cody object and properties
-console.log( cody.on() );
-*/
-
-
-
-/*
-var istanza = new Costruttore;
-
-console.log(Costruttore.__proto__);							
-console.log(Costruttore.prototype);							
-console.log(istanza.prototype);
-console.log(istanza.__proto__);
-console.log(Object.getPrototypeOf(istanza));
-console.log(typeof  istanza);
-
-console.log(istanza.saluti());
-
-console.log(istanza.hasOwnProperty());
-*/
-
-
-/*
-function norma() {
-	console.log('ciao');
-}
-
-function Person(firstname, lastname) {
-	console.log(this);
-	this.firstname = firstname;
-	this.lastname = lastname;
-//	console.log();
-	console.log('This function is invoked.');
-}
-
-
-Person.prototype.getFullName = function() {
-	return this.firstname + ' ' + this.lastname;
-}
-
-Person.prototype.soloNome = function() {
-	return this.firstname;
-}
-
-
-console.log("Chi è this: ",  this);
-
-var john = new Person('John', 'Doe');
-//console.log(john);
-var protoJohn = john.__proto__;
-console.log(protoJohn);
-//console.log( protoJohn.__proto__ );
-console.log(Person.prototype);
-*/
-
-/*
-var obj = {nome: 'Mik', cognome: 'Pap', fanculo: function (){return 'fuk'}  };
-console.log(obj);
-
-
-console.log( Person.prototype );
-console.log( obj.prototype );
-
-console.log(Person.hasOwnProperty("prototype"))		// true
-console.log(obj.hasOwnProperty("prototype"))			// false 
-*/
-//var protoFunzione = Person.__proto__;
-//console.log(protoFunzione.__proto__  );
-//console.log( Person.__proto__);								// function ()
-//console.log(Object.getPrototypeOf(Person));	
-//console.log(Object.getPrototypeOf(obj.fanculo()));	
-//console.log(Object.getPrototypeOf(Person.getFullName()));	
-//console.log( norma.__proto__);									// function ()
-
-//console.log( Person.getFullName() );	
-
-
-//var jane = new Person('Jane', 'Doe');
-//console.log(jane);
-/*
-console.log( Person.__proto__);								// function ()
-console.log( john.__proto__);									// Object { getFullName: Person.prototype.getFullName(), 1 altro… }
-console.log(Person.__proto__ === jane.__proto__ );		// false
-console.log( john.__proto__ === jane.__proto__ );		// true
-*/
-
-
-
-
-
-/*
-var ob = {success: [] };
-//console.log(ob.success.push('ok'));
-ob.success.push('ok');
-console.log(ob.success);
-*/
-
-/*
-var foo = function(){
-	console.log('uno');
-	return  'due';
-//		'due'
-//		function (){ console.log('due')}()
-//		function(){	console.log('tre')}()
-//	}()
-}
-var f = foo();
-console.log(f);
-*/
-/*
-var foo = function(){
-	console.log('uno');
-	return function (){
-		console.log('due');
-		return function () {
-			console.log('tre');
-		}()
-	}();
-}()
-//foo();
-*/
-//'jkjkj';
-
-
-
-/*
-var foo = function(){
-	console.log('uno');
-	var bar = function(){
-		console.log('due');
-		var goo = function(){
-			console.log('ultima');			 
-		}();
-	}();
-};
-foo();	
-*/
-
-
 
 /*
 function Person(firstname, lastname) {
@@ -777,8 +308,8 @@ var john = new Person('John', 'Doe');
 
 var jane = new Person('Jane', 'Doe');
 //console.log(jane);
-var mik = {nome:'Mikele', cognome:'Prigigallo'}
 */
+
 
 /*
 var person = {
@@ -794,62 +325,167 @@ var john = {
 	lastname: 'Doe'
 }
 
-//john.__proto__ = person;
-//console.log(john.getFullName()  );
-//var j = person;
-//var aj = Object.create(j);
-//john.prototype = Object.create(person.prototype);
-//var j = person;
-//aj.firstname = 'Mik';
-//console.log(j.getFullName()  );
-//var obj = Object.assign(person, john);
-//console.log(obj.getFullName());
+//john.__proto__ = person;										// John Doe
+
+//var john = Object.create(person);
+//console.log(john.getFullName());							// Default Default
+
+var obj = Object.assign(person, john);
+console.log(obj.getFullName());								// John Doe
 */
 
 /*
-for (var prop in john) {
-	console.log(prop + ': ' + john[prop]);			// 
+function reduce(combine, base, array) {
+//	Array.forEach(array, function (element) {
+	array.forEach(function (element) {
+		base = combine(base, element);
+	});
+	return base;
 }
+
+function add(a, b) {
+	return a + b;
+}
+
+function sum(numbers) {
+	return reduce(add, 3, numbers);
+}
+
+
+console.log(sum([1,5,8,2]) );
 */
+
+///// 	Metodi e proprietà in stringhe di testo		
+/*
+var obj = {
+	'j k': 'jak',
+	kk: 'kappa',
+	'la mia': function (){ return 'cielo' }
+}
+
+console.log(obj['j k']);
+console.log(obj['la mia']());
+*/
+
+/////////////////			FINE Function 			/////////////////////////////
+
+
+
+////////////////////////		Date 			////////////////////////
+/*
+
+ console.log(new Date().getTime());
+
+//var d = Date.prototype.getTimezoneOffset()
+//console.log(d);								// errore
+	
+var x = new Date();
+var c = x.getTimezoneOffset() / 60 ;	
+console.log(c);								// -1
+
+var today = new Date();
+var day = today.getUTCDate();
+var hours = today.getUTCHours();
+console.log(day);
+console.log('Ore: ', hours);
+var ore = x.getHours();
+console.log(ore);
+
+console.log( today );										// Date 2018-12-20T15:32:47.187Z
+
+console.log( today.toDateString() );					// Thu Dec 20 2018
+console.log( today.toTimeString() );					// 16:32:47 GMT+0100 (Ora standard dell’Europa centrale)
+
+*/
+
+///////////////////////////////		Array buffer 			////////////////////////////
+/*
+var buffer = new ArrayBuffer(8);
+console.log(buffer.byteLength);
+var jk = Int16Array.from('123');                      
+console.log( jk.toString('hex')  )
+*/
+
+
 
 /*
-var person = {
-	firstname: 'Default',
-	lastname: 'Default',
-	getFullName: function() {
-		return this.firstname + ' ' + this.lastname;  
-	}
-}
+var elem = document.getElementById("didii"); 
 
-var john = {
-	firstname: 'John',
-	lastname: 'Doe'
-}
-
-
-var jane = {
-	address: '111 Main St.',
-	getFormalFullName: function() {
-		return this.lastname + ', ' + this.firstname;   
-	}
-}
-
-var jim = {
-	getFirstName: function() {
-		return firstname;   
-	}
-}
-
-
-Object.assign(john, jane, jim);
-console.log(john);								// john gets properties from jane e jim
+elem.addEventListener("mouseover", function(){ 
+	var selObj = window.getSelection(); 
+	alert(selObj);
+},false);
 */
+
+
+
+//var elem = document.getElementById("iop"); 
+//var elem = document.getElementById('test');
+
+
+/////////////////		Reguler Expression 		///////////////////////////
+/*
+var pat = /(cal)k/; 
+console.log( pat.test("hhhcalkkkk") );					// true
+console.log(/[.]/.test("1998"));							// false
+console.log(/[.]/.test("www.google.com"));			// true
+console.log(/\d+/.test("abc"));							// false
+*/
+
+
+
+
+/////////////////////////////		escapeHtml		/////////////////////////
 
 /*
-function attesa(){
-	setTimeout(function(){ console.log('Funzione attesa'); }, 3000);
-}
+var divo = document.getElementById("divo").innerHTML; 
+alert(divo);
+var d = escapeHtml(divo);
+alert(d)
+
+var tt = escapeHtml("we wagnè  l'ha vist");
+alert( tt );
 */
+
+
+
+//////////////////////////////////////		alert		/////////////////////////////
+/*
+//alert( "  > ' $ & " );
+//alert( '&amp; &lt; &gt; &quot; &#039; &#x27; &#x27; &#x2F;' ); 
+//alert( '\u003c' );							// <  (minore)
+//alert( "fuk \nfik")
+*/
+
+///////////////////////////////////		cookie 		/////////////////////////////////////
+
+/*
+document.cookie = "name=JAKi";
+document.cookie = "name=JAKi;max-age=0";							// annullo il cookie precedente
+document.cookie = "favorite_food=veggie";
+document.cookie = "cognome=Pap;path="
+
+function alertCookie() {
+	alert(document.cookie);
+}
+
+alertCookie();
+*/
+
+
+
+////////////////////////////////////		slice		////////////////////////////////////////////
+/*
+var testo = "www.abcoliodoliva.com";
+var t = testo.slice(-3);								// com
+console.log(t);
+*/
+
+
+
+
+
+////////////////////////		while		/////////////////////////////////////////////////
 /*
 function attesa(){
 	var ms = 3000 + new Date().getTime();
@@ -857,17 +493,8 @@ function attesa(){
 	console.log("Funzione attesa terminata");
 }
 
-
-function clik(){
-	console.log('Evento click');
-}
-
-document.addEventListener("click", 	clik );
-
-
-
-attesa();
-console.log('OK');
+attesa();										// analizza e lo restituisce prima e poi
+console.log('OK');							// visualizza questo
 */
 
 
@@ -881,9 +508,10 @@ el.nextElementSibling.remove(); // Removes the div with the 'div-02' id
 */
 
 
-
 /*
-function CheckRequest(newurl) {
+////////////////////		Confirm			/////////////////////////////////////////////////////
+
+function CheckRequest() {
 	if (confirm("Vuoi cancellare questo file ?")){
 		return true
 	}else{
@@ -892,7 +520,8 @@ function CheckRequest(newurl) {
 }
 
 //var username = prompt("Type your name:", "");
-var chiediConferma =	confirm("Vuoi cancellare questo file ?")
+//var chiediConferma =	confirm("Vuoi cancellare questo file ?")
+var chiediConferma = CheckRequest();
 
 if( chiediConferma === true) {
 	alert('va bene')
@@ -901,8 +530,9 @@ if( chiediConferma === true) {
 }
 */
 
-
 /*
+/////////////////////////////////		async				///////////////////////////////////
+
 function asyncFunc() {
 	return new Promise((resolve, reject) => {
 		setTimeout(() => resolve('DONE'), 3000);
@@ -914,11 +544,12 @@ async function main() {
 	console.log('Result: '+x);
 }
 
-main();																			// Result: DONE
+//main();																			// Result: DONE
 console.log('OK');
-//asyncFunc().then(x => console.log('Result: '+x));				// uguale
+asyncFunc().then(x => console.log('Result: '+x));				// uguale
 */
 
+//////////////////////////////////////////////////////////////////////////
 /*
 function asyncFunc() {
 	const blank = [];
@@ -935,14 +566,16 @@ setTimeout(() => {
 
 /*
 function asyncFunc() {
+
 	const eventEmitter = { success: [] };
 	setTimeout(() => { 
 		for (const handler of eventEmitter.success) {
 			handler('DONE');
 		}
 	}, 2000);
+
 	return eventEmitter;
-}
+}//
 
 asyncFunc().success.push(x => console.log('Result: '+x));
 */
@@ -950,13 +583,7 @@ asyncFunc().success.push(x => console.log('Result: '+x));
 
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-//var t = new Date().getTime();
-//console.log(t);
+////////////////////////////		Array		//////////////////////////////////////////
 
 /*
 // Eliminazione di un elemento da un array
@@ -968,10 +595,8 @@ for(var i=0; i < utenti.length; i++){
 	var oggetto = utenti[i];
 	if(oggetto['iddiutente'] === 'Mik354')
 		utenti.splice(i, 1);
-//	delete utenti[i];
-//	console.log(utenti);
 }
-console.log(utenti);
+console.log(utenti);									// Array: [ { nome: 'Frank', iddiutente: 'Frank224', disabled: '' } ]
 */
 
 /*
@@ -999,53 +624,7 @@ while(l--){
 */
 
 
-/*
-var jon = document.getElementById("jon"); 
-//jon.style['color'] = 'red';
 
-jon.addEventListener("click", function(){ 
-		
-},false);
-
-
-
-
-var j-on = {
-	'color': 'red', 
-	'background': 'green'
-}
-
-console.log(j on.color );
-*/
-//window.onload = function (){}
-
-
-/*
-var obj = {
-	details:{
-		color: "orange",
-		size: 12
-	}
-}
-
-console.log( obj.details.color	)		// restituisce 'orange'
-*/
-
-/*
-jon.style = function (){
-	'color' = this.color;
-}
-*/
-
-
-/*
-for(var i=0; i< 2; i++){
-//	console.log(1);
-	for(var a=0; a < 4; a++){
-		console.log(a);
-	}
-} 
-*/
 
 /*
 ////////// 	Design patterns 	///////////////////
@@ -1084,14 +663,7 @@ myRevealingModule.getName();
 
 
 
-//////////////////////////////////////////////////////////////////
-
-/*
-for(var i in obj){
-	console.log(i);
-	console.log(obj[i]);
-}
-*/
+////////////////////////	try catch error	//////////////////////////////////////////
 
 /*
 try {
@@ -1103,243 +675,33 @@ try {
   console.log(e.fileName);             // "someFile.js"
   console.log(e.lineNumber);           // 10
   console.log(e.columnNumber);         // 0
-  console.log(e.stack);                // "@Scratchpad/2:2:9\n"
+  console.log(e.stack);                // @http://localhost/JavaScript/Untitled-2.html:1224:9
 }
 */
 
+///////////////////////
 
-//var sayHi = (() => console.log('hi!'))() ;
-
-//sayHi();
-
-
-//sayHi();
-
-//console.log( $('#divo').innerHTML);
-//var larghezza = window.getComputedStyle($('#divo')).width;
-//console.log(parseFloat(larghezza));
-
-/*
-console.log( a.join(' - ')  );
-var c = document.querySelectorAll('#colPranzoCena > button');
-var lista = Array.prototype.slice.call(c);
-//console.log(lista.join(' - ') );
-*/
-
-
-/*
-for(let i=0; i < lista.length; i++){
-	let el = lista[i];
-	if(el)
-	console.log(el.innerHTML);
-}
-*/
-
-
-/*
-let creaArray = (n) => {
-	let numbersArray = [] , max = n, i;
-	for(i=1; i <= max; i++){
-		numbersArray.push(i);
-	} 
-	return numbersArray;
-}
-
-console.log(creaArray(10));
-
-*/
-
-
-
-//var cocco = document.querySelectorAll('#colPranzoCena > button');
-
-//console.log( typeof cocco  );
-
-
-/*
-var divo = document.getElementById("divo");
-divo.addEventListener("click", function(){ 
-	eliminaNodiInterni('#colPranzoCena');	
-},false);
-*/
-
-
-
-
-
-/*
-function ciclo(lista, funzione){
-	var i, elemento;
-	if(Array.isArray(lista)){
-		for (i= 0; i < lista.length; i++) {
-			elemento = lista[i];
-			funzione(elemento);
-		}
-	}	
-}
-
-var colori = ['verde', 'rosso', 'bianco' ];
-ciclo(colori, function(colore){
-	console.log(colore);
-})
-*/
-
-
-//var j = document.querySelector('').style[''] = '';
-//attributi
-/*
-function applicaStili(nodi, stiliCSS){
-	var nodi = document.querySelectorAll(nodi);
-	for (var i = 0; i < nodi.length; i++) {
-		var elemento = nodi[i];
-		if (stiliCSS) {
-			for (var attr in stiliCSS){
-				if (stiliCSS.hasOwnProperty(attr)){
-					elemento.style[attr] = stiliCSS[attr];
-				}				
-			}
-		}
-	}
-}
-
-//var stili = { 'mik': 'pap', 'jon': 'belushi' };
-var stili = {
-	color: 'blue',
-	background: '#ccc',
-	border: '1px solid rgb(255,0,0)'
-}
-
-//applicaStili('.diva', stili);
-//applicaStili('#jon', stili);
-*/
-
-/*
-//var divo = document.querySelector('#divo');
-var $ = (selettore) => document.querySelector(selettore); 
-
-$('#divo').addEventListener('click', function(){
-	console.log('ok');
-}, false);
-*/
-
-/*
-function Answer (val){
-	var gut = function (){
-		return val;
-//		console.log(val);
-	}();
-	return {gut: gut}
-}
-
-var a = Answer(20);
-//console.log(a.gut);
-
-var aAnswer = Object.create(Answer(80));			
-//aAnswer.val = 10;
-//console.log(aAnswer.gut);		
-
-var t = function (){
-//function t(){ 
-	var f = function (){
-		return 'fuk';
-	}
-	return {b: f};
-}()
-//console.log(t.b());
-
-
-var h = function (){
-	this.k = function(){
-		return 'ko';
-	}
-	return {k:k}
-}()
-
-console.log(h.k());
-*/
-
-
-
-
-
-
-
-
-
-
-
-//localStorage.setItem("barrra", 5);			
-//localStorage.removeItem("barrra");	
-//console.log(localStorage.getItem('barrra'));
-
-
-/*
-var createCounter = (counterName) => {
-	var counter = 0;
-
-	var display = () => {
-		console.log("Number of " + counterName + ": " + counter);
-	}
-
-
-	var increment = () => {
-		counter = counter + 1;
-		display();
-	};
-
-	var decrement = () => {
-		counter = counter - 1;
-		if(counter >= 0)			//se si vuole evitare che 'counter' scenda a valori negativi
-			display();
-	};
-
-
-	return {
-		increment : increment,
-		decrement : decrement
-	};
-	
-}
-
-var dogsCounter = createCounter("dogs");
-
-dogsCounter.increment();				// Number of dogs: 1
-dogsCounter.increment();				// Number of dogs: 2
-*/
-
-
+//////////////////////////////		Oggetti		//////////////////////////////
 
 /*
 var ob = [
 	{ uno: 1, due:2, tre:3  },
 	{ a:"albero", b: "banana", c: "cocco" }
 ];
-*/
 
-
-/*
 console.log(ob[1]);						// Object { a: "albero", b: "banana", c: "cocco" }
 console.log(ob[1]["a"]);				// albero
 var primo = ob[0];
 
 for(var i in primo)
 	console.log(primo[i]);				// 1 2 3
-*/
 
-/*
+
 var jxt = JSON.stringify(ob); 
-
-var bp = JSON.parse(jxt, function(key, value){ 
-	return value; 
-}); 
+var bp = JSON.parse(jxt);
 console.log(bp[0]["uno"]);				// 1
+console.log(bp[1]["a"]);					// albero
 
-
-var t = JSON.parse(jxt);
-console.log(t[1]["a"]);					// albero
-*/
-
-/*
 for(var x in ob){
 	var t = ob[x];
 //	if("ab" in t){
@@ -1376,84 +738,12 @@ function esecuzione(ev){
 nodiFigli("#colPranzoCena", "click", esecuzione);
 */
 
-/*
-var elementi = document.querySelectorAll('.pasti');
 
-
-for(var i=0; i< elementi.length; i++){
-	var elemento = elementi[i];
-	elemento.addEventListener('click', function (event){
-//		console.log(this.textContent);
-//		console.log(event.target.textContent);
-		esecuzione(event.target);
-	},false);
-}
-
-
-function esecuzione(ev){
-//	Ciclo.call(this);
-//	console.log('fuk');
-//	console.log(this.textContent);
-	console.log(ev.textContent);
-//	var ev = 
-}
-*/
-
-/*
-function Ciclo(nodi, evento, funzione){
-	var nodi = document.querySelectorAll(nodi);
-	for(var i=0; i< nodi.length; i++){
-		var nodo = nodi[i];
-		nodo.addEventListener(evento, function (event){
-//			console.log(this.textContent);
-			funzione(event.target);
-		},false);
-	}
-}
-
-/*
-function esecuzione(ev){
-//	console.log('fuk');
-	console.log(ev.textContent);
-}
-*/
-
-/*
-//var esecuzione = () =>	console.log('fuk');						// OK 
-var esecuzione = (event) =>	console.log(event.textContent);
-
-
-Ciclo('.pasti', 'click', esecuzione);
-//var t = new	Ciclo('.pasti', 'click', esecuzione);
-
-//esecuzione();
-
-
-
-
-/*
-var t = new esecuzione();
-var u =	t.constructor === Ciclo;						/// true 
-console.log(u);
-*/
 
 
 
 ///////////////////////////////////////////////////////////////////////////
 
-/*
-var obj = {a:'avocado', b:'banana'};
-
-for(var attr in obj){
-	console.log(obj[attr]);
-}
-*/
-
-
-//var divo = document.getElementById('divo');
-//var stile = window.getComputedStyle(divo).width;
-
-//console.log(stile);
 /*
 function rilevaStile(elemento, stile){
 	var elem = document.querySelector(elemento); 
@@ -1481,59 +771,8 @@ console.log(sfondo);
 console.log(color);
 */
 
-/*
-let arr = [ 3, 5, 7 ];
-arr.foo = "hello";
+/////////////////////////////////// 	Promise 		 /////////////////////////////////////////////////////////
 
-arr.forEach(function (element, index) {
-	console.log(element);				// logs "3", "5", "7"
-//	console.log(index);				// logs "0", "1", "2"
-});
-
-
-//var url = "http://www.abcoliodoliva.com?regioni=Puglia&citta=bari ";
-// ?pagina=2&ordinamento=title
-var query = document.location.search;
-var sep1 = "&";
-var sep2 = "=";
-var str1 = query.split(sep1);				// Array [ "?pagina=2", "ordinamento=title" ]
-var str2 = str1[0].split(sep2);			// Array [ "?pagina", "2" ]
-var pagina = str2[1] -1;
-
-console.log(str2);
-console.log(pagina);
-*/
-
-
-/*
-function getValue(condition) {
-
-	if (condition) {
-	  var value = "blue";
-
-	  // other code
-
-	  return value;
-	} else {
-
-	  // value exists here with a value of undefined
-
-	  return null;
-	}
-
-	// value exists here with a value of undefined
-}
-
-console.log(getValue())
-
-
-let items = Array.of(1, 2);
-console.log(items.length);          // 2
-console.log(items[0]);              // 1
-console.log(items[1]);              // 2
-*/
-
-///////// Promise ////////////
 /*
 let promise = new Promise(function(resolve, reject) {
 	console.log("Promise");
@@ -1621,7 +860,11 @@ p4.then(function(value) {
 });
 */
 
-///// Proxies //////////////
+
+
+
+
+/////////////////////////////////////////// 		Proxies		 ///////////////////////////////////////
 /*
 let proxy = new Proxy({}, {
 
@@ -1726,93 +969,8 @@ console.log("toString" in proxy);   // true
 
 ////////////////////////////////////////////////////////////////////
 
-/*
-
-ring:eac9a15bd79ba1f257263f168681870f4a2f12a4
-	  eac9a15bd79ba1f257263f168681870f4a2f12a4
-*/
-
-/*
-var alberi = ['pino', 'acero', 'pioppo', 'abete', 'frassino' ]
-var lung = alberi.length;
-console.log("N. alberi: ", lung);
-var taglia = alberi.splice(0, 1);
-console.log("Albero: ", alberi);
-*/
-
-/*
-var frutta = [ "mela", "pera", "banana", "mango", "melone" ];
-var lung = frutta.length;
-var t1 = frutta.splice(0, lung -1);
-console.log(frutta);								// [ "mela", "pera", "ciliege", "banana", "mango", "melone" ]
-console.log(t1);									// []
-*/
 
 
-/*
-var t2 = frutta.splice(2, 2);
-console.log(frutta);								// [ "mela", "pera", "mango", "melone" ]
-console.log(t2);									// [ "ciliege", "banana" ]
-
-var t3 = frutta.splice(2, 2, 'pesca');		
-console.log(frutta);								// [ "mela", "pera", "pesca" ]
-console.log(t3);									// [ "mango", "melone" ]
-console.log(frutta.length);					// 3
-
-var t4 = frutta.splice(2);
-console.log("t4", frutta);						// [ "mela", "pera" ]
-console.log(t4);									// [ "pesca" ]
-console.log(frutta.length);					// 2
-*/
-
-//var t4 = 
-
-
-
-//console.log(Object.prototype.toString.call(a1) );
-//console.log( typeof oggetto.cognome );			// string
-
-/*
-Object.getOwnPropertyNames(a1).forEach(function(val, idx, array) {
-	console.log( typeof array );
-})
-*/
-
-//console.log(jk(a1));
-
-//let arri = [ 3, 5, 7 ];
-/*
-arri.forEach(function (element, index) {
-//	console.log(element);								// logs "3", "5", "7"
-	console.log(index);									// logs "0", "1", "2"
-});
-*/
-/*
-Array.forEach(arri, function (element, index) {
-	console.log(element);								// logs "3", "5", "7"
-//	console.log(index);									// logs "0", "1", "2"
-});
-*/
-/*
-function reduce(combine, base, array) {
-//	Array.forEach(array, function (element) {
-	array.forEach(function (element) {
-		base = combine(base, element);
-	});
-	return base;
-}
-
-function add(a, b) {
-	return a + b;
-}
-
-function sum(numbers) {
-	return reduce(add, 3, numbers);
-}
-
-
-console.log(sum([1,5,8,2]) );
-*/
 
 </script>
 
