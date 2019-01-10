@@ -23,6 +23,7 @@ padding:10px; margin:10px; border: 1px solid #888;
 
 		<option value="s1">Cambiare il selettore</option>
 		<option value="s1a">Utilizzare il listener soltanto una volta</option>
+		<option value="s1b">Ottenere il numero di proprietà di un oggetto</option>
 		
 		<optgroup label="Array">
 			<option value="s2">Ottenere un elemento casuale da un array</option>
@@ -109,17 +110,36 @@ document.getElementById("elemento").addEventListener("click", unSoloEvento(ciao)
 </span>
 </pre>
 
-
-
 </section>
 
+<section id="s1b">
+<h3>Ottenere il numero di proprietà di un oggetto</h3>
+
+<pre>
+
+let obj = { frutto: 'mela', colore: 'rossa', tipo: 'deliziosa' };
+
+function sizeOggetto (oggetto) { 
+	let n = 0; 
+	for(let i in oggetto){ n++; }
+	return n;
+}
+<span class="azzurro">
+console.log( sizeOggetto(obj) );			<span class="nota">// 3</span>
+</span>
+
+</pre>
+
+</section>
 
 <section id="s2">
 <h3>Ottenere un elemento casuale da un array </h3>
 
 <pre>
+
 var items = [12, 548 , 'a' , 2 , 5478 , 'foo' , 8852, , 'Doe' , 2145 , 119];
 var  randomItem = items[Math.floor(Math.random() * items.length)];
+
 </pre>
 </section>
 

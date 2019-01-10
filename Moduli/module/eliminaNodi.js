@@ -1,3 +1,27 @@
+////	Polyfill	remove	////
+//var el = document.getElementById('div-01');
+//el.remove();
+//el.nextElementSibling.remove();					// rimuove il <div id="div-02">
+
+(function (arr) {
+	arr.forEach(function (item) {
+		if (item.hasOwnProperty('remove')) {
+			return;
+		}
+		Object.defineProperty(item, 'remove', {
+			configurable: true,
+			enumerable: true,
+			writable: true,
+			value: function remove() {
+				if (this.parentNode !== null)
+				this.parentNode.removeChild(this);
+			}
+		});
+	});
+})([Element.prototype, CharacterData.prototype, DocumentType.prototype]);
+
+
+
 // Funzione che elimina gli elementi interni ad uno specificato nodo
 let eliminaNodiInterni = (nodo) => {
 	const elementiNodo = document.querySelectorAll(nodo+' > *');
@@ -15,9 +39,13 @@ let eliminaNodoBox = (genitore, iddiNodo) => {
 	for(i=0; i < elementiBox.length; i++){
 		elem = elementiBox[i];
 		if(elem.getAttribute('id') === iddiNodo)
-			elem.parentNode.removeChild(elem);	
+//			elem.parentNode.removeChild(elem);
+			elem.remove();											// con l'uso del metodo "remove"
 	}
 }
+
+
+
 
 export { eliminaNodiInterni, eliminaNodoBox }
 
