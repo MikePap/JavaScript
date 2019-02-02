@@ -3,21 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <title>let  e const</title>
-<style type="text/css">
-h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
-h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
-h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
-code, pre{ color:rgb(20,150,30); font-weight:bold; background:rgb(230,230,230); margin:5px 10px; padding:8px; }
-.nota{ color:rgb(250,120,0);}
-.grigio{color:gray;}
-.azzurro{color:rgb(100,150,255);}
-.scuro{color:#333;}
-.rosso{color:red;}
-.codice{ color:rgb(30,120,30);}		
-dt{ color:#003399; margin-bottom:5px;}
-dd{ color:#0066FF;}
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
 
-</style>
+<style type="text/css"></style>
 </head>
 <body>
 
@@ -60,6 +48,66 @@ function getValue(condition) {
 <p>
 Ciò, per chi è abituato con altri linguaggi, porta a confusione ed errori; pertanto per ovviare a questo problema, <em>ECMAScript 6</em> ha introdotto la dichiarazione <b>let</b>
 </p>
+<p>Vediamo altri casi particolari</p>
+
+<pre>
+function funzione(arg) {
+	if (arg) {
+		var x = 10;
+	}
+	return x;
+}
+<span class="azzurro">
+console.log( funzione(true) );				<span class="nota">// 10</span>
+console.log( funzione(false) );				<span class="nota">// undefined</span>
+console.log( funzione() );				<span class="nota">// undefined</span>
+</span>
+</pre>
+
+<p>
+Come possiamo notare dall'esempio, la variabile x anche se dichiarata nella funzione è accessibile al di fuori di essa. <br>
+Oppure 
+</p>
+<pre>
+function sumMatrix(matrix) {
+	var sum = 0;
+	for (var i = 0; i &lt; matrix.length; i++) {
+		var currentRow = matrix[i];
+		for (var i = 0; i &lt; currentRow.length; i++) {
+			sum += currentRow[i];
+		}
+	}
+	return sum;
+}
+
+var lista = [ [ 1, 2, 3 ], [5, 6] ];
+<span class="azzurro">
+console.log(sumMatrix(lista));				<span class="nota">// 6</span>
+</span>
+
+</pre>
+<p>Il risultato ottenuto non era quello desiderato. Ci si aspettava di ottenere la somma di tutti gli elementi (cioè 17). <br>
+Vediamo un'altra stranezza
+</p>
+<pre>
+for (var i = 0; i &lt; 10; i++) {
+	setTimeout(function() { console.log(i); }, 100 * i);
+}
+
+</pre>
+<p>Restituisce sempre 10 per 10 volte; quello che si vuole è 0,1,2,3,4,5,6,7,8,9. <br>
+Per ottenerlo siamo obbligati ad usare le IIFE (Immediately Invoked Function Expression)
+</p>
+<pre>
+for (var i = 0; i &lt; 10; i++) {
+	(function(i) {
+		setTimeout(function() { console.log(i); }, 100 * i);
+	})(i);
+}
+
+</pre>
+
+
 
 <h1>let</h1>
 
@@ -176,6 +224,23 @@ function func(arg) {
 	var arg;			<span class="nota">// tutto ok </span>
 }
 
+<span class="grigio">Oppure, nella seguente, non c'è nessun errore; la variabile "x" è sempre valida </span>
+
+function f(x) {
+	var x;
+	var x;
+
+	if (true) {
+		 var x;
+	}
+}
+
+<span class="grigio">Mentre nel seguente avremo errore </span>
+
+function g() {
+	let x = 100;
+	var x = 100;
+}
 
 </pre>
 
