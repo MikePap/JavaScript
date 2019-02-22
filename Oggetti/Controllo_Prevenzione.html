@@ -300,7 +300,7 @@ var buz = {
 };
 
 for (var prendi in buz) {
-	if (buz.hasOwnProperty("nome")) {
+	if (buz.hasOwnProperty(prendi)) {
 		console.log(prendi+ ": " +buz[prendi])	<span class="nota">// restituisce 'nome: Marco' 'cognome: Anselmi'</span>
 	}else{
 		console.log(prendi);			<span class="nota">toString o altre</span>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Fetch API</title>
+	<link rel="stylesheet" href="../../baseLocali.css" type="text/css" /> 
+	<style type="text/css">
+	img, ul { 
+		margin-left: 2rem;
+	}
+	article {
+		width: 80%; margin-left: 10%;
+		border: 3px double blue ;
+	}
+	</style>
+</head>
+<body>
+
+	<h1>Fetch</h1>
+
+	<p>
+L'API <b>Fetch</b> fornisce un interfaccia per acquisire risorse, incluse quelle in rete. <br>
+Fetch fornisce una generica definizione degli oggetti <span class="nota">Request</span> e <span class="nota">Response</span> 
+e altre cose coinvolte con richieste di rete. <br>
+La sua sintassi è:
+	</p>
+	<pre>
+
+	fetch(input[, init]);	
+	</pre>
+
+	<p>
+Il metodo <em>fetch</em> accetta come unico argomento obbligatorio il percorso della risorsa che si vuole ottenere. 
+Viene restituito un «Promise» come Response che a sua volta viene gestito a seconda del tipo.
+	</p>
+	<pre>
+
+let ulivi = document.querySelector('img');
+
+fetch('../../Immagini/campoUlivi.jpg').then(function(response) {
+	return response.blob();						<span class="nota">** le immagini restituiscono un oggetto «Blob»</span>
+}).then(function(blob) {
+	const objectURL = URL.createObjectURL(blob);
+	ulivi.src = objectURL;
+});
+
+	</pre>
+
+	<img src=""  id="ulivi" width="200" >
+	<p>
+Siccome si sta cercando di prelevare una immagine allora il suo «Response» sarà un oggetto «Blob» il quale non è 
+necessariamente un formato nativo Javascript. <br>
+Quindi grazie al metodo <b>URL.createObjectURL()</b> possiamo creare un URL da assegnare al parametro «src» dell'immagine. 
+	</p>
+
+
+	<p> 
+Il promise ottenuto dalla richiesta non rigetta ( <em>reject</em> ) gli errori HTTP (es: 404) ma rigetta solo gli <b>errori di rete</b>. 
+E' solo successivamente, col metodo <b>then</b>, che è possibile gestire gli errori HTTP.
+	</p>
+	<pre>
+
+fetch('img-non-esistente.jpg')
+.then(function(response) {
+	if(!response.ok) {
+		console.log('Errore: ', response.status);		<span class="nota">// Errore: 404</span>
+	}
+	return response.blob();
+}).then(function(blob) {
+	const objectURL = URL.createObjectURL(blob);
+	ulivi.src = objectURL;
+});
+			
+	</pre>
+
+	<p>
+Il secondo argomento è una oggetto di opzioni da affiancare alla richiesta. Le opzioni sono le seguenti: 
+<em>method</em>, <em>headers</em>, <em>body</em>, <em>mode</em>, <em>credentials</em>, <em>cache</em>, 
+<em>redirect</em>, <em>referrer</em>, <em>referrerPolicy</em>, <em>integrity</em>, <em>keepalive</em>, <em>signal</em>. <br>
+Per un approfondimento 
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters">vedere qui</a>
+	</p>
+	<p>
+Il seguente è un esempio più completo con l'aggiunta di alcune opzioni
+	</p>
+	<pre>
+
+const myHeaders = new Headers();
+myHeaders.append('Content-Type', 'image/jpeg');
+
+let myInit = {
+	method: 'GET',
+	headers: myHeaders,
+	mode: 'cors',
+	cache: 'default'
+};
+
+let richiesta = new Request('../../Immagini/campoUlivi.jpg');
+
+fetch(richiesta, myInit)
+.then(function(response) {
+	if (!response.ok) {
+		throw new Error("HTTP error, status = " + response.status);
+	}
+	return response.blob();
+})
+.then(function(blob) {
+	const objectURL = URL.createObjectURL(blob);
+	ulivi.src = objectURL;
+})
+.catch(function(error) {
+	let p = document.createElement('p');
+	p.appendChild(
+	document.createTextNode('Error: ' + error.message)
+);
+	document.body.insertBefore(p, ulivi);
+});
+
+	</pre>
+	<p>
+Oppure:		
+	</p>
+	<pre>
+
+const myInit = 
+	{ method: 'GET',
+		headers: {
+			'Content-Type': 'image/jpeg'
+		},
+		mode: 'cors',
+		cache: 'default' 
+};
+		
+let richiesta = new Request('../../Immagini/campoUlivi.jpg');
+
+fetch(richiesta, myInit)
+.then(function(response) {
+	ecc... come sopra
+
+	</pre>
+
+
+	<h3>Fetch di file json</h3>
+	<p>Ecco un esempio di come rilevare e gestire un file json  </p>
+	<pre>
+
+const miaLista = document.querySelector('ul');
+const fileJson = "../allegati/img_ulivo.json";
+fetch(fileJson).then(function(response) {
+	if (!response.ok) {
+		throw new Error("HTTP error, status = " + response.status);
+	}
+	return response.json();
+}).then(function(json) {
+
+	for(let i=0; i &lt json.length; i++) {
+		let listItem = document.createElement('li');
+		let titolo = json[i]['titolo'];
+		let indice = json[i]['indice'];
+		listItem.innerHTML = '&lt;b&gt;' +titolo+ '&lt;/b&gt;';
+		listItem.innerHTML += ' ha l\'indice ' +indice;
+		miaLista.appendChild(listItem);
+	}
+}).catch(function(error) {
+	console.log('Errore: ' + error.message);
+});
+
+	</pre>
+
+
+	<ul id="listaUlivi" ></ul>
+
+	<h3>Fetch formato testo </h3>
+
+	<p>
+Il seguente è un esempio di caricamento di file in formato testo (txt). 
+	</p>
+	<pre>
+		
+const myArticle = document.querySelector('article');
+const richiestaTesto = new Request('../Ajax/prova.txt');				
+
+fetch(richiestaTesto).then(function(response) {
+	if (!response.ok) {
+		throw new Error("HTTP error, status = " + response.status);
+	}
+	return response.text();
+}).then(function(text) {
+	myArticle.innerHTML = text;
+}).catch(function(error) {
+	myArticle.innerHTML = '';
+	myArticle.appendChild( document.createTextNode('Error: ' + error.message) );
+});
+		
+	</pre>
+
+
+		<article></article>
+
+
+	<h3>Errore header CORS</h3>
+	<p>
+Quando si cerca di caricare risorse in remoto (da altri siti) è possibile che la richiesta venga bloccata.<br> 
+Se l'errore è di questo tipo: <span class="nota"> header CORS "Access-Control-Allow-Origin" mancante </span>
+vuol dire che è dovuto al fatto che l'origine della risorsa (il sito) non consente la lettura di tale risorsa. <br>
+	</p>
+	<p>
+Per fare in modo che la risorsa sia disponibile bisogna intervenire fornendo l'intestazione <b>Access-Control-Allow-Origin</b>. <br>
+Ad esempio, per permettere al sito "https://amazing.site" di accedere alla risorsa che fa uso di CORS, 
+l'intestazione dovrebbe essere la seguente:
+	</p>
+	<pre>
+	Access-Control-Allow-Origin: https://amazing.site		
+	</pre>
+	<p>
+	E' possibile anche configurare un sito in modo che permetta l'accesso ad ogni altro sito usando il carattere jolly "*". 
+	Da usare preferibilmente solo per API pubbliche. API private non dovrebbero far uso di "*" e dovrebbero 
+	avere un dominio specifico o un insieme di domini.
+	In più il carattere jolly funziona solo per le richieste fatte con l'attributo crossorigin impostato come "anonymous".		
+	</p>
+	<p>
+	Ad esempio, con Apache, bisogna aggiungere una riga come la seguente alla configurazione del server 
+	(all'interno della sezione &lt;Directory&gt;, &lt;Location&gt;, &lt;Files&gt; o &lt;VirtualHost&gt;). 
+	Tipicamente la configurazione si trova in un file .conf (comunemente httpd.conf e apache.conf), o in un file .htaccess.		
+	</p>
+	<pre>
+	Header set Access-Control-Allow-Origin 'origin-list'		
+	</pre>
+	<p>Per Nginx, il comando per attivare l'intestazione è il seguente:</p>
+	<pre>
+	add_header 'Access-Control-Allow-Origin' 'origin-list'		
+	</pre>
+
+
+<script>
+
+//let ulivi = document.getElementById('ulivi');					// 
+let ulivi = document.querySelector('img');
+
+/*
+//////////	 Step 1
+fetch('../../Immagini/campoUlivi.jpg').then(function(response) {
+	return response.blob();
+}).then(function(blob) {
+	const objectURL = URL.createObjectURL(blob);
+	ulivi.src = objectURL;
+});
+*/
+
+/*
+////////// 	Step 2
+fetch('../../Immagini/campoUlivi.jpg')
+.then(function(response) {
+	if(!response.ok) {
+//		throw new Error('HTTP error, status = ' + response.status);
+		console.log('Errore: ', response.status);
+	}
+	return response.blob();
+}).then(function(blob) {
+	const objectURL = URL.createObjectURL(blob);
+	ulivi.src = objectURL;
+});
+*/
+
+///////////	 Step 3
+const myInit = 
+	{ method: 'GET',
+		headers: {
+			'Content-Type': 'image/jpeg'
+		},
+		mode: 'cors',
+		cache: 'default',
+		redirect: "error" 
+};
+
+/*
+const myHeaders = new Headers();
+myHeaders.append('Content-Type', 'image/jpeg');
+
+let myInit = {
+	method: 'GET',
+	headers: myHeaders,
+	mode: 'cors',
+	cache: 'default'
+};
+*/
+
+let richiesta = new Request('../../Immagini/campoUlivi.jpg');
+//let richiesta = new Request('https://mdn.github.io/fetch-examples/fetch-request/flowers.jpg');	// Errore CORS
+
+fetch(richiesta, myInit)
+.then(function(response) {
+	console.log('type: ',  response.type);
+	console.log('url ', response.url);
+	console.log('status: ', response.status);
+	console.log('OK: ', response.ok);
+	console.log('statusText: ', response.statusText);
+	console.log('headers: ', response.headers);
+
+	if (!response.ok) {
+		throw new Error("HTTP error, status = " + response.status);
+	}
+	return response.blob();
+})
+.then(function(blob) {
+	const objectURL = URL.createObjectURL(blob);
+	ulivi.src = objectURL;
+})
+.catch(function(error) {
+	let p = document.createElement('p');
+	p.appendChild( document.createTextNode('Error: ' + error.message) );
+	document.body.insertBefore(p, ulivi);
+});
+
+
+
+////////////////////////	fetch json	////////////////////////////
+
+//const miaLista = document.querySelector('ul');
+const miaLista = document.getElementById('listaUlivi');
+const fileJson = "../allegati/img_ulivo.json";
+//const fileJson = "https://mdn.github.io/fetch-examples/fetch-json/products.json";		// OK
+
+fetch(fileJson).then(function(response) {
+	if (!response.ok) {
+		throw new Error("HTTP error, status = " + response.status);
+	}
+	return response.json();
+}).then(function(json) {
+//	console.log(json);
+//	console.log( json[0]['titolo'] );								// olivo secolare pugliese 1
+	for(let i=0; i < json.length; i++) {
+		let listItem = document.createElement('li');
+		let titolo = json[i]['titolo'];
+		let indice = json[i]['indice'];
+		listItem.innerHTML = '<b>' +titolo+ '</b>';
+		listItem.innerHTML += ' ha l\'indice ' +indice;
+		miaLista.appendChild(listItem);
+	}	
+}).catch(function(error) {
+	console.log('Errore: ' + error.message);
+});
+
+
+////////////////////		fetch text 			////////////////////////////////
+
+const myArticle = document.querySelector('article');
+const richiestaTesto = new Request('../Ajax/prova.txt');				
+//const richiestaTesto = new Request('../allegati/all_caricaCSS.css');		// Ok	
+//const richiestaTesto = new Request('../Array.html');							// OK (carica il file normale, formattato)
+//const richiestaTesto = new Request('../allegati/img_Slide.xml');			// Non carica bene				
+
+fetch(richiestaTesto).then(function(response) {
+	if (!response.ok) {
+		throw new Error("HTTP error, status = " + response.status);
+	}
+	return response.text();
+}).then(function(text) {
+	myArticle.innerHTML = text;
+}).catch(function(error) {
+	myArticle.innerHTML = '';
+	myArticle.appendChild( document.createTextNode('Error: ' + error.message) );
+});
+
+
+
+
+
+/*
+
+const fileJson = 'https://www.kaipai.it/json/catAlimenti.json'; 
+// richiesta bloccata (Motivo: header CORS “Access-Control-Allow-Origin” mancante)
+
+https://mdn.github.io/fetch-examples/fetch-request/flowers.jpg
+
+https://mdn.github.io/fetch-examples/fetch-json/products.json
+
+https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters
+
+*/
+
+</script>
+
+<br><br><br><br><br><br><br><br><br>
+
+</body>
+</html>
+

@@ -1,4 +1,9 @@
 <p>Questa è solo <br /> una <b>prova</b> 
-per caricare questo file .txt tramite <span class="nota">ajax</span> 
+per caricare questo file .txt tramite <span class="nota">ajax</span> oppure con  <span class="nota">fetch</span>
 </p>
+
+<p>
+bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla bla bala bla bla 
+</p>
+
 

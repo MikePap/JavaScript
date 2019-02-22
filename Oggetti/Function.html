@@ -27,6 +27,7 @@
 		</optgroup>
 		<optgroup label="Funzioni Higher-Order">
 			<option value="s5">Funzioni Higher-Order</option>
+			<option value="s5a">Funzioni che restituiscono funzioni</option>
 			<option value="s6">Funzioni che creano nuove funzioni</option>
 			<option value="s7">Funzioni che cambiano altre funzioni</option>
 			<option value="s8">Funzioni che creano un nuovo flusso di controllo</option>
@@ -183,9 +184,6 @@ var lisa = {name:'lisa'};</span>
 </pre>
 	<p>Esempi dei metodi <em>call</em> e <em>apply</em> sono nel file: <a href="Ereditare.html">Ereditare.html</a> </p> 
 
-
-
-
 </section>
 
 <section id="s4"> 
@@ -241,13 +239,39 @@ sayHi(function(){
 </pre>
 </section>
 
-
-
 <section id="s5">  
 	<h2>Funzioni Higher-order</h2>
 	<p>
-Tenendo presente che le funzioni sono valori regolari, le <b>higher-order</b> sono funzioni che operano su altre funzioni. Possono essere di diverso tipo
+Tenendo presente che le funzioni sono valori regolari, le <b>higher-order</b> sono funzioni che operano su altre funzioni. 
+Esse fanno almeno una delle due seguenti cose: 
 	</p>
+	<dl>
+		<dd>Contengono come argomento una funzione</dd>
+		<dd>Restituiscono una funzione</dd>
+	</dl>
+	<p>Vediamo alcuni esempi</p>
+</section>
+
+
+<section id="s5a">
+	<h3>Funzioni che restituiscono funzioni</h3>
+
+	<pre>
+
+function counterGenerator() {
+	let i = 0;
+	return function() {
+		console.log(++i);
+	}
+}
+<span class="azzurro">
+const counter = counterGenerator();
+counter();				<span class="nota">// 1</span>
+counter();				<span class="nota">// 2</span>
+counter();				<span class="nota">// 3</span>
+</span>
+	</pre>
+
 </section>
 
 <section id="s6"> 
