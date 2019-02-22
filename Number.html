@@ -1,26 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title> Numeri </title>
-<style type="text/css">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Numeri</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../baseLocali.css" type="text/css"/>
 
-h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
-h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
-h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
-
-.nota{ color:rgb(250,120,0);}
-.codice{ color:rgb(30,120,30);}
-.grigio{color:gray;}
-.azzurro{color:rgb(50,100,255);}
-.scuro{color:#333;}
-code, pre{ color:rgb(20,150,30); font-weight:bold;}
-tt, em{color:#6a9999}
-
-table{}
-tr{  }
-		
-</style>
 
 <script type="text/javascript" src="jQuery-1.6.min.js"></script>
 
@@ -295,9 +281,6 @@ isNaN(new Date().toString());		<span class="nota">// true</span>
 
 
 
-
-
-
 <h2> NaN and Infinity </h2>
 
 <pre>
@@ -320,6 +303,14 @@ console.log( parseInt("10.20Hello", 10) );
 //alert("hello".length)
 
 </script>
+
+<h2>Numero massimo (MAX_SAFE_INTEGER)</h2>
+<pre>
+
+const max = Number.MAX_SAFE_INTEGER;
+console.log(max);						<span class="nota">// 9007199254740991		9 007 199 254 740 991 </span>
+
+</pre>
 
 
 <h2>Verifica numeri interi ( Number.isInteger() )</h2>

@@ -203,9 +203,22 @@ console.log(localeTitle);					<span class="nota">// "JavaScript-Umgebung"</span>
 </pre>
 
 
-<h3>Iterazione con destructuring</h3>
+<h3>Iterazione (for of) con destructuring</h3>
 
 <pre>
+<span class="grigio">Iterazione di array innestati</span>
+
+let arrays = [[1, 2, 3], [4, 5], [6]];
+
+for( let [a,b,c] of arrays ) {			<span class="nota">** [a,b,c] perchè l'array più lungo ha tre elementi </span>
+	if(a) console.log(a);			<span class="nota">** a corrisponde agli elementi 1,4,6</span>
+	if(b) console.log(b);			<span class="nota">** b corrisponde agli elementi 2,5</span>
+	if(c) console.log(c);			<span class="nota">** c corrisponde all'elemento 3</span>
+}	
+<span class="nota">Output: 1, 2, 3, 4, 5, 6</span>
+
+<span class="grigio">Iterazione di array di oggetti</span>
+
 var people = [
 	{
 		name: "Mike Smith",
@@ -336,6 +349,36 @@ console.log(arr1);						<span class="nota">// Array [ "1", 2, "tre", "mela", "pe
 </span>
 </pre>
 
+<p>Analizzando cosa accade</p>
+<pre>
+
+let lista = [1, 4, 5, 8, 'fuk'];
+let [primo, secondo, ...altri] = lista;
+<span class="azzurro">
+console.log(primo);				<span class="nota">// 1</span>
+console.log(secondo);				<span class="nota">// 4</span>
+console.log(altri);				<span class="nota">// [ 5, 8, 'fuk' ]</span>
+</span>
+let recupero = [ primo, secondo, ...altri ];
+<span class="azzurro">
+console.log( recupero  );			<span class="nota">// [ 1, 4, 5, 8, 'fuk' ]</span>
+</span>
+
+<span class="grigio">Oppure con gli oggetti</span>
+
+let persona = { nome: 'Mik', cognome: 'Pappalardo', sport: 'Tennis', racchetta: 'Wilson' };
+let { nome, cognome, ...altro  } = persona;
+<span class="azzurro">
+console.log(nome);				<span class="nota">// Mik</span>
+console.log(cognome);				<span class="nota">// Pappalardo</span>
+console.log(altro);				<span class="nota">// { sport: 'Tennis', racchetta: 'Wilson' }</span>
+</span>
+let copia = { nome, cognome, ...altro };
+<span class="azzurro">
+console.log(copia);				<span class="nota">// { nome: "Mik", cognome: "Pappalardo", sport: "Tennis", racchetta: "Wilson" }</span>
+</span>
+
+</pre>
 
 <p>
 Con funzioni
@@ -365,14 +408,47 @@ f(-1, ...args, 2, ...[3]);
 </pre>
 
 
-<p>
-Con Destructuring
-</p>
+<p>Un'altra cosa carina è la clonazione di oggetti </p>
 <pre>
-[a, b, ...iterableObj] = [1, 2, 3, 4, 5];
+
+let obj = { frutto: 'mela', colore: 'rossa', tipo: 'deliziosa' };
+
+<span class="grigio">Invece di utilizzare il metodo "Object.assign" per la clonazione di un oggetto </span>
+let cloneObj = Object.assign( {}, obj );
+
+<span class="grigio">Possiamo ottenere lo stesso risultato utilizzando lo Spread in un modo più semplice ed elegante </span>
+let cloneObj = { ...obj };
+<span class="azzurro">
+console.log(cloneObj);			<span class="nota">//  { frutto: "mela", colore: "rossa", tipo: "deliziosa" }</span>
+</span>
+
+</pre>
+<p>Oppure in caso di fusione di più oggetti </p>
+<pre>
+
+let cantautore1 = { nome: 'Fabrizio', cognome: 'DeAndrè', stato: 'Italia', provincia: 'Genova' };
+let cantautore2 = { nome: 'Francesco', cognome: 'Guccini', strumento: 'chitarra' };
+
+let mixer = Object.assign( {}, cantautore1, cantautore2 );		<span class="nota">* Vecchio metodo :)</span>
+
+let mixer = { ...cantautore1, ...cantautore2 };
+<span class="azzurro">
+console.log(mixer);			<span class="nota">// { nome: "Francesco", cognome: "Guccini", stato: "Italia", provincia: "Genova", strumento: "chitarra" }</span>
+</span>
+
 </pre>
 
+<p>Stessa cosa possiamo farla con gli array</p>
 
+<pre>
+
+let arr = [1, 2, 3, '', NaN, 'rosso', 'giallo'];
+let copy = [...arr];
+<span class="azzurro">
+console.log(copy);			<span class="nota">// [1, 2, 3, '', NaN, 'rosso', 'giallo']</span>
+</span>
+
+</pre>
 
 
 <script type="text/javascript">
