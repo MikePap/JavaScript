@@ -34,6 +34,7 @@ padding:10px; margin:10px; border: 1px solid #888;
 			<option value="s4c">Filtrare Array</option>
 		</optgroup>
 		<option value="s5">Rimuovere gli spazi vuoti</option>
+		<option value="s5a">Ottenere un valore compreso tra minimo e massimo</option>
 		<option value="s6">Impostare un timeout in una XMLHttpRequests</option>
 		<option value="s7">Trattamento del websocket timeout</option>
 		<option value="s8">Creare elementi del DOM</option>
@@ -341,6 +342,23 @@ console.log(st.trim());					// "okay baby"
 
 </script>
 </section>
+
+<section id="s5a">
+<h3>Ottenere un valore casuale compreso tra un minimo e un massimo</h3>
+<p>
+Quando si vuole ottenere un valore casuale compreso tra due numeri che rispettivamente rappresentano un valore minimo ed un valore massimo
+</p>
+<pre>
+
+function random(min, max) {
+	return Math.floor(Math.random() * (max - min + 1) + min);	
+}
+
+</pre>
+
+
+</section>
+
 
 <section id="s6">
 <h3>Impostare un timeout in una XMLHttpRequests</h3>

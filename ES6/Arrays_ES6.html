@@ -63,7 +63,8 @@ console.log( Array.isArray(arr) );			<span class="nota">// restituisce 'true'</s
 <span class="nota">Da IE9. C'è il polyfill </span>
 <pre>
 var a = ['uno','due','tre','quattro'];
-var y = a.indexOf('quattro');				<span class="nota">// restituisce 3</span>
+var quattro = a.indexOf('quattro');				<span class="nota">// restituisce 3</span>
+var sei = a.indexOf('sei');					<span class="nota">// restituisce -1</span>
 </pre>
 </p>
 </section>
@@ -96,9 +97,16 @@ console.log(index3);			<span class="nota">// -1 (è come se eliminasse tutti gli
 
 <section id="s3A">
 <h2>Array.prototype.includes</h2>
-
 <p>
-Il metodo permette di rilevare un elemento dell'array. 
+Il metodo permette di rilevare un elemento dell'array. Restituisce un valore boleano.
+<span class="nota">All'interno c'è il polyfill </span>
+</p>
+<pre>
+arr.includes(valueToFind[, fromIndex])
+</pre>
+<p>
+Accetta due argomenti di cui il primo rappresenta il valore da ricercare ed il secondo la posizione (indice) 
+da cui cominciare la ricerca
 </p>
 <pre>
 let arr = [1, 2, 3, '', NaN, 'rosso', 'giallo'];
@@ -108,8 +116,8 @@ console.log(arr.includes(4));					<span class="nota">// false</span>
 console.log(arr.includes(''));					<span class="nota">// true</span>
 console.log(arr.includes('rosso'));				<span class="nota">// true</span>
 console.log(arr.includes(NaN);					<span class="nota">// true</span>
+console.log( arr.includes(2, 2));				<span class="nota">// false (inizia la ricerca dal terzo indice)</span>
 </span>
-
 </pre>
 
 </section>
@@ -334,11 +342,13 @@ console.log(items[0]);				<span class="nota">// "2"</span>
 
 items = Array.of(2);				<span class="nota">dichiarazione di un array con Array.of</span>
 <span class="azzurro">
+console.log(items);				<span class="nota">// [ 2 ]</span>
 console.log(items.length);			<span class="nota">// 1 (qui si nota la differenza) </span>
 console.log(items[0]);				<span class="nota">// 2 (e di conseguenza anche qui) </span>
 </span>
 items = Array.of("2");
 <span class="azzurro">
+console.log(items);				<span class="nota">// [ "2" ]</span>
 console.log(items.length);			<span class="nota">// 1</span>
 console.log(items[0]);				<span class="nota">// "2"</span>
 </span>
@@ -346,6 +356,7 @@ console.log(items[0]);				<span class="nota">// "2"</span>
 	
 let items = Array.of(1, 2);
 <span class="azzurro">
+console.log(items);				<span class="nota">// [ 1, 2 ]</span>
 console.log(items.length);			<span class="nota">// 2</span>
 console.log(items[0]);				<span class="nota">// 1</span>
 console.log(items[1]);				<span class="nota">// 2</span>
@@ -597,6 +608,35 @@ if (!Array.prototype.lastIndexOf) {
 	};
 }
 
+//### Polyfill includes 	###
+
+if (!Array.prototype.includes) {
+	Object.defineProperty(Array.prototype, 'includes', {
+		value: function(valueToFind, fromIndex) {
+			if (this == null) {
+				throw new TypeError('"this" is null or not defined');
+			}
+			var o = Object(this);
+			var len = o.length >>> 0;
+			if (len === 0) {
+				return false;
+			}
+			var n = fromIndex | 0;
+			var k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
+			function sameValueZero(x, y) {
+				return x === y || (typeof x === 'number' && typeof y === 'number' && isNaN(x) && isNaN(y));
+			}
+			while (k < len) {
+				if (sameValueZero(o[k], valueToFind)) {
+					return true;
+				}	
+				k++;
+			}
+			return false;
+		}
+	});
+}//
+
 
 
 //### 	Polyfill map (Provato su IE8 funziona) 	###
@@ -824,6 +864,15 @@ if (!Array.from) {
 		};
 	}());
 }
+
+
+//### Polyfill Array.of() 	###
+
+if (!Array.of) {
+	Array.of = function() {
+		return Array.prototype.slice.call(arguments);
+	};
+}//
 
 
 //### 	Polyfill fill (Provato su IE8 funziona) 	### 

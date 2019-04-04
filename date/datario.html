@@ -3,20 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <title>date</title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css" /> 
 <style type="text/css">
-h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
-h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
-h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
-code, pre{ color:rgb(20,150,30); font-weight:bold; margin:0; padding:0;}
-.nota{ color:rgb(250,120,0);}
-.grigio{color:gray;}
-.azzurro{color:rgb(100,150,255);}
-.scuro{color:#333;}
-tt, em{color:#6a9999}
-.codice{ color:rgb(30,120,30);}		
-dt{ color:#003399; margin-bottom:5px;}
-dd{ color:#0066FF;}
-
 table{
 background:rgb(250,235,230);	margin:20px;
 }
@@ -53,7 +41,11 @@ var anno = natale.getFullYear();
 
 <h3>Date.now() - Date.UTC() - Date.parse()</h3>
 <p>
-Sono tutti metodi che restituiscono un numero in millesecondi a partire dalla data di riferimento del 01/01/1970 con qualche differenza tra ognuno.  
+Sono tutti metodi che restituiscono un numero in millesecondi a partire dalla data di riferimento del 01/01/1970 con qualche differenza tra ognuno. <br>
+<b>UTC</b>, conosciuto anche come <span class="azzurro">Greenwich Mean Time (GMT)</span>, fa riferimento al tempo definito dal <q>World Time Standard</q>. <br>
+Il <em>local time</em> (tempo locale) invece, fa riferimento al tempo impostato sul computer su cui Javascript viene eseguito. <br>
+<b>Date.parse()</b> non è raccomandato per le differenze e inconsistenze tra un browser e l'altro.
+</p>
 <pre>
 Date.now();						<span class="nota">// restituisce il numero di millesecondi dal 01/01/1970 alla data attuale</span>
 <span class="grigio">per chi non supportasse il metodo lo stesso risultato si ha con </span>
@@ -68,7 +60,7 @@ Date.parse("Aug 9, 1995");				<span class="nota">// restituisce 807919200000 (nu
 Date.parse("9, aug, 1995");				<span class="nota">// restituisce 807919200000</span>
 Date.parse("1995, 9, august");				<span class="nota">// restituisce 807919200000</span>
 </pre>
-</p>
+
 
 <table id="" width="60%" border="1" cellspacing="1" cellpadding="3">
 <tr>
@@ -136,8 +128,8 @@ La funzione <tt>daysFineAnno()</tt> (vedere interno pagina) ottiene lo stesso ri
 Il <b>time-zone offset</b> è la differenza in minuti tra UTC e l'ora locale. Tale valore può essere positivo o negativo. UTC è l'orario di Greenwich (GMT).  
 <pre>
 var x = new Date();
-var c = x.getTimezoneOffset() / 60 ;		<span class="nota">// restituisce -1 (che è la differenza tra l'ora di Greenwich e la nostra)</span>
-<span class="grigio">vale a dire che se in Italia sono le 12.00 a Londra sono le 11.00 (quindi un'ora in meno è quella di Greenwich o Londra)</span>
+var c = x.getTimezoneOffset() / 60 ;	<span class="nota">// può restituire -1 o -2 (differenza tra l'ora di Greenwich e la nostra)</span>
+<span class="grigio">vale a dire che se in Italia sono le 12.00 a Londra saranno le 11.00 o le 10.00 </span>
 </pre>
 </p>
 
@@ -269,7 +261,9 @@ function daysFineAnno(annoRiferimento){
 
 console.log( daysFineAnno(2018) );
 
-
+var x = new Date();
+var differenza = x.getTimezoneOffset() / 60 ;					// differenza tra ora locale e l'ora di Greenwich
+console.log('Differenza in questo periodo: ', differenza);
 
 
 </script>
