@@ -3,7 +3,11 @@
 <head>
 <meta charset="utf-8" />
 <title>Utilità oggetti </title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css" /> 
+
 <style type="text/css">
+
+/*
 h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
 h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
 h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
@@ -16,7 +20,7 @@ tt, em{color:#6a9999}
 .codice{ color:rgb(30,120,30);}		
 dt{ color:#003399; margin-bottom:5px;}
 dd{ color:#0066FF;}
-
+*/
 </style>
 </head>
 <body>
@@ -344,49 +348,85 @@ var n = null;
 
 <h2>Getters e Setters</h2>
 <p>
-Javascript fornisce una tecnica che permette di specificare proprietà che dall'esterno sembrano normali proprietà ma segretamente hanno metodi associati.
+Javascript fornisce una tecnica che permette di specificare proprietà che dall'esterno sembrano normali proprietà 
+ma segretamente hanno metodi associati.
+</p>
+<h3>getter</h3>
+<p>
+La sintassi <b>get</b> associa la proprietà di un oggetto ad una funzione che sarà chiamata quando quella proprietà è cercata
+</p>
 <pre>
-var pile = {
-	elements: ["eggshell", "orange peel", "worm"],
-	get height() {
-		return this.elements.length;
-	},
-	set height(value) {
-		console.log("Ignoring attempt to set height to", value);
+var obj = {
+	log: ['a', 'b', 'c'],
+	get latest() {
+		if (this.log.length == 0) {
+			return undefined;
+		}
+		return this.log[this.log.length - 1];
 	}
-};
+}
 <span class="azzurro">
-console.log(pile.height);				<span class="nota">// 3</span> </span>
-pile.height = 100;					<span class="nota">// Ignoring attempt to set height to 100 </span>				
-<span class="azzurro">console.log(pile.height);				<span class="nota">// 3</span>	
-</span>
-</pre> 
-In questo modo viene protetto la proprietà 'height' dall'essere aggiornata. <br />
-Se invece  si vuole renderla aggiornabile allora bisogna creare un'altra funzione che restituisca il valore della proprietà 
-
-<pre>
-
-var pile = {
-	elements: ["eggshell", "orange peel", "worm"],
-	get height() {
-		return this.elements.length;
-	},
-	set height(value) {
-		height = value;
-	},
-	getHeight: function (){ return height}
-};
-
-<span class="azzurro">
-console.log(pile.height);				<span class="nota">// 3</span>						
-</span>pile.height = 100; <span class="azzurro">	
-console.log ( pile.height);				<span class="nota">// 3</span>
-console.log(pile.getHeight());				<span class="nota">// 100</span>						
+console.log(obj.latest);		<span class="nota">// c (da notare che latest viene chiamato come proprietà, senza doppia parentesi) </span>
+</span><span class="grigio">
+Sarà un tentativo vano se proviamo ad assegnare un'altro valore a "latest"; 
+otterremo un errore se impostato "use strict"
 </span>
 </pre>
+<p>
+Se vogliamo rimuovere la proprietà <q>latest</q> dobbiamo usare il metodo <em>delete</em>
 </p>
+<pre>
+delete obj.latest;
+</pre>
 
-<p>Il seguente esempio è più semplice ma più esplicativo</p>
+<h3>setter</h3>
+<p>
+La sintassi <b>set</b> lega una proprietà di un oggetto a una funzione da chiamare quando si cerca di impostare quella proprietà.
+</p>
+<pre>
+var language = {
+	set current(name) {
+		this.log.push(name);
+	},
+	log: []
+}
+
+language.current = 'EN';
+language.current = 'FA';
+<span class="azzurro">
+console.log(language.log);			<span class="nota">// ['EN', 'FA']</span>
+console.log(language.current);			<span class="nota">// undefined</span>
+</span>	 
+</pre>
+<p>
+Vediamoli insieme in un esempio
+</p>
+<pre>
+var comiche = {
+
+	elementi: ["Aldo", "Giovanni", "Giacomo"],
+
+	get height() {
+		return this.elementi.length;
+	},
+
+	set height(value) {
+		this.elementi.push(value);
+	}
+
+};	
+<span class="azzurro">
+console.log(comiche.height);			<span class="nota">// 3</span> 
+</span>
+comiche.height = 'Nando';
+<span class="azzurro">
+console.log(comiche.height);			<span class="nota">// 4</span> 	
+</span>
+</pre> 
+
+<p>
+Il seguente è un esempio che camuffa <q>get</q> e <q>set</q>
+</p>
 <pre>
 function wrapValue(value) {
 	return {
@@ -402,8 +442,6 @@ x.setValue(7);
 <span class="azzurro">console.log(x.getValue());				<span class="nota">// 7</span>
 </span>
 </pre>
-
-
 
 <h2>Type Coercion (Imposizione del tipo)</h2>
 <p>
