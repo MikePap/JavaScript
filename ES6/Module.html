@@ -27,7 +27,7 @@ Ovviamente questo riguarda quando dobbiamo importare degli scripts nel documento
 
 </pre>
 
-<h3>export e import</h3>
+<h2>export e import</h2>
 
 <p>
  Per eseguire un esportazione bisogna usare la parola chiave <b>export</b>
@@ -51,14 +51,14 @@ export { double };
 Per eseguire l'importazione dobbiamo usare la parola chiave <b>import</b>; pertanto volendo importare la funzione definita <em>double</em>
 </p>
 <pre>
-import { double } from 'mymodule';
+import { double } from 'mymodule.js';
 <span class="azzurro">
 double(2);					<span class="nota">// 4</span>			
 </span>
 </pre>
 <p>
-<q>mymodule</q> non è altro che il file .js che contiene la funzione <em>double</em> e non c'è bisogno di usare l'estensione .js (in Firefox è richiesto). <br>
-L'uso delle parentesi graffe intorno al nome della funzione è richiesto perchè potrebbe verificarsi la necessità di importare più funzioni allo stesso tempo. <br>
+<q>mymodule.js</q> non è altro che il file che contiene la funzione <em>double</em>.<br>
+<ins>L'uso delle parentesi graffe intorno al nome della funzione è richiesto</ins> perchè potrebbe verificarsi la necessità di importare più funzioni allo stesso tempo. <br>
 Cioè se abbiamo definito le seguenti due funzioni <em>double</em> e <em>square</em>
 </p>
 
@@ -85,14 +85,37 @@ square(3);					<span class="nota">// 9</span>
 </span>
 </pre>
 
-<p>Oppure un'altro modo per importare tutti i metodi e proprietà è quello dell'uso del simbolo *</p>
 
+<h3>Rinominare export e import</h3>
+<p>
+Nelle dichiarazioni all'interno delle parentesi graffe, sia per import che per export, si può usare la parola chiave <b>as</b> per assegnare un nome differente alla funzione o a ciò che si vuole esportare o importare
+</p>
 <pre>
-import * as lib from 'allegati/module-1.js';		
-<span class="grigio">ATTENZIONE: bisogna utilizzare un parola simbolo che faccia riferimento alle funzioni (in questo caso ho usato 'lib') </span>	
+<span class="grigio">Rinomina effettuata nell'esportazione</span>
+export {
+	function1 as newFunctionName,
+	function2 as anotherNewFunctionName
+};
+
+import { newFunctionName, anotherNewFunctionName } from './modules/module.js';
+
+<span class="grigio">Rinomina effettuata nell'importazione</span>
+export { function1, function2 };
+
+import { function1 as newFunctionName, function2 as anotherNewFunctionName } from './modules/module.js';
+
+</pre>
+
+<h3>Creazione di un oggetto module</h3>
+<p>La soluzione vista sopra va bene ma risulta un poco prolissa. Esiste tuttavia un'altro modo per importare tutti i metodi e proprietà con l'uso  del simbolo * (asterisco)
+</p>
+<pre>
+export { double, square }
+
+import * as lib from 'allegati/module-1.js';		<span class="nota">** da notare la parola simbolo "lib"</span>		
 <span class="azzurro">
-console.log(lib.double(2));			<span class="nota">// 4</span>	
-console.log(lib.square(5));			<span class="nota">// 25</span>	
+console.log(lib.double(2));				<span class="nota">// 4</span>	
+console.log(lib.square(5));				<span class="nota">// 25</span>	
 </span>	
 </pre>
 
@@ -156,6 +179,35 @@ if(someFeatureNotSupported) {
 <p>
 Il metodo <tt>System.import</tt> restituisce un <tt>promise</tt> che altro non è che una funzione asincrona di callback che sarà restituita quando l'operazione è completa. Dall'esempio di sopra si avrà il caricamento della funzione <tt>my-polyfill</tt> se nel caso non sia avverata una condizione
 </p>
+
+<h3 id="jak">Caricamento dinamico dei moduli</h3>
+<p>
+Una nuova metodologia è quella di importare i moduli dinamicamente solo quando necessario invece di doverli importare all'inizio nella fase  di caricamento della pagina. Tale metodologia fa uso del <em>Promise</em>
+</p>
+<pre>
+import('./modules/myModule.js').then((module) => {
+	Utilizzo del modulo
+});
+</pre>
+<p>
+Il seguente esempio l'ho messo in pratica in questo documento
+</p>
+<pre>
+let jak = document.getElementById("jak");				<span class="nota">** jak è l'h3 di questa sezione (Caricamento ...)</span> 
+jak.addEventListener("click", function(){ 
+	import('../Moduli/module/utili.js').then((modulo) => {
+		let stile = modulo.stileElemento;
+		let coloreH1 = stile("h1", 'color');
+		console.log(coloreH1);	
+	});
+},false);
+
+</pre>
+<p>
+In pratica, il caricamento del modulo avviene quando scatta l'evento click sul titolo. Naturalmente, in casi come questo non può trattarsi di moduli pesanti. <br>
+Pertanto questa metodologia va bene quando si tratta di scaricare moduli che contengono script non molto complessi.
+</p>
+
 
 <br /><br />
 <hr>
@@ -246,9 +298,10 @@ console.log( ora_minuti() );
 
 //////////////////----------------------------------------------------------------------------------------------------
 //### Esempi dal file "/var/www/html/JavaScript/Moduli/module/utili.js"
-
+/*
 import { nuovoElemento, $, ciclo, eliminaNodiInterni, eliminaNodoBox, adProp, nodiLiberi, nodiFigli, stileElemento } 
 from '../Moduli/module/utili.js'
+*/
 
 /*
 var paragrafo = nuovoElemento("p", {title:'sono un par', id:'par' }, {color:'red', background:'yellow'}, 'Paragrafo con stile');
@@ -287,10 +340,24 @@ function eseguiCompito(e){
 }
 */
 
+/*
 var coloreH1 = stileElemento("h1", 'color');								// rgb(50, 50, 250)
 var largH1 = stileElemento("h1", "width");								// 1230px
 console.log(coloreH1);	
 console.log(largH1);	
+*/
+
+//////// 	Caricamento moduli in modo dinamico con Promise 	////////
+let jak = document.getElementById("jak"); 
+jak.addEventListener("click", function(){ 
+	import('../Moduli/module/utili.js').then((modulo) => {
+		let stile = modulo.stileElemento;
+		let coloreH1 = stile("h1", 'color');								// rgb(50, 50, 250)
+		console.log(coloreH1);	
+	});
+},false);
+
+
 
 
 </script>
