@@ -3,21 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <title>Oggett screen  </title>
-<style type="text/css">
-h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
-h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
-h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
-code, pre{ color:rgb(50,150,50);}
-.nota{ color:rgb(250,120,0);}
-.codice{ color:rgb(30,120,30);}
-.grigio{color: grey;}
-.scuro{color:#333;}
-.blu{color:#00f;}
-dt{ color:#003399; margin-bottom:5px;}
-dd{ color:#0066FF;}
-tt, em{color:#6a9999}
-
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../baseLocali.css" type="text/css" /> 
+<style type="text/css"></style>
 </head>
 <body>
 
@@ -59,18 +47,18 @@ tt, em{color:#6a9999}
 
 
 <pre>
-<span class="scuro">Per la larghezza non ci sono problemi. <tt>window.screen.width</tt> va bene per tutti</span>
+<span class="grigio">Per la larghezza non ci sono problemi. <tt>window.screen.width</tt> va bene per tutti</span>
 var wIE = window.screen.width;		<span class="nota">// 1366 (x tutti)</span>				
 
-<span class="scuro">mentre la seguente <tt>innerWidth</tt> va bene x tutti tranne che per IE8 </span>
+<span class="grigio">mentre la seguente <tt>innerWidth</tt> va bene x tutti tranne che per IE8 </span>
 var W = window.innerWidth;	
 
-<span class="scuro">Osserviamo le differente</span> 
+<span class="grigio">Osserviamo le differente</span> 
 window.innerHeight;			<span class="nota">// 577(firefox) - *652(chrome) - undefined(IE8) - *631(safari) - *655 (opera)</span>		
 window.screen.height;			<span class="nota">// 704(firefox) - 768(chrome)  - 768 (IE8) - 768(safari) - 768 </span>	
 window.screen.availHeight;		<span class="nota">// 677(firefox) - 738(chrome)  - 738 IE8 - 738(safari) - 738(opera) </span>
 window.screen.innerHeight;		<span class="nota">// undefined x tutti</span>	
-<span class="blu">La formula migliore sarebbe (anche se per IE rimane il dubbio)</span>
+<span class="azzurro">La formula migliore sarebbe (anche se per IE rimane il dubbio)</span>
 var H = window.innerHeight || window.screen.availHeight;
 </pre>
 <p>
@@ -96,8 +84,8 @@ function openWin() {
 	myWin.document.write("The availWidth is: " + screen.availWidth + "<br>");
 	myWin.document.write("The colorDepth is: " + screen.colorDepth + "<br>");
 	myWin.document.write("The pixelDepth is: " + screen.pixelDepth + "<br>");
-	myWin.document.write("The height is: " + screen.height + "<br>");
-	myWin.document.write("The width is: " + screen.width + "<br>");
+	myWin.document.write("The screen height is: " + screen.height + "<br>");
+	myWin.document.write("The screen width is: " + screen.width + "<br>");
 	myWin.document.children[0].appendChild(OuterHeight);				
 	myWin.document.children[0].appendChild(par);					
 	myWin.document.close();
@@ -120,6 +108,19 @@ document.documentElement.offsetHeight;				<span class="nota">// dipende da quell
 </p>
 
 
+<h3>Larghezza e altezza del layout viewport</h3>
+
+<p>
+Il <b>layout viewport</b> è la parte visibile dell'intero documento. In altre parole è quella rappresentata dallo schermo del nostro dispositivo. Quindi se lo schermo si rimpicciolisce o si allarga (se per esempio cambiamo l'orientamento del nostro smartphone o se ridimensioniamo il display del nostro desktop fisso) il <em>layout viewport</em> cambia. <br>
+Viene misurato in pixel e lo si può ottenere con i seguenti metodi:
+</p>
+
+<pre>
+document.documentElement.clientWidth
+document.documentElement.clientHeight
+</pre>
+
+
 <br />
 <br />
 
@@ -127,17 +128,33 @@ document.documentElement.offsetHeight;				<span class="nota">// dipende da quell
 
 <button id="screen_btn" onClick="openWin()">Clicca per conoscere le proprietà dello schermo</button>
 
+<br><br>
+
+<h2>layout viewport e visual viewport</h2>
+<div>
+Per un maggiore approfondimento su screen, viewport e company anche e soprattutto relativi ai vari dispositivi vedere questi link:
+
+<dl>
+	<dt> <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Mobile/Viewport_meta_tag">Using the viewport meta tag to control layout on mobile browsers</a> </dt>
+	<dt> <a href="https://www.quirksmode.org/mobile/viewports2.html">layout viewport e visual viewport</a> </dt>
+	<dt> <a href="https://stackoverflow.com/questions/7344886/visual-viewport-vs-layout-viewport-on-mobile-devices">Altra spiegazione sui due viewport </a> </dt>
+</dl>
+
+</div> 
+
+<br><br><br><br><br><br>
 
 <script type="text/javascript">
 
 var l1 = window.screen.width;									// 1366 (x tutti)
 var l2 = document.documentElement.offsetWidth;			// 1349 (in tutti) 1345 in IE8 
 
-//alert( l2 );
+
+console.log('Larghezza layout viewport: ',  document.documentElement.clientWidth);
+console.log('Altezza layout viewport: ',  document.documentElement.clientHeight);
 
 console.log("Inner", window.innerHeight );
 console.log("Outer", window.outerHeight);
-
 
 </script>
 
