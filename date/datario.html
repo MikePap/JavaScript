@@ -21,25 +21,143 @@ text-align:center; font-weight:bold;
 
 <h1>Date</h1>
 <p>
-JavaScript non ha un tipo per le <q>date</q> ma è possibile  usare l'oggetto <b>Date</b> e i suoi metodi per gestire le date. L'oggetto <em>Date</em> ha un gran numero di metodi ma non ha nessuna proprietà. <br />
-JavaScript gestisce le date come Java che immgazzina le date come numero in millesecondi a partire  dal <b>primo gennaio 1970.</b>
-<pre>
-var dateObjectName = new Date([parameters]);
-
-var d = new Date();
-<span class="azzurro">console.log(d)</span>		<span class="nota">// restituisce Sat Mar 01 2014 11:38:05 GMT+0100 (ora solare Europa occidentale) </span>
-</pre>
+JavaScript, per gestire le date, utilizza l'oggetto <b>Date</b> basato sul formato ISO 8601.
+JavaScript gestisce le date come Java che immgazzina le date come numero in millesecondi a partire  dal <b>primo gennaio 1970.</b><br>
+La sintassi è:
 </p>
 <pre>
-var natale = new Date("December 25, 1995");		<span class="nota">anno, giorno, mese</span>
-var mese = natale.getMonth();
-var anno = natale.getFullYear();
+var dateObjectName = new Date([parametri]);
+</pre>
+<p>
+Dove i parametri vanno specificati nel seguente modo:
+</p>
+<pre>
+	YYYY-MM-DDTHH:mm:ss.sssZ
+</pre>
+<p>
+La "T" è un delimitatore che rappresenta l'inizio della parte relativa al tempo. La "Z" rappresenta il fuso orario (time zone) 
+che se non presente fa riferimento al <em>local time</em> che sarebbe il fuso orario del proprio computer. 
+</p>
 
-<span class="azzurro">console.log(mese);</span>					<span class="nota">// restituisce 11</span>
-<span class="azzurro">console.log(anno);</span>					<span class="nota">// restituisce 1995</span>
+<h2>Istanze dell'oggetto Date</h2>
+<p>
+Le istanze di <em>Date</em> sono ereditate da <span class="nota">Date.prototype</span>. 
+Osserviamo i seguenti:
+</p>
+<pre>
+Date('1988-03-21')				<span class="nota">// Tue Jul 23 2019 08:48:22 GMT+0200 (Ora legale dell’Europa centrale)</span>
+new Date('1988-03-21')				<span class="nota">// Date Mon Mar 21 1988 01:00:00 GMT+0100 (Ora standard dell’Europa centrale)</span>
+</pre>
+<p>Notiamo che senza il costruttore <em>Date</em> ci restituisce una stringa che fa capo alla data corrente e non quella 
+impostata; mentre col costruttore <em>new</em> ci restituisce un oggetto che fa capo alla data impostata, 
+con un suo prototype (vedere nella console) che contiene i vari metodi. 
+</p>
+<p>
+La seguente tabella elenca i metodi per ottenere i valori da una data sia essa una data in formato stringa 
+(es: "August 19, 1975 23:15:30") oppure in caso di millisecondi. <br>
+<span class="azzurro">All'interno c'è una funzione (dataDaMillisecondi) che restituisce una data da dei millisecondi UTC. </span><br>
+</p>
+
+<table id="" width="60%" border="1" cellspacing="1" cellpadding="3">
+	<tr>
+		<th>Metodo</th>
+		<th>Descrizione</th>
+	</tr>
+	<tr>
+		<td>getDate()</td>
+		<td>numero del giorno del mese corrente (da 1 a 31)</td>
+	</tr>
+	<tr>
+		<td>getDay()</td>
+		<td>numero del giorno della settimana (0=domenica, 6 sabato)</td>
+	</tr>
+	<tr>
+		<td>getFullYear()</td>
+		<td>anno corrente</td>
+	</tr>
+	<tr>
+		<td>getMonth()</td>
+		<td>numero del mese (da 0:gennaio a 11:dicembre)</td>
+	</tr>
+	<tr>
+		<td>getHours()</td>
+		<td>ora corrente (da 0 a 23)</td>
+	</tr>
+	<tr>
+		<td>getMinutes()</td>
+		<td>minuti dell'ora corrente (0-59)</td>
+	</tr>
+	<tr>
+		<td>getSeconds()</td>
+		<td>secondi dell'ora corrente (0-59)</td>
+	</tr>
+	<tr>
+		<td>getMilliseconds()</td>
+		<td>millesecondi dell'ora corrente (0-399)</td>
+	</tr>			
+</table>
+
+<p>
+Allo stesso modo di <tt>get</tt> esiste un metodo <tt>set</tt> per impostare il valore in questione. Quindi: <br />
+<b>setDate(), setDay(), setMonth(), setFullYear(), setHours(), setMinutes(), setSeconds(), setMilliseconds()     </b>
+</p>				
+
+<h3>Creazione di date con argomenti</h3>
+
+<p>
+Un'altro modo di creare date è quello che fa uso degli argomenti separati da virgola
+</p>
+<pre>
+new Date(2019, 5, 11, 5, 23, 59)				<span class="nota">// 11th June 2019, 5:23:59am, Local Time</span>
+</pre>
+<p>
+Quindi come è facile intuire il primo argomento fa riferimento all'anno, poi mese (0-11), giorno, ore, minuti e secondi
+</p>
+
+
+<h3>Stranezze di Date</h3>
+
+<p>
+Quando si imposta una data senza includere il tempo si possono ottenere dei risultati imprevisti perchè la data che si 
+ottiene fa capo all'<b>UTC</b> (che è un sinonimo di  Greenwich Mean Time). Esempio:
+</p>
+<pre>
+new Date('2019-06-11')
+<span class="grigio">Potrebbe restituire sia: </span>
+<span class="nota">Date Tue Jun 11 2019 02:00:00 GMT+0200 (Ora legale dell’Europa centrale)</span>
+<span class="grigio">che:</span>
+<span class="nota">Date Tue Jun 10 2019 02:00:00 GMT+0200 (Ora legale dell’Europa centrale)</span>
+</pre>
+<p>
+La spiegazione è relativa al fatto che quando i parametri sono mancanti vengono impostati quelli di default UTC e quindi 
+a causa delle differenze dovute al fuso orario si vengono a creare dei risultatio inattesi. 
+Quindi è sempre meglio evitare e scrivere in questo modo:
+</p>
+<pre>
+new Date('2019-06-11T00:00')					<span class="nota">** è sufficiente impostare solo ora e minuti </span>
+</pre>
+
+<p>
+Un'altra attenzione è quella da porre al <ins>valore del mese</ins>. In questo caso le cose si complicano perchè il primo mese (gennaio) 
+è ottenuto con valore zero ma va impostato con valore 1. <br>
+Vediamo questo esempio:
+</p>
+<pre>
+var natale = new Date('1995-12-25');
+console.log( natale.getMonth() );				<span class="nota">// 11</span>
+</pre>
+<p>
+L'esempio ci mostra che volendo ottenere il valore del mese di dicembre dobbiamo definirlo con 12. 
+Ma se andiamo ad estrarlo col metodo <em>getMonth()</em> otteniamo 11. <br>
+Tutt'altra storia accade se definiamo la data con argomenti; in questo caso bisogna impostare con zero riferito a gennaio ecc.. 
+</p>
+<pre>
+var natale2 = new Date(1995, 11, 25);
+console.log( natale2.getMonth() );				<span class="nota">// 11</span>
 </pre>
 
 <h3>Date.now() - Date.UTC() - Date.parse()</h3>
+
 <p>
 Sono tutti metodi che restituiscono un numero in millesecondi a partire dalla data di riferimento del 01/01/1970 con qualche differenza tra ognuno. <br>
 <b>UTC</b>, conosciuto anche come <span class="azzurro">Greenwich Mean Time (GMT)</span>, fa riferimento al tempo definito dal <q>World Time Standard</q>. <br>
@@ -61,52 +179,8 @@ Date.parse("9, aug, 1995");				<span class="nota">// restituisce 807919200000</s
 Date.parse("1995, 9, august");				<span class="nota">// restituisce 807919200000</span>
 </pre>
 
-
-<table id="" width="60%" border="1" cellspacing="1" cellpadding="3">
-<tr>
-	<th>Metodo</th>
-	<th>Descrizione</th>
-</tr>
-<tr>
-	<td>getDate()</td>
-	<td>numero del giorno del mese corrente (da 1 a 31)</td>
-</tr>
-<tr>
-	<td>getDay()</td>
-	<td>numero del giorno della settimana (0=domenica, 6 sabato)</td>
-</tr>
-<tr>
-	<td>getFullYear()</td>
-	<td>anno corrente</td>
-</tr>
-<tr>
-	<td>getMonth()</td>
-	<td>numero del mese (da 0:gennaio a 11:dicembre)</td>
-</tr>
-<tr>
-	<td>getHours()</td>
-	<td>ora corrente (da 0 a 23)</td>
-</tr>
-<tr>
-	<td>getMinutes()</td>
-	<td>minuti dell'ora corrente</td>
-</tr>
-<tr>
-	<td>getSeconds()</td>
-	<td>secondi dell'ora corrente</td>
-</tr>
-<tr>
-	<td>getMilliseconds()</td>
-	<td>millesecondi dell'ora corrente</td>
-</tr>
-	
-</table>
-
-Allo stesso modo di <tt>get</tt> esiste un metodo <tt>set</tt> per impostare il valore in questione. Quindi: <br />
-<b>setDate(), setDay(), setMonth(), setFullYear(), setHours(), setMinutes(), setSeconds(), setMilliseconds()     </b>
-
-
 <h3>getTime e setTime</h3>
+
 <p>
 Sono due metodi utili per comparare le date. Il metodo <tt>getTime</tt> restituisce il numero di millesecondi dal primo gennaio 1970. 
 <pre>
@@ -124,6 +198,7 @@ La funzione <tt>daysFineAnno()</tt> (vedere interno pagina) ottiene lo stesso ri
 </p>
 
 <h3>Date.prototype.getTimezoneOffset()</h3>
+
 <p>
 Il <b>time-zone offset</b> è la differenza in minuti tra UTC e l'ora locale. Tale valore può essere positivo o negativo. UTC è l'orario di Greenwich (GMT).  
 <pre>
@@ -265,6 +340,19 @@ var x = new Date();
 var differenza = x.getTimezoneOffset() / 60 ;					// differenza tra ora locale e l'ora di Greenwich
 console.log('Differenza in questo periodo: ', differenza);
 
+
+//### Funzione che restituisce una data da dei millisecondi UTC
+function dataDaMillisecondi (ms) {
+	var giorno = new Date(ms).getDate();					// in  numero
+	var mese = new Date(ms).getMonth();						// mese in numero
+	var anno = new Date(ms).getFullYear();
+	var ore = new Date(ms).getHours();
+	var minuti = new Date(ms).getMinutes();
+	var secondi = new Date(ms).getSeconds();
+	return giorno + '/' + mese + '/' + anno + ' ' + ore +':' + minuti + ':' + secondi;		// es: 25/11/1995 3:24:12
+}
+
+console.log( '819858252000 ms => ', dataDaMillisecondi(819858252000) );							// 25/11/1995 3:24:12
 
 </script>
 
