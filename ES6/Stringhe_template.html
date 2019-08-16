@@ -110,10 +110,33 @@ Ciao Jon
 </pre>
 
 
+<h3> String.trim(), String.trimStart() e String.trimEnd()</h3>
 
+<p>
+Sono metodi che permettono di rimuovere eventuali spazi vuoti prima e dopo la stringa
+</p>
 
+<pre>
 
+let salutone = "   Hello World    ";
+console.log(salutone.length);			<span class="nota">// 18</span>
 
+<span class="grigio">trimStart: rimuove gli spazi vuoti presenti all'inizio della stringa</span>
+let saluto = salutone.trimStart();
+console.log(saluto);				<span class="nota">// "Hello world!   "</span>
+
+<span class="grigio">trimEnd: rimuove gli spazi vuoti presenti dopo la fine della stringa</span>
+let saluto = salutone.trimEnd();
+console.log(saluto);				<span class="nota">// "   Hello world!"</span>
+
+<span class="grigio">trim: rimuove gli spazi vuoti presenti sia prima che dopo la stringa</span>
+let saluto = salutone.trim();
+console.log(saluto);				<span class="nota">// "Hello world!"</span>
+console.log(saluto.length);			<span class="nota">// 11</span>
+
+</pre>
+
+<br /><br /><br /><br /><br /><br />
 
 
 
