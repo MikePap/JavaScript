@@ -83,6 +83,19 @@ myMap.set(1, "foobar");
 myMap.set("bar", "fuuu");				<span class="nota">aggiorna quello definito precedentemente</span>
 </pre>
 
+<p> 
+Si può definire un oggetto Map facendo uso degli array in cui ogni coppia chiave/valore è racchiusa in un array e tutti insieme sono innestati in un array genitore. Il primo elemento di ogni array rappresenta la chiave ed il secondo il suo valore
+</p>
+<pre>
+const map = new Map([
+	['name', 'Mik Pappalardo'],
+	['age', 56],
+	['rank', 'Captain']
+]);
+
+console.log( map.get('name') )				<span class="nota">// Mik Pappalardo</span>
+
+</pre>
 
 <h3>Map.prototype.get()</h3>
 
@@ -205,6 +218,19 @@ console.log(mapIter.next().value);			<span class="nota">// [1, "bar"]</span>
 console.log(mapIter.next().value);			<span class="nota">// [Object, "baz"]</span>
 </pre>
 
+<p>
+Il metodo <b>Map#entries()</b> permette di fare un clone di un oggetto map:
+</p>
+
+<pre>
+var myMap = new Map();
+myMap.set("bar", "baz");
+myMap.set(1, "foo");
+
+const clone = new Map(Array.from(myMap.entries()));
+console.log(clone)					<span class="nota">// Map { bar → "baz", 1 → "foo" }</span>
+
+</pre>
 
 <h3>Map.prototype.forEach()</h3>
 
@@ -374,6 +400,11 @@ myMap.set(1, "foo");
 myMap.size;       // 2
 myMap.has("bar"); // true
 
+
+const clone = new Map(Array.from(myMap.entries()));
+
+
+console.log(clone)
 
 
 </script>
