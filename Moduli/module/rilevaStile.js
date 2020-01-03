@@ -9,7 +9,7 @@ export default	function rilevaStile(elemento, stile){
 	var computedStyle = null;
 
 	if (typeof elem.currentStyle !== "undefined"){
-		computedStyle = elemento.currentStyle;													//per IE
+		computedStyle = elemento.currentStyle[stile];											//per IE
 	}else{
 //		computedStyle = document.defaultView.getComputedStyle(elem, null)[stile];		//altri browser
 		computedStyle = window.getComputedStyle(elem)[stile];									//uguale al precedente

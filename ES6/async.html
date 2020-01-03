@@ -14,7 +14,8 @@
 <h1>async - await</h1>
 
 <p>
-La dichiarazione <span class="nota">async function</span> definisce una funzione asincrona che restituisce un oggetto <b>AsyncFunction</b>. O se vogliamo, il costruttore «AsyncFunction» crea un oggetto «async function». 
+La dichiarazione <span class="nota">async function</span> definisce una funzione asincrona che restituisce un oggetto 
+<b>AsyncFunction</b>. O se vogliamo, il costruttore «AsyncFunction» crea un oggetto «async function». 
 </p>
 <pre>
 async function nomeFunzione([param[, param[, ... param]]]) {
@@ -23,9 +24,13 @@ async function nomeFunzione([param[, param[, ... param]]]) {
 </pre>
 
 <p>
-Una funzione «async» <b>restituisce sempre un «Promise»</b>. Per cui, per prelevare il suo valore dobbiamo usare il metodo <b>then</b>. 
+Una funzione «async» <b>restituisce sempre un «Promise»</b>. Per cui, per prelevare il suo valore dobbiamo usare 
+il metodo <b>then</b>. 
 </p>
-<p class="nota">Il proposito di questo nuovo tipo di dichiarazione si basa sul concetto di rendere più facile l'uso di «Promise». In altre parole, così come «Promise» è stato creato per sostituire le "funzioni di callback", le «async/await»,  sono state pensate per sostituire le «Promise». In particolare non sono altro che una combinazione di «Promise» e «Generators».
+<p class="nota">Il proposito di questo nuovo tipo di dichiarazione si basa sul concetto di rendere più facile 
+l'uso di «Promise». In altre parole, così come «Promise» è stato creato per sostituire le "funzioni di callback", 
+le «async/await»,  sono state pensate per sostituire le «Promise». 
+In particolare non sono altro che una combinazione di «Promise» e «Generators».
 </p>
 
 <pre>
@@ -39,13 +44,14 @@ add1('hello').then(function (val) {
 </pre>
 
 <p>
-Una funzione «async» può contenere l'espressione <b>await</b>, che ha lo scopo di mettere la funzione in pausa e attendere la risoluzione del «Promise». <br>
+Una funzione «async» può contenere l'espressione <b>await</b>, che ha lo scopo di mettere la funzione in pausa e 
+attendere la risoluzione del «Promise». <br>
 </p>
 <p>
-Nell'esempio seguente, abbiamo la funzione "resolveAfter2Seconds()" che restituisce un «Promise» che contiene un "setTimeout" che intende restituire un valore, passato come argomento, dopo due secondi. Abbiamo poi creato la funzione "add1()" che richiama il «Promise» usando l'espressione «await»:
+Nell'esempio seguente, abbiamo la funzione "resolveAfter2Seconds()" che restituisce un «Promise» 
+che contiene un "setTimeout" che intende restituire un valore, passato come argomento, dopo due secondi. 
+Abbiamo poi creato la funzione "add1()" che richiama il «Promise» usando l'espressione «await»:
 </p>
-
-
 <pre>
 function resolveAfter2Seconds(x) {
 	return new Promise(resolve => {
@@ -64,12 +70,13 @@ async function add1(x) {
 add1(10).then(v => {
 	console.log(v);						<span class="nota">// restituisce 60 dopo 4 secondi</span>
 });
-
 </pre>
 
 <p>
-Il risultato (60) ci verrà restituito dopo 4 secondi perchè ci sono due funzioni "resolveAfter2Seconds()" taggate con «await» che impiegano due secondi ciascuna per completarsi. Ciò a dire che le due funzioni vanno in sequenza una dopo l'altra. <br>
-Anche se, per assurdo, volessimo ottenere soltanto il risultato di una delle due funzioni dovremmo aspettare comunque 4 secondi:
+Il risultato (60) ci verrà restituito dopo 4 secondi perchè ci sono due funzioni "resolveAfter2Seconds()" 
+taggate con «await» che impiegano due secondi ciascuna per completarsi. 
+Ciò a dire che le due funzioni vanno in sequenza una dopo l'altra. <br>
+Anche se volessimo ottenere soltanto il risultato di una delle due funzioni dovremmo aspettare comunque 4 secondi:
 </p>
 <pre>
 async function add1(x) {
@@ -82,7 +89,6 @@ async function add1(x) {
 <p>
 Altro scenario possiamo avere se definiamo «await» nel segente modo:
 </p>
-
 <pre>
 async function add2(x) {
 	const p_a = resolveAfter2Seconds(20);
@@ -95,9 +101,9 @@ add2(10).then(v => {
 });
 </pre>
 <p>
-In questo caso abbiamo creato uno scenario asincrono, che effettivamente non lo è, ma abbiamo ottenuto il risultato dopo due secondi.
+In questo caso abbiamo creato uno scenario asincrono, che effettivamente non lo è, ma abbiamo ottenuto 
+il risultato dopo due secondi.
 </p>
-
 
 
 <h3>async e Promise </h3>
@@ -123,7 +129,8 @@ getUsers().then((arr) => {
 });
 </pre>
 <p>
-Ora creiamo la funzione "getFirstUser()", che richiama il «Promise», con cui vogliamo ottenere il valore della proprietà "name" dell'oggetto
+Ora creiamo la funzione "getFirstUser()", che richiama il «Promise», con cui vogliamo ottenere il valore 
+della proprietà "name" dell'oggetto
 </p>
 <pre>
 <span class="grigio">Con l'uso di «Promise»</span>
@@ -138,7 +145,8 @@ function getFirstUser() {
 	});
 }
 
-<span class="grigio">Se vogliamo, quindi, prelevare il valore restituito dalla funzione dobbiamo usare il metodo «then» in questo modo:</span>
+<span class="grigio">Se vogliamo, quindi, prelevare il valore restituito dalla funzione dobbiamo usare il metodo «then» 
+in questo modo:</span>
 
 getFirstUser().then(function (nomeOggetto) {
 	console.log(nomeOggetto);				<span class="nota">// Mik</span>
@@ -152,7 +160,8 @@ getFirstUser().then(function (nomeOggetto) {
 console.log( getFirstUser() );					<span class="nota">// Promise { <state>: "pending" }</span>
 </pre>
 <p>
-La consolle non ci restituirebbe un errore, ma ci avvertirebbe che il «Promise» è in fase di <b>pending</b>. Ciò a dire che l'azione correlata non ha ancora prodotto un risultato.
+La consolle non ci restituirebbe un errore, ma ci avvertirebbe che il «Promise» è in fase di <b>pending</b>. 
+Ciò a dire che l'azione correlata non ha ancora prodotto un risultato.
 </p>
 
 <p>
@@ -184,12 +193,13 @@ getFirstUser().then(function (nomeOggetto) {
 </pre>
 
 <p>
-Volendo, possiamo utilizzare «async/await» soltanto per ri-costituire la funzione "getFirstUser()" e rifarci alla funzione "getUsers()"  costituita con «Promise».
-
+Volendo, possiamo utilizzare «async/await» soltanto per ri-costituire la funzione "getFirstUser()" e 
+rifarci alla funzione "getUsers()"  costituita con «Promise».
 </p>
 
 <p>
-In definitiva, l'esempio ci mostra come usare «promise» e «async/await» nello stesso ambito. Come numero di righe di codice stiamo più o meno la, però la sintassi di «async» è meno verbosa e quindi più leggibile.<br>
+In definitiva, l'esempio ci mostra come usare «promise» e «async/await» nello stesso ambito. 
+Come numero di righe di codice stiamo più o meno la, però la sintassi di «async» è meno verbosa e quindi più leggibile.<br>
 Come nell'esempio seguente:
 </p>
 <pre>
@@ -206,9 +216,225 @@ async function getAmnount(userId){
 	let amount = await getBalance(user);
 	return amount;
 }
-
 </pre>
 
+
+<h3>Asynchronous generators</h3>
+
+<p>
+Alla iterazione sincrona ottenibile col metodo <span class="nota">Symbol.iterator</span> è stata affiancata 
+l'iterazione asincrona ottenibile col metodo <span class="nota">Symbol.asyncIterator</span> perchè la sincrona 
+non potrebbe funzionare con esempi del tipo
+</p>
+<pre>
+for (const line of readLinesFromFile(fileName)) {
+	console.log(line);
+}
+</pre>
+
+<p>
+Con l'utilizzo di un iteratore asincrono è possibile convertire un parametro iteratore sincrono in un iteratore asincrono. <br>
+
+</p>
+<pre>
+async function* createAsyncIterable(syncIterable) {
+	for (const elem of syncIterable) {
+			yield elem;
+	}
+}
+async function f() {
+	const asyncIterable = createAsyncIterable(['a', 'b']);
+	const asyncIterator = asyncIterable[Symbol.asyncIterator]();
+	console.log(await asyncIterator.next());				<span class="nota">// { value: 'a', done: false }</span>
+	console.log(await asyncIterator.next());				<span class="nota">// { value: 'b', done: false }</span>
+	console.log(await asyncIterator.next());				<span class="nota">// { value: undefined, done: true }</span>
+}
+</pre>
+
+<p>
+	Inoltre è stato introdotta una versione asincrona del ciclo <q>for-of</q> che è <span class="nota">for-await-of</span>
+</p>
+<pre>
+async function f2() {
+	for await (const x of createAsyncIterable(['a', 'b'])) {
+		console.log(x);
+	}
+}
+</pre>
+	
+<p>
+Una normale funzione è trasformata in una funzione generatore ponendo un asterisco dopo <em>function</em>.
+Una funzione <em>async</em> è trasformata in in un <b>async generator</b> allo stesso modo.
+</p>
+<p>
+Una normale funzione generatore restituisce un oggetto generatore. Ogni invocazione a tale oggetto generatore, utilizzando il 
+metodo <em>next</em>, restituisce un oggetto "{value,done}". <br>
+Una funzione async generatore invece produce sempre un oggetto generatore ma se invocato, utilizzando il 
+metodo <em>next</em>, restituisce un Promise per un oggetto "{value,done}".
+</p>
+
+<p>
+Il motore di Javascript internamente mette in coda le invocazioni al metodo <q>next()</q> per passarle 
+ad un <q>generatore async</q>. Ciò a dire, dopo una chiamata a <q>next()</q> si può richiamare ancora senza dover aspettare 
+che il Promise sia risolto. Nella maggior parte dei casi quello che si vuole è il valore della proprietà <q>done</q> 
+per decidere se richiamare ancora <q>next()</q> oppure no. Cosi funziona il ciclo <q>for-await-of</q>.
+</p>
+
+<p>
+Un aspetto interessante è che quando si combina <q>await</q> e <q>yield</q>, <q>await</q> non può fermare 
+<q>yield</q> dal restituire un Promise ma può fermare quel Promise dall'essere risolto:
+</p>
+
+<h3>Async function vs async generator function</h3>
+
+<p>
+Una <b>funzione async</b> rende immediatamente un Promise il quale viene restituito con <q>return</q> o rifiutato 
+con <q>throw</q>:
+</p>
+<pre>
+(async function () {
+	return 'hello';
+})()
+.then(x => console.log(x)); // hello
+
+(async function () {
+	throw new Error('Problem!');
+})()
+.catch(x => console.error(x)); // Error: Problem!
+</pre>
+
+<p>
+Una <b>funzione generatore async</b>, invece, rende immediatamente un  <b>async iterabile</b> che va richiamato con <q>next()</q>.
+Ogni invocazione a <q>next()</q> restituisce un Promise che fa capo a <q>yield</q>. 
+<q>throw err</q> rigetta il Promise
+</p>
+<pre>
+async function* gen() {
+	yield 'hello';
+	yield 'ciao';
+	return 'hola';
+}
+<span class="azzurro">
+const genObj = gen();
+genObj.next().then(x => console.log(x));		<span class="nota">Object { value: "hello", done: false }</span>
+genObj.next().then(x => console.log(x));		<span class="nota">Object { value: "ciao", done: false }</span>
+genObj.next().then(x => console.log(x));		<span class="nota">Object { value: "hola", done: true }</span>
+genObj.next().then(x => console.log(x));		<span class="nota">Object { value: undefined, done: true }</span>
+genObj.next().then(x => console.log(x));		<span class="nota">Object { value: undefined, done: true }</span>
+</span>
+</pre>
+<p>
+Notiamo che anche se l'oggetto fornisce il valore di <q>value</q> collegato al <q>return</q>, 
+il valore di <q>done</q> diventa true subito dopo la restituzione dell'ultimo <q>yield</q>.  <br>
+Se invece proviamo ad iterarlo con <q>for-await-of</q> abbiamo restituito solo i valori collegati allo <q>yield</q>
+</p>
+<pre>
+async function fun (){
+	for await (const x of gen()){
+		console.log(x);
+	}
+}
+fun();			<span class="nota">// "hello", "ciao" </span>	
+</pre>
+
+<p>
+Interessante è vedere il comportamento mettendo uno dopo l'altra le due cose:
+</p>
+<pre>
+async function* gen() {
+	yield 'hello';
+	yield 'ciao';
+	return 'hola';
+}
+
+async function fun (){
+	for await (const x of gen()){
+		console.log(x);
+	}
+}
+<span class="azzurro">
+fun();
+
+const genObj = gen();
+genObj.next().then(x => console.log(x));
+genObj.next().then(x => console.log(x));
+genObj.next().then(x => console.log(x));
+genObj.next().then(x => console.log(x));
+genObj.next().then(x => console.log(x));
+</span><span class="nota">
+hello
+Object { value: "hello", done: false }
+Object { value: "ciao", done: false }
+ciao
+Object { value: "hola", done: true }
+Object { value: undefined, done: true }
+Object { value: undefined, done: true }
+</span>
+</pre>
+<p>
+Abbiamo posto prima la funzione <q>fun()</q> con <q>for-await-of</q> e dopo le varie invocazioni con <q>next()</q>. <br>
+Notiamo che dopo la restituzione del primo Promise (hello), l'iterabile async si mette in pausa (a causa di <q>await</q>);
+E che fa quindi? Passa a restituire le invocazioni al metodo <q>next()</q> fino a quando il <q>done</q> è false; 
+Dopo di che ritorna indietro e riprende l'iterazione restituendo il secondo e ultimo <q>yield</q> (ciao);
+Una volta risolto quest'ultimo Promise passa a risolvere gli oggetti mancanti invocati con <q>next()</q> che 
+producono un <q>done:true</q>
+</p>
+
+<p>
+Vediamo quest'altro esempio in cui abbiamo combinato <q>await</q> e <q>yield</q>
+</p>
+<pre>
+function doSomethingAsync (){
+	return 'fuk'
+}
+
+async function* asyncGenerator() {
+	console.log('Start');
+	const result = await doSomethingAsync();
+	yield 'Result: ' +result; 
+	yield 'Mik';
+	console.log('Done');
+	return 'OK';
+}
+<span class="azzurro">
+const genObj = asyncGenerator();
+genObj.next().then(x => console.log(x));
+genObj.next().then(x => console.log(x));			
+genObj.next().then(x => console.log(x));			
+genObj.next().then(x => console.log(x));			
+</span> <span class="nota">
+Start
+Object { value: "Result: fuk", done: false }
+Done
+Object { value: "Mik", done: false }
+Object { value: "OK", done: true }
+Object { value: undefined, done: true }
+</span>	
+</pre>
+
+<p>
+In quest'altro esempio vediamo come <b>leggere un file</b> (con Nodejs)
+</p>
+<pre>
+var fs = require("fs");
+
+async function main(inputFilePath) {
+	const readStream = fs.createReadStream(inputFilePath,
+	{ encoding: 'utf8', highWaterMark: 1024 });
+
+	for await (const chunk of readStream) {
+		console.log('>>> '+chunk);
+	}
+		console.log('### DONE ###');
+}//
+<span class="azzurro">
+main("file.txt")
+console.log("Hello world");			<span class="nota">// viene restituito prima del file</span>
+</span>
+</pre>
+<p>
+Questo esempio è stato messo in pratica in ".../GRAFICA/Nodejs/Moduli/file_system/leggereFile.js"
+</p>
 
 <br><br><br><br><br><br>
 
@@ -217,7 +443,7 @@ async function getAmnount(userId){
 
 "use strict";															////////////		"use strict";		///////////////////
 
-
+/*
 function resolveAfter2Seconds(x) {
 	return new Promise(resolve => {
 		setTimeout(() => {
@@ -225,7 +451,6 @@ function resolveAfter2Seconds(x) {
 		}, 2000);
 	});
 }
-
 
 
 async function add1(x) {
@@ -238,7 +463,7 @@ async function add1(x) {
 add1(10).then(v => {
 	console.log(v);						// restituisce 60 dopo 4 secondi
 });
-
+*/
 
 
 /*
@@ -267,6 +492,41 @@ getFirstUser().then(function (nomeOggetto) {
 	console.log(nomeOggetto);
 });
 */
+
+
+async function* createAsyncIterable(syncIterable) {
+    for (const elem of syncIterable) {
+        yield elem;
+    }
+}
+
+async function f() {
+	for await (const x of createAsyncIterable(['a', 'b'])) {
+		console.log(x);
+	}
+}
+
+//f();
+
+function doSomethingAsync (){
+	return 'fuk'
+}
+
+async function* asyncGenerator() {
+	console.log('Start');
+	const result = await doSomethingAsync(); // (A)
+	yield 'Result: ' +result; 
+	yield 'MIk';
+	console.log('Done');
+	return 'OK';
+}
+
+const genObj = asyncGenerator();
+genObj.next().then(x => console.log(x));
+genObj.next().then(x => console.log(x));			
+genObj.next().then(x => console.log(x));			
+genObj.next().then(x => console.log(x));			
+
 
 
 </script>
