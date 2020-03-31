@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Visibilità password</title>
+<link rel="stylesheet" href="../baseLocali.css" type="text/css"/>
+<style type="text/css">
+
+div.box-password {
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	padding: 1rem;
+	margin: 5rem 0 5rem 2rem;
+	width: 40rem;
+	height: 6rem;
+}
+
+#password {
+	height: 100%; 	width: 32rem;
+	margin: 0;	
+	padding: 0.5rem 0;		
+	border: none;	
+}
+
+#toggle {
+ 	width: 5rem;	
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Visibilità o meno della password</h1>
+
+<p>
+In questo documento ho creato un box (elemento «div») in cui ho inserito un elemento «input» e un elemento «button». 
+In quest'ultimo ho inserito una immagine SVG che rappresenta una specie di occhio che vuole essere il punto in cui 
+cliccare per cambiare la visibilità del campo «input» che rappresenta la password da digitare. <br>
+Agli elementi «input» e «button» ho tolto il loro bordo assegnandolo invece al box in modo da camuffare l'input della password.
+
+</p>
+
+<div class="box-password">
+	<input type="password" class="" id="password" />
+
+	<button class="btn-toggle" id="toggle">
+		<svg
+				viewBox="0 0 24 24"
+				style="fill: none; height: 24px; stroke: rgba(0, 0, 0, 0.4); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1; width: 24px;"
+		>
+				<path d="M23.5,12c0,0-5.148,6.5-11.5,6.5S0.5,12,0.5,12S5.648,5.5,12,5.5S23.5,12,23.5,12z M12,8c2.209,0,4,1.791,4,4 s-1.791,4-4,4s-4-1.791-4-4S9.791,8,12,8z M12,10c1.105,0,2,0.895,2,2s-0.895,2-2,2s-2-0.895-2-2" />
+		</svg>
+	</button>
+</div>
+	
+
+
+<script>
+
+	document.addEventListener('DOMContentLoaded', function() {					// si può fare a meno
+		const passwordEle = document.getElementById('password');
+		const toggleEle = document.getElementById('toggle');
+
+		toggleEle.addEventListener('click', function() {
+			const type = passwordEle.getAttribute('type');
+			passwordEle.setAttribute('type', type === 'password' ? 'text' : 'password');
+		});
+	});  
+
+	
+</script>    
+
+
+</body>
+</html>
+
+
+<!-- 
+
+	<button class="" id="toggle">
+		<svg
+				viewBox="0 0 24 24"
+				style="fill: none; height: 24px; stroke: rgba(0, 0, 0, 0.4); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1; width: 24px;"
+		>
+				<path d="M23.5,12c0,0-5.148,6.5-11.5,6.5S0.5,12,0.5,12S5.648,5.5,12,5.5S23.5,12,23.5,12z M12,8c2.209,0,4,1.791,4,4 s-1.791,4-4,4s-4-1.791-4-4S9.791,8,12,8z M12,10c1.105,0,2,0.895,2,2s-0.895,2-2,2s-2-0.895-2-2" />
+		</svg>
+	</button>
+
+
+
+ -->

@@ -44,7 +44,9 @@ padding:10px; margin:10px; border: 1px solid #888;
 		<option value="s10">Ottenere uno stile CSS </option>
 		<option value="s11">Ordinare oggetti, in base alle proprietà, con il metodo 'sort' </option>	
 		<option value="s12">Assegnazione di proprietà/valore ad un oggetto da due array</option>
-							
+		<option value="s13">Verificare se un elemento sia nel viewport</option>
+		<option value="s14">Verificare il browser</option>
+		<option value="s15">Scaricare un file</option>
 	</select>
 </section>
 
@@ -596,8 +598,17 @@ function eliminaNodiInterni (nodo) {
 	}
 };
 
+<span class="grigio">La seguente utilizza un'altra procedura</span>
+
+function eliminaNodiInterni(el){ 
+	var nodo = document.querySelector(el);
+	while (nodo.firstChild) {
+		nodo.removeChild(nodo.firstChild);
+	}
+}
+
 </pre>
-<p></p>
+
 <pre>
 function eliminaNodoBox(box, iddiNodo) {
 	var elementiBox = document.querySelectorAll(box+' > *');
@@ -609,9 +620,7 @@ function eliminaNodoBox(box, iddiNodo) {
 	}
 }
 
-
 </pre>
-
 
 </section>
 
@@ -759,6 +768,62 @@ Se l'oggetto non esiste allora lo si deve definire cosi come fatto nell'esempio 
 </p>
 	
 </section>	
+
+<section id="s13">
+	<h3>Verificare se un elemento sia nel viewport</h3>
+	<p>
+La funzione seguente esegue un controllo per verificare se un elemento sia nel <q>viewport</q> in uno specifico momento.
+Attenzione, non che tale elemento faccia parte del <q>DOM</q> ma che sia visibile in quel preciso momento in cui viene invocata. <br>
+Se richiamata, ad esempio all'interno di un evento click, ci dà la possibilità di verificare se in quel momento 
+che si è verificato il <q>click</q> l'elemento in questione è visibile o meno. <br>
+Per capire cosa si intende per <q>visibiltà</q> e quindi <em>viewport</em>, possiamo usare lo scroll sulla barra verticale e 
+provare ad invocare la funzione; otterremo <q>true</q> quando l'elemento in questione lo possiamo osservare sullo schermo 
+altrimenti se scorrendo la barra perdiamo di vista l'elemento otterremo <q>false</q>.
+	</p>
+	<pre>
+const isInViewport = function(ele) {
+	const rect = ele.getBoundingClientRect();
+	return (
+		rect.top >= 0 &&
+		rect.left >= 0 &&
+		rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+		rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+	);
+};
+
+let jon = document.getElementById('jon');
+<span class="azzurro">
+console.log( isInViewport(jon) );			<span class="nota">* provare a invocare la funzione scrollando il documento</span>
+</span>
+	</pre>
+</section>
+
+<section id="s14">
+	<h3>Verificare il tipo di browser</h3>
+	<p>
+La seguente verifica viene fatta nel caso di un Mac
+	</p>
+	<pre>
+const isMacBrowser = /Mac|iPod|iPhone|iPad/.test(navigator.platform);		
+	</pre>
+</section>
+
+<section id="s15">
+	<h3>Eseguire il download di un file</h3>
+	<p>
+Per fare scaricare uno specifico file all'utente si può utilizzare l'attributo <em>download</em> applicato all'elemento «a»
+	</p>
+	<pre>
+
+&lt;a href="../Immagini/biologico2.png" download &gt; Scarica immagine &lt;/&gt;
+
+	</pre>
+	<p>
+Ecco l'esempio dal vivo: 		
+			<a href="../Immagini/biologico2.png" download>Scarica immagine </a>
+	</p>
+
+</section>
 
 
 

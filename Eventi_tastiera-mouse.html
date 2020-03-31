@@ -9,8 +9,7 @@
 </style>
 </head>
 
-<body
->
+<body>
 <!--
 <body
  onkeypress="showKeyPress(event);"
@@ -104,8 +103,6 @@ console.log(document.activeElement.tagName);				<span class="nota">// BODY</span
 
 </p>
 
-
-
 <h3>Load</h3>
 
 <p>
@@ -113,10 +110,14 @@ L'evento <span class="nota">load</span> scatta nella finestra quando la pagina f
 Quando la pagina viene chiusa o si passa ad un'altra per mezzo di <em>link</em> scatta l'evento <span class="nota">beforeunload</span>
 </p>
 
-
-
-
-
+<h3>Evento input</h3>
+<p>
+L'evento <em>input</em> scatta quando il valore di un elemento «input», «textarea» o «select» cambia. <br>
+Nel caso di un elemento «input» type=checkbox o type=radio l'vento scatta qualora l'utente attiva un controllo
+</p>
+<p>L'esempio seguente mostra l'utilità di questo evento </p>
+<input placeholder="Digita qualcosa" name="name" id="input-input"/>
+<p id="valoreInput"></p>
 
 
 
@@ -201,6 +202,17 @@ function combinazioniTasti()
 	, false);	
 }
 combinazioniTasti();
+
+// Relativo all'Evento "input"
+let input = document.getElementById('input-input');
+let valoreInput = document.getElementById('valoreInput');
+
+input.addEventListener('input', aggiornaValore);
+
+function aggiornaValore(e) {
+  valoreInput.textContent = e.target.value;
+}
+
 
 /*
 Esempio che mostra un <div> (una barra) a cui può essere modificata la sua larghezza con il movimento del mouse

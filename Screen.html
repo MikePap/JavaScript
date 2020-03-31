@@ -89,21 +89,28 @@ function openWin() {
 	myWin.document.children[0].appendChild(OuterHeight);				
 	myWin.document.children[0].appendChild(par);					
 	myWin.document.close();
-
 }
-
-
-
 
 </script>
 
 <h3>Larghezza e altezza del documento HTML</h3>
 
 <p>
-Per ottenere la larghezza o l'altezza del documento HTML si possono utilizzare 
+Per ottenere la larghezza o l'altezza del documento HTML si può sfruttare uno stratagemma utilizzando il metodo <em>Math.max</em>.<br>
+Questo computo non comprende i valori di eventuali barre di scorrimento. Per esempio se è presente la barra di scorrimento verticale 
+il valore derivante della larghezza risulterà inferiore perchè la barra sottrarrà il suo valore alla larghezza totale del documento.
 <pre>
-document.documentElement.offsetWidth;				<span class="nota">// 1349 (x tutti tranne IE8=>1345)</span>							
-document.documentElement.offsetHeight;				<span class="nota">// dipende da quello che c'è</span>							
+const fullWidth = Math.max(
+	document.body.scrollWidth, document.documentElement.scrollWidth,
+	document.body.offsetWidth, document.documentElement.offsetWidth,
+	document.body.clientWidth, document.documentElement.clientWidth
+);
+
+const fullHeight = Math.max(
+	document.body.scrollHeight, document.documentElement.scrollHeight,
+	document.body.offsetHeight, document.documentElement.offsetHeight,
+	document.body.clientHeight, document.documentElement.clientHeight
+);
 </pre>
 </p>
 
@@ -155,6 +162,22 @@ console.log('Altezza layout viewport: ',  document.documentElement.clientHeight)
 
 console.log("Inner", window.innerHeight );
 console.log("Outer", window.outerHeight);
+
+// 
+const fullWidth = Math.max(
+	document.body.scrollWidth, document.documentElement.scrollWidth,
+	document.body.offsetWidth, document.documentElement.offsetWidth,
+	document.body.clientWidth, document.documentElement.clientWidth
+);
+
+const fullHeight = Math.max(
+	document.body.scrollHeight, document.documentElement.scrollHeight,
+	document.body.offsetHeight, document.documentElement.offsetHeight,
+	document.body.clientHeight, document.documentElement.clientHeight
+);
+
+console.log( 'Massima larghezza documento', fullWidth );
+console.log('Massima altezza documento', fullHeight);
 
 </script>
 

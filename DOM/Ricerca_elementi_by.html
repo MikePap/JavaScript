@@ -1,27 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="it">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>   Ricerca degli elementi </title>
+<meta charset="utf-8" />
+<title>Ricerca degli elementi</title>
+<link rel="stylesheet" href="../../baseLocali.css" type="text/css"/>
 <style type="text/css">
 
-h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);}
-h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
-h3{ font-size:14px;  color:rgb(200,20,20);}
-
-.nota{ color:rgb(250,120,0);}
-.codice, pre{ color:rgb(30,120,30);}
-.blu{color:#00f;}
-.grigio{color: grey;}
-
-dt{ color:#003399; margin-bottom:5px;}
-dd{ color:#0066FF;}
-dd{ color:#0066FF;}
-tt, em{color:#6a9999}
-
 </style>
-
-
 </head>
 
 <body>
@@ -74,7 +59,7 @@ Ricerca gli elementi per <q>tag</q> e restituisce un array.
 <pre>
 var elems = document.getElementsByClassName("myClass");
 elems.style.color = "#f00";				<span class="nota">// non  assegna lo stile a nessuno dei due paragrafi perchè restituisce un array</span> 
-<span class="blu">mentre:</span>
+<span class="azzurro">mentre:</span>
 var elems = document.getElementsByClassName("myClass")[1];
 elems.style.color = "#f00";				<span class="nota">// assegna lo stile al primo paragrafo</span> 
 </pre>
@@ -84,7 +69,7 @@ elems.style.color = "#f00";				<span class="nota">// assegna lo stile al primo p
 <p>
 Ogni nodo ha un genitore (tranne document). Quindi con la proprietà <b>parentNode </b> si ricava un riferimento al nodo padre (superiore)<br />
 <pre>
-<span class="blu">&lt;div&gt; 
+<span class="azzurro">&lt;div&gt; 
 	&lt;p&gt; 
 		&lt;a id="oliver" href="#"&gt; Oliver &lt;/a&gt; 
 	&lt;/p&gt;
@@ -246,11 +231,11 @@ if(target.hasAttribute('id')){
 <p class="nota">Supportato in IE 8</p>
 
 <pre>
-<span class="blu">&lt;div class="big brown bear"&gt; &lt;/div&gt;</span>
+<span class="azzurro">&lt;div class="big brown bear"&gt; &lt;/div&gt;</span>
 var elm = document.querySelector('div');
 
 <span class="grigio">Recuperare i valori delle classi </span>
-<span class="blu">elm.className;</span>					<span class="nota">// restituisce: big brown bear  </span>
+<span class="azzurro">elm.className;</span>					<span class="nota">// restituisce: big brown bear  </span>
 
 <span class="grigio">Assegnare una o più classi</span>
 elm.className = 'bordo';			<span class="nota">assegna la classe 'bordo' all'elemento </span>			
@@ -265,47 +250,53 @@ elm.className = '';				<span class="nota">elimina una o tutte le eventuali class
 <p>
 <span class="nota">Non supportato in IE 8</span>
 <pre>
-<span class="blu">&lt;div class="big brown bear"&gt; &lt;/div&gt;</span>
+<span class="azzurro">&lt;div class="big brown bear"&gt; &lt;/div&gt;</span>
 var elm = document.querySelector('div');
 
 <span class="grigio">Recuperare i valori delle classi </span>
-<span class="blu">elm.classList;</span>					<span class="nota">// restituisce: 0: "big", 1: "brown", 2: "bear", length: 3, ... </span>
+<span class="azzurro">elm.classList;</span>					<span class="nota">restituisce: 0: "big", 1: "brown", 2: "bear", length: 3, ... </span>
 
-<span class="grigio">Il metodo <q>add</q>  permette di assegnare soltanto una classe per volta </span>
+<span class="grigio">Assegnazione di una sola classe </span>
 elm.classList.add('cat');			<span class="nota">aggiunge la classe 'cat' all'elemento &lt;div&gt;  </span>
-elm.classList.add('cat dog');			<span class="nota">non aggiunge niente  </span>
+<span class="grigio">Assegnazione di più classi ad </span>
+elm.classList.add('cat', 'dog');		<span class="nota">aggiunge entrambe le classi</span>
 
-<span class="grigio">Il metodo <q>remove</q> permette di eliminare una classe per volta </span>
+<span class="grigio">Il metodo <q>remove</q> permette di eliminare una o più classi</span>
 elm.classList.remove('cat');			<span class="nota">elimina la classe 'cat' </span>
-elm.classList.remove('dog cat');		<span class="nota">non elimina nulla </span>
+elm.classList.remove('dog', 'cat');		<span class="nota">elimina entrambe le classi </span>
 </pre>
 </p>
-
 
 <h3>classList.toggle</h3>
 <p>
 Metodo che permette di intercanbiare un sub-valore di un'attributo di classe. In altre parole permette di aggiungere un valore se mancante o di rimuoverlo se presente.
 <pre>
-<span class="blu">&lt;div class="visible"&gt; &lt;/div&gt;</span>
+<span class="azzurro">&lt;div class="visible"&gt; &lt;/div&gt;</span>
 var elm = document.querySelector('div');
 
 elm.classList.toggle('visible');		<span class="nota">rimuove la classe 'visible'</span>
 elm.classList.toggle('grow');			<span class="nota">aggiunge la classe 'grow'</span>
-<span class="blu">elm.className;					<span class="nota">// restituisce: grow</span>
+<span class="azzurro">elm.className;					<span class="nota">restituisce: grow</span>
 </pre>
 </p>
 
 <h3>classList.contains</h3>
 <p>
-Metodo che permette di determinare se un elemento contiene una specificata classe
+Metodo che permette di determinare se un elemento contiene una specificata classe oppure se 
+un elemento contiene un'altro elemento al suo interno.
 <pre>
-<span class="blu">&lt;div class="big brown bear"&gt; &lt;/div&gt;</span>
+<span class="azzurro">&lt;div class="big brown bear"&gt; &lt;/div&gt;</span>
 var elm = document.querySelector('div');
 
-<span class="blu">elm.classList.contains('brown');</span>		<span class="nota">// restituisce: true </span> 
+<span class="azzurro">elm.classList.contains('brown');</span>		<span class="nota">// restituisce: true </span> 
+</pre>
+<pre>
+let boby = document.querySelector('body');
+let jon = document.getElementById('jon');
+const isDiscendente = boby.contains(jon);
+<span class="azzurro">console.log(isDiscendente);</span>			<span class="nota">// true</span>
 </pre>
 </p>
-
 
 
 <h2>Comparazione nodi -- isEqualNode -- </h2>
@@ -313,18 +304,18 @@ var elm = document.querySelector('div');
 E' un metodo che permette di controllare se due nodi sono uguali. La verifica è fatta sul confronto del tipo di elemento e sugli attributi contenuti in ciascuno di essi.
 <pre>
 <span class="grigio">Prendiamo  il caso di un confronto tra le seguenti due immagini  </span>
-<span class="blu">&lt;img src='Immagine-01.jpg' alt='logo sito' /&gt;  
+<span class="azzurro">&lt;img src='Immagine-01.jpg' alt='logo sito' /&gt;  
 &lt;img src='Immagine-01.jpg' alt='logo sito' /&gt;  </span>
 var img01 = document.getElementsByTagName('img')[0];
 var img02 = document.getElementsByTagName('img')[1];
-<span class="blu">img01.isEqualNode(img02);</span>				<span class="nota">// restituisce: true</span>
+<span class="azzurro">img01.isEqualNode(img02);</span>				<span class="nota">// restituisce: true</span>
 
 <span class="grigio">Se invece abbiamo  che una delle due ha un attributo in più  </span>
-<span class="blu">&lt;img src='Immagine-01.jpg' alt='logo sito' <b>class='classeImmagine'</b> /&gt;  
+<span class="azzurro">&lt;img src='Immagine-01.jpg' alt='logo sito' <b>class='classeImmagine'</b> /&gt;  
 &lt;img src='Immagine-01.jpg' alt='logo sito' /&gt;  </span>
 var img01 = document.getElementsByTagName('img')[0];
 var img02 = document.getElementsByTagName('img')[1];
-<span class="blu">img01.isEqualNode(img02);</span>				<span class="nota">// restituisce: false</span>
+<span class="azzurro">img01.isEqualNode(img02);</span>				<span class="nota">// restituisce: false</span>
 </pre>
 </p>
 
@@ -333,7 +324,7 @@ var img02 = document.getElementsByTagName('img')[1];
 Metodo che permette di individuare il nodo attualmete attivo nel documento. Non tutti i nodi ottengono il focus; fra questi gli &lt;input&gt;, &lt;textarea&gt; ecc..  
 <pre>
 document.querySelector('textarea').focus();		<span class="nota">// imposta il focus sull'elemento textarea</span>
-<span class="blu">document.activeElement;</span> 				<span class="nota">// restituisce l'elemento &lt;textarea&gt; </span> 
+<span class="azzurro">document.activeElement;</span> 				<span class="nota">// restituisce l'elemento &lt;textarea&gt; </span> 
 </pre>
 </p>
 
