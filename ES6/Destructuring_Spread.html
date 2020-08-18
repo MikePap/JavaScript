@@ -349,6 +349,25 @@ console.log(arr1);						<span class="nota">// Array [ "1", 2, "tre", "mela", "pe
 </span>
 </pre>
 
+<p>Funzione Concatenazione di array </p>
+
+<pre>
+function concatenaArray(arr) {
+	let lista = [];
+	for(let i=0; i < arr.length; i++){
+		let elem = arr[i];
+		lista.push(...elem);
+	}
+	return lista;
+}
+
+let arrays = [[1, 2, 3], [4, 5], [6]];
+<span class="azzurro">
+console.log( concatenaArray(arrays));			<span class='nota'>// Array(6) [ 1, 2, 3, 4, 5, 6 ]</span>
+</span>
+</pre>
+
+
 <p>Analizzando cosa accade</p>
 <pre>
 

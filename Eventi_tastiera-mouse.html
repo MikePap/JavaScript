@@ -33,6 +33,13 @@ addEventListener("keypress", function(event) {
 Il nodo del DOM dove l'evento <em>key</em> si origina dipende dall'elemento che ha il <em>focus</em>. Molti nodi del DOM non hanno il focus, a meno che non glie lo si attribuisce con l'attributo <tt>tabindex </tt>. Quando niente in particolare ha il focus <tt>document.body</tt> agisce come il nodo target degli eventi <em>key</em>
 </p>
 
+<p class="nota">
+<b>ATTENZIONE: </b> l'evento <em>keypress</em> è stato ormai dichiarato obsoleto in quanto produce dei risultati differenti a 
+seconda del dispositivo usato. <br>
+Dare un occhiata a <a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent">questo link</a> ed in particolare 
+all'unico esempio che sta alla fine della pagina.
+</p>
+
 <h3>Combinazioni di tasti</h3>
 
 <p>

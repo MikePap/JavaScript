@@ -1,27 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="it">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title> String </title>
-<style type="text/css">
+<meta charset="utf-8" />
+<title>String </title>
+<link rel="stylesheet" href="../baseLocali.css" type="text/css"/>
 
-h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);} 
-h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
-h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
-.nota{ color:rgb(250,120,0);}
-.codice{ color:rgb(30,120,30);}
-code, pre{ color:rgb(20,150,30); font-weight:bold; background:rgb(235,245,255); padding:10px;}
-tt, em{color:#6a9999}
-.grigio{color:gray;}
-.azzurro{color:rgb(100,150,255);}
-.rosso{color:red;}
-.scuro{color:#333;}
-
-dt{ color:#003399; margin-bottom:5px;}
-dd{ color:#0066FF;}		
-</style>
-
-<script type="text/javascript" src="jQuery-1.6.min.js"></script>
+<style type="text/css"></style>
 
 </head>
 
@@ -41,47 +25,6 @@ dd{ color:#0066FF;}
  "<a href=../Variabili/&quot;home/&quot;>Home</a>"
 </p>
 
-<h2>Stringhe numeri e operatori</h2>
-
-<script  type="text/javascript">
-jQuery(document).ready(function(){
-
-var sStringVar1 = "Hello";
-var sStringVar2 = "World";
-var nNumVar1 = 5;
-var nNumVar2 = 10;
-
-var sStringTotal = sStringVar1 + " " +sStringVar2;
-var nNumTotal = nNumVar1 + nNumVar2;
-var sStringNumTotal = sStringTotal + nNumTotal;
-
-$("#str_oper p").eq(0).text(sStringTotal);
-$("#str_oper p").eq(1).text(nNumTotal);
-$("#str_oper p").eq(2).text(sStringNumTotal);
-
-// 
-aString = new String("67");
-    answerNum = 67 + 23;
-    answerStr = aString + 23;
-
-$("#str_num_op p").eq(0).text(answerNum);
-$("#str_num_op p").eq(1).text(answerStr);
-
-}); // chiude ready 
-</script>
-
-<div id="str_oper">
-	<p></p>	
-	<p></p>
-	<p></p>
-</div> 
-
-<div id="str_num_op">
-	<p></p>
-	<p></p>
-</div> 
-
-
 <h2>toString()</h2>
 <p> Stringhe, numeri e boleani hanno tutti il metodo <q>toString()</q> per convertire il loro valore ad una stringa: <br />
 
@@ -96,68 +39,101 @@ var fNum2 = 10.0;
 </p>
 
 <h2>toLocaleString()</h2>
-<p class="nota">Nell'esempio trasforma il numero decimale cambiando il punto del decimale in virgola</p>
+<p>
+Questo metodo restituisce una stringa rappresentativa del numero in base alla lingua a cui si fa riferimento.
+Ciò diventa possibile quando si passano i valori per i due parametri opzionali: 
+</p>
+<pre>
+numero.toLocaleString([locale [, opzioni]])
+</pre>
+<p>
+Se non si passano valori notiamo	che il numero viene trasformato in base ad una rappresentazione locale 
+del mio computer che è quella italiana
+</p>
+<pre>
+const number = 12345.6789;
+console.log(number.toLocaleString());				<span class='nota'>// 12.345,679 (default "it_IT")</span>
+</pre>
+<p>
+Se invece gli cambiamo il parametro "locale" con un altra lingua per esempio quella statunitense
+</p>
+<pre>
+const number = 12345.6789;
+console.log(number.toLocaleString("en-US"));			<span class='nota'>// 12,345.679 </span>
+</pre>
+<p>
+Vediamo altri esempi con l'aggiunta di valori per "opzioni", per esempio con l'opzione <em>currency</em>
+</p>
+<pre>
+const number = 12345.6789;
 
-<script  type="text/javascript">
-jQuery(document).ready(function(){
+console.log(
+	number.toLocaleString('de-DE', {
+		style: 'currency',
+		currency: 'EUR',
+	}),
+);
+<span class='nota'>// 12.345,68 €</span> 
+console.log(
+	number.toLocaleString('en-US', {
+		style: 'currency',
+		currency: 'USD',
+	}),
+);
+<span class='nota'>// $12,345.68</span> 
+</pre>
+<p>
+Interessante è anche l'opzione <em>unit</em>
+</p>
+<pre>
+const number = 12345.6789;
 
-//var localString = 45.78;	// 45,78
-var localString = 45.7;		// 45,7
-//alert(jk.toLocaleString());
-var localeS = localString.toLocaleString();
-$("#to_localString").text(localeS);
-	
-}); // chiude ready 
-</script>
-<p id="to_localString"></p>
+console.log(
+	number.toLocaleString('it-IT', {
+		style: 'unit',
+		unit: 'liter',
+		unitDisplay: 'long',
+	}),
+);
+<span class="nota">// 12.345,679 litri</span>
 
+console.log(
+  number.toLocaleString('en-US', {
+    style: 'unit',
+    unit: 'mile-per-hour',
+  }),
+);
+<span class="nota">// 12,345.679 mph</span>
+</pre>
+<p>
+Nell'esempio seguente è utilizzato l'opzione <em>percent</em>
+</p>
+<pre>
+const number = 12345.6789;
 
-<h2>  Built-in Methods ('chartAt', 'toUpperCase', 'toLowerCase', 'replace', 'split')</h2>
+console.log(
+	number.toLocaleString('it-IT', {
+		style: 'percent',
+		minimumFractionDigits: 2,
+	}),
+);
+<span class="nota">// 1.234.567,89%</span>
+</pre>
 
-<script>
-$(document).ready(function(){
+<h2>  Built-in Methods ('chartAt', 'toUpperCase', 'toLowerCase')</h2>
 
-//var stringa = "hello".charAt(0); // "h"
-//var stringa = "hello".charAt(1); // "e"
-//var stringa =  "hello".toUpperCase(); // "HELLO"
-//var stringa =  "Hello".toLowerCase(); // "hello"
-var stringa =  "hellog".replace(/e|o/, "x"); // restituisce => "hxllog". Scambia la "e" con la 'x' (dovrebbe scambiare anche la 'o') 
-//var stringa = "1,2,3".split(",") //  NON FUNZIONA ["1", "2", "3"]
-//var stringa = "1,2,3".join(",");
-//var stri = "1,2,3"; // COSI FUNZIONA
-//var stringa =  stri.split(","); // COSI FUNZIONA ["1", "2", "3"] ma ATTENZIONE restituisce un'array (vedere il metodo split) in seguito 
-
-$("#str").text(stringa);
-});	// ready
-
-var y = "hello".charAt(1);
-//alert(y);
-
-</script>
-
-<p id="str"></p>
+<pre>
+var stringa = "hello".charAt(0); 		<span class="nota">// h</span>	
+var stringa = "hello".charAt(1); 		<span class="nota">// e</span>
+var stringa =  "hello".toUpperCase(); 		<span class="nota">// HELLO</span>
+var stringa =  "Hello".toLowerCase();		<span class="nota">// hello</span>
+</pre>
 
 
 <h2> Length Property </h2>
 <pre>
 "hello".length;				<span class="nota">// restituisce 5</span>
-
 </pre>
-
-<script>
-  $(document).ready(function(){
-//var "Hello".length; // COSI NON FUNZIONA 
-var lu = "Hello";  // COSI FUNZIONA 
-var lung = lu.length; // FUNZIONA  restituisce =>5
-// var lung = "".length // restituisce => 0
-
-$("#lungh").text(lung);
-
-});
-</script>
-
-<p id="lungh"></p>
-
 
 <h2>charAt( )</h2>
 <pre>
@@ -165,25 +141,7 @@ $("#lungh").text(lung);
 "hello".charAt(1);			<span class="nota">// restituisce e</span>
 </pre>
 
-<h2> Boolean Default </h2>
-
-
-<script>
-$(document).ready(function(){
-
-var testo = !"" 				// true
-//var testo = !"hello" 			// false
-//var testo = !"true" 			// false
-//var testo = !new Boolean(false) 	// false
-
-//$("#test").text();
-//alert(testo);
-
-});
-</script>
-
 <h2> Replace</h2>
-
 <p>
 <pre>
 var testoIniziale = "questa stringa"; 
@@ -199,183 +157,82 @@ console.log("papa".replace("p", "m"));			<span class="nota">// mapa (rimpiazza s
 </pre>
 </p>
 
+<p>
+Provare a digitare qualcosa nel campo &lt;input&gt; seguente. Una funzione applicata all'evento "blur" sul campo 
+trasformerà il punto in virgola 	
+</p>
 
-<script type="text/javascript">
-$(document).ready(function(){
-//jQuery(document).ready(function(){
-
-$('input').blur(function(){
-//var stringa =  "hellog".replace(/e|o/g, "x"); // restituisce => "hxllxg". Scambia la "e" e la "o" con la x 
-var immissione = $(this).val();
-var punto = ".";
-var virgola = ",";
-var finale = immissione.replace(punto,virgola);
-//$('#ppil').text(finale);
-$(this).val(finale);
-});
-
-}); // chiude ready 
-</script>
-<span id="ppil"></span>
-<br />
-<input type="text" id="inputt" />
+<input type="text" id="inputttt" />
 
 
 <h2>Paragonare stringhe -- localeCompare() </h2>
-
-<script  type="text/javascript">
-jQuery(document).ready(function(){
-
-var firstString = new String("AAA");
-//var secondString = new String("aaA");	// false
-var secondString = new String("AAA");	// false ????? 
-var comparison = (firstString == secondString);	// può restituire 'true' o 'false'
-
-}); // chiude ready 
-</script>
-
-<p id="paragona"></p>
-
 <dl>
 	<dt>Il metodo <q>localeCompare()</q> permette di ordinare le stringhe. Può restituire uno dei seguenti tre valori:</dt>
 	<dd><b>0</b> => se le stringhe messe a confronto sono uguali  </dd>
 	<dd><b>1</b> => se la stringa oggetto viene, in ordine alfabetico, prima della stringa in argometo</dd>
 	<dd><b>-1</b> => se le stringa oggetto viene, in ordine alfabetico, dopo la stringa in argomento</dd>
-	
 </dl>	
 
-<script  type="text/javascript">
-jQuery(document).ready(function(){
-
-var oStringObject1 = new String("yellow ");
-var oStringObject2 = new String("blue ");
-//var oStringObject2 = new String("yellow ");		// 'le due stringhe sono uguali'
-var test = oStringObject1.localeCompare(oStringObject2);
-//alert(oStringObject1.localeCompare("brick"));  
-if(test < 0) {
-//	alert(oStringObject1 + "viene prima di " +oStringObject2);
-$("#pcompare").text(oStringObject1 + "viene prima di " +oStringObject2);
-}else if (test > 0) {
-//    alert(oStringObject1 + "viene dopo di "+oStringObject2);
-$("#pcompare").text(oStringObject1 + "viene dopo di "+oStringObject2);
-}else {
-// alert("Le due stringhe sono uguali");
-$("#pcompare").text("Le due stringhe sono uguali");
-}
-
-}); // chiude ready 
-</script>
-
-<p id="pcompare"></p>
 
 <h2>Concatenare le stringhe -- concat() </h2>
-<p class="nota">Il metodo <q>concat</q> permette di unire delle stringhe </p>
-
-<script  type="text/javascript">
-jQuery(document).ready(function(){
-
+<p>Il metodo <q>concat</q> permette di unire delle stringhe </p>
+<pre>
 var myString1 = new String("Hello, ");
 var myString2 = new String("World!");
-var myConcatString = myString1.concat(myString2);	// "myString2" sarà messa dopo "myString21"
-$("#unisci").text(myConcatString);
+var myConcatString = myString1.concat(myString2);		
+console.log(myConcatString);				<span class="nota">// Hello World</span>
+</pre>
 
-}); // chiude ready 
-</script>
-
-<p id="unisci"></p>
 
 <h2>indexOf -- lastIndexOf</h2>
 <pre>
 string.indexOf(string)
 string.indexOf(string, num)
 </pre>
-
-<p class="nota">Permettono di trovare l'indice e quindi la posizione della stringa (o anche una sola lettera) passata. La differenza fra i due metodi è che <q>indexOf</q> inizia la ricerca da sinistra mentre <q>lastIndexOf</q> da destra verso sinistra. Per esempio volendo cercare la posizione della lettera 'l' (elle) nella parola 'Hello' se si utilizza il metodo <q>indexOf('l')</q> sarà restituito "2" mentre con il metodo "lastIndexOf" sarà restitutito '3'. In pratica <q>lastIndexOf</q> cerca la posizione della 'l' che, fra le due esistenti, sta più a destra mentre <q>indexOf</q> cerca la posizione della prima 'l' da sinistra. Nel caso si dovesse cercare la posizione della 'e' daranno entrambi lo stesso risultato '1'. <br />
+<p>
+Permettono di trovare l'indice e quindi la posizione della stringa (o anche una sola lettera) passata. La differenza fra i due metodi è che <q>indexOf</q> inizia la ricerca da sinistra mentre <q>lastIndexOf</q> da destra verso sinistra. Per esempio volendo cercare la posizione della lettera 'l' (elle) nella parola 'Hello' se si utilizza il metodo <q>indexOf('l')</q> sarà restituito "2" mentre con il metodo "lastIndexOf" sarà restitutito '3'. In pratica <q>lastIndexOf</q> cerca la posizione della 'l' che, fra le due esistenti, sta più a destra mentre <q>indexOf</q> cerca la posizione della prima 'l' da sinistra. Nel caso si dovesse cercare la posizione della 'e' daranno entrambi lo stesso risultato '1'. <br />
 Nello specificare il secondo parametro("num") si indica la posizione da cui partire la ricerca. L'indice 0 indica la prima posizione. 
+</p>
 <pre>
 console.log([1, 2, 3, 2, 1].indexOf(2));			<span class="nota">// 1 (il primo '2' che incontra da sinistra)</span>
 console.log([1, 2, 3, 2, 4, 8, 2, 1].lastIndexOf(2));		<span class="nota">// 6 (l'ultimo '2' che incontra da sinistra o il primo che incontra da destra)</span>
-
 </pre>
-</p>
-
-<script  type="text/javascript">
-jQuery(document).ready(function(){
-
+<pre>
 var mia_stringa = "A ab abc abcd";
 var stringaa = "abc";
 var foundAtPosition;
-foundAtPosition = mia_stringa.indexOf(stringaa, 0);	// si vuole ricercare la posizione partendo da '0' cioè dall'inizio'
-//$("#ricerca_pos").text("La stringa " +stringaa+ " sta in posizione " +foundAtPosition+ " nella stringa " +mia_stringa);
-$("#ricerca_pos").html("La stringa <b>" +stringaa+ "</b> sta in posizione <b>" +foundAtPosition+ "</b> nella stringa <b>" +mia_stringa+ "</b>");
+foundAtPosition = mia_stringa.indexOf(stringaa, 0);	<span class="nota">si vuole ricercare la posizione partendo da '0' cioè dall'inizio'</span>
+console.log('La stringa ' +stringaa+  ' sta in posizione ' +foundAtPosition );
+<span class="nota">La stringa abc sta in posizione 5 </span>
+</pre>
 
-//document.write("<P>The string " + mySubstring + " was found at position " + foundAtPosition);
-// -->
-
-}); // chiude ready 
-</script>
-
-<p id="ricerca_pos"></p>
 
 <h3>Esempio con l'utilizzo della finestra del prompt</h3>
-
-<script  type="text/javascript">
-// In questa funzione viene utilizzato il metodo "indexOf" per verificare se una lettera (può essere anche una parola) sta all'interno di un'altra (che nel caso è il valore che si va a immettere nella finestra 'prompt'). Per ottenere il risultato si fa il paragone col "-1" 
-function myFunction(){
-
-var email_add = window.prompt("What is your e-mail address?","");
-if(email_add.indexOf("@") == -1){
-	window.alert("You need an '@' symbol in your address, please try again.");
-}
-if(email_add.indexOf(".") == -1){
-	window.alert("You need a '.' symbol in your address, please try again.");
-}
-if(email_add.indexOf("it") == -1){
-	window.alert("La tua email non è italiana");
-}
-if((email_add.indexOf("@") != -1) && (email_add.indexOf(".") != -1) ){
-document.write("Thanks!");
-}
-}	// chiude la funzione
-
-</script>
 
 <INPUT type="button" value="Clicca per inserire la tua email"  onClick="myFunction();"> 
 
 
 <h2>link()</h2>
-<code class='codice'>
+<p>
+Il metodo <q>link()</q> converte la stringa a una istanza del tag. 
+In pratica viene creato un link (collegamento) dalla stringa  impostando come atrtibuto l'URL passato 
+</p>
+<pre>
 string.link(URL)
-</code>
-
-<p class="nota">Il metodo <q>link()</q> converte la stringa a una istanza del tag. In pratica viene creato un link (collegamento) dalla stringa  impostando come atrtibuto l'URL passato </p>
-
-<script  type="text/javascript">
-//jQuery(document).ready(function(){
 
 var scoprire_olio = new String("Scopri tutto sull'olio extravergine d'oliva");
-//var scopri_olio = scoprire_olio.link("http://www.abcoliodoliva.com");
-//$("#scopri_olio").text(scopri_olio);	// con jQuery NON FUNZIONA da un risultato diverso	
-//$("#scopri_olio").text(scoprire_olio.link("http://www.abcoliodoliva.com"));
-
 document.write(scoprire_olio.link('http://www.abcoliodoliva.com'));
+</pre>
 
-//}); // chiude ready 
-</script>
-
-<p id="scopri_olio"></p>
 
 <h2>slice()</h2>
-
 <pre>
 string.slice(num1, num2)
 string.slice(num)
 </pre>
-
 <p>Il metodo <b>slice()</b> restituisce i 'caratteri' (in caso di stringa) o 'valori' (in caso di array) dalla posizione 'num1' (compresa) a 'num2' (esclusa). Il primo carattere è in posizione '0'. Se viene passato un solo parametro il metodo restituisce i valori dalla posizione indicata nell'argomento fino alla fine della stringa. Senza argomenti restituisce l'intera stringa o array. E' possibile dare un valore negativo a 'num2. <br />
 <span class="nota"><b>slice</b> può essere usato sia con stringhe che con array </span> 
 </p>
-
 <pre>
 var testo = "www.abcoliodoliva.com";
 var arr = [0, 4 , 8, 7, 9];
@@ -398,14 +255,11 @@ console.log(a.splice(1,3));			<span class="nota">// 7, 12, 20 (restituisce tre v
 </pre>
 </p>
 
-
 <h2>substr -- substring</h2>
-
 <pre>
 string.substring(num1, num2)
 string.substring(num)
 </pre>
-
 <p>
 Il metodo  <b>substring</b> restituisce i caratteri di una stringa partendo dalla posizione 'num1' fino a 'num2' (<b> uguale al metodo <q>slice()</b>). La prima posizione è lo zero(0).<br />
 Se passato un solo argomento sarà restituita una stringa che va dalla posizione dell' argomento fino alla fine della stringa. Se non viene passato nessun argomento verrà restituita l'intera stringa 
@@ -431,87 +285,77 @@ console.log(testo.slice(7, 4));			<span class="nota">// ATTENZIONE: non restitui
 </pre>
 
 
-
 <h2>split()</h2>
-
+<p>Il metodo <q>split</q> divide la stringa in stringhe separate in base a una "regularExpression" o a un separatore. <br /> 
+Il metodo restituisce un array contenente le stringhe separate. <br /> 
+Se passato il secondo parametro si avranno soltanto il numero di stringhe appunto indicate nel secondo argomento. 
+</p>
 <pre>
 string.split(separator, num)
 string.split(separator)
 string.split(regexpression, num)
 string.split(regexpression)
 </pre>
-
-<p class="nota">Il metodo <q>split</q> divide la stringa in stringhe separate in base a una "regularExpression" o a un separatore. <br /> 
-Il metodo restituisce un array contenente le stringhe separate. <br /> 
-Se passato il secondo parametro si avranno soltanto il numero di stringhe appunto indicate nel secondo argomento. 
-</p>
-
-<script type="text/javascript">
+<pre>
 var myStringa = new String("This is a test");
-//var myRegExp = /\s/g;
 var mySeparator = " ";
-var num = 2; 
 var split_stringa = myStringa.split(mySeparator);
-//var split_stringa = myStringa.split(mySeparator, 2);	// si avrà 'this' 'is'
-for(var i=0; i<split_stringa.length; i++){
-//document.write(split_stringa[i] + '<br>');
-document.write('[' + i + ']: ' + split_stringa[i] + '<br>');
+var split_due = myStringa.split(mySeparator, 2);			
+console.log(split_due );				<span class="nota">// Array [ "This", "is" ]</span>
 
-} // chiude for 
-</script>
-
-
-<h2>toUpperCase -- toLowerCase</h2>
-<p class="nota">
-I metodi <q>toUpperCase</q> e <q>toLowerCase</q> convertono una stringa rispettivamente in maiuscolo e minuscolo </p>
-
-<script type="text/javascript">
-var maius_minusc = new String("Mandami giù e su");
-document.write(maius_minusc.toLowerCase()+ '<br>');
-document.write(maius_minusc.toUpperCase()); 
-
-
-</script>
+for(var i=0; i &lt; split_stringa.length; i++){
+	console.log( '[' + i + ']: ' + split_stringa[i]  );
+} 
+<span class="nota">
+// [0]: This
+// [1]: is
+// [2]: a
+// [3]: test
+</span>
+</pre>
 
 <h3>Funzione per rendere maiuscola la prima lettera di ogni parola</h3>
-<script type="text/javascript">
-
+<pre>
+<span class="grigio">Trasforma tutte le prime lettere di ogni parola in maiuscolo</span>
 function maiuscola_laPrima(stringa){
-// rispetto alla successiva trasforma tutte le prime lettere di ogni parola in maiuscolo
 	var stringa_iniziale = stringa	
-	var words = stringa_iniziale.split(" ");				// creazione array della 'stringa_iniziale'
-	for(i=0; i<words.length; i++){
-		var word = words[i];										// la variabile "word" è ogni parola della stringa 
-		var primaL = word.substr(0,1);						// per ogni parola si individua la prima lettera ... 		
-		var primaL = primaL.toUpperCase();					// ... e la si rende maiuscola 	
-		var resto = word.substr(1, (word.length -1));	// // si individuano tutte le altre lettere per ogni parola ...  
-		document.write(primaL + resto+ ' ');				// ... e si ricrea la stringa iniziale con la prima lettera maiuscola e le altre minuscole		
+	var words = stringa_iniziale.split(" ");
+	var testoFinale = "";
+	for(i=0; i &lt; words.length; i++){
+		var word = words[i];
+		var primaL = word.substr(0,1);				<span class="nota">** per ogni parola si individua la prima lettera</span>
+		var primaL = primaL.toUpperCase();			<span class="nota">** e la si rende maiuscola </span>
+		testoFinale += primaL;
+		var resto = word.substr(1, (word.length -1));		<span class="nota">** si individuano tutte le altre lettere per ogni parola</span>
+		testoFinale += resto + ' ';
 	}  
-} // "maiuscola_laPrima()"
+	return testoFinale;
+}//
 
-/////////////////////////////////////////////////
+console.log( maiuscola_laPrima("amore e odio") );			<span class="nota">// Amore E Odio </span>
 
+<span class="grigio">Rispetto alla precedente se la parola è formata da un singolo carattere non viene trasformata in maiuscolo.</span>"
 function maiuscola_laPrima2(stringa){
-// rispetto alla precedente se la parola è formata da un singolo carattere non viene trasformata in maiuscolo.
 	var stringa_iniziale = stringa	
-	var words = stringa_iniziale.split(" ");					// itreazione array della 'stringa_iniziale'
-	for(i=0; i<words.length; i++){
-		var word = words[i];											// la variabile "word" è ogni parola della stringa 
-		if(word.length > 1){											// solo se la parola ha più di un carattere
-			var primaL = word.substr(0,1);						// per ogni parola si individua la prima lettera ... 
-			var primaL = primaL.toUpperCase();					// ... e la si rende maiuscola 
-			var resto = word.substr(1, (word.length -1));	// si individuano tutte le altre lettere per ogni parola ...  
-			document.write(primaL + resto+ ' ');				// ... e si ricrea la stringa iniziale con la prima lettera maiuscola e le altre minuscole
+	var words = stringa_iniziale.split(" ");
+	var testoFinale = "";
+	for(i=0; i &lt; words.length; i++){
+		var word = words[i];	
+		if(word.length > 1){					<span class="nota">** solo se la parola ha più di un carattere</span>
+			var primaL = word.substr(0,1);
+			var primaL = primaL.toUpperCase();
+			testoFinale += primaL;
+			var resto = word.substr(1, (word.length -1));
+			testoFinale += resto + ' ';
 		}else{
-			document.write(word+ ' ');								// altrimenti (se la parola è di una sola lettera) viene restituita così com'è 
+			testoFinale += word + ' ';			<span class="nota">** altrimenti (se la parola è di una sola lettera) viene restituita così com'è </span>
 		}  
-	}  
-} // "maiuscola_laPrima2()"
+	}
+	return testoFinale;  
+}//
 
-//maiuscola_laPrima("amore e odio");
-maiuscola_laPrima2("amore e odio ed passione");
-
-</script>
+console.log( maiuscola_laPrima2("amore e odio e passione ed gelosia") );	<span class="nota">Amore e Odio e Passione Ed Gelosia </span>
+</pre>
 
 <h1>Costanti</h1>
 <p>
@@ -520,15 +364,12 @@ Le costanti possono essere create con la parola chiave <b>const</b> che deve ess
 <pre>
 const prefix = '212';
 </pre>
-
 <p>
 Una costante <b>non può essere inizializzata</b> ma gli si deve assegnare obbligatoriamente un valore:
 </p>
-
 <pre>
 const foo;			<span class="nota">SyntaxError: missing = in const declaration</span>
 </pre>
-
 <p>
 Una costante non può cambiare il suo valore nell'esecuzione dello script come <b>non può essere reimpostata</b>; quindi in altre parole <b>può essere soltanto letta</b>.
 </p>
@@ -539,7 +380,6 @@ const f = 5;
 const f = 6;
 <span class="azzurro">console.log(f);</span>			<span class="nota">// restituisce ancora 5</span>
 </pre>
-
 <p>
 Il seguente è un'esempio su altri modi corretti/sbagliati dell'uso delle costanti
 </p>
@@ -558,7 +398,6 @@ function getAreaOfCircle(radius) {
 console.log(getAreaOfCircle(10));
 console.log(getAreaOfCircle());		</span>
 </pre>
-
 <p>
 C'è però un eccezione, come nel caso seguente:
 </p>
@@ -573,15 +412,80 @@ console.log(obj.prop);				<span class="nota">// 123</span>
 L'esempio considera il caso di una costante che è un oggetto; in questo caso se aggiungiamo valori alle sue proprietà non causa errore.  	
 </p>
 
-
-
-
 <br /><br /><br /><br /><br />
 
 
 
 <script type="text/javascript">
 
+
+// Replace
+document.querySelector('#inputttt').addEventListener('blur', function(e){
+	var immissione = this.value;				
+//	var immissione = e.target.value;
+	var punto = ".";
+	var virgola = ",";	
+	var finale = immissione.replace(punto,virgola);
+	this.value = finale;
+}, false);
+
+
+// localeCompare() 
+var oStringObject1 = new String("yellow ");
+var oStringObject2 = new String("blue ");
+//var oStringObject2 = new String("yellow ");		// 'le due stringhe sono uguali'
+var test = oStringObject1.localeCompare(oStringObject2);
+console.log('Compari', test);							// 1
+
+// concat()
+var myString1 = new String("Hello, ");
+var myString2 = new String("World!");
+var myConcatString = myString1.concat(myString2);			// "myString2" sarà messa dopo "myString21"
+console.log(myConcatString);
+
+
+// indexOf -- lastIndexOf
+var mia_stringa = "A ab abc abcd";
+var stringaa = "abc";
+var foundAtPosition;
+foundAtPosition = mia_stringa.indexOf(stringaa, 0);	// si vuole ricercare la posizione partendo da '0' cioè dall'inizio'
+console.log('La stringa ' +stringaa+  'sta in posizione ' +foundAtPosition+  " nella stringa " +mia_stringa );
+
+// finestra del prompt
+function myFunction(){
+	var email_add = window.prompt("What is your e-mail address?","");
+	if(email_add.indexOf("@") == -1){
+		window.alert("You need an '@' symbol in your address, please try again.");
+	}
+	if(email_add.indexOf(".") == -1){
+		window.alert("You need a '.' symbol in your address, please try again.");
+	}
+	if(email_add.indexOf("it") == -1){
+		window.alert("La tua email non è italiana");
+	}
+	if((email_add.indexOf("@") != -1) && (email_add.indexOf(".") != -1) ){
+	document.write("Thanks!");
+	}
+}//
+
+// split()
+
+var myStringa = new String("This is a test");
+var mySeparator = " ";
+var split_stringa = myStringa.split(mySeparator);
+var split_due = myStringa.split(mySeparator, 2);			
+console.log(split_due );						// Array [ "This", "is" ]
+
+for(var i=0; i<split_stringa.length; i++){
+	console.log( '[' + i + ']: ' + split_stringa[i]  );
+} 
+// [0]: This
+// [1]: is
+// [2]: a
+// [3]: test
+
+
+// substr -- substring
 var testo = "www.abcoliodoliva.com";
 console.log(testo.substr(4, 7));					// a partire dal quarto ne prende 7 
 console.log(testo.substr(7, 4));					// a partire dal settimo ne prende 4
@@ -592,8 +496,45 @@ console.log(testo.substring(7, 4));				// a partire dal settimo a finire al quar
 console.log(testo.slice(4, 7));					// a partire dal quarto a finire al settimo (uguale a 'substring')
 console.log(testo.slice(7, 4));					// non restituisce niente
 
+////////////////
 
-//console.log(a.splice(1,2) );
+function maiuscola_laPrima(stringa){
+	var stringa_iniziale = stringa	
+	var words = stringa_iniziale.split(" ");
+	var testoFinale = "";
+	for(i=0; i < words.length; i++){
+		var word = words[i];
+		var primaL = word.substr(0,1);
+		var primaL = primaL.toUpperCase();
+		testoFinale += primaL;
+		var resto = word.substr(1, (word.length -1));
+		testoFinale += resto + ' ';
+	}  
+	return testoFinale;
+}//
+
+function maiuscola_laPrima2(stringa){
+	var stringa_iniziale = stringa	
+	var words = stringa_iniziale.split(" ");
+	var testoFinale = "";
+	for(i=0; i < words.length; i++){
+		var word = words[i];	
+		if(word.length > 1){	
+			var primaL = word.substr(0,1);
+			var primaL = primaL.toUpperCase();
+			testoFinale += primaL;
+			var resto = word.substr(1, (word.length -1));
+			testoFinale += resto + ' ';
+		}else{
+			testoFinale += word + ' ';
+		}  
+	}
+	return testoFinale;  
+}//
+
+
+console.log( maiuscola_laPrima("amore e odio") );
+console.log( maiuscola_laPrima2("amore e odio e passione ed gelosia") );
 
 
 </script>

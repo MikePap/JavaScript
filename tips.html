@@ -266,6 +266,24 @@ console.log(nuovoArray);		<span class="nota">// Array [ "1", 2, "tre", "mela", "
 </span>
 </pre>
 
+<p>Concatenazione di array col metodo spread</p>
+
+<pre>
+function concatenaArray(arr) {
+	let lista = [];
+	for(let i=0; i < arr.length; i++){
+		let elem = arr[i];
+		lista.push(...elem);
+	}
+	return lista;
+}
+
+let arrays = [[1, 2, 3], [4, 5], [6]];
+<span class="azzurro">
+console.log( concatenaArray(arrays));			<span class='nota'>// Array(6) [ 1, 2, 3, 4, 5, 6 ]</span>
+</span>
+</pre>
+
 </section>
 
 <section id="s4c">
