@@ -471,8 +471,7 @@ console.log(fooBar.opzioni.b);				<span class="nota">// restituisce 'beta'</span
 <p>Oppure con l'uso di una funzione normale, invece che di quella costruttore, avremo:</p>
 <pre>
 function FooBar( options ){
-	var opzioni = options;
-	return { opzioni };
+	return { opzioni: options };
 }
 
 var fooBar = FooBar({a: "alpha", b:'beta'});

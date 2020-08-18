@@ -375,7 +375,9 @@ var  randomItem = items[Math.floor(Math.random() * items.length)];
 <h3>Ottenere un array da zero ad uno specificato numero</h3>
 <pre>
 var numbersArray = [] , max = 10;
-for( var i=1; numbersArray.push(i++) &lt; max;)
+for(var i=0; i &lt; max; i++){
+	numbersArray.push(i);
+}
 <span class="azzurro">console.log(numbersArray);</span>			<span class="nota">// restituisce  [1,2,3, ... 9]</span>
 </pre>
 

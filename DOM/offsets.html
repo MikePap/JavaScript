@@ -147,8 +147,31 @@ pulsante.addEventListener('click', function (){
 }, false);
 </pre>
 
-
 Cliccando sul pulsante seguente <button id="pulsante">Clik me</button> lo scroll della pagina si fermerà in corrsipondenza del titolo <b>Scrolling</b> 
+
+<h3>Window.scrollTo()</h3>
+
+<p>
+Questo metodo permette di ottenere uno <span class="nota">scroll scivolato</span> solo con i CSS e senza far uso di Javascript. <br>
+</p>
+<pre>
+var titolo2 = document.querySelectorAll('h1')[1];
+var hTop = titolo2.offsetTop; 
+
+var pulsante = document.getElementById('pulsante');
+pulsante.addEventListener('click', function (){
+	window.scrollTo({
+		top: hTop,
+		left: 0,												
+		behavior: 'smooth'					<span class="nota">** smooth produce un effetto di scivolamento</span>
+	});
+
+}, false);
+</pre>
+
+Cliccando sul pulsante seguente <button id="pulsante2">Clik me</button> si otterrà lo stesso spostamento dell'esempio precedente
+ ma con l'effetto scivolamento
+
 
 <h3>scrollIntoView()</h3>
 <p>
@@ -191,6 +214,19 @@ pulsante.addEventListener('click', function (){
 	document.body.scrollTop = hTop;										// chrome, safari, opera 
 }, false);
 
+
+var pulsante2 = document.getElementById('pulsante2');
+pulsante2.addEventListener('click', function (){
+	window.scrollTo({
+		top: hTop,
+		left: 0,												
+		behavior: 'smooth'									// "smooth" produce un effetto di scivolamento
+	});
+}, false);
+
+// Nell'esempio di sopra l'intenzione era di ottenere soltanto uno spostamento in verticale ma si è impostato sia il «top» che il «left».
+// Ovviamente il «left» imnpostato a zero non produce nessun effetto. In questo caso potremmo anche non definirlo
+// Le opzioni per la proprietà «behavior» sono "smooth" e "auto". Quest'ultima produce l'effetto istantaneo
 
 </script>
 
