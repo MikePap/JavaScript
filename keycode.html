@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>tasti keycode  </title>
+<style type="text/css"></style>
+
+</head>
+<body>
+
+<table id="tabela1" border=1>
+<thead>
+<tr>
+<td colspan="2">Tabella "fromCharCode" </td>
+</tr>
+</thead>
+<TBODY></TBODY>
+</table>
+
+<script type="Text/Javascript">
+   var tabela = document.getElementById("tabela1");
+   var tbody = tabela.getElementsByTagName("TBODY")[0];
+   
+for (var i = 0; i <= 1000; i++) {
+      var row = document.createElement("TR");
+      var td1 = document.createElement("TD");
+      td1.appendChild(document.createTextNode(i + " "));
+      
+      var td2 = document.createElement("TD");
+      td2.appendChild(document.createTextNode(String.fromCharCode(i) + " "));
+      
+      row.appendChild(td1);
+      row.appendChild(td2);
+      tbody.appendChild(row);
+   }
+</script>
+
+
+
+
+
+
+
+</body>
+</html>

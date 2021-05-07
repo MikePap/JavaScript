@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Permessi file</title>
+
+<style type="text/css">
+
+h1{ font-size:24px; font-weight:bold; color:rgb(50,50,250);}
+h2{ font-size:18px; font-weight:bold; color:rgb(250,50,150);}
+h3{ font-size:14px; font-weight:bold; color:rgb(200,20,20);}
+dt{ color:#003399; margin-bottom:5px;}
+dd{ color:#0066FF;}
+.nota{ color:rgb(250,120,0); }
+.codice{ color:rgb(30,120,30);}
+
+table{ border-collapse:collapse; background:#CCFFCC; margin-left:31px; margin-top:12px;}
+caption{ font-weight:bold; font-size:11px;}
+th{ background: #F90;}
+
+#seconda td:nth-of-type(1){ text-align:center;} /* assegna lo stile al primo td */
+#seconda td:nth-of-type(2){ text-align:left;}  /* assegna lo stile al secondo td */
+
+#terza td:nth-of-type(1){ text-align:center;} /* assegna lo stile al primo td */
+
+</style>
+
+
+</head>
+<!-- http://localhost/BookPHP/Permessi_file.html  -->
+<body>
+
+<h1>Permessi file</h1>
+
+<dl>
+	<dd><b>ls -l</b> --> Permette di visualizzare i permessi dei file e delle cartelle contenute nella directory corrente </dd>
+	<dd><b>ls -la..</b> --> Permette di visualizzare anche i permessi di file e cartelle nascoste</dd>
+</dl>
+
+<p>Per ogni file e cartella viene visualizzata una serie di 10 caratteri in cui il primo carattere rappresenta il tipo. Trattandosi di una directory ci sarà <b>d</b> per un file <b>-</b><br />
+Gli altri 9 caratteri sono, in pratica, 3 terne da 3 dove la prima terna definisce i permessi per il proprietario del file; la seconda per il gruppo; la terza è riferita a tutti gli altri.  
+ </p>
+
+<table id="prima" border="1" cellpadding="2" cellspacing="2">
+	<tr>
+    	<th>Terna</th>
+        <th>Output</th>
+        <th>Utente</th>
+    </tr>
+	<tr>
+    	<td>Prima terna</td>
+        <td>-rwx------</td>
+        <td>proprietario (owner)</td>
+    </tr>
+	<tr>
+    	<td>Seconda terna</td>
+        <td>----rwx---</td>
+        <td>gruppo (group)</td>
+	<tr>
+    	<td>Terza terna</td>
+        <td>-------rwx</td>
+        <td>altri (other)</td>
+</table>
+<dl>
+	<dt>Nel caso ci si riferisca a un file: </dt>
+		<dd>La <b>r</b> (permessso di lettura) consente di aprire un file per visualizzarne il contenuto;</dd>
+		<dd>La <b>w</b> (permesso di scrittura) consente di sovrascrivere o aggiungere dati a un file;   </dd>
+    	<dd>La <b>x</b> (permesso di esecuzione) consente di eseguire un file (nel caso si tratti di un file eseguibile).  </dd>
+</dl>
+
+<dl>
+	<dt>Nel caso ci si riferisca a una directory : </dt>
+    	<dd>La <b>r</b> (lettura) consente la visualizzazione del contenuto della directory, con il comando ls; </dd>
+        <dd>La <b>w</b> (scrittura) consente la creazione o l'eliminazione di file all'interno della directory; </dd>
+        <dd>La <b>x</b> (esecuzione) consente di accedere alla directory (per esempio con il comando cd) anche nel caso non se ne possa visualizzarne il contenuto. </dd>    
+</dl>
+<p class="nota"><strong>Applicare il permesso di scrittura ad una directory consente la cancellazione dei file contenuti in essa anche ad utenti che non possiedono i permessi di scrittura su tali file.</strong></p>
+
+<h3>Ci sono due metodi per modificare i permessi, attraverso l'uso delle lettere o dei numeri. </h3>
+
+
+<table id="seconda" border="1" cellpadding="2" cellspacing="2">
+<caption>Uso delle lettere</caption>
+	<tr>
+		<th>Opzioni</th>
+		<th>Definizioni</th>        
+	</tr>
+	<tr>
+		<td>u</td>
+		<td>proprietario</td>
+	</tr>
+	<tr>
+		<td>g</td>
+		<td>gruppo</td>
+	</tr>
+	<tr>
+		<td>o</td>
+		<td>altri</td>
+	</tr>
+	<tr>
+		<td>a</td>
+		<td>tutti (u, g, o)</td>
+	</tr>
+	<tr>
+		<td>x</td>
+		<td>esecuzione</td>
+	</tr>
+	<tr>
+		<td>w</td>
+		<td>scrittura</td>
+	</tr>
+	<tr>
+		<td>r</td>
+		<td>lettura</td>
+	</tr>
+	<tr>
+		<td>+</td>
+		<td>aggiungi permesso</td>
+	</tr>
+	<tr>
+    	<td>-</td>
+        <td>elimina permesso</td>
+   </tr>
+	<tr>
+    	<td>=</td>
+        <td>imposta permesso</td>
+   </tr>
+
+</table>
+
+<p>
+Per dare agli altri (o: cioè quelli che non fanno parte del gruppo) il permesso di lettura: <br />
+<span class="codice">chmod o+r </span> <br />
+
+Per dare al gruppo (g) i permessi di lettura e scrittura: <br />
+<span class="codice">chmod g+rw </span> <br />
+
+Volendo togliere i permessi di scrittura ad un file per tutti gli utenti compreso il proprietario: <br />
+<span class="codice">chmod a-w  </span> <br />
+ATTENZIONE: non dare spazio tra i parametri, l'unico spazio è dopo il <q>chmod</q>.	Per ridarli: <br />
+<span class="codice">chmod a+w  </span> <br />
+O definire più opzioni contemporaneamente: <br />
+<span class="codice">chmod a-wx  </span> <br />
+</p>
+
+<table id="terza" border="1" cellpadding="2" cellspacing="2">
+<caption>Uso dei numeri</caption>
+	<tr>
+    	<th>Opzione</th>
+        <th>Definizione</th>
+        <th>Definizione in lettere</th>
+    </tr>
+    <tr>
+    	<td>#--</td>
+        <td>proprietario</td>
+        <td>u (user)</td>
+    </tr>
+    <tr>
+    	<td>-#-</td>
+        <td>gruppo</td>
+        <td>g (group)</td>
+    </tr>
+    <tr>
+    	<td>--#</td>
+        <td>altri</td>
+        <td>o (other)</td>
+    </tr>
+    <tr>
+    	<td>0</td>
+        <td>nessun permesso</td>
+        <td>-</td>
+    </tr>
+    <tr>
+    	<td>1</td>
+        <td>esecuzione</td>
+        <td>(x, execution)</td>
+    </tr>
+    <tr>
+    	<td>2</td>
+        <td>scrittura </td>
+        <td>(w, write) </td>
+    </tr>
+    <tr>
+    	<td>3</td>
+        <td>esecuzione + scrittura </td>
+        <td>(xw, somma dei valori 1+2) </td>
+    </tr>
+    <tr>
+    	<td>4</td>
+        <td>lettura</td>
+        <td>(r, read)</td>
+    </tr>
+    <tr>
+    	<td>5</td>
+        <td>lettura + esecuzione</td>
+        <td>(rx, somma dei valori 4+1) </td>
+    </tr>
+    <tr>
+    	<td>6</td>
+        <td>lettura + scrittura</td>
+        <td>(rw, somma dei valori 4+2) </td>
+    </tr>
+    <tr>
+    	<td>7</td>
+        <td>lettura + scrittura + esecuzione</td>
+        <td>(rwx, somma dei valori 4+2+1) </td>
+    </tr>
+</table>
+
+<p>Volendo assegnare al proprietario tutti i permessi, al gruppo quelli di lettura e scrittura e agli altri solo il permesso di lettura: <br />
+<span class="codice"> chmod 764 </span> <br />
+Utilizzando il metodo delle lettere bisogna impostare più volte il comando <b>chmod</b> per ogni utente, quindi considerando l'esempio di sopra: <br />
+<span class="codice">chmod u+rwx </span><br />
+<span class="codice">chmod g+rw </span><br />
+<span class="codice">chmod o+r </span><br />
+</p>
+
+<p><span class="nota"><strong>Per cambiare i permessi in modo ricorsivo a tutti i file presenti in una cartella ed alla cartella stessa si deve usare l'opzione -R per chmod: </strong></span>
+<br />
+<span class="codice">chmod -R 777 Cartella/</span>
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
